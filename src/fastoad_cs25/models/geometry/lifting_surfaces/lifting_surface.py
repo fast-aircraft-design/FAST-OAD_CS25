@@ -1,6 +1,3 @@
-"""
-Package for geometries of lifting surfaces
-"""
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -13,3 +10,10 @@ Package for geometries of lifting surfaces
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from fastoad.modules.geometry import ComponentGeometry
+
+
+class LiftingSurface(ComponentGeometry):
+    def __init__(self):
+        self.sections = []
