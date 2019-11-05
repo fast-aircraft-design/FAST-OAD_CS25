@@ -16,7 +16,9 @@ Module for basic geometrical data
 
 from abc import ABC
 from collections import namedtuple
-from typing import TypeVar
+from typing import Optional, TypeVar
+
+import numpy as np
 
 ComponentGeometrySubClass = TypeVar("ComponentGeometrySubClass", bound="ComponentGeometry")
 
@@ -28,8 +30,17 @@ class ComponentGeometry(ABC):
     """A class for storing geometry data of an aircraft component"""
 
     def __init__(self):
-        self.reference_length = None
+        self.reference_length: float = np.nan
         """ Reference length of the element """
 
-        self.reference_area = None
+        self.reference_area: float = np.nan
         """ Reference area of the element """
+
+        self.length: float = np.nan
+        """ X-wise size of the element """
+
+        self.width: float = np.nan
+        """ Y-size size of the element """
+
+        self.height: Optional[float] = np.nan
+        """ Z-wise size of the element """
