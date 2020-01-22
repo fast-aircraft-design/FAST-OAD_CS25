@@ -1,3 +1,4 @@
+""" Test module for lifting_surface.py """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -18,8 +19,12 @@ from ..lifting_surface import LiftingSurface
 from ..profile import Profile
 
 
+# pylint: disable=redefined-outer-name  # false positive on pytest fixtures
+
+
 @pytest.fixture
 def trapezoid():
+    """Defines a wing with a trapezoidal planform"""
     surf = LiftingSurface()
     surf.sections.append(Profile(3.0, 0.0, 0.0))
     surf.sections.append(Profile(1.5, 10.0, 0.5))
@@ -28,6 +33,7 @@ def trapezoid():
 
 @pytest.fixture
 def wing():
+    """Defines a "classical" wing with a kink"""
     surf = LiftingSurface()
     surf.sections.append(Profile(6.260, 0.0, 0.000))  # center fuselage
     surf.sections.append(Profile(6.260, 0.0, 1.960))  # l2
@@ -37,6 +43,7 @@ def wing():
 
 
 def test_compute_planform_area(trapezoid, wing):
+    """test of LiftingSurface.compute_planform_area()"""
     trapezoid.compute_planform_area()
     assert_allclose(1.125, trapezoid.planform_area)
 
@@ -45,6 +52,7 @@ def test_compute_planform_area(trapezoid, wing):
 
 
 def test_compute_mean_aerodynamic_chord(trapezoid, wing):
+    """test of LiftingSurface.compute_mean_aerodynamic_chord()"""
     trapezoid.compute_mean_aerodynamic_chord()
     assert_allclose(2.0 / 3.0 * 3.0 * (1 + 0.5 + 0.5**2) / 1.5, trapezoid.reference_length)
 
