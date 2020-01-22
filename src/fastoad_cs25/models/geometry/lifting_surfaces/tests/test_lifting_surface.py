@@ -11,8 +11,43 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import pytest
+from numpy.testing import assert_allclose
+
 from ..lifting_surface import LiftingSurface
+from ..profile import Profile
 
 
-def test_compute_area():
+@pytest.fixture
+def trapezoid():
     surf = LiftingSurface()
+    surf.sections.append(Profile(3.0, 0.0, 0.0))
+    surf.sections.append(Profile(1.5, 10.0, 0.5))
+    return surf
+
+
+@pytest.fixture
+def wing():
+    surf = LiftingSurface()
+    surf.sections.append(Profile(6.260, 0.0, 0.000))  # center fuselage
+    surf.sections.append(Profile(6.260, 0.0, 1.960))  # l2
+    surf.sections.append(Profile(3.985, 2.275, 6.321))  # l3
+    surf.sections.append(Profile(1.882, 7.222, 15.801))  # l4
+    return surf
+
+
+def test_compute_planform_area(trapezoid, wing):
+    trapezoid.compute_planform_area()
+    assert_allclose(1.125, trapezoid.planform_area)
+
+    wing.compute_planform_area()
+    assert_allclose(62.418, wing.planform_area, atol=1e-3)
+
+
+def test_compute_mean_aerodynamic_chord(trapezoid, wing):
+    trapezoid.compute_mean_aerodynamic_chord()
+    assert_allclose(2.0 / 3.0 * 3.0 * (1 + 0.5 + 0.5**2) / 1.5, trapezoid.reference_length)
+
+    wing.compute_mean_aerodynamic_chord()
+    assert_allclose(4.457, wing.reference_length, atol=1e-3)
+    assert_allclose((2.361, 6.293), wing.mac_position, atol=1e-3)

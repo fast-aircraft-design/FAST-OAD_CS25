@@ -1,8 +1,8 @@
 """
 Management of 2D wing profiles
 """
-#  This file is part of FAST : A framework for rapid Overall Aircraft Design
-#  Copyright (C) 2019  ONERA/ISAE
+#  This file is part of FAST-OAD_CS25
+#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -70,7 +70,7 @@ class Profile:
         self.twist_angle: float = 0.0
         """ In degrees. Defines how profile is rotated around the 25% chord """
 
-        self.planform_position: Coordinates2D = (x, y)
+        self.planform_position: Coordinates2D = Coordinates2D(x, y)
 
     def set_points(
         self,
