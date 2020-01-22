@@ -28,7 +28,7 @@ from fastoad._utils.resource_management.copy import copy_resource
 from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao.utils.file_wrap import InputFileGenerator
 
-from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
+from fastoad_cs25.models.geometry._deprecated.profiles.profile_getter import get_profile
 from . import resources, xfoil699
 from ...constants import SERVICE_XFOIL
 

@@ -21,7 +21,7 @@ import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 from scipy import interpolate
 
-from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
+from fastoad_cs25.models.geometry._deprecated.profiles.profile_getter import get_profile
 from ..constants import SERVICE_TANKS_CG
 
 
