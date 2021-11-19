@@ -95,6 +95,14 @@ def test_non_regression_mission_only(cleanup):
     )
 
 
+def test_no_kink_breguet(cleanup):
+    run_non_regression_test(
+        "oad_process_breguet.yml",
+        "no_kink_breguet_result.xml",
+        "no_kink_breguet",
+    )
+
+
 def test_non_regression_mission(cleanup):
     run_non_regression_test(
         "oad_process_mission.yml",
