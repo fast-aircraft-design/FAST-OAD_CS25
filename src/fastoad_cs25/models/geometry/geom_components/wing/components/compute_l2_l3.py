@@ -76,7 +76,7 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
         virtual_taper_ratio = inputs["data:geometry:wing:virtual_taper_ratio"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
 
-        if y3_wing == y2_wing:
+        if y3_wing <= y2_wing:
             l2_wing = l3_wing = l1_wing
         else:
             l2_wing = l1_wing + (y3_wing - y2_wing) * (

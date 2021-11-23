@@ -59,7 +59,7 @@ class ComputeYWing(om.ExplicitComponent):
             method="fd",
         )
 
-    def compute(self, inputs, outputs):
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
         wing_area = inputs["data:geometry:wing:area"]
         wing_break = inputs["data:geometry:wing:kink:span_ratio"]
@@ -70,10 +70,7 @@ class ComputeYWing(om.ExplicitComponent):
         # Wing geometry
         y4_wing = span / 2.0
         y2_wing = width_max / 2.0
-        if wing_break == 0.0:
-            y3_wing = y2_wing
-        else:
-            y3_wing = y4_wing * wing_break
+        y3_wing = np.maximum(y2_wing, y4_wing * wing_break)
 
         outputs["data:geometry:wing:span"] = span
         outputs["data:geometry:wing:root:y"] = y2_wing
