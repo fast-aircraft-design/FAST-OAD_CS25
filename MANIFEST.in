@@ -1,0 +1,4 @@
+# notebook folder is recursively copied. Its content is not explicitly
+# mentioned in Python code, so having these files in MANIFEST.in is needed.
+recursive-include src/fastoad_cs25/notebooks *
+exclude .gitignore

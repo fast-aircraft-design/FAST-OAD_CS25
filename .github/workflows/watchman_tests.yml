@@ -1,0 +1,43 @@
+name: Watchman Tests
+# This workflow will run tests with an up-to-date production environment instead
+# of the locked one.
+# It will warn developers if the update of a dependency broke something.
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    if: ${{ !contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') }}
+    strategy:
+      matrix:
+        python-version: [ 3.9 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install # installing pytest-cov is needed because of pytest.ini
+        run: |
+          pip install .
+          pip install pytest pytest-cov nbval
+        shell: bash
+
+      - name: Unit tests
+        run: pytest --no-cov src -c ./conftest.py
+        shell: bash
+
+      - name: Notebook tests
+        if: ${{ github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[test nb]') || github.ref == 'refs/heads/main' }}
+        run: pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
+        shell: bash

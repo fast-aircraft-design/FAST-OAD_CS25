@@ -1,0 +1,15 @@
+name: Build Binder image for main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Create-Tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cache binder build on mybinder.org
+        uses: jupyterhub/repo2docker-action@master
+        with:
+          NO_PUSH: true
+          MYBINDERORG_TAG: ${{ github.event.ref }}
