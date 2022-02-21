@@ -315,7 +315,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "fast-oad"
-version = "0.0.0"
+version = "1.3.0"
 description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
 category = "main"
 optional = false
@@ -351,7 +351,7 @@ wop = "^1.20.0"
 type = "git"
 url = "https://github.com/fast-aircraft-design/FAST-OAD.git"
 reference = "model-separation"
-resolved_reference = "a634c32425cb815169897d6d3e673af37a0f6b18"
+resolved_reference = "a8371a6fa2a3297b2956a0acc262d390b7556a44"
 
 [[package]]
 name = "filelock"
