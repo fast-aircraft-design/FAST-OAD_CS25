@@ -14,7 +14,7 @@ svg)](https://codecov.io/gh/fast-aircraft-design/FAST-OAD_CS25)
 FAST-OAD CS-25/FAR-25-related models
 ====================================
 
-This package is a plugin for FAST-OAD. It contains models related to classic
+This package is a plugin for FAST-OAD (version 1.3 or above). It contains models related to classic
 commercial transport aircraft.
 
 Want to try quickly?
@@ -39,7 +39,7 @@ installed at the same time.
 > settings](https://pip.pypa.io/en/stable/user_guide/#using-a-proxy-server)
 > for pip to work correctly
 
-You can install the latest version with this command:
+You can install the latest version (including the main software FAST-OAD) with this command:
 
 ``` {.bash}
 $ pip install --upgrade fast-oad-cs25
