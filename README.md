@@ -2,8 +2,8 @@
 [![Documentation Status](https://readthedocs.org/projects/fast-oad-cs25/badge/?version=stable)](https://fast-oad.readthedocs.io/)
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/06d1fb8ee5c3429cb3cbb165413187bc)](https://www.codacy.com/gh/fast-aircraft-design/FAST-OAD_CS25/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fast-aircraft-design/FAST-OAD_CS25&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/fast-aircraft-design/FAST-OAD_CS25/branch/master/graph/badge.
-svg)](https://codecov.io/gh/fast-aircraft-design/FAST-OAD_CS25)
+[![codecov](https://codecov.io/gh/fast-aircraft-design/FAST-OAD_CS25/branch/main/graph/badge.svg?token=91CIX996RD)](https://codecov.io/gh/fast-aircraft-design/FAST-OAD_CS25)
+
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
