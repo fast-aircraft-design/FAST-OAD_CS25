@@ -1,11 +1,12 @@
 name: Build Binder image for main branch
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  Create-Tag:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: cache binder build on mybinder.org
