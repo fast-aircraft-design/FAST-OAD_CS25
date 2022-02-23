@@ -13,13 +13,15 @@
 
 from collections import namedtuple
 
-from fastoad.modules.geometry import ComponentGeometry
+from .. import ComponentGeometry
 
 Seat = namedtuple("Seat", ["width", "length"])
 
 
 class Cabin(ComponentGeometry):
     def __init__(self):
+        super().__init__()
+
         self.eco_seat: Seat = Seat(32.0, 20.0)
         """ Dimensions of an economy class passenger seat (in meters) """
 
