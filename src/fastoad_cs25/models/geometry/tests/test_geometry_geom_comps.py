@@ -34,7 +34,6 @@ from ..geom_components.ht.components import (
     ComputeHTMAC,
     ComputeHTSweep,
 )
-from ..geom_components.nacelle_pylons.compute_nacelle_pylons import ComputeNacelleAndPylonsGeometry
 from ..geom_components.vt.components import (
     ComputeVTChords,
     ComputeVTClalpha,
@@ -328,52 +327,6 @@ def test_compute_vt_cl(input_xml):
 
     cl_alpha = problem["data:aerodynamics:vertical_tail:cruise:CL_alpha"]
     assert cl_alpha == pytest.approx(2.55, abs=1e-2)
-
-
-def test_geometry_nacelle_pylons(input_xml):
-    """Tests computation of the nacelle and pylons component"""
-
-    input_list = [
-        "data:propulsion:MTO_thrust",
-        "data:geometry:propulsion:engine:y_ratio",
-        "data:geometry:propulsion:layout",
-        "data:geometry:wing:span",
-        "data:geometry:wing:MAC:length",
-        "data:geometry:wing:MAC:leading_edge:x:local",
-        "data:geometry:wing:root:chord",
-        "data:geometry:wing:root:y",
-        "data:geometry:wing:kink:chord",
-        "data:geometry:wing:kink:y",
-        "data:geometry:wing:kink:leading_edge:x:local",
-        "data:geometry:wing:MAC:at25percent:x",
-        "data:geometry:fuselage:length",
-        "data:geometry:fuselage:maximum_width",
-    ]
-
-    input_vars = input_xml.read(only=input_list).to_ivc()
-
-    component = ComputeNacelleAndPylonsGeometry()
-
-    problem = run_system(component, input_vars)
-
-    pylon_length = problem["data:geometry:propulsion:pylon:length"]
-    assert pylon_length == pytest.approx(5.733, abs=1e-3)
-    fan_length = problem["data:geometry:propulsion:fan:length"]
-    assert fan_length == pytest.approx(3.127, abs=1e-3)
-    nacelle_length = problem["data:geometry:propulsion:nacelle:length"]
-    assert nacelle_length == pytest.approx(5.211, abs=1e-3)
-    nacelle_dia = problem["data:geometry:propulsion:nacelle:diameter"]
-    assert nacelle_dia == pytest.approx(2.172, abs=1e-3)
-    lg_height = problem["data:geometry:landing_gear:height"]
-    assert lg_height == pytest.approx(3.041, abs=1e-3)
-    y_nacell = problem["data:geometry:propulsion:nacelle:y"]
-    assert y_nacell == pytest.approx(5.373, abs=1e-3)
-    pylon_wet_area = problem["data:geometry:propulsion:pylon:wetted_area"]
-    assert pylon_wet_area == pytest.approx(7.563, abs=1e-3)
-    nacelle_wet_area = problem["data:geometry:propulsion:nacelle:wetted_area"]
-    assert nacelle_wet_area == pytest.approx(21.609, abs=1e-3)
-    cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
-    assert cg_b1 == pytest.approx(13.5, abs=1e-1)
 
 
 def test_geometry_total_area(input_xml):

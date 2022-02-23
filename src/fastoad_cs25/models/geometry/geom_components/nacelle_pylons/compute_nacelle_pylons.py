@@ -43,6 +43,9 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.add_input("data:geometry:wing:kink:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:leading_edge:x:local", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
@@ -90,10 +93,13 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 "data:geometry:wing:MAC:length",
                 "data:geometry:wing:MAC:leading_edge:x:local",
                 "data:geometry:wing:kink:leading_edge:x:local",
+                "data:geometry:wing:tip:leading_edge:x:local",
                 "data:geometry:wing:root:y",
                 "data:geometry:wing:kink:y",
+                "data:geometry:wing:tip:y",
                 "data:geometry:wing:root:chord",
                 "data:geometry:wing:kink:chord",
+                "data:geometry:wing:tip:chord",
                 "data:geometry:fuselage:length",
                 "data:propulsion:MTO_thrust",
                 "data:geometry:fuselage:maximum_width",
@@ -111,7 +117,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
             "data:geometry:propulsion:pylon:wetted_area", "data:propulsion:MTO_thrust", method="fd"
         )
 
-    def compute(self, inputs, outputs):
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         thrust_sl = inputs["data:propulsion:MTO_thrust"]
         y_ratio_engine = inputs["data:geometry:propulsion:engine:y_ratio"]
         propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
@@ -123,6 +129,9 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         l3_wing = inputs["data:geometry:wing:kink:chord"]
         x3_wing = inputs["data:geometry:wing:kink:leading_edge:x:local"]
         y3_wing = inputs["data:geometry:wing:kink:y"]
+        l4_wing = inputs["data:geometry:wing:tip:chord"]
+        y4_wing = inputs["data:geometry:wing:tip:y"]
+        x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
         fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
         fus_length = inputs["data:geometry:fuselage:length"]
         b_f = inputs["data:geometry:fuselage:maximum_width"]
@@ -146,15 +155,25 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         else:
             raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
 
-        l_wing_nac = l3_wing + (l2_wing - l3_wing) * (y3_wing - y_nacell) / (y3_wing - y2_wing)
+        if y_nacell <= y3_wing:
+            l_wing_nac = l3_wing + (l2_wing - l3_wing) * (y3_wing - y_nacell) / (y3_wing - y2_wing)
+        else:
+            l_wing_nac = l4_wing + (l3_wing - l4_wing) * (y4_wing - y_nacell) / (y4_wing - y3_wing)
 
         if propulsion_layout == 1:
             delta_x_nacell = 0.05 * l_wing_nac
-            x_nacell_cg = (
-                x3_wing * (y_nacell - y2_wing) / (y3_wing - y2_wing)
-                - delta_x_nacell
-                - 0.2 * nac_length
-            )
+            if y_nacell <= y3_wing:
+                x_nacell_cg = (
+                    x3_wing * (y_nacell - y2_wing) / (y3_wing - y2_wing)
+                    - delta_x_nacell
+                    - 0.2 * nac_length
+                )
+            else:
+                x_nacell_cg = (
+                    x4_wing * (y_nacell - y3_wing) / (y4_wing - y3_wing)
+                    - delta_x_nacell
+                    - 0.2 * nac_length
+                )
             x_nacell_cg_absolute = fa_length - 0.25 * l0_wing - (x0_wing - x_nacell_cg)
         elif propulsion_layout == 2:
             x_nacell_cg_absolute = 0.8 * fus_length
