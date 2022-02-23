@@ -18,6 +18,7 @@ Test module for geometry functions of cg components
 
 import os.path as pth
 
+import openmdao.api as om
 import pytest
 from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
@@ -49,27 +50,48 @@ def input_xml() -> VariableIO:
     return VariableIO(pth.join(pth.dirname(__file__), "data", "cg_inputs.xml"))
 
 
-def test_compute_cg_control_surfaces(input_xml):
+def test_compute_cg_control_surfaces():
     """Tests computation of control surfaces center of gravity"""
 
-    input_list = [
-        "data:geometry:wing:MAC:leading_edge:x:local",
-        "data:geometry:wing:MAC:length",
-        "data:geometry:wing:MAC:y",
-        "data:geometry:wing:root:chord",
-        "data:geometry:wing:kink:chord",
-        "data:geometry:wing:root:y",
-        "data:geometry:wing:kink:leading_edge:x:local",
-        "data:geometry:wing:kink:y",
-        "data:geometry:wing:MAC:at25percent:x",
-    ]
-
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:y", 6.293, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units=None)
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units=None)
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    # Tip chord should not be used in this case
+    input_vars.add_output("data:geometry:wing:tip:chord", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:tip:y", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units=None)
 
     problem = run_system(ComputeControlSurfacesCG(), input_vars)
 
     x_cg_a4 = problem["data:weight:airframe:flight_controls:CG:x"]
     assert x_cg_a4 == pytest.approx(19.24, abs=1e-2)
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:y", 6.293, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units=None)
+    input_vars.add_output("data:geometry:wing:kink:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    # Tip chord should be used in this case
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.7, units=None)
+    input_vars.add_output("data:geometry:wing:tip:y", 17.0, units=None)
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.8, units=None)
+
+    problem = run_system(ComputeControlSurfacesCG(), input_vars)
+
+    x_cg_a4 = problem["data:weight:airframe:flight_controls:CG:x"]
+    assert x_cg_a4 == pytest.approx(20.18, abs=1e-2)
 
 
 def test_compute_cg_loadcases(input_xml):
