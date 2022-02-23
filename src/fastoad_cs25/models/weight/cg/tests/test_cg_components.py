@@ -297,33 +297,56 @@ def test_compute_cg_ratio_aft(input_xml):
 def test_compute_cg_tanks(input_xml):
     """Tests computation of tanks center of gravity"""
 
-    input_list = [
-        "data:geometry:wing:spar_ratio:front:root",
-        "data:geometry:wing:spar_ratio:front:kink",
-        "data:geometry:wing:spar_ratio:front:tip",
-        "data:geometry:wing:spar_ratio:rear:root",
-        "data:geometry:wing:spar_ratio:rear:kink",
-        "data:geometry:wing:spar_ratio:rear:tip",
-        "data:geometry:wing:MAC:length",
-        "data:geometry:wing:MAC:leading_edge:x:local",
-        "data:geometry:wing:root:chord",
-        "data:geometry:wing:kink:chord",
-        "data:geometry:wing:tip:chord",
-        "data:geometry:wing:root:y",
-        "data:geometry:wing:kink:leading_edge:x:local",
-        "data:geometry:wing:kink:y",
-        "data:geometry:wing:tip:y",
-        "data:geometry:wing:tip:leading_edge:x:local",
-        "data:geometry:wing:MAC:at25percent:x",
-        "data:geometry:fuselage:maximum_width",
-    ]
-
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units=None)
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units=None)
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:kink", 0.15, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:root", 0.11, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:tip", 0.27, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:kink", 0.66, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:root", 0.57, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:tip", 0.56, units=None)
 
     problem = run_system(ComputeTanksCG(), input_vars)
 
     x_cg_tank = problem["data:weight:fuel_tank:CG:x"]
     assert x_cg_tank == pytest.approx(16.12, abs=1e-2)
+
+    # With no kink
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units=None)
+    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units=None)
+    input_vars.add_output("data:geometry:wing:kink:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:kink", 0.15, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:root", 0.11, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:front:tip", 0.27, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:kink", 0.66, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:root", 0.57, units=None)
+    input_vars.add_output("data:geometry:wing:spar_ratio:rear:tip", 0.56, units=None)
+
+    problem = run_system(ComputeTanksCG(), input_vars)
+
+    x_cg_tank = problem["data:weight:fuel_tank:CG:x"]
+    assert x_cg_tank == pytest.approx(16.52, abs=1e-2)
 
 
 def test_compute_cg_wing(input_xml):
