@@ -76,12 +76,15 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
         virtual_taper_ratio = inputs["data:geometry:wing:virtual_taper_ratio"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
 
-        l2_wing = l1_wing + (y3_wing - y2_wing) * (
-            math.tan(sweep_25 / 180.0 * math.pi)
-            - 3.0 / 2.0 * (1.0 - virtual_taper_ratio) / (span - width_max) * l1_wing
-        )
+        if y3_wing == y2_wing:
+            l2_wing = l3_wing = l1_wing
+        else:
+            l2_wing = l1_wing + (y3_wing - y2_wing) * (
+                math.tan(sweep_25 / 180.0 * math.pi)
+                - 3.0 / 2.0 * (1.0 - virtual_taper_ratio) / (span - width_max) * l1_wing
+            )
 
-        l3_wing = l4_wing + (l1_wing - l4_wing) * (y4_wing - y3_wing) / (y4_wing - y2_wing)
+            l3_wing = l4_wing + (l1_wing - l4_wing) * (y4_wing - y3_wing) / (y4_wing - y2_wing)
 
         outputs["data:geometry:wing:root:chord"] = l2_wing
         outputs["data:geometry:wing:kink:chord"] = l3_wing

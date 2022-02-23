@@ -70,7 +70,10 @@ class ComputeYWing(om.ExplicitComponent):
         # Wing geometry
         y4_wing = span / 2.0
         y2_wing = width_max / 2.0
-        y3_wing = y4_wing * wing_break
+        if wing_break == 0.0:
+            y3_wing = y2_wing
+        else:
+            y3_wing = y4_wing * wing_break
 
         outputs["data:geometry:wing:span"] = span
         outputs["data:geometry:wing:root:y"] = y2_wing

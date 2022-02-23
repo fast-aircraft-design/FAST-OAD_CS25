@@ -82,14 +82,19 @@ class ComputeSweepWing(om.ExplicitComponent):
         l3_wing = inputs["data:geometry:wing:kink:chord"]
         l4_wing = inputs["data:geometry:wing:tip:chord"]
 
-        outputs["data:geometry:wing:sweep_0"] = (
-            math.atan(x3_wing / (y3_wing - y2_wing)) / math.pi * 180.0
-        )
-        outputs["data:geometry:wing:sweep_100_inner"] = (
-            math.atan((x3_wing + l3_wing - l2_wing) / (y3_wing - y2_wing)) / math.pi * 180
-        )
         outputs["data:geometry:wing:sweep_100_outer"] = (
             math.atan((x4_wing + l4_wing - x3_wing - l3_wing) / (y4_wing - y3_wing))
             / math.pi
             * 180.0
         )
+        outputs["data:geometry:wing:sweep_0"] = (
+            math.atan(x4_wing / (y4_wing - y2_wing)) / math.pi * 180.0
+        )
+        if y3_wing == y2_wing:
+            outputs["data:geometry:wing:sweep_100_inner"] = outputs[
+                "data:geometry:wing:sweep_100_outer"
+            ]
+        else:
+            outputs["data:geometry:wing:sweep_100_inner"] = (
+                math.atan((x3_wing + l3_wing - l2_wing) / (y3_wing - y2_wing)) / math.pi * 180
+            )
