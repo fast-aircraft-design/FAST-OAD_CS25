@@ -33,6 +33,11 @@ jobs:
           pip install pytest pytest-cov nbval
         shell: bash
 
+      - name: Fix for nbval # There is a timeout problem when using nbval and jupyterlab 3.3.0
+        run: |
+          pip install jupyterlab 3.2.9
+        shell: bash
+
       - name: Unit tests
         run: pytest --no-cov src -c ./conftest.py
         shell: bash
