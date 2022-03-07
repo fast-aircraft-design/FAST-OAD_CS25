@@ -314,18 +314,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "fast-oad"
-version = "1.3.0.post0"
-description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
-category = "main"
-optional = false
-python-versions = ">=3.7,<4.0"
-
-[package.dependencies]
-fast-oad-core = ">=1.3.0,<2.0.0"
-fast-oad-cs25 = ">=0.1.0,<0.2.0"
-
-[[package]]
 name = "fast-oad-core"
 version = "1.3.0"
 description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
@@ -1879,7 +1867,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "f9259ca4b3db2bafb6e7e181c4030ac21549e9feec1f957f3293259b931a9ef1"
+content-hash = "20c5bb4e7cbac0016cf93c051b8b3b42f4cb33590c14e3e3789e225decf23b00"
 
 [metadata.files]
 aenum = [
@@ -2151,10 +2139,6 @@ ensure = [
 entrypoints = [
     {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
     {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
-]
-fast-oad = [
-    {file = "FAST-OAD-1.3.0.post0.tar.gz", hash = "sha256:2c21c90db41df5f89cc373ebee1e4ca4b69e185fccd7e746b2f6033a668c3551"},
-    {file = "FAST_OAD-1.3.0.post0-py3-none-any.whl", hash = "sha256:32e833f89bd9efca36332fe0526e8a6c1f09026e1c048ad33fb33224d22e7a1f"},
 ]
 fast-oad-core = [
     {file = "FAST-OAD-core-1.3.0.tar.gz", hash = "sha256:d6d7a98e5ff3f55fccfa0d591b7b825f0dc7c7b7f534d99da4ceb0d92a495ec9"},
