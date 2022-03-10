@@ -30,15 +30,16 @@ jobs:
       - name: Install # installing pytest-cov is needed because of pytest settings in pyproject.toml
         run: |
           pip install .
-          pip install pytest==6.2.5 pytest-cov nbval
+          pip install pytest pytest-cov nbval
         shell: bash
 
-      - name: Unit tests
-        run: pytest --no-cov src
-        shell: bash
+#      - name: Unit tests
+#        run: pytest --no-cov src
+#        shell: bash
 
       - name: Notebook tests
         if: ${{ github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[test nb]') || github.ref == 'refs/heads/main' }}
         run: | 
+          pip install scipy==1.5.4 openmdao==3.10.0 nbconvert==6.4.1 nbclient==0.5.10 nbclassic==0.3.5
           pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
         shell: bash
