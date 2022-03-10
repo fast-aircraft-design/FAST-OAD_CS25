@@ -166,8 +166,7 @@ class Profile:
         Returns actual chord length and maximum thickness (in meters)
         """
         x = (
-            lower_side_points[X]
-            .append(upper_side_points[X])
+            pd.concat([lower_side_points[X], upper_side_points[X]])
             .sort_values()
             .drop_duplicates()
             .reset_index(drop=True)
