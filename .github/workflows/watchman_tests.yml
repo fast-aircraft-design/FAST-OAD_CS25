@@ -33,13 +33,12 @@ jobs:
           pip install pytest pytest-cov nbval
         shell: bash
 
-#      - name: Unit tests
-#        run: pytest --no-cov src
-#        shell: bash
+      - name: Unit tests
+        run: pytest --no-cov src
+        shell: bash
 
       - name: Notebook tests
         if: ${{ github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[test nb]') || github.ref == 'refs/heads/main' }}
         run: | 
-          pip install pandas==1.2.1
-          pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks/01_tutorial
+          pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
         shell: bash
