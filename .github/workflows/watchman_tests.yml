@@ -27,22 +27,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install # installing pytest-cov is needed because of pytest.ini
+      - name: Install # installing pytest-cov is needed because of pytest settings in pyproject.toml
         run: |
           pip install .
           pip install pytest pytest-cov nbval
         shell: bash
 
-      - name: Fix for nbval # There is a timeout problem when using nbval and jupyterlab 3.3.0
-        run: |
-          pip install jupyterlab 3.2.9
-        shell: bash
-
       - name: Unit tests
-        run: pytest --no-cov src -c ./conftest.py
+        run: pytest --no-cov src
         shell: bash
 
       - name: Notebook tests
         if: ${{ github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[test nb]') || github.ref == 'refs/heads/main' }}
-        run: pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
+        run: | 
+          pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
         shell: bash
