@@ -40,6 +40,6 @@ jobs:
       - name: Notebook tests
         if: ${{ github.event_name == 'pull_request' || contains(github.event.head_commit.message, '[test nb]') || github.ref == 'refs/heads/main' }}
         run: | 
-          pip install lxml==4.7.1 jupyterlab==3.2.9 jupyter-core==4.9.1 ipython==7.31.1 ipykernel==6.9.0
+          pip install websocket-client==1.2.3 terminado==0.13.1 wrapt==1.13.3
           pytest --no-cov --nbval-lax -p no:python src/fastoad_cs25/notebooks
         shell: bash
