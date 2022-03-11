@@ -49,30 +49,39 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
         self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        l0_wing = inputs["data:geometry:wing:MAC:length"]
-        x0_wing = inputs["data:geometry:wing:MAC:leading_edge:x:local"]
-        y0_wing = inputs["data:geometry:wing:MAC:y"]
-        l2_wing = inputs["data:geometry:wing:root:chord"]
-        y2_wing = inputs["data:geometry:wing:root:y"]
-        l3_wing = inputs["data:geometry:wing:kink:chord"]
-        x3_wing = inputs["data:geometry:wing:kink:leading_edge:x:local"]
-        y3_wing = inputs["data:geometry:wing:kink:y"]
-        l4_wing = inputs["data:geometry:wing:tip:chord"]
-        x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
-        y4_wing = inputs["data:geometry:wing:tip:y"]
-        fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
-
         # TODO: build generic functions to estimate the chord, leading edge,
         #  control CG is assumed located at trailing edge with respect to MAC span wise position
-        y_values = np.squeeze([y2_wing, y3_wing, y4_wing])
-        x_values = np.squeeze([0.0, x3_wing, x4_wing])
-        l_values = np.squeeze([l2_wing, l3_wing, l4_wing])
+        y_values = np.squeeze(
+            [
+                inputs["data:geometry:wing:root:y"],
+                inputs["data:geometry:wing:kink:y"],
+                inputs["data:geometry:wing:tip:y"],
+            ]
+        )
+        x_values = np.squeeze(
+            [
+                0.0,
+                inputs["data:geometry:wing:kink:leading_edge:x:local"],
+                inputs["data:geometry:wing:tip:leading_edge:x:local"],
+            ]
+        )
+        l_values = np.squeeze(
+            [
+                inputs["data:geometry:wing:root:chord"],
+                inputs["data:geometry:wing:kink:chord"],
+                inputs["data:geometry:wing:tip:chord"],
+            ]
+        )
 
         x_interp = interp1d(y_values, x_values)
-        x_leading_edge = x_interp(y0_wing)
+        x_leading_edge = x_interp(inputs["data:geometry:wing:MAC:y"])
         l_interp = interp1d(y_values, l_values)
-        l_cg_control = l_interp(y0_wing)
+        l_cg_control = l_interp(inputs["data:geometry:wing:MAC:y"])
         x_cg_control = x_leading_edge + l_cg_control
-        x_cg_control_absolute = fa_length - 0.25 * l0_wing - x0_wing + x_cg_control
 
-        outputs["data:weight:airframe:flight_controls:CG:x"] = x_cg_control_absolute
+        outputs["data:weight:airframe:flight_controls:CG:x"] = (
+            inputs["data:geometry:wing:MAC:at25percent:x"]
+            - 0.25 * inputs["data:geometry:wing:MAC:length"]
+            - inputs["data:geometry:wing:MAC:leading_edge:x:local"]
+            + x_cg_control
+        )
