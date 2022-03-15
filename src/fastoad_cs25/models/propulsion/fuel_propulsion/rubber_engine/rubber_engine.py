@@ -22,7 +22,7 @@ from fastoad.constants import EngineSetting
 from fastoad.exceptions import FastUnknownEngineSettingError
 from fastoad.model_base import FlightPoint
 from fastoad.model_base.propulsion import AbstractFuelPropulsion
-from scipy.interpolate.interpolate import interp1d
+from scipy.interpolate import interp1d
 from stdatm import Atmosphere
 
 from .constants import (
