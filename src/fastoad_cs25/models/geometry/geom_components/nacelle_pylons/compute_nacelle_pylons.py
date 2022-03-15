@@ -14,13 +14,46 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from math import sqrt
+from dataclasses import dataclass
 
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 
 from ...constants import SERVICE_NACELLE_PYLON_GEOMETRY
+
+
+@dataclass
+class Chord:
+    """Container for storing chord length and x,y coordinates of leading edge."""
+
+    x: float
+    y: float
+    length: float
+
+
+@dataclass
+class Nacelle:
+    """Simple class for computing nacelle geometry"""
+
+    max_thrust: float
+
+    @property
+    def diameter(self):
+        """Nacelle diameter in m."""
+        # FIXME: use output of engine module
+        return 0.00904 * np.sqrt(self.max_thrust * 0.225) + 0.7
+
+    @property
+    def length(self):
+        """Nacelle length in m."""
+        # FIXME: use output of engine module
+        return 0.032 * np.sqrt(self.max_thrust * 0.225)
+
+    @property
+    def wetted_area(self):
+        """Wetted area for one nacelle in m**2."""
+        return 0.0004 * self.max_thrust * 0.225 + 11
 
 
 @oad.RegisterSubmodel(
@@ -43,6 +76,9 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.add_input("data:geometry:wing:kink:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:leading_edge:x:local", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
@@ -90,10 +126,13 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 "data:geometry:wing:MAC:length",
                 "data:geometry:wing:MAC:leading_edge:x:local",
                 "data:geometry:wing:kink:leading_edge:x:local",
+                "data:geometry:wing:tip:leading_edge:x:local",
                 "data:geometry:wing:root:y",
                 "data:geometry:wing:kink:y",
+                "data:geometry:wing:tip:y",
                 "data:geometry:wing:root:chord",
                 "data:geometry:wing:kink:chord",
+                "data:geometry:wing:tip:chord",
                 "data:geometry:fuselage:length",
                 "data:propulsion:MTO_thrust",
                 "data:geometry:fuselage:maximum_width",
@@ -111,64 +150,82 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
             "data:geometry:propulsion:pylon:wetted_area", "data:propulsion:MTO_thrust", method="fd"
         )
 
-    def compute(self, inputs, outputs):
-        thrust_sl = inputs["data:propulsion:MTO_thrust"]
-        y_ratio_engine = inputs["data:geometry:propulsion:engine:y_ratio"]
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
-        span = inputs["data:geometry:wing:span"]
-        l0_wing = inputs["data:geometry:wing:MAC:length"]
-        x0_wing = inputs["data:geometry:wing:MAC:leading_edge:x:local"]
-        l2_wing = inputs["data:geometry:wing:root:chord"]
-        y2_wing = inputs["data:geometry:wing:root:y"]
-        l3_wing = inputs["data:geometry:wing:kink:chord"]
-        x3_wing = inputs["data:geometry:wing:kink:leading_edge:x:local"]
-        y3_wing = inputs["data:geometry:wing:kink:y"]
-        fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
-        fus_length = inputs["data:geometry:fuselage:length"]
-        b_f = inputs["data:geometry:fuselage:maximum_width"]
+        root_chord = Chord(
+            x=None,
+            y=inputs["data:geometry:wing:root:y"],
+            length=inputs["data:geometry:wing:root:chord"],
+        )
+        kink_chord = Chord(
+            x=inputs["data:geometry:wing:kink:leading_edge:x:local"],
+            y=inputs["data:geometry:wing:kink:y"],
+            length=inputs["data:geometry:wing:kink:chord"],
+        )
+        tip_chord = Chord(
+            x=inputs["data:geometry:wing:tip:leading_edge:x:local"],
+            y=inputs["data:geometry:wing:tip:y"],
+            length=inputs["data:geometry:wing:tip:chord"],
+        )
 
-        nac_dia = 0.00904 * sqrt(thrust_sl * 0.225) + 0.7  # FIXME: use output of engine module
-        lg_height = 1.4 * nac_dia
-        # The nominal thrust must be used in lbf
-        nac_length = 0.032 * sqrt(thrust_sl * 0.225)  # FIXME: use output of engine module
+        nacelle = Nacelle(inputs["data:propulsion:MTO_thrust"])
+        outputs["data:geometry:propulsion:nacelle:length"] = nacelle.length
+        outputs["data:geometry:propulsion:nacelle:diameter"] = nacelle.diameter
+        outputs["data:geometry:propulsion:nacelle:wetted_area"] = nacelle.wetted_area
 
-        outputs["data:geometry:propulsion:nacelle:length"] = nac_length
-        outputs["data:geometry:propulsion:nacelle:diameter"] = nac_dia
-        outputs["data:geometry:landing_gear:height"] = lg_height
+        outputs["data:geometry:propulsion:pylon:length"] = 1.1 * nacelle.length
+        outputs["data:geometry:propulsion:fan:length"] = 0.60 * nacelle.length
 
-        fan_length = 0.60 * nac_length
-        pylon_length = 1.1 * nac_length
-
-        if propulsion_layout == 1:
-            y_nacell = y_ratio_engine * span / 2
-        elif propulsion_layout == 2:
-            y_nacell = b_f / 2.0 + 0.5 * nac_dia
-        else:
-            raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
-
-        l_wing_nac = l3_wing + (l2_wing - l3_wing) * (y3_wing - y_nacell) / (y3_wing - y2_wing)
+        y_nacelle = self._compute_nacelle_y(nacelle, inputs, propulsion_layout)
 
         if propulsion_layout == 1:
-            delta_x_nacell = 0.05 * l_wing_nac
-            x_nacell_cg = (
-                x3_wing * (y_nacell - y2_wing) / (y3_wing - y2_wing)
-                - delta_x_nacell
-                - 0.2 * nac_length
+            if y_nacelle <= kink_chord.y:
+                x_nacelle_cg = self._get_nacelle_cg_x(nacelle, y_nacelle, root_chord, kink_chord)
+            else:
+                x_nacelle_cg = self._get_nacelle_cg_x(nacelle, y_nacelle, kink_chord, tip_chord)
+            x_nacelle_cg_absolute = (
+                inputs["data:geometry:wing:MAC:at25percent:x"]
+                - 0.25 * inputs["data:geometry:wing:MAC:length"]
+                - (inputs["data:geometry:wing:MAC:leading_edge:x:local"] - x_nacelle_cg)
             )
-            x_nacell_cg_absolute = fa_length - 0.25 * l0_wing - (x0_wing - x_nacell_cg)
         elif propulsion_layout == 2:
-            x_nacell_cg_absolute = 0.8 * fus_length
+            x_nacelle_cg_absolute = 0.8 * inputs["data:geometry:fuselage:length"]
         else:
             raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
 
-        outputs["data:geometry:propulsion:pylon:length"] = pylon_length
-        outputs["data:geometry:propulsion:fan:length"] = fan_length
-        outputs["data:geometry:propulsion:nacelle:y"] = y_nacell
-        outputs["data:weight:propulsion:engine:CG:x"] = x_nacell_cg_absolute
+        outputs["data:geometry:propulsion:nacelle:y"] = y_nacelle
+        outputs["data:weight:propulsion:engine:CG:x"] = x_nacelle_cg_absolute
 
-        # Wet surfaces
-        wet_area_nac = 0.0004 * thrust_sl * 0.225 + 11  # By engine
-        wet_area_pylon = 0.35 * wet_area_nac
+        outputs["data:geometry:propulsion:pylon:wetted_area"] = 0.35 * nacelle.wetted_area
+        outputs["data:geometry:landing_gear:height"] = 1.4 * (
+            0.00904 * np.sqrt(inputs["data:propulsion:MTO_thrust"] * 0.225) + 0.7
+        )
 
-        outputs["data:geometry:propulsion:nacelle:wetted_area"] = wet_area_nac
-        outputs["data:geometry:propulsion:pylon:wetted_area"] = wet_area_pylon
+    @staticmethod
+    def _get_nacelle_cg_x(nacelle: Nacelle, y_nacelle: float, chord1: Chord, chord2: Chord):
+        chord_at_engine_location = chord2.length + (chord1.length - chord2.length) * (
+            chord2.y - y_nacelle
+        ) / (chord2.y - chord1.y)
+        delta_x_nacelle = 0.05 * chord_at_engine_location
+        x_nacelle_cg = (
+            chord2.x * (y_nacelle - chord1.y) / (chord2.y - chord1.y)
+            - delta_x_nacelle
+            - 0.2 * nacelle.length
+        )
+        return x_nacelle_cg
+
+    @staticmethod
+    def _compute_nacelle_y(nacelle, inputs, propulsion_layout):
+        if propulsion_layout == 1:
+            y_nacelle = (
+                inputs["data:geometry:propulsion:engine:y_ratio"]
+                * inputs["data:geometry:wing:span"]
+                / 2.0
+            )
+        elif propulsion_layout == 2:
+            y_nacelle = (
+                inputs["data:geometry:fuselage:maximum_width"] / 2.0 + 0.5 * nacelle.diameter + 0.7
+            )
+        else:
+            raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
+        return y_nacelle

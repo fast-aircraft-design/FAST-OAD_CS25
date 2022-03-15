@@ -130,26 +130,29 @@ class ComputeTanksCG(om.ExplicitComponent):
         )
         x_cg_central_absolute = fa_length - 0.25 * l0_wing - x0_wing + x_cg_central
 
-        y_side_inner_cg = (
-            (y3_wing - y2_wing)
-            / 4
-            * (s_root + 3 * s_kink + 2 * math.sqrt(s_root * s_kink))
-            / (s_root + s_kink + math.sqrt(s_root * s_kink))
-        )
-        height_side_inner_cg_front = (y_side_inner_cg / (y3_wing - y2_wing)) * (
-            height_kink_front - height_root_front
-        ) + height_root_front
-        height_side_inner_cg_rear = (y_side_inner_cg / (y3_wing - y2_wing)) * (
-            height_kink_rear - height_root_rear
-        ) + height_root_rear
-        l_side_inner_cg = (y_side_inner_cg / (y3_wing - y2_wing)) * (l_kink - l_root) + l_root
-        x_side_inner_front = (y_side_inner_cg / (y3_wing - y2_wing)) * (
-            x3_wing + l3_wing * front_spar_ratio_kink - l2_wing * front_spar_ratio_root
-        ) + l2_wing * front_spar_ratio_root
-        x_cg_side_inner = x_side_inner_front + l_side_inner_cg / 3 * (
-            height_side_inner_cg_front + 2 * height_side_inner_cg_rear
-        ) / (height_side_inner_cg_front + height_side_inner_cg_rear)
-        x_cg_side_inner_absolute = fa_length - 0.25 * l0_wing - x0_wing + x_cg_side_inner
+        if y3_wing > y2_wing:
+            y_side_inner_cg = (
+                (y3_wing - y2_wing)
+                / 4
+                * (s_root + 3 * s_kink + 2 * math.sqrt(s_root * s_kink))
+                / (s_root + s_kink + math.sqrt(s_root * s_kink))
+            )
+            height_side_inner_cg_front = (y_side_inner_cg / (y3_wing - y2_wing)) * (
+                height_kink_front - height_root_front
+            ) + height_root_front
+            height_side_inner_cg_rear = (y_side_inner_cg / (y3_wing - y2_wing)) * (
+                height_kink_rear - height_root_rear
+            ) + height_root_rear
+            l_side_inner_cg = (y_side_inner_cg / (y3_wing - y2_wing)) * (l_kink - l_root) + l_root
+            x_side_inner_front = (y_side_inner_cg / (y3_wing - y2_wing)) * (
+                x3_wing + l3_wing * front_spar_ratio_kink - l2_wing * front_spar_ratio_root
+            ) + l2_wing * front_spar_ratio_root
+            x_cg_side_inner = x_side_inner_front + l_side_inner_cg / 3 * (
+                height_side_inner_cg_front + 2 * height_side_inner_cg_rear
+            ) / (height_side_inner_cg_front + height_side_inner_cg_rear)
+            x_cg_side_inner_absolute = fa_length - 0.25 * l0_wing - x0_wing + x_cg_side_inner
+        else:
+            x_cg_side_inner_absolute = 0.0
 
         y4_tank = y4_wing * (1 - self.ratio)
         x4_tank = (x4_wing - x3_wing) * (1 - y4_wing * self.ratio / (y4_wing - y3_wing)) + x3_wing

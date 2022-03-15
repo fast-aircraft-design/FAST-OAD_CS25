@@ -28,6 +28,7 @@ class ComputeToCWing(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
 
         self.add_output("data:geometry:wing:thickness_ratio")
         self.add_output("data:geometry:wing:root:thickness_ratio")
@@ -43,11 +44,15 @@ class ComputeToCWing(om.ExplicitComponent):
     def compute(self, inputs, outputs):
         cruise_mach = inputs["data:TLAR:cruise_mach"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
+        wing_break = inputs["data:geometry:wing:kink:span_ratio"]
 
         # Relative thickness
         el_aero = 0.89 - (cruise_mach + 0.02) * math.sqrt(math.cos(sweep_25 / 180.0 * math.pi))
         el_emp = 1.24 * el_aero
-        el_break = 0.94 * el_aero
+        if wing_break == 0.0:
+            el_break = el_emp  # Kink is set on root chord
+        else:
+            el_break = 0.94 * el_aero
         el_ext = 0.86 * el_aero
 
         outputs["data:geometry:wing:thickness_ratio"] = el_aero

@@ -95,6 +95,14 @@ def test_non_regression_mission_only(cleanup):
     )
 
 
+def test_no_kink_breguet(cleanup):
+    run_non_regression_test(
+        "oad_process_breguet.yml",
+        "no_kink_breguet_result.xml",
+        "no_kink_breguet",
+    )
+
+
 def test_non_regression_mission(cleanup):
     run_non_regression_test(
         "oad_process_mission.yml",
@@ -290,7 +298,7 @@ def test_api_eval_mission(cleanup):
 
     assert_allclose(problem["data:handling_qualities:static_margin"], 0.05, atol=1e-2)
     assert_allclose(problem["data:geometry:wing:MAC:at25percent:x"], 17.149, atol=1e-2)
-    assert_allclose(problem["data:weight:aircraft:MTOW"], 74695, atol=1)
+    assert_allclose(problem["data:weight:aircraft:MTOW"], 74696, atol=1)
     assert_allclose(problem["data:geometry:wing:area"], 126.083, atol=1e-2)
     assert_allclose(problem["data:geometry:vertical_tail:area"], 27.437, atol=1e-2)
     assert_allclose(problem["data:geometry:horizontal_tail:area"], 35.731, atol=1e-2)
