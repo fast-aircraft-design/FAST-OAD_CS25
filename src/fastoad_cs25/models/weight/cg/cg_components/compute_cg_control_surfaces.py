@@ -60,7 +60,7 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
         )
         x_values = np.squeeze(
             [
-                0.0,
+                [0.0],
                 inputs["data:geometry:wing:kink:leading_edge:x:local"],
                 inputs["data:geometry:wing:tip:leading_edge:x:local"],
             ]
