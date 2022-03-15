@@ -21,12 +21,12 @@ from ..compute_wing import ComputeWingGeometry
 def test_compute_wing_with_kink():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
 
     problem = run_system(ComputeWingGeometry(), input_vars)
@@ -62,12 +62,12 @@ def test_compute_wing_with_kink():
 def test_compute_wing_without_kink():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
 
     problem = run_system(ComputeWingGeometry(), input_vars)

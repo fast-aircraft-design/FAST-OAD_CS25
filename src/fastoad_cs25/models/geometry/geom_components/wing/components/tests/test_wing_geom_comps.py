@@ -49,12 +49,12 @@ def test_geometry_wing_b50(input_xml):
     """Tests computation of the wing B50"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:span", 31.603, units=None)
-    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
-    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units=None)
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeB50(), input_vars)
     wing_b_50 = problem["data:geometry:wing:b_50"]
@@ -66,14 +66,14 @@ def test_geometry_wing_cl_alpha(input_xml):
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
     input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
 
     problem = run_system(ComputeCLalpha(), input_vars)
@@ -85,13 +85,13 @@ def test_geometry_wing_l1_l4(input_xml):
     """Tests computation of the wing chords (l1 and l4)"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
 
     problem = run_system(ComputeL1AndL4Wing(), input_vars)
 
@@ -105,15 +105,15 @@ def test_geometry_wing_l2_l3(input_xml):
     """Tests computation of the wing chords (l2 and l3)"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
-    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
 
     problem = run_system(ComputeL2AndL3Wing(), input_vars)
     wing_l2 = problem["data:geometry:wing:root:chord"]
@@ -125,15 +125,15 @@ def test_geometry_wing_l2_l3(input_xml):
 
     # With no kink
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
 
     problem = run_system(ComputeL2AndL3Wing(), input_vars)
     wing_l2 = problem["data:geometry:wing:root:chord"]
@@ -148,15 +148,15 @@ def test_geometry_wing_mac(input_xml):
     """Tests computation of the wing mean aerodynamic chord"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
-    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
-    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units=None)
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
-    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units=None)
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeMACWing(), input_vars)
     wing_l0 = problem["data:geometry:wing:MAC:length"]
@@ -171,7 +171,7 @@ def test_geometry_wing_mfw(input_xml):
     """Tests computation of the wing max fuel weight"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
     input_vars.add_output("data:geometry:wing:root:thickness_ratio", 0.159, units=None)
     input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
@@ -185,14 +185,14 @@ def test_geometry_wing_sweep(input_xml):
     """Tests computation of the wing sweeps"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
-    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units=None)
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
-    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units=None)
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeSweepWing(), input_vars)
     sweep_0 = problem["data:geometry:wing:sweep_0"]
@@ -208,7 +208,7 @@ def test_geometry_wing_toc(input_xml):
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
 
     problem = run_system(ComputeToCWing(), input_vars)
@@ -224,7 +224,7 @@ def test_geometry_wing_toc(input_xml):
     # With no kink
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
 
     problem = run_system(ComputeToCWing(), input_vars)
@@ -242,10 +242,10 @@ def test_geometry_wing_wet_area(input_xml):
     """Tests computation of the wing wet area"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
 
     problem = run_system(ComputeWetAreaWing(), input_vars)
     area_pf = problem["data:geometry:wing:outer_area"]
@@ -258,13 +258,13 @@ def test_geometry_wing_x(input_xml):
     """Tests computation of the wing Xs"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units=None)
-    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units=None)
-    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units=None)
-    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units=None)
-    input_vars.add_output("data:geometry:wing:root:y", 1.96, units=None)
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units=None)
-    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units=None)
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
 
     problem = run_system(ComputeXWing(), input_vars)
     wing_x3 = problem["data:geometry:wing:kink:leading_edge:x:local"]
@@ -277,8 +277,8 @@ def test_geometry_wing_y(input_xml):
     """Tests computation of the wing Ys"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
 
@@ -294,8 +294,8 @@ def test_geometry_wing_y(input_xml):
 
     # With no kink
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units=None)
-    input_vars.add_output("data:geometry:wing:area", 124.843, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
 
