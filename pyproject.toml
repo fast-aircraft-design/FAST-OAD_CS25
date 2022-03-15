@@ -78,6 +78,7 @@ minversion = "6.0"
 addopts = "--cov fastoad_cs25 --cov-report term-missing --cov-report html --verbose"
 testpaths = ["src", "tests"]
 norecursedirs = ["dist", "build", ".tox"]
+filterwarnings = ["default"]
 
 [tool.coverage.run]
 branch = true
