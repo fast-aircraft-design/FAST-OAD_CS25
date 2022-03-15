@@ -16,20 +16,20 @@
 <FASTOAD_model>
   <data>
     <TLAR>
-      <cruise_mach>0.78<!--top-level requirement: cruise Mach number--></cruise_mach>
+      <cruise_mach is_input="True">0.78<!--Input defined by the mission.--></cruise_mach>
     </TLAR>
     <geometry>
-      <has_T_tail>0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
+      <has_T_tail is_input="True">0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
       <fuselage>
-        <length>37.507<!--total fuselage length--></length>
+        <length units="m" is_input="True">37.507<!--total fuselage length--></length>
       </fuselage>
       <wing>
-        <area>124.843<!--wing reference area--></area>
-        <span>31.603<!--wing span--></span>
+        <area units="m**2" is_input="True">124.843<!--wing reference area--></area>
+        <span units="m" is_input="True">31.603<!--wing span--></span>
         <MAC>
-          <length>4.457<!--length of mean aerodynamic chord of wing--></length>
+          <length units="m" is_input="True">4.457<!--length of mean aerodynamic chord of wing--></length>
           <at25percent>
-            <x>16.457<!--X-position of the 25% of mean aerodynamic chord of wing w.r.t. aircraft nose (drives position of wing along fuselage)--></x>
+            <x units="m" is_input="True">16.457<!--X-position of the 25% of mean aerodynamic chord of wing w.r.t. aircraft nose (drives position of wing along fuselage)--></x>
           </at25percent>
         </MAC>
       </wing>
@@ -37,7 +37,7 @@
         <MAC>
           <at25percent>
             <x>
-              <from_wingMAC25>16.55<!--distance along X between 25% MAC of wing and 25% MAC of vertical tail--></from_wingMAC25>
+              <from_wingMAC25 units="m" is_input="True">16.55<!--distance along X between 25% MAC of wing and 25% MAC of vertical tail--></from_wingMAC25>
             </x>
           </at25percent>
         </MAC>
@@ -45,20 +45,20 @@
     </geometry>
     <weight>
       <aircraft>
-        <MTOW>75797.99<!--maximum takeoff weight--></MTOW>
+        <MTOW units="kg" is_input="True">75797.99<!--maximum takeoff weight--></MTOW>
       </aircraft>
       <airframe>
         <landing_gear>
           <front>
-            <mass>378.82<!--front landing gear (A52): mass--></mass>
+            <mass units="kg" is_input="True">378.82<!--Mass of airframe_inp_data:weight:airframe:landing_gear:front:mass--></mass>
             <CG>
-              <x>5.18<!--front landing gear (A52): X-position of center of gravity--></x>
+              <x units="m" is_input="True">5.18<!--front landing gear (A52): X-position of center of gravity--></x>
             </CG>
           </front>
           <main>
-            <mass>2143.75<!--main landing gear (A51): mass--></mass>
+            <mass units="kg" is_input="True">2143.75<!--Mass of airframe_inp_data:weight:airframe:landing_gear:main:mass--></mass>
             <CG>
-              <x>18.11<!--main landing gear (A51): X-position of center of gravity--></x>
+              <x units="m" is_input="True">18.11<!--main landing gear (A51): X-position of center of gravity--></x>
             </CG>
           </main>
         </landing_gear>
@@ -67,7 +67,7 @@
     <aerodynamics>
       <vertical_tail>
         <cruise>
-          <CL_alpha>2.55<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
+          <CL_alpha is_input="True">2.55<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
         </cruise>
       </vertical_tail>
     </aerodynamics>
@@ -76,7 +76,7 @@
     <weight>
       <aircraft>
         <CG>
-          <range>0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
+          <range is_input="True">0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
         </CG>
       </aircraft>
     </weight>

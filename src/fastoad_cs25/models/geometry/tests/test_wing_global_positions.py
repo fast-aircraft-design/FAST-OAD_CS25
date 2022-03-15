@@ -20,10 +20,10 @@ from ..wing_global_positions import ComputeChordGlobalPositions
 
 def test_chord_global_positions():
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:center:leading_edge:x:local", 1.5, units=None)
-    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 10.0, units=None)
-    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.0, units=None)
-    input_vars.add_output("data:geometry:wing:MAC:length", 4.0, units=None)
+    input_vars.add_output("data:geometry:wing:center:leading_edge:x:local", 1.5, units="m")
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 10.0, units="m")
+    input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.0, units="m")
+    input_vars.add_output("data:geometry:wing:MAC:length", 4.0, units="m")
 
     problem = run_system(ComputeChordGlobalPositions(), input_vars)
     assert problem["data:geometry:wing:center:leading_edge:x"] == pytest.approx(8.5, abs=1e-2)
