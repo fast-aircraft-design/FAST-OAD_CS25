@@ -8,7 +8,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fast-aircraft-design/FAST-OAD_CS25.git/latest-release?urlpath=lab%2Ftree%2Fsrc%2Ffastoad%2Fnotebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fast-aircraft-design/FAST-OAD_CS25.git/latest-release?urlpath=lab%2Ftree%2Fsrc%2Ffastoad_cs25%2Fnotebooks)
 
 
 FAST-OAD CS-25/FAR-25-related models
@@ -20,7 +20,7 @@ commercial transport aircraft.
 Want to try quickly?
 --------------------
 You can run FAST-OAD-CS25 notebooks **without installation** using our
-[Binder-hosted Jupyter notebooks](https://mybinder.org/v2/gh/fast-aircraft-design/FAST-OAD_CS25.git/latest-release?filepath=src%2Ffastoad%2Fnotebooks).
+[Binder-hosted Jupyter notebooks](https://mybinder.org/v2/gh/fast-aircraft-design/FAST-OAD_CS25.git/latest-release?filepath=src%2Ffastoad_cs25%2Fnotebooks).
 
 
 Install
