@@ -1,6 +1,7 @@
 name: Build PyPI package and Binder image
 
 on:
+  workflow_dispatch:
   release:
     types: [ published ]
 
