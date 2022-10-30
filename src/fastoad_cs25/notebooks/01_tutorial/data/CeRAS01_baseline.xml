@@ -456,6 +456,8 @@
                         0.0<!--altitude at takeoff in sizing mission--></altitude>
                     <flap_angle units="deg">
                         10.0<!--flap angle during takeoff phase in sizing mission--></flap_angle>
+                    <duration units="min">
+                        0.675833333333<!--duration of takeoff phase in sizing mission--></duration>
                     <fuel units="kg">
                         82.4<!--mass of consumed fuel during takeoff phase in sizing mission--></fuel>
                     <slat_angle units="deg">
