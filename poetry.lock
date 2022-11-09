@@ -315,7 +315,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "fast-oad-core"
-version = "1.4.0"
+version = "1.4.1"
 description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
 category = "main"
 optional = false
@@ -1890,7 +1890,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "6d9b86c6ed72dcbfb2cd487afb0b6a262759e059c959903c30ae32cc0a000c84"
+content-hash = "57e1ad2bb50ae1d185d902c28ac5cc992421e69f49b4b5416a2052764f162396"
 
 [metadata.files]
 aenum = []
