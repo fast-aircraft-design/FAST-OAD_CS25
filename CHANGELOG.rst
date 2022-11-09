@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.4
+=============
+Fixed:
+
+- Bundled notebooks have been modified to adapt to FAST-OAD 1.4.1, which is now the minimum required version for FAST-OAD-core. (#14)
 
 Version 0.1.3
 =============
