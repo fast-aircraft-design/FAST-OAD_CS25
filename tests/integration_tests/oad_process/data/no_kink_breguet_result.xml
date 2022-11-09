@@ -410,6 +410,8 @@
                         0.0<!--burned fuel during phase "reserve" in mission "sizing"--></fuel>
                 </reserve>
                 <takeoff>
+                    <duration units="min" is_input="True">
+                        0.0<!--Input defined by the mission.--></duration>
                     <V2 units="m/s" is_input="True">
                         0.0<!--takeoff safety speed for mission "sizing"--></V2>
                     <altitude units="m" is_input="True">
@@ -439,7 +441,7 @@
                     63306.14369066358<!--maximum zero fuel weight--></MZFW>
                 <OWE units="kg" is_input="False">43698.14369066358<!--Mass of crew--></OWE>
                 <additional_fuel_capacity units="kg" is_input="False">
-                    -8.968563633970916e-06<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
+                    -8.567261829739437e-06<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
                 <max_payload units="kg" is_input="False">
                     19608.0<!--max payload weight--></max_payload>
                 <payload units="kg" is_input="False">

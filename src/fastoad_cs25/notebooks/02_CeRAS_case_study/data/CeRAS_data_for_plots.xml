@@ -122,8 +122,8 @@
                 <OWE units="kg" is_input="False">42092.0<!--operating weight - empty--></OWE>
                 <payload units="kg" is_input="False">17000.0<!--design payload weight--></payload>
                 <sizing_block_fuel units="kg" is_input="False">18183</sizing_block_fuel>
-                <sizing_onboard_fuel_at_takeoff units="kg" is_input="False">17907
-                </sizing_onboard_fuel_at_takeoff>
+                <sizing_onboard_fuel_at_input_weight units="kg" is_input="False">17907
+                </sizing_onboard_fuel_at_input_weight>
             </aircraft>
             <aircraft_empty>
                 <mass units="kg" is_input="False">
