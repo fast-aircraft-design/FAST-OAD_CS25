@@ -29,6 +29,7 @@ from ..cd0 import CD0
 from ..cd_compressibility import CdCompressibility
 from ..cd_trim import CdTrim
 from ..compute_alpha import ComputeAoALowSpeed
+from ..compute_cl_alpha import ComputeCLalpha
 from ..compute_polar import ComputePolar
 from ..compute_reynolds import ComputeReynolds
 from ..high_lift_aero import ComputeDeltaHighLift
@@ -486,3 +487,24 @@ def test_compute_alpha():
     problem = run_system(ComputeAoALowSpeed(), ivc)
 
     assert problem["data:aerodynamics:aircraft:low_speed:CL_alpha"] == approx(5.0, abs=1e-1)
+
+
+def test_geometry_wing_cl_alpha():
+    """Tests computation of the wing lift coefficient"""
+    import openmdao.api as om
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
+    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
+    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
+    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
+
+    problem = run_system(ComputeCLalpha(), input_vars)
+    cl_alpha = problem["data:aerodynamics:aircraft:cruise:CL_alpha"]
+    assert cl_alpha == approx(6.49, abs=1e-2)

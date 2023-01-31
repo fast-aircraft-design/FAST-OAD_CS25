@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,17 +14,12 @@ Test module for geometry functions of cg components
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# pylint: disable=redefined-outer-name  # needed for pytest fixtures
-
-import os.path as pth
 
 import openmdao.api as om
 import pytest
 from fastoad._utils.testing import run_system
-from fastoad.io import VariableIO
 
 from ..compute_b_50 import ComputeB50
-from ..compute_cl_alpha import ComputeCLalpha
 from ..compute_l1_l4 import ComputeL1AndL4Wing
 from ..compute_l2_l3 import ComputeL2AndL3Wing
 from ..compute_mac_wing import ComputeMACWing
@@ -36,16 +31,7 @@ from ..compute_x_wing import ComputeXWing
 from ..compute_y_wing import ComputeYWing
 
 
-@pytest.fixture(scope="module")
-def input_xml() -> VariableIO:
-    """
-    :return: access to the sample xml data
-    """
-    # TODO: have more consistency in input data (no need for the whole geometry_inputs_full.xml)
-    return VariableIO(pth.join(pth.dirname(__file__), "data", "geometry_inputs_full.xml"))
-
-
-def test_geometry_wing_b50(input_xml):
+def test_geometry_wing_b50():
     """Tests computation of the wing B50"""
 
     input_vars = om.IndepVarComp()
@@ -61,27 +47,7 @@ def test_geometry_wing_b50(input_xml):
     assert wing_b_50 == pytest.approx(34.166, abs=1e-3)
 
 
-def test_geometry_wing_cl_alpha(input_xml):
-    """Tests computation of the wing lift coefficient"""
-
-    input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
-    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
-    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
-
-    problem = run_system(ComputeCLalpha(), input_vars)
-    cl_alpha = problem["data:aerodynamics:aircraft:cruise:CL_alpha"]
-    assert cl_alpha == pytest.approx(6.49, abs=1e-2)
-
-
-def test_geometry_wing_l1_l4(input_xml):
+def test_geometry_wing_l1_l4():
     """Tests computation of the wing chords (l1 and l4)"""
 
     input_vars = om.IndepVarComp()
@@ -101,7 +67,7 @@ def test_geometry_wing_l1_l4(input_xml):
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
 
 
-def test_geometry_wing_l2_l3(input_xml):
+def test_geometry_wing_l2_l3():
     """Tests computation of the wing chords (l2 and l3)"""
 
     input_vars = om.IndepVarComp()
@@ -144,7 +110,7 @@ def test_geometry_wing_l2_l3(input_xml):
     assert taper_ratio == pytest.approx(0.38, abs=1e-3)
 
 
-def test_geometry_wing_mac(input_xml):
+def test_geometry_wing_mac():
     """Tests computation of the wing mean aerodynamic chord"""
 
     input_vars = om.IndepVarComp()
@@ -167,7 +133,7 @@ def test_geometry_wing_mac(input_xml):
     assert wing_y0 == pytest.approx(6.293, abs=1e-3)
 
 
-def test_geometry_wing_mfw(input_xml):
+def test_geometry_wing_mfw():
     """Tests computation of the wing max fuel weight"""
 
     input_vars = om.IndepVarComp()
@@ -181,7 +147,7 @@ def test_geometry_wing_mfw(input_xml):
     assert mfw == pytest.approx(19284.7, abs=1e-1)
 
 
-def test_geometry_wing_sweep(input_xml):
+def test_geometry_wing_sweep():
     """Tests computation of the wing sweeps"""
 
     input_vars = om.IndepVarComp()
@@ -203,7 +169,7 @@ def test_geometry_wing_sweep(input_xml):
     assert sweep_100_outer == pytest.approx(16.7, abs=1e-1)
 
 
-def test_geometry_wing_toc(input_xml):
+def test_geometry_wing_toc():
     """Tests computation of the wing ToC (Thickness of Chord)"""
 
     input_vars = om.IndepVarComp()
@@ -238,7 +204,7 @@ def test_geometry_wing_toc(input_xml):
     assert toc_tip == pytest.approx(0.11, abs=1e-2)
 
 
-def test_geometry_wing_wet_area(input_xml):
+def test_geometry_wing_wet_area():
     """Tests computation of the wing wet area"""
 
     input_vars = om.IndepVarComp()
@@ -254,7 +220,7 @@ def test_geometry_wing_wet_area(input_xml):
     assert wet_area == pytest.approx(200.607, abs=1e-3)
 
 
-def test_geometry_wing_x(input_xml):
+def test_geometry_wing_x():
     """Tests computation of the wing Xs"""
 
     input_vars = om.IndepVarComp()
@@ -273,7 +239,7 @@ def test_geometry_wing_x(input_xml):
     assert wing_x4 == pytest.approx(7.222, abs=1e-3)
 
 
-def test_geometry_wing_y(input_xml):
+def test_geometry_wing_y():
     """Tests computation of the wing Ys"""
 
     input_vars = om.IndepVarComp()

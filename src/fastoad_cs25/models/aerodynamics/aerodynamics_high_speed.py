@@ -1,6 +1,6 @@
 """Computation of aerodynamic polar in cruise conditions."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -16,6 +16,7 @@ import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
 from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
+from .components.compute_cl_alpha import ComputeCLalpha
 from .constants import (
     SERVICE_CD0,
     SERVICE_CD_COMPRESSIBILITY,
@@ -64,3 +65,4 @@ class AerodynamicsHighSpeed(om.Group):
         self.add_subsystem(
             "get_polar", RegisterSubmodel.get_submodel(SERVICE_POLAR), promotes=["*"]
         )
+        self.add_subsystem("clapha_wing", ComputeCLalpha(), promotes=["*"])
