@@ -3,7 +3,7 @@ test module for modules in aerodynamics/components
 """
 
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +28,7 @@ from stdatm import Atmosphere
 from ..cd0 import CD0
 from ..cd_compressibility import CdCompressibility
 from ..cd_trim import CdTrim
-from ..compute_low_speed_aero import ComputeAerodynamicsLowSpeed
+from ..compute_alpha import ComputeAoALowSpeed
 from ..compute_polar import ComputePolar
 from ..compute_reynolds import ComputeReynolds
 from ..high_lift_aero import ComputeDeltaHighLift
@@ -468,7 +468,7 @@ def test_polar_high_lift():
     assert cd[cl == 1.5] == approx(0.180787, abs=1e-5)
 
 
-def test_low_speed_aero():
+def test_compute_alpha():
     """Tests group ComputeAerodynamicsLowSpeed"""
     input_list = [
         "data:geometry:fuselage:maximum_width",
@@ -483,6 +483,6 @@ def test_low_speed_aero():
     ]
     ivc = get_indep_var_comp(input_list)
 
-    problem = run_system(ComputeAerodynamicsLowSpeed(), ivc)
+    problem = run_system(ComputeAoALowSpeed(), ivc)
 
-    assert problem["data:aerodynamics:aircraft:takeoff:CL_alpha"] == approx(5.0, abs=1e-1)
+    assert problem["data:aerodynamics:aircraft:low_speed:CL_alpha"] == approx(5.0, abs=1e-1)

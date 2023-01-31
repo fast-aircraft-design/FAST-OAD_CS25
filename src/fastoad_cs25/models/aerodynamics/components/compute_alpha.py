@@ -1,6 +1,6 @@
 """Computation of CL characteristics at low speed."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,7 @@ from ..constants import SERVICE_LOW_SPEED_CL_AOA
 
 
 @RegisterSubmodel(SERVICE_LOW_SPEED_CL_AOA, "fastoad.submodel.aerodynamics.low_speed.AoA.legacy")
-class ComputeAerodynamicsLowSpeed(om.ExplicitComponent):
+class ComputeAoALowSpeed(om.ExplicitComponent):
     """
     Computes CL gradient and CL at low speed.
 
@@ -40,8 +40,7 @@ class ComputeAerodynamicsLowSpeed(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
 
-        self.add_output("data:aerodynamics:aircraft:takeoff:CL_alpha", units="1/rad")
-        self.add_output("data:aerodynamics:aircraft:takeoff:CL0_clean")
+        self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha", units="1/rad")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -82,5 +81,4 @@ class ComputeAerodynamicsLowSpeed(om.ExplicitComponent):
             * fuselage_lift_factor
         )
 
-        outputs["data:aerodynamics:aircraft:takeoff:CL_alpha"] = cl_alpha_wing_low
-        outputs["data:aerodynamics:aircraft:takeoff:CL0_clean"] = 0.2  # FIXME: hard-coded value
+        outputs["data:aerodynamics:aircraft:low_speed:CL_alpha"] = cl_alpha_wing_low
