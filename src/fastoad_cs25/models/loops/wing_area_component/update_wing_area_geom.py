@@ -45,11 +45,11 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
         root_thickness_ratio = inputs["data:geometry:wing:root:thickness_ratio"]
         tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
         mfw_mission = inputs["data:weight:aircraft:sizing_block_fuel"]
+
+        avg_thickness_ratio = 0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio
+
         wing_area_mission = (
-            max(1000.0, mfw_mission - 1570.0)
-            / 224
-            / lambda_wing**-0.4
-            / (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio)
+            max(1000.0, mfw_mission - 1570.0) / (224 * lambda_wing**-0.4 * avg_thickness_ratio)
         ) ** (1.0 / 1.5)
 
         outputs["wing_area:geom"] = wing_area_mission
@@ -61,39 +61,40 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
         tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
         mfw_mission = inputs["data:weight:aircraft:sizing_block_fuel"]
 
-        partials["wing_area:geom", "data:geometry:wing:aspect_ratio"] = (
-            (
+        avg_thickness_ratio = 0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio
+        # Derivative of wing area wrt average thickness ratio
+        d_wing_area_d_avg_toc = (
+            -1.0
+            / 1.5
+            * (
                 max(1000.0, mfw_mission - 1570.0)
-                / 224
-                / (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio)
+                / (224.0 * lambda_wing**-0.4 * avg_thickness_ratio ** (5.0 / 2.0))
             )
             ** (1.0 / 1.5)
-            * (0.4 / 1.5)
-            * lambda_wing ** (0.4 / 1.5 - 1.0)
+        )
+
+        partials["wing_area:geom", "data:geometry:wing:aspect_ratio"] = (
+            0.4
+            / 1.5
+            * (
+                max(1000.0, mfw_mission - 1570.0)
+                / (224 * avg_thickness_ratio * lambda_wing ** (11.0 / 10.0))
+            )
+            ** (1.0 / 1.5)
         )
         partials["wing_area:geom", "data:geometry:wing:root:thickness_ratio"] = (
-            (max(1000.0, mfw_mission - 1570.0) / 224 / lambda_wing**-0.4) ** (1.0 / 1.5)
-            * (-1.0 / 1.5)
-            * (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio) ** (-1.0 / 1.5 - 1.0)
-        ) * 0.6
+            d_wing_area_d_avg_toc * 0.6
+        )
         partials["wing_area:geom", "data:geometry:wing:tip:thickness_ratio"] = (
-            (max(1000.0, mfw_mission - 1570.0) / 224 / lambda_wing**-0.4) ** (1.0 / 1.5)
-            * (-1.0 / 1.5)
-            * (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio) ** (-1.0 / 1.5 - 1.0)
-        ) * 0.4
+            d_wing_area_d_avg_toc * 0.4
+        )
         if mfw_mission < 1000.0:
             partials["wing_area:geom", "data:weight:aircraft:sizing_block_fuel"] = 0.0
         else:
             partials["wing_area:geom", "data:weight:aircraft:sizing_block_fuel"] = (
-                (
-                    1.0
-                    / 224
-                    / lambda_wing**-0.4
-                    / (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio)
-                )
-                ** (1.0 / 1.5)
+                (1.0 / (224 * lambda_wing**-0.4 * avg_thickness_ratio)) ** (1.0 / 1.5)
                 * (1.0 / 1.5)
-                * (mfw_mission - 1570.0) ** (1.0 / 1.5 - 1.0)
+                * (mfw_mission - 1570.0) ** (-1.0 / 3.0)
             )
 
 
@@ -107,7 +108,17 @@ class WingAreaConstraintsGeom(om.ExplicitComponent):
 
         self.add_output("data:weight:aircraft:additional_fuel_capacity")
 
-        self.declare_partials(of="*", wrt="*", method="exact")
+        # Value are easy to compute so they'll be given here
+        self.declare_partials(
+            of="data:weight:aircraft:additional_fuel_capacity",
+            wrt="data:weight:aircraft:sizing_block_fuel",
+            val=-1,
+        )
+        self.declare_partials(
+            of="data:weight:aircraft:additional_fuel_capacity",
+            wrt="data:weight:aircraft:MFW",
+            val=1,
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
 
@@ -120,11 +131,3 @@ class WingAreaConstraintsGeom(om.ExplicitComponent):
         # do not loop and only check constraints this might be an issue.
 
         outputs["data:weight:aircraft:additional_fuel_capacity"] = mfw - mission_fuel
-
-    def compute_partials(self, inputs, partials, discrete_inputs=None):
-
-        partials[
-            "data:weight:aircraft:additional_fuel_capacity",
-            "data:weight:aircraft:sizing_block_fuel",
-        ] = -1
-        partials["data:weight:aircraft:additional_fuel_capacity", "data:weight:aircraft:MFW"] = 1

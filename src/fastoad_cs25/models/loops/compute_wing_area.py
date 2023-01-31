@@ -92,9 +92,9 @@ class _ComputeWingArea(om.ExplicitComponent):
         wing_area_mission = inputs["wing_area:geom"]
         wing_area_approach = inputs["wing_area:aero"]
 
-        if wing_area_mission > wing_area_approach:
-            partials["data:geometry:wing:area", "wing_area:geom"] = 1.0
-            partials["data:geometry:wing:area", "wing_area:aero"] = 0.0
-        else:
-            partials["data:geometry:wing:area", "wing_area:geom"] = 0.0
-            partials["data:geometry:wing:area", "wing_area:aero"] = 1.0
+        partials["data:geometry:wing:area", "wing_area:geom"] = (
+            1.0 if wing_area_mission > wing_area_approach else 0.0
+        )
+        partials["data:geometry:wing:area", "wing_area:aero"] = (
+            0.0 if wing_area_mission > wing_area_approach else 1.0
+        )

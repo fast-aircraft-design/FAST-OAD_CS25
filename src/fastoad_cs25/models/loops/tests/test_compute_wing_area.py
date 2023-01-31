@@ -65,5 +65,5 @@ def test_compute_wing_area():
     )
     assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 6000.0, atol=1.0)
 
-    data = problem.check_partials(compact_print=True, out_stream=None)
+    data = problem.check_partials(out_stream=None)
     assert_check_partials(data, atol=1, rtol=1e-4)
