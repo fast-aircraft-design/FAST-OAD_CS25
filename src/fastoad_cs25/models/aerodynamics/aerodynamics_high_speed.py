@@ -16,11 +16,11 @@ import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
 from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
-from .components.compute_cl_alpha import ComputeCLalpha
 from .constants import (
     SERVICE_CD0,
     SERVICE_CD_COMPRESSIBILITY,
     SERVICE_CD_TRIM,
+    SERVICE_CL_AOA,
     SERVICE_INDUCED_DRAG_COEFFICIENT,
     SERVICE_INITIALIZE_CL,
     SERVICE_OSWALD_COEFFICIENT,
@@ -65,4 +65,6 @@ class AerodynamicsHighSpeed(om.Group):
         self.add_subsystem(
             "get_polar", RegisterSubmodel.get_submodel(SERVICE_POLAR), promotes=["*"]
         )
-        self.add_subsystem("clapha_wing", ComputeCLalpha(), promotes=["*"])
+        self.add_subsystem(
+            "compute_AoA", RegisterSubmodel.get_submodel(SERVICE_CL_AOA), promotes=["*"]
+        )

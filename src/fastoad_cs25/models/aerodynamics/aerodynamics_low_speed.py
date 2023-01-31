@@ -1,6 +1,6 @@
 """Computation of aerodynamic polar in low speed conditions."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +20,9 @@ from .constants import (
     PolarType,
     SERVICE_CD0,
     SERVICE_CD_TRIM,
+    SERVICE_CL_AOA,
     SERVICE_INDUCED_DRAG_COEFFICIENT,
     SERVICE_INITIALIZE_CL,
-    SERVICE_LOW_SPEED_CL_AOA,
     SERVICE_OSWALD_COEFFICIENT,
     SERVICE_POLAR,
     SERVICE_REYNOLDS_COEFFICIENT,
@@ -39,8 +39,8 @@ class AerodynamicsLowSpeed(om.Group):
         low_speed_option = {"low_speed_aero": True}
 
         self.add_subsystem(
-            "compute_low_speed_aero",
-            RegisterSubmodel.get_submodel(SERVICE_LOW_SPEED_CL_AOA),
+            "compute_AoA",
+            RegisterSubmodel.get_submodel(SERVICE_CL_AOA, low_speed_option),
             promotes=["*"],
         )
         ivc = om.IndepVarComp("data:aerodynamics:aircraft:takeoff:mach", val=0.2)

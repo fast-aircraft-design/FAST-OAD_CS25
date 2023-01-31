@@ -16,11 +16,11 @@ import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
-from ..constants import SERVICE_LOW_SPEED_CL_AOA
+from ..constants import SERVICE_CL_AOA
 
 
-@RegisterSubmodel(SERVICE_LOW_SPEED_CL_AOA, "fastoad.submodel.aerodynamics.low_speed.AoA.legacy")
-class ComputeAoALowSpeed(om.ExplicitComponent):
+@RegisterSubmodel(SERVICE_CL_AOA, "fastoad.submodel.aerodynamics.low_speed.AoA.legacy")
+class ComputeAoA(om.ExplicitComponent):
     """
     Computes CL gradient and CL at low speed.
 
@@ -29,7 +29,12 @@ class ComputeAoALowSpeed(om.ExplicitComponent):
 
     # TODO: complete source
 
+    def initialize(self):
+        self.options.declare("low_speed_aero", default=False, types=bool)
+
     def setup(self):
+        if not self.options["low_speed_aero"]:
+            self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
@@ -40,10 +45,16 @@ class ComputeAoALowSpeed(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
 
-        self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha", units="1/rad")
+        if self.options["low_speed_aero"]:
+            self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha")
+        else:
+            self.add_output("data:aerodynamics:aircraft:cruise:CL_alpha")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        if self.options["low_speed_aero"]:
+            self.declare_partials("data:aerodynamics:aircraft:low_speed:CL_alpha", "*", method="fd")
+        else:
+            self.declare_partials("data:aerodynamics:aircraft:cruise:CL_alpha", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         width_max = inputs["data:geometry:fuselage:maximum_width"]
@@ -56,13 +67,16 @@ class ComputeAoALowSpeed(om.ExplicitComponent):
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
         wing_area = inputs["data:geometry:wing:area"]
 
-        mach = 0.2
+        if self.options["low_speed_aero"]:
+            mach = 0.2
+        else:
+            mach = inputs["data:TLAR:cruise_mach"]
 
         beta = np.sqrt(1 - mach**2)
         d_f = np.sqrt(width_max * height_max)
         fuselage_lift_factor = 1.07 * (1 + d_f / span) ** 2
         lambda_wing_eff = lambda_wing * (1 + 1.9 * l4_wing * el_ext / span)
-        cl_alpha_wing_low = (
+        cl_alpha_wing = (
             2
             * np.pi
             * lambda_wing_eff
@@ -81,4 +95,7 @@ class ComputeAoALowSpeed(om.ExplicitComponent):
             * fuselage_lift_factor
         )
 
-        outputs["data:aerodynamics:aircraft:low_speed:CL_alpha"] = cl_alpha_wing_low
+        if self.options["low_speed_aero"]:
+            outputs["data:aerodynamics:aircraft:low_speed:CL_alpha"] = cl_alpha_wing
+        else:
+            outputs["data:aerodynamics:aircraft:cruise:CL_alpha"] = cl_alpha_wing
