@@ -16,18 +16,16 @@ import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
-from ..constants import SERVICE_CL_AOA
+from ..constants import SERVICE_CL_ALPHA
 
 
-@RegisterSubmodel(SERVICE_CL_AOA, "fastoad.submodel.aerodynamics.low_speed.AoA.legacy")
-class ComputeAoA(om.ExplicitComponent):
+@RegisterSubmodel(SERVICE_CL_ALPHA, "fastoad.submodel.aerodynamics.CLalpha.legacy")
+class ComputeCLAlpha(om.ExplicitComponent):
     """
-    Computes CL gradient and CL at low speed.
+    Computes CL gradient.
 
     CL gradient from :cite:`raymer:1999` Eq 12.6
     """
-
-    # TODO: complete source
 
     def initialize(self):
         self.options.declare("low_speed_aero", default=False, types=bool)
@@ -40,7 +38,7 @@ class ComputeAoA(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
@@ -61,9 +59,9 @@ class ComputeAoA(om.ExplicitComponent):
         height_max = inputs["data:geometry:fuselage:maximum_height"]
         span = inputs["data:geometry:wing:span"]
         lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
-        l2_wing = inputs["data:geometry:wing:root:chord"]
-        l4_wing = inputs["data:geometry:wing:tip:chord"]
-        el_ext = inputs["data:geometry:wing:tip:thickness_ratio"]
+        root_chord = inputs["data:geometry:wing:root:chord"]
+        tip_chord = inputs["data:geometry:wing:tip:chord"]
+        tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
         wing_area = inputs["data:geometry:wing:area"]
 
@@ -72,25 +70,25 @@ class ComputeAoA(om.ExplicitComponent):
         else:
             mach = inputs["data:TLAR:cruise_mach"]
 
-        beta = np.sqrt(1 - mach**2)
+        beta = np.sqrt(1.0 - mach**2)
         d_f = np.sqrt(width_max * height_max)
-        fuselage_lift_factor = 1.07 * (1 + d_f / span) ** 2
-        lambda_wing_eff = lambda_wing * (1 + 1.9 * l4_wing * el_ext / span)
+        fuselage_lift_factor = 1.07 * (1.0 + d_f / span) ** 2
+        lambda_wing_eff = lambda_wing * (1.0 + 1.9 * tip_chord * tip_thickness_ratio / span)
         cl_alpha_wing = (
-            2
+            2.0
             * np.pi
             * lambda_wing_eff
             / (
-                2
+                2.0
                 + np.sqrt(
-                    4
+                    4.0
                     + lambda_wing_eff**2
                     * beta**2
-                    / 0.95**2
-                    * (1 + (np.tan(sweep_25 / 180.0 * np.pi)) ** 2 / beta**2)
+                    / 0.9025  # =0.95**2
+                    * (1.0 + (np.tan(sweep_25)) ** 2 / beta**2)
                 )
             )
-            * (wing_area - l2_wing * width_max)
+            * (wing_area - root_chord * width_max)
             / wing_area
             * fuselage_lift_factor
         )

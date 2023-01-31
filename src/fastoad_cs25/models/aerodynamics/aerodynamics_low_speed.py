@@ -20,7 +20,7 @@ from .constants import (
     PolarType,
     SERVICE_CD0,
     SERVICE_CD_TRIM,
-    SERVICE_CL_AOA,
+    SERVICE_CL_ALPHA,
     SERVICE_INDUCED_DRAG_COEFFICIENT,
     SERVICE_INITIALIZE_CL,
     SERVICE_OSWALD_COEFFICIENT,
@@ -38,11 +38,6 @@ class AerodynamicsLowSpeed(om.Group):
     def setup(self):
         low_speed_option = {"low_speed_aero": True}
 
-        self.add_subsystem(
-            "compute_AoA",
-            RegisterSubmodel.get_submodel(SERVICE_CL_AOA, low_speed_option),
-            promotes=["*"],
-        )
         ivc = om.IndepVarComp("data:aerodynamics:aircraft:takeoff:mach", val=0.2)
         self.add_subsystem("mach_low_speed", ivc, promotes=["*"])
 
@@ -78,5 +73,10 @@ class AerodynamicsLowSpeed(om.Group):
         self.add_subsystem(
             "get_polar",
             RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "compute_CLalpha",
+            RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA, low_speed_option),
             promotes=["*"],
         )

@@ -20,7 +20,7 @@ from .constants import (
     SERVICE_CD0,
     SERVICE_CD_COMPRESSIBILITY,
     SERVICE_CD_TRIM,
-    SERVICE_CL_AOA,
+    SERVICE_CL_ALPHA,
     SERVICE_INDUCED_DRAG_COEFFICIENT,
     SERVICE_INITIALIZE_CL,
     SERVICE_OSWALD_COEFFICIENT,
@@ -66,5 +66,5 @@ class AerodynamicsHighSpeed(om.Group):
             "get_polar", RegisterSubmodel.get_submodel(SERVICE_POLAR), promotes=["*"]
         )
         self.add_subsystem(
-            "compute_AoA", RegisterSubmodel.get_submodel(SERVICE_CL_AOA), promotes=["*"]
+            "compute_AoA", RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA), promotes=["*"]
         )

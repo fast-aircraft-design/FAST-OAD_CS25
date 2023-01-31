@@ -28,7 +28,7 @@ from stdatm import Atmosphere
 from ..cd0 import CD0
 from ..cd_compressibility import CdCompressibility
 from ..cd_trim import CdTrim
-from ..compute_alpha import ComputeAoA
+from ..compute_cl_alpha import ComputeCLAlpha
 from ..compute_polar import ComputePolar
 from ..compute_reynolds import ComputeReynolds
 from ..high_lift_aero import ComputeDeltaHighLift
@@ -468,7 +468,7 @@ def test_polar_high_lift():
     assert cd[cl == 1.5] == approx(0.180787, abs=1e-5)
 
 
-def test_compute_alpha_low_speed():
+def test_compute_cl_alpha_low_speed():
     """Tests group ComputeAerodynamicsLowSpeed"""
     input_list = [
         "data:geometry:fuselage:maximum_width",
@@ -483,27 +483,26 @@ def test_compute_alpha_low_speed():
     ]
     ivc = get_indep_var_comp(input_list)
 
-    problem = run_system(ComputeAoA(low_speed_aero=True), ivc)
+    problem = run_system(ComputeCLAlpha(low_speed_aero=True), ivc)
 
     assert problem["data:aerodynamics:aircraft:low_speed:CL_alpha"] == approx(5.0, abs=1e-1)
 
 
-def test_compute_alpha_cruise():
+def test_compute_cl_alpha_cruise():
     """Tests computation of the wing lift coefficient"""
-    import openmdao.api as om
-
-    input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
-    input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
-    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
-    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
-    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
-    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
-
-    problem = run_system(ComputeAoA(), input_vars)
+    input_list = [
+        "data:TLAR:cruise_mach",
+        "data:geometry:fuselage:maximum_width",
+        "data:geometry:fuselage:maximum_height",
+        "data:geometry:wing:span",
+        "data:geometry:wing:aspect_ratio",
+        "data:geometry:wing:tip:chord",
+        "data:geometry:wing:sweep_25",
+        "data:geometry:wing:root:chord",
+        "data:geometry:wing:area",
+        "data:geometry:wing:tip:thickness_ratio",
+    ]
+    ivc = get_indep_var_comp(input_list)
+    problem = run_system(ComputeCLAlpha(), ivc)
     cl_alpha = problem["data:aerodynamics:aircraft:cruise:CL_alpha"]
     assert cl_alpha == approx(6.49, abs=1e-2)
