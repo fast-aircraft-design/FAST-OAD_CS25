@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "FAST-OAD-CS25"
-version = "0.1.1"
+version = "0.2.0"
 description = "FAST-OAD_CS25 is a FAST-OAD plugin with CS25/FAR25-related models."
 readme = "README.md"
 authors = [
@@ -43,7 +43,7 @@ classifiers = [
 # the commit fail because "files were modified by this hook". In that case,
 # doing again the commit including changes in docs/requirements.txt will succeed.
 python = "^3.7"
-fast-oad-core = "^1.4.1"
+fast-oad-core = ">=1.4.2, <2.0"
 openmdao = "^3.10"
 numpy = "^1.21.0"
 scipy = "^1.4.1"
