@@ -18,6 +18,7 @@ from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, R
 
 from .constants import (
     PolarType,
+    SERVICE_ALPHA,
     SERVICE_CD0,
     SERVICE_CD_TRIM,
     SERVICE_CL_ALPHA,
@@ -78,5 +79,10 @@ class AerodynamicsLowSpeed(om.Group):
         self.add_subsystem(
             "compute_CLalpha",
             RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA, low_speed_option),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "compute_alpha",
+            RegisterSubmodel.get_submodel(SERVICE_ALPHA, low_speed_option),
             promotes=["*"],
         )

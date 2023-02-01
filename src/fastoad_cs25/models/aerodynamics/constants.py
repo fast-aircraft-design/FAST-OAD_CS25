@@ -36,6 +36,7 @@ SERVICE_LANDING_MAX_CL_CLEAN = "service.aerodynamics.landing.max_CL_clean"
 SERVICE_LANDING_MAX_CL = "service.aerodynamics.landing.max_CL"
 SERVICE_LANDING_MACH_REYNOLDS = "service.aerodynamics.landing.mach_reynolds"
 SERVICE_CL_ALPHA = "service.aerodynamics.CL_AoA"
+SERVICE_ALPHA = "service.aerodynamics.AoA"
 
 
 class PolarType(Enum):

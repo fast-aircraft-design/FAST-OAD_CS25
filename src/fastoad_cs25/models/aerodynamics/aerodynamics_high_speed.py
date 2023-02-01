@@ -17,6 +17,7 @@ from fastoad.module_management.constants import ModelDomain
 from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
 from .constants import (
+    SERVICE_ALPHA,
     SERVICE_CD0,
     SERVICE_CD_COMPRESSIBILITY,
     SERVICE_CD_TRIM,
@@ -67,4 +68,9 @@ class AerodynamicsHighSpeed(om.Group):
         )
         self.add_subsystem(
             "compute_AoA", RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA), promotes=["*"]
+        )
+        self.add_subsystem(
+            "compute_alpha",
+            RegisterSubmodel.get_submodel(SERVICE_ALPHA),
+            promotes=["*"],
         )

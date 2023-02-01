@@ -20,6 +20,7 @@ import os.path as pth
 import numpy as np
 from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
+from numpy.testing import assert_allclose
 from openmdao.core.group import Group
 from openmdao.core.indepvarcomp import IndepVarComp
 from pytest import approx
@@ -28,6 +29,7 @@ from stdatm import Atmosphere
 from ..cd0 import CD0
 from ..cd_compressibility import CdCompressibility
 from ..cd_trim import CdTrim
+from ..compute_alpha import ComputeAlpha
 from ..compute_cl_alpha import ComputeCLAlpha
 from ..compute_polar import ComputePolar
 from ..compute_reynolds import ComputeReynolds
@@ -506,3 +508,58 @@ def test_compute_cl_alpha_cruise():
     problem = run_system(ComputeCLAlpha(), ivc)
     cl_alpha = problem["data:aerodynamics:aircraft:cruise:CL_alpha"]
     assert cl_alpha == approx(6.49, abs=1e-2)
+
+
+def test_compute_alpha_low_speed():
+    """Tests computation of the wing lift coefficient"""
+    input_list = [
+        "data:aerodynamics:aircraft:low_speed:CL",
+        "data:aerodynamics:aircraft:low_speed:CL_alpha",
+        # Using default CL0 value of 0.2
+    ]
+    ivc = get_indep_var_comp(input_list)
+
+    problem = run_system(ComputeAlpha(low_speed_aero=True), ivc)
+    alpha = problem.get_val("data:aerodynamics:aircraft:low_speed:AoA", units="deg")
+
+    assert_allclose(
+        alpha,
+        np.linspace(-2.29183118, 14.78231111, 150),
+        atol=1e-4,
+    )
+
+    problem.set_val("data:aerodynamics:aircraft:low_speed:CL0", 0.15)
+    problem.run_model()
+    alpha = problem.get_val("data:aerodynamics:aircraft:low_speed:AoA", units="deg")
+    assert_allclose(
+        alpha,
+        np.linspace(-2.29183118, 14.78231111, 150) + np.degrees(0.05 / 5.0),
+        atol=1e-4,
+    )
+
+
+def test_compute_alpha_cruise():
+    """Tests computation of the wing lift coefficient"""
+    input_list = [
+        "data:aerodynamics:aircraft:cruise:CL",
+        "data:aerodynamics:aircraft:cruise:CL_alpha",
+        # Using default CL0 value of 0.1
+    ]
+    ivc = get_indep_var_comp(input_list)
+
+    problem = run_system(ComputeAlpha(), ivc)
+    alpha = problem.get_val("data:aerodynamics:aircraft:cruise:AoA", units="deg")
+    assert_allclose(
+        alpha,
+        np.linspace(-0.882832, 7.9454856, 101),
+        atol=1e-4,
+    )
+
+    problem.set_val("data:aerodynamics:aircraft:cruise:CL0", 0.05)
+    problem.run_model()
+    alpha = problem.get_val("data:aerodynamics:aircraft:cruise:AoA", units="deg")
+    assert_allclose(
+        alpha,
+        np.linspace(-0.882832, 7.9454856, 101) + np.degrees(0.05 / 6.49),
+        atol=1e-4,
+    )
