@@ -4,7 +4,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![Documentation Status](https://readthedocs.org/projects/fast-oad-cs25/badge/?version=stable)](https://fast-oad.readthedocs.io/)
+[![Documentation Status](https://readthedocs.org/projects/fast-oad-cs25/badge/?version=stable)](https://fast-oad-cs25.readthedocs.io/)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fast-aircraft-design/FAST-OAD_CS25.git/latest-release?urlpath=lab%2Ftree%2Fsrc%2Ffastoad_cs25%2Fnotebooks)
 
 
