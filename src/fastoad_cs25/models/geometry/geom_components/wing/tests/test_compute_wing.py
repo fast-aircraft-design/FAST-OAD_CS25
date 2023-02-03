@@ -1,5 +1,5 @@
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -31,7 +31,6 @@ def test_compute_wing_with_kink():
 
     problem = run_system(ComputeWingGeometry(), input_vars)
 
-    assert problem["data:aerodynamics:aircraft:cruise:CL_alpha"] == pytest.approx(6.418, abs=1e-2)
     assert problem["data:geometry:wing:MAC:leading_edge:x:local"] == pytest.approx(2.524, abs=1e-3)
     assert problem["data:geometry:wing:MAC:length"] == pytest.approx(4.182, abs=1e-3)
     assert problem["data:geometry:wing:MAC:y"] == pytest.approx(6.710, abs=1e-3)
@@ -72,7 +71,6 @@ def test_compute_wing_without_kink():
 
     problem = run_system(ComputeWingGeometry(), input_vars)
 
-    assert problem["data:aerodynamics:aircraft:cruise:CL_alpha"] == pytest.approx(6.682, abs=1e-2)
     assert problem["data:geometry:wing:MAC:leading_edge:x:local"] == pytest.approx(2.825, abs=1e-3)
     assert problem["data:geometry:wing:MAC:length"] == pytest.approx(3.892, abs=1e-3)
     assert problem["data:geometry:wing:MAC:y"] == pytest.approx(7.268, abs=1e-3)
