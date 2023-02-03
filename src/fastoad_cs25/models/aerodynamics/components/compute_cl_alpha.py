@@ -84,7 +84,7 @@ class ComputeCLAlpha(om.ExplicitComponent):
                     4.0
                     + lambda_wing_eff**2
                     * beta**2
-                    / 0.9025  # =0.95**2
+                    / 0.9025  # equals 0.95**2
                     * (1.0 + (np.tan(sweep_25)) ** 2 / beta**2)
                 )
             )
