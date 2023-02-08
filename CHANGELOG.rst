@@ -2,6 +2,13 @@
 Changelog
 =========
 
+
+Version 0.2.0
+=============
+Added:
+
+- Now polar computation in aerodynamics module computes angle of attack as a linear function of CL. (#16)
+
 Version 0.1.4
 =============
 Fixed:
