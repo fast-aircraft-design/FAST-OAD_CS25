@@ -125,9 +125,4 @@ class WingAreaConstraintsGeom(om.ExplicitComponent):
         mfw = inputs["data:weight:aircraft:MFW"]
         mission_fuel = inputs["data:weight:aircraft:sizing_block_fuel"]
 
-        # The MFW is not updated between the moment we get our new wing area and the moment we
-        # compute the constraints, is this a problem ? The final value in the xml will be
-        # accurate because it will be the results once converged but for an optimization where we
-        # do not loop and only check constraints this might be an issue.
-
         outputs["data:weight:aircraft:additional_fuel_capacity"] = mfw - mission_fuel
