@@ -17,8 +17,14 @@ Computation of wing area
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem
-from scipy.constants import g
+from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
+
+from .constants import (
+    SERVICE_WING_AREA_LOOP_GEOM,
+    SERVICE_WING_AREA_LOOP_AERO,
+    SERVICE_WING_AREA_CONSTRAINT_GEOM,
+    SERVICE_WING_AREA_CONSTRAINT_AERO,
+)
 
 
 @RegisterOpenMDAOSystem("fastoad.loop.wing_area", domain=ModelDomain.OTHER)
@@ -30,87 +36,65 @@ class ComputeWingArea(om.Group):
     """
 
     def setup(self):
-        self.add_subsystem("wing_area", _ComputeWingArea(), promotes=["*"])
-        self.add_subsystem("constraints", _ComputeWingAreaConstraints(), promotes=["*"])
+        self.add_subsystem(
+            "wing_area_geom",
+            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_GEOM),
+            promotes_inputs=["*"],
+            promotes_outputs=[],
+        )
+        self.add_subsystem(
+            "wing_area_aero",
+            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_AERO),
+            promotes_inputs=["*"],
+            promotes_outputs=[],
+        )
+        self.add_subsystem(
+            "wing_area", _ComputeWingArea(), promotes_inputs=[], promotes_outputs=["*"]
+        )
+        self.add_subsystem(
+            "geom_constraint",
+            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_GEOM),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "aero_constraint",
+            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_AERO),
+            promotes=["*"],
+        )
+
+        self.connect("wing_area_geom.wing_area:geom", "wing_area.wing_area:geom")
+        self.connect("wing_area_aero.wing_area:aero", "wing_area.wing_area:aero")
 
 
 class _ComputeWingArea(om.ExplicitComponent):
-    """Computation of wing area from needed approach speed and mission fuel"""
+    """
+    Computation of wing area from needed approach speed and mission fuel and taking whichever
+    is greatest
+    """
 
     def setup(self):
-        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
-        self.add_input("data:geometry:wing:root:thickness_ratio", val=np.nan)
-        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
-        self.add_input("data:weight:aircraft:sizing_block_fuel", val=np.nan, units="kg")
-        self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
-
-        self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
+        self.add_input("wing_area:aero", units="m**2", val=np.nan)
+        self.add_input("wing_area:geom", units="m**2", val=np.nan)
 
         self.add_output("data:geometry:wing:area", val=100.0, units="m**2")
 
-    def setup_partials(self):
-        self.declare_partials("data:geometry:wing:area", "*", method="fd")
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
-        root_thickness_ratio = inputs["data:geometry:wing:root:thickness_ratio"]
-        tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
-        mfw_mission = inputs["data:weight:aircraft:sizing_block_fuel"]
-        wing_area_mission = (
-            max(1000.0, mfw_mission - 1570.0)
-            / 224
-            / lambda_wing**-0.4
-            / (0.6 * root_thickness_ratio + 0.4 * tip_thickness_ratio)
-        ) ** (1.0 / 1.5)
 
-        approach_speed = inputs["data:TLAR:approach_speed"]
-        mlw = inputs["data:weight:aircraft:MLW"]
-        max_CL = inputs["data:aerodynamics:aircraft:landing:CL_max"]
-        wing_area_approach = 2 * mlw * g / ((approach_speed / 1.23) ** 2) / (1.225 * max_CL)
+        wing_area_mission = inputs["wing_area:geom"]
+        wing_area_approach = inputs["wing_area:aero"]
 
         outputs["data:geometry:wing:area"] = np.nanmax([wing_area_mission, wing_area_approach])
 
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
 
-class _ComputeWingAreaConstraints(om.ExplicitComponent):
-    def setup(self):
-        self.add_input("data:weight:aircraft:sizing_block_fuel", val=np.nan, units="kg")
-        self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
+        wing_area_mission = inputs["wing_area:geom"]
+        wing_area_approach = inputs["wing_area:aero"]
 
-        self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
-        self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
-        self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
-
-        self.add_output("data:weight:aircraft:additional_fuel_capacity", units="kg")
-        self.add_output("data:aerodynamics:aircraft:landing:additional_CL_capacity")
-
-    def setup_partials(self):
-        self.declare_partials(
-            "data:weight:aircraft:additional_fuel_capacity",
-            ["data:weight:aircraft:MFW", "data:weight:aircraft:sizing_block_fuel"],
-            method="fd",
+        partials["data:geometry:wing:area", "wing_area:geom"] = (
+            1.0 if wing_area_mission > wing_area_approach else 0.0
         )
-        self.declare_partials(
-            "data:aerodynamics:aircraft:landing:additional_CL_capacity",
-            [
-                "data:TLAR:approach_speed",
-                "data:weight:aircraft:MLW",
-                "data:aerodynamics:aircraft:landing:CL_max",
-                "data:geometry:wing:area",
-            ],
-            method="fd",
-        )
-
-    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        mfw = inputs["data:weight:aircraft:MFW"]
-        mission_fuel = inputs["data:weight:aircraft:sizing_block_fuel"]
-        v_approach = inputs["data:TLAR:approach_speed"]
-        cl_max = inputs["data:aerodynamics:aircraft:landing:CL_max"]
-        mlw = inputs["data:weight:aircraft:MLW"]
-        wing_area = inputs["data:geometry:wing:area"]
-
-        outputs["data:weight:aircraft:additional_fuel_capacity"] = mfw - mission_fuel
-        outputs["data:aerodynamics:aircraft:landing:additional_CL_capacity"] = cl_max - mlw * g / (
-            0.5 * 1.225 * (v_approach / 1.23) ** 2 * wing_area
+        partials["data:geometry:wing:area", "wing_area:aero"] = (
+            0.0 if wing_area_mission > wing_area_approach else 1.0
         )

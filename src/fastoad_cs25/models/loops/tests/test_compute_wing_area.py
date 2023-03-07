@@ -17,6 +17,7 @@ test module for wing area computation
 import os.path as pth
 
 import openmdao.api as om
+from openmdao.utils.assert_utils import assert_check_partials
 from fastoad._utils.testing import run_system
 from numpy.testing import assert_allclose
 
@@ -63,3 +64,6 @@ def test_compute_wing_area():
         problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], 0.0, atol=1e-2
     )
     assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 6000.0, atol=1.0)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-4)
