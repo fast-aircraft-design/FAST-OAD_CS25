@@ -14,14 +14,14 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') }}
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9 ]
+        python-version: [ 3.7, 3.9 ]
         os: [ ubuntu-20.04, windows-latest, macos-latest ] # On 2023/03/08, pytest completely stalls on ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Install poetry
-        run: pipx install poetry==1.1.15
+        run: pipx install poetry==1.3.2
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -48,14 +48,14 @@ jobs:
 
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
-        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.8' }} # This action runs only on Linux
+        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.9' }} # This action runs only on Linux
         with:
           project-token: ${{ secrets.codacy }}
           coverage-reports: coverage.xml
 
       - name: Publish code coverage on Codecov
         uses: codecov/codecov-action@v3
-        if: ${{ runner.os == 'Windows' && matrix.python-version == '3.8' }} # Using Windows for covering XFOIL calls
+        if: ${{ runner.os == 'Windows' && matrix.python-version == '3.9' }} # Using Windows for covering XFOIL calls
         with:
           #          flags: unittests  # optional
           name: codecov-FAST-OAD  # optional
@@ -63,7 +63,7 @@ jobs:
 
       - name: Publish code coverage on Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
-        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.8' }} # This action runs only on Linux
+        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.9' }} # This action runs only on Linux
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.codeclimate }}
 
