@@ -2,7 +2,7 @@
 Computation of wing area following geometric constraints
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -17,9 +17,10 @@ Computation of wing area following geometric constraints
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
+
 from fastoad_cs25.models.loops.constants import (
-    SERVICE_WING_AREA_LOOP_GEOM,
     SERVICE_WING_AREA_CONSTRAINT_GEOM,
+    SERVICE_WING_AREA_LOOP_GEOM,
 )
 
 
@@ -106,7 +107,7 @@ class WingAreaConstraintsGeom(om.ExplicitComponent):
         self.add_input("data:weight:aircraft:sizing_block_fuel", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
 
-        self.add_output("data:weight:aircraft:additional_fuel_capacity")
+        self.add_output("data:weight:aircraft:additional_fuel_capacity", units="kg")
 
         # Value are easy to compute so they'll be given here
         self.declare_partials(
