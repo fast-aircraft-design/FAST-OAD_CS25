@@ -42,7 +42,7 @@ jobs:
         os: [ ubuntu-latest ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -62,12 +62,12 @@ jobs:
         run: poetry build
         shell: bash
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: wheel
           path: dist/*.whl
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: source
           path: dist/*.gz
