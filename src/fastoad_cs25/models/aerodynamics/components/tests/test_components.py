@@ -238,7 +238,7 @@ def test_cd_compressibility():
         )
 
         problem = run_system(CdCompressibility(), ivc)
-        return problem["data:aerodynamics:aircraft:cruise:CD:compressibility"][0]
+        return problem["data:aerodynamics:aircraft:cruise:CD_compressibility"][0]
 
     assert get_cd_compressibility(0.2, 0.9, 28, 0.12) == approx(0.0, abs=1e-5)
     assert get_cd_compressibility(0.78, 0.2, 28, 0.12) == approx(0.00028, abs=1e-5)
@@ -272,7 +272,7 @@ def test_cd_trim():
             "data:aerodynamics:aircraft:cruise:CL", 150 * [cl]
         )  # needed because size of input array is fixed
         problem = run_system(CdTrim(), ivc)
-        return problem["data:aerodynamics:aircraft:cruise:CD:trim"][0]
+        return problem["data:aerodynamics:aircraft:cruise:CD_trim"][0]
 
     assert get_cd_trim(0.5) == approx(0.0002945, abs=1e-6)
     assert get_cd_trim(0.9) == approx(0.0005301, abs=1e-6)

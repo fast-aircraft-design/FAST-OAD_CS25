@@ -40,7 +40,7 @@ class ComputePolar(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CD0", shape_by_conn=True, val=np.nan
             )
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CD:trim", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CD_trim", shape_by_conn=True, val=np.nan
             )
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient", val=np.nan
@@ -85,10 +85,10 @@ class ComputePolar(om.ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
             self.add_input("data:aerodynamics:aircraft:cruise:CD0", shape_by_conn=True, val=np.nan)
             self.add_input(
-                "data:aerodynamics:aircraft:cruise:CD:trim", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:cruise:CD_trim", shape_by_conn=True, val=np.nan
             )
             self.add_input(
-                "data:aerodynamics:aircraft:cruise:CD:compressibility",
+                "data:aerodynamics:aircraft:cruise:CD_compressibility",
                 shape_by_conn=True,
                 val=np.nan,
             )
@@ -116,7 +116,7 @@ class ComputePolar(om.ExplicitComponent):
         if self.options["polar_type"] != PolarType.HIGH_SPEED:
             cl = inputs["data:aerodynamics:aircraft:low_speed:CL"]
             cd0 = inputs["data:aerodynamics:aircraft:low_speed:CD0"]
-            cd_trim = inputs["data:aerodynamics:aircraft:low_speed:CD:trim"]
+            cd_trim = inputs["data:aerodynamics:aircraft:low_speed:CD_trim"]
             cd_c = 0.0
             coef_k = inputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
             if self.options["polar_type"] == PolarType.TAKEOFF:
@@ -134,8 +134,8 @@ class ComputePolar(om.ExplicitComponent):
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
             cl = inputs["data:aerodynamics:aircraft:cruise:CL"]
             cd0 = inputs["data:aerodynamics:aircraft:cruise:CD0"]
-            cd_trim = inputs["data:aerodynamics:aircraft:cruise:CD:trim"]
-            cd_c = inputs["data:aerodynamics:aircraft:cruise:CD:compressibility"]
+            cd_trim = inputs["data:aerodynamics:aircraft:cruise:CD_trim"]
+            cd_c = inputs["data:aerodynamics:aircraft:cruise:CD_compressibility"]
             coef_k = inputs["data:aerodynamics:aircraft:cruise:induced_drag_coefficient"]
             delta_cl_hl = 0.0
             delta_cd_hl = 0.0

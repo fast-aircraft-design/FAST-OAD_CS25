@@ -48,7 +48,7 @@ class CdCompressibility(om.ExplicitComponent):
             val=0.0,
         )
         self.add_output(
-            "data:aerodynamics:aircraft:cruise:CD:compressibility",
+            "data:aerodynamics:aircraft:cruise:CD_compressibility",
             copy_shape="data:aerodynamics:aircraft:cruise:CL",
         )
 
@@ -80,4 +80,4 @@ class CdCompressibility(om.ExplicitComponent):
 
         cd_comp = np.minimum(max_cd_comp, 0.002 * np.exp(42.58 * (m - m_charac_comp)))
 
-        outputs["data:aerodynamics:aircraft:cruise:CD:compressibility"] = cd_comp
+        outputs["data:aerodynamics:aircraft:cruise:CD_compressibility"] = cd_comp

@@ -100,8 +100,12 @@ def test_compute_loads():
 
     n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
     n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
+    n1 = problem['data:mission:sizing:cs25:load_factor_1']
+    n2 = problem['data:mission:sizing:cs25:load_factor_2']
     assert n1m1 == pytest.approx(240968, abs=10)
     assert n2m2 == pytest.approx(254130, abs=10)
+    assert n1 == pytest.approx(3.5, abs=0.01)
+    assert n2 == pytest.approx(3.5, abs=0.01)
 
 
 def test_compute_wing_weight():

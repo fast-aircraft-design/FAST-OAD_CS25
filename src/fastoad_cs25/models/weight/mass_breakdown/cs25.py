@@ -46,8 +46,10 @@ class Loads(ExplicitComponent):
         self.add_input("data:load_case:lc1:Vc_EAS", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc2:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
-        self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="kn")
+        self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
 
+        self.add_output("data:mission:sizing:cs25:load_factor_1")
+        self.add_output("data:mission:sizing:cs25:load_factor_2")
         self.add_output("data:mission:sizing:cs25:sizing_load_1", units="kg")
         self.add_output("data:mission:sizing:cs25:sizing_load_2", units="kg")
 
@@ -104,6 +106,8 @@ class Loads(ExplicitComponent):
         mcv = min(0.8 * mfw, mtow - mzfw)
         n2m2 = n2 * (mtow - 0.55 * mcv)
 
+        outputs["data:mission:sizing:cs25:load_factor_1"] = n1
+        outputs["data:mission:sizing:cs25:load_factor_2"] = n2
         outputs["data:mission:sizing:cs25:sizing_load_1"] = n1m1
         outputs["data:mission:sizing:cs25:sizing_load_2"] = n2m2
 

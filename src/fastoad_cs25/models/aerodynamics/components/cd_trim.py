@@ -32,13 +32,13 @@ class CdTrim(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CL", shape_by_conn=True, val=np.nan
             )
             self.add_output(
-                "data:aerodynamics:aircraft:low_speed:CD:trim",
+                "data:aerodynamics:aircraft:low_speed:CD_trim",
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
             )
         else:
             self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
             self.add_output(
-                "data:aerodynamics:aircraft:cruise:CD:trim",
+                "data:aerodynamics:aircraft:cruise:CD_trim",
                 copy_shape="data:aerodynamics:aircraft:cruise:CL",
             )
 
@@ -57,6 +57,6 @@ class CdTrim(om.ExplicitComponent):
             cd_trim.append(5.89 * pow(10, -4) * cl_val)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:aircraft:low_speed:CD:trim"] = cd_trim
+            outputs["data:aerodynamics:aircraft:low_speed:CD_trim"] = cd_trim
         else:
-            outputs["data:aerodynamics:aircraft:cruise:CD:trim"] = cd_trim
+            outputs["data:aerodynamics:aircraft:cruise:CD_trim"] = cd_trim
