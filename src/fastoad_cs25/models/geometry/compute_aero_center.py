@@ -2,7 +2,7 @@
     Estimation of aerodynamic center
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -41,8 +41,10 @@ class ComputeAeroCenter(om.ExplicitComponent):
         self.add_input(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan)
-        self.add_input("data:aerodynamics:horizontal_tail:cruise:CL_alpha", val=np.nan)
+        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan, units="1/rad")
+        self.add_input(
+            "data:aerodynamics:horizontal_tail:cruise:CL_alpha", val=np.nan, units="1/rad"
+        )
 
         self.add_output("data:aerodynamics:cruise:neutral_point:x")
 

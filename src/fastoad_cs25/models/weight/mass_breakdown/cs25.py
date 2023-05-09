@@ -2,7 +2,7 @@
 Computation of load cases
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -40,7 +40,7 @@ class Loads(ExplicitComponent):
         self.add_input("data:weight:aircraft:MZFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan)
+        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan, units="1/rad")
         self.add_input("data:load_case:lc1:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc1:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc1:Vc_EAS", val=np.nan, units="m/s")

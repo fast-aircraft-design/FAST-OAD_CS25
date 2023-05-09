@@ -2,7 +2,7 @@
 Estimation of vertical tail area
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -30,7 +30,7 @@ class ComputeVTArea(om.ExplicitComponent):
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
         self.add_input("data:aerodynamics:fuselage:cruise:CnBeta", val=np.nan)
-        self.add_input("data:aerodynamics:vertical_tail:cruise:CL_alpha", val=np.nan)
+        self.add_input("data:aerodynamics:vertical_tail:cruise:CL_alpha", val=np.nan, units="1/rad")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")

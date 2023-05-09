@@ -44,9 +44,9 @@ class ComputeCLAlpha(om.ExplicitComponent):
         self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
 
         if self.options["low_speed_aero"]:
-            self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha")
+            self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha", units="1/rad")
         else:
-            self.add_output("data:aerodynamics:aircraft:cruise:CL_alpha")
+            self.add_output("data:aerodynamics:aircraft:cruise:CL_alpha", units="1/rad")
 
     def setup_partials(self):
         if self.options["low_speed_aero"]:
