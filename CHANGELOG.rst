@@ -3,6 +3,20 @@ Changelog
 =========
 
 
+Version 0.3.0
+=============
+Changed:
+
+- OpenMDAO 3.18+ is now required. (#18)
+- Submodels have been introduced in module "fastoad.loop.wing_area". (#7)
+- Load factors are now explicitly in output data. (#23)
+
+Fixed:
+
+- Unit of variable "data:weight:aircraft:additional_fuel_capacity" has been corrected to "kg". (#18)
+- Unit of "*:CL_alpha" variables is now consistently "1/rad". (#21)
+- Unit for "data:load_case:lc2:Vc_EAS" has been corrected to "m/s". (#23)
+
 Version 0.2.0
 =============
 Added:
