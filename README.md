@@ -23,7 +23,7 @@ You can run FAST-OAD-CS25 notebooks **without installation** using our
 Install
 -------
 
-**Prerequisite**:FAST-OAD needs at least **Python 3.7.0**.
+**Prerequisite**:FAST-OAD needs at least **Python 3.8.0**.
 
 It is recommended (but not required) to do the install in a virtual
 environment ([conda](https://docs.conda.io/en/latest/),
