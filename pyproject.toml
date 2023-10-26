@@ -43,12 +43,12 @@ classifiers = [
 # the commit fail because "files were modified by this hook". In that case,
 # doing again the commit including changes in docs/requirements.txt will succeed.
 python = "^3.8"
-fast-oad-core = "^1.4.2"
+fast-oad-core = {git = "https://github.com/fast-aircraft-design/fast-oad.git", rev = "mission-segment-update"}
 openmdao = "^3.18"
 numpy = "^1.22.0"
 scipy = "^1.9.3"
 pandas = "^1.3.4"
-stdatm = "0.*"
+stdatm = {git = "https://github.com/fast-aircraft-design/StdAtm.git", rev = "delta_t_as_sequence"}
 pyparsing = "^3.0.0"  # needed, but not declared as required, by OpenMDAO for file_wrap utility.
 
 [tool.poetry.group.dev.dependencies]

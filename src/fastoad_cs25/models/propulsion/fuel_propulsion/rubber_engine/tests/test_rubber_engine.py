@@ -68,6 +68,7 @@ def test_compute_flight_points():
     flight_points["thrust_is_regulated"] = [False] * 5 + [True] * 5
     flight_points["thrust_rate"] = thrust_rates + [0.0] * 5
     flight_points["thrust"] = [0.0] * 5 + thrusts
+    flight_points["isa_offset"] = [0.0] * 10
     engine.compute_flight_points(flight_points)
     np.testing.assert_allclose(flight_points.sfc, expected_sfc + expected_sfc, rtol=1e-4)
     np.testing.assert_allclose(flight_points.thrust_rate, thrust_rates + thrust_rates, rtol=1e-4)

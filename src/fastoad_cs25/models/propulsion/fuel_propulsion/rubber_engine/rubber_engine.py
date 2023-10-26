@@ -113,6 +113,7 @@ class RubberEngine(AbstractFuelPropulsion):
             flight_points.mach,
             flight_points.altitude,
             self._get_delta_t4(flight_points.engine_setting),
+            flight_points.isa_offset,
             flight_points.thrust_is_regulated,
             flight_points.thrust_rate,
             flight_points.thrust,
@@ -141,6 +142,7 @@ class RubberEngine(AbstractFuelPropulsion):
         mach: Union[float, Sequence],
         altitude: Union[float, Sequence],
         delta_t4: Union[float, Sequence],
+        isa_offset: Union[float, Sequence] = 0,
         thrust_is_regulated: Optional[Union[bool, Sequence]] = None,
         thrust_rate: Optional[Union[float, Sequence]] = None,
         thrust: Optional[Union[float, Sequence]] = None,
@@ -154,6 +156,7 @@ class RubberEngine(AbstractFuelPropulsion):
         :param altitude: (unit=m) altitude w.r.t. to sea level
         :param delta_t4: (unit=K) difference between operational and design values of
                          turbine inlet temperature in K
+        :param isa_offset: (unit=degK) temperature difference from isa conditions
         :param thrust_is_regulated: tells if thrust_rate or thrust should be used (works
                                     element-wise)
         :param thrust_rate: thrust rate (unit=none)
@@ -163,6 +166,7 @@ class RubberEngine(AbstractFuelPropulsion):
         mach = np.asarray(mach)
         altitude = np.asarray(altitude)
         delta_t4 = np.asarray(delta_t4)
+        isa_offset = np.asarray(isa_offset)
 
         if thrust_is_regulated is not None:
             thrust_is_regulated = np.asarray(np.round(thrust_is_regulated, 0), dtype=bool)
@@ -175,7 +179,7 @@ class RubberEngine(AbstractFuelPropulsion):
         thrust_rate = np.asarray(thrust_rate)
         thrust = np.asarray(thrust)
 
-        atmosphere = Atmosphere(altitude, altitude_in_feet=False)
+        atmosphere = Atmosphere(altitude, delta_t=isa_offset, altitude_in_feet=False)
 
         max_thrust = self.max_thrust(atmosphere, mach, delta_t4)
 
