@@ -38,6 +38,16 @@ jobs:
           pip install pytest pytest-cov nbval
         shell: bash
 
+      - name: List installed packages
+        # List packages and versions for postmortem analysis.
+        run: pip list --format=freeze | tee requirements.txt
+        shell: bash
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pip package list
+          path: requirements.txt
+
       - name: Unit tests
         run: pytest --no-cov src
         shell: bash
