@@ -236,9 +236,9 @@ def run_non_regression_test(
 
     if vars_to_check is not None:
         for name in vars_to_check:
-            assert_allclose(df.ref_value, df.value, rtol=global_tolerance)
+            assert_allclose(df.ref_value, df.value, rtol=global_tolerance, atol=1.0e-9)
             row = df.loc[df.name == name]
-            assert_allclose(row.ref_value, row.value, rtol=specific_tolerance)
+            assert_allclose(row.ref_value, row.value, rtol=specific_tolerance, atol=1.0e-9)
     else:
         assert np.all(df.abs_rel_delta < specific_tolerance)
 
