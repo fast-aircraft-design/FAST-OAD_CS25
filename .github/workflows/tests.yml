@@ -18,13 +18,13 @@ jobs:
         os: [ ubuntu-20.04, windows-latest, macos-latest ] # On 2023/07/04, pytest completely stalls on ubuntu-latest, except with Python 3.10
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install poetry
         run: pipx install poetry==1.3.2
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
@@ -54,18 +54,14 @@ jobs:
           coverage-reports: coverage.xml
 
       - name: Publish code coverage on Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         if: ${{ runner.os == 'Windows' && matrix.python-version == '3.9' }} # Using Windows for covering XFOIL calls
         with:
           #          flags: unittests  # optional
-          name: codecov-FAST-OAD  # optional
+          name: codecov-FAST-OAD-CS25  # optional
           fail_ci_if_error: false  # optional (default = false)
-
-      - name: Publish code coverage on Code Climate
-        uses: paambaati/codeclimate-action@v3.0.0
-        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.9' }} # This action runs only on Linux
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.codeclimate }}
+          CODECOV_TOKEN: 96682349-afc0-4b88-8ab5-5aa10d8d0d84
 
       - name: Integration tests
         run: poetry run pytest --no-cov tests/integration_tests
