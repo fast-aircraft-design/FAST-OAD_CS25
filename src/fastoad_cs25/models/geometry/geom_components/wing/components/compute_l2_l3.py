@@ -3,7 +3,7 @@
 """
 
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +26,8 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
+        self.add_input("data:geometry:wing:sweep_100_inner", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:root:virtual_chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
@@ -50,6 +51,7 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
                 "data:geometry:wing:span",
                 "data:geometry:fuselage:maximum_width",
                 "data:geometry:wing:sweep_25",
+                "data:geometry:wing:sweep_100_inner",
             ],
             method="fd",
         )
@@ -75,12 +77,14 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
         width_max = inputs["data:geometry:fuselage:maximum_width"]
         virtual_taper_ratio = inputs["data:geometry:wing:virtual_taper_ratio"]
         sweep_25 = inputs["data:geometry:wing:sweep_25"]
+        sweep_100 = inputs["data:geometry:wing:sweep_100_inner"]
 
         if y3_wing <= y2_wing:
             l2_wing = l3_wing = l1_wing
         else:
             l2_wing = l1_wing + (y3_wing - y2_wing) * (
-                math.tan(sweep_25 / 180.0 * math.pi)
+                math.tan(sweep_25)
+                - math.tan(sweep_100)
                 - 3.0 / 2.0 * (1.0 - virtual_taper_ratio) / (span - width_max) * l1_wing
             )
 
