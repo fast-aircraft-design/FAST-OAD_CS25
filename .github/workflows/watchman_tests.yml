@@ -32,10 +32,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install # installing pytest-cov is needed because of pytest settings in pyproject.toml
+      - name: Install
+        # Installing pytest-cov is needed because of pytest settings in pyproject.toml
+        # Note: nbval 0.10 incompatible with pytest 8.1
         run: |
           pip install .
-          pip install pytest pytest-cov nbval
+          pip install pytest==8.0.2 pytest-cov nbval
         shell: bash
 
       - name: List installed packages
