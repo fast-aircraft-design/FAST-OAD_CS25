@@ -1,6 +1,6 @@
 """Convenience module for computing leading edge X positions of wing chords."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -29,7 +29,7 @@ class ChordGlobalPositions(om.Group):
         # AddSubtractComp does not allow to set default values of inputs and we do not
         # manage value discrepancies at global level, so we need to do it here, hence
         # the need for the current group.
-        for chord_id in ["center", "kink", "tip"]:
+        for chord_id in ["kink", "tip"]:
             self.set_input_defaults(
                 f"data:geometry:wing:{chord_id}:leading_edge:x:local", val=np.nan, units="m"
             )
@@ -57,7 +57,7 @@ class ComputeChordGlobalPositions(om.AddSubtractComp):
             units="m",
         )
 
-        for chord_id in ["center", "kink", "tip"]:
+        for chord_id in ["kink", "tip"]:
             self.add_equation(
                 f"data:geometry:wing:{chord_id}:leading_edge:x",
                 [

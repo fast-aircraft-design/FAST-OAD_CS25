@@ -41,6 +41,8 @@ model:
       id: fastoad.handling_qualities.static_margin
     wing_position:
       id: fastoad.loop.wing_position
+    chord_global_positions:
+      id: fastoad.geometry.global_chord_positions
     aerodynamics_highspeed:
       id: fastoad.aerodynamics.highspeed.legacy
     aerodynamics_lowspeed:
