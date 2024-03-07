@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -51,18 +51,34 @@ def test_geometry_wing_l1_l4():
     """Tests computation of the wing chords (l1 and l4)"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
 
     problem = run_system(ComputeL1AndL4Wing(), input_vars)
 
     wing_l1 = problem["data:geometry:wing:root:virtual_chord"]
-    assert wing_l1 == pytest.approx(4.953, abs=1e-3)
+    assert wing_l1 == pytest.approx(4.952, abs=1e-3)
+    wing_l4 = problem["data:geometry:wing:tip:chord"]
+    assert wing_l4 == pytest.approx(1.882, abs=1e-3)
+
+    # With non-zero inner trailing edge sweep angle
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:area", 114.011, units="m**2")
+    input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:sweep_100_inner", 16.7, units="deg")
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
+
+    problem = run_system(ComputeL1AndL4Wing(), input_vars)
+
+    wing_l1 = problem["data:geometry:wing:root:virtual_chord"]
+    assert wing_l1 == pytest.approx(4.952, abs=1e-3)
     wing_l4 = problem["data:geometry:wing:tip:chord"]
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
 
@@ -74,6 +90,7 @@ def test_geometry_wing_l2_l3():
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:sweep_100_inner", 0.0, units="deg")
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
@@ -94,6 +111,7 @@ def test_geometry_wing_l2_l3():
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
+    input_vars.add_output("data:geometry:wing:sweep_100_inner", -150.0, units="deg")  # unused
     input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
     input_vars.add_output("data:geometry:wing:kink:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
@@ -151,7 +169,7 @@ def test_geometry_wing_sweep():
     """Tests computation of the wing sweeps"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
     input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")

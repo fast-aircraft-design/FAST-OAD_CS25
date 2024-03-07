@@ -3,7 +3,7 @@
 """
 
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -37,6 +37,12 @@ class ComputeWingGeometry(om.Group):
     """Wing geometry estimation"""
 
     def setup(self):
+        # These solvers are needed because sweep angle of inner trailing edge depends
+        # on sweep angle of outer trailing edge, that depends on (virtual) root chord,
+        # that depend on sweep angle of inner trailing edge.
+        self.nonlinear_solver = om.NonlinearBlockGS()
+        self.linear_solver = om.DirectSolver()
+
         self.add_subsystem("y_wing", ComputeYWing(), promotes=["*"])
         self.add_subsystem("l14_wing", ComputeL1AndL4Wing(), promotes=["*"])
         self.add_subsystem("l2l3_wing", ComputeL2AndL3Wing(), promotes=["*"])
