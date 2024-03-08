@@ -14,8 +14,6 @@ test module for wing area computation
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os.path as pth
-
 import openmdao.api as om
 import pytest
 from fastoad._utils.testing import run_system
@@ -23,8 +21,6 @@ from numpy.testing import assert_allclose
 from openmdao.utils.assert_utils import assert_check_partials
 
 from ..compute_wing_area import ComputeWingArea
-
-DATA_FOLDER_PATH = pth.join(pth.dirname(__file__), "data")
 
 
 @pytest.fixture(scope="session")
@@ -62,6 +58,60 @@ def test_compute_wing_area(base_ivc):
     assert_allclose(problem["data:geometry:wing:area"], 124.38, atol=1e-2)
     assert_allclose(
         problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], 0.0, atol=1e-2
+    )
+    assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 6000.0, atol=1.0)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-4)
+
+
+def test_compute_wing_area_using_only_approach_speed(base_ivc):
+    # Driven by fuel ===========================================================
+    problem = run_system(ComputeWingArea(use_fuel=False), base_ivc)
+
+    assert_allclose(problem["data:geometry:wing:area"], 124.38, atol=1e-2)
+    assert_allclose(
+        problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], 0.0, atol=1e-2
+    )
+    assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 500.0, atol=1.0)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-4)
+
+    # Driven by CL max =========================================================
+    problem.set_val("data:weight:aircraft:sizing_block_fuel", val=30000, units="kg")
+    problem.run_model()
+
+    assert_allclose(problem["data:geometry:wing:area"], 124.38, atol=1e-2)
+    assert_allclose(
+        problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], 0.0, atol=1e-2
+    )
+    assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], -9000.0, atol=1.0)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-4)
+
+
+def test_compute_wing_area_using_only_fuel(base_ivc):
+    # Driven by fuel ===========================================================
+    problem = run_system(ComputeWingArea(use_approach_speed=False), base_ivc)
+
+    assert_allclose(problem["data:geometry:wing:area"], 133.97, atol=1e-2)
+    assert_allclose(
+        problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], 0.199, atol=1e-2
+    )
+    assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 500.0, atol=1.0)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-4)
+
+    # Driven by CL max =========================================================
+    problem.set_val("data:weight:aircraft:sizing_block_fuel", val=15000, units="kg")
+    problem.run_model()
+
+    assert_allclose(problem["data:geometry:wing:area"], 106.57, atol=1e-2)
+    assert_allclose(
+        problem["data:aerodynamics:aircraft:landing:additional_CL_capacity"], -0.47, atol=1e-2
     )
     assert_allclose(problem["data:weight:aircraft:additional_fuel_capacity"], 6000.0, atol=1.0)
 

@@ -2,7 +2,7 @@
 Computation of wing area
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +20,10 @@ from fastoad.module_management.constants import ModelDomain
 from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
 from .constants import (
-    SERVICE_WING_AREA_LOOP_GEOM,
-    SERVICE_WING_AREA_LOOP_AERO,
-    SERVICE_WING_AREA_CONSTRAINT_GEOM,
     SERVICE_WING_AREA_CONSTRAINT_AERO,
+    SERVICE_WING_AREA_CONSTRAINT_GEOM,
+    SERVICE_WING_AREA_LOOP_AERO,
+    SERVICE_WING_AREA_LOOP_GEOM,
 )
 
 
@@ -35,22 +35,37 @@ class ComputeWingArea(om.Group):
       - being able to load enough fuel to achieve the sizing mission
     """
 
+    def initialize(self):
+        super().initialize()
+        self.options.declare("use_fuel", default=True, types=bool)
+        self.options.declare("use_approach_speed", default=True, types=bool)
+
     def setup(self):
-        self.add_subsystem(
-            "wing_area_geom",
-            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_GEOM),
-            promotes_inputs=["*"],
-            promotes_outputs=[],
-        )
-        self.add_subsystem(
-            "wing_area_aero",
-            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_AERO),
-            promotes_inputs=["*"],
-            promotes_outputs=[],
-        )
-        self.add_subsystem(
-            "wing_area", _ComputeWingArea(), promotes_inputs=[], promotes_outputs=["*"]
-        )
+        if self.options["use_fuel"]:
+            self.add_subsystem(
+                "wing_area_geom",
+                RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_GEOM),
+                promotes_inputs=["*"],
+                promotes_outputs=[],
+            )
+            self.connect("wing_area_geom.wing_area:geom", "wing_area.wing_area:geom")
+
+        if self.options["use_approach_speed"]:
+            self.add_subsystem(
+                "wing_area_aero",
+                RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_AERO),
+                promotes_inputs=["*"],
+                promotes_outputs=[],
+            )
+            self.connect("wing_area_aero.wing_area:aero", "wing_area.wing_area:aero")
+
+        if self.options["use_fuel"] or self.options["use_approach_speed"]:
+            self.add_subsystem(
+                "wing_area",
+                _ComputeWingArea(),
+                promotes_inputs=[],
+                promotes_outputs=["*"],
+            )
         self.add_subsystem(
             "geom_constraint",
             RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_GEOM),
@@ -62,9 +77,6 @@ class ComputeWingArea(om.Group):
             promotes=["*"],
         )
 
-        self.connect("wing_area_geom.wing_area:geom", "wing_area.wing_area:geom")
-        self.connect("wing_area_aero.wing_area:aero", "wing_area.wing_area:aero")
-
 
 class _ComputeWingArea(om.ExplicitComponent):
     """
@@ -73,8 +85,8 @@ class _ComputeWingArea(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("wing_area:aero", units="m**2", val=np.nan)
-        self.add_input("wing_area:geom", units="m**2", val=np.nan)
+        self.add_input("wing_area:aero", units="m**2", val=0.0)
+        self.add_input("wing_area:geom", units="m**2", val=0.0)
 
         self.add_output("data:geometry:wing:area", val=100.0, units="m**2")
 
