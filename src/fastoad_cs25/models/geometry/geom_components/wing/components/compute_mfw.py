@@ -2,7 +2,7 @@
     Estimation of max fuel weight
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -13,11 +13,16 @@
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 
+from ..constants import SERVICE_WING_GEOMETRY_MFW
+
 
 # TODO: This belongs more to mass breakdown than geometry
+@oad.RegisterSubmodel(SERVICE_WING_GEOMETRY_MFW, "fastoad.submodel.geometry.wing.mfw.legacy")
 class ComputeMFW(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Max fuel weight estimation"""
