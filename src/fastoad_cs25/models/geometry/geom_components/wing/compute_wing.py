@@ -1,7 +1,6 @@
 """
-    Estimation of wing geometry
+Estimation of wing geometry
 """
-
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -18,38 +17,39 @@
 import fastoad.api as oad
 import openmdao.api as om
 
-from .components.compute_b_50 import ComputeB50
-from .components.compute_l1_l4 import ComputeL1AndL4Wing
-from .components.compute_l2_l3 import ComputeL2AndL3Wing
-from .components.compute_mac_wing import ComputeMACWing
-from .components.compute_mfw import ComputeMFW
-from .components.compute_sweep_wing import ComputeSweepWing
-from .components.compute_toc_wing import ComputeToCWing
-from .components.compute_wet_area_wing import ComputeWetAreaWing
-from .components.compute_x_wing import ComputeXWing
-from .components.compute_y_wing import ComputeYWing
+from .constants import (
+    SERVICE_WING_GEOMETRY_MFW,
+    SERVICE_WING_GEOMETRY_PLANFORM,
+    SERVICE_WING_GEOMETRY_THICKNESS,
+    SERVICE_WING_GEOMETRY_WET_AREA,
+)
 from ...constants import SERVICE_WING_GEOMETRY
 
 
 @oad.RegisterSubmodel(SERVICE_WING_GEOMETRY, "fastoad.submodel.geometry.wing.legacy")
 class ComputeWingGeometry(om.Group):
-    # TODO: Document equations. Cite sources
     """Wing geometry estimation"""
 
-    def setup(self):
-        # These solvers are needed because sweep angle of inner trailing edge depends
-        # on sweep angle of outer trailing edge, that depends on (virtual) root chord,
-        # that depend on sweep angle of inner trailing edge.
-        self.nonlinear_solver = om.NonlinearBlockGS()
-        self.linear_solver = om.DirectSolver()
+    def initialize(self):
+        self.options.declare("compute_thicknesses", types=bool, default=True)
 
-        self.add_subsystem("y_wing", ComputeYWing(), promotes=["*"])
-        self.add_subsystem("l14_wing", ComputeL1AndL4Wing(), promotes=["*"])
-        self.add_subsystem("l2l3_wing", ComputeL2AndL3Wing(), promotes=["*"])
-        self.add_subsystem("x_wing", ComputeXWing(), promotes=["*"])
-        self.add_subsystem("mac_wing", ComputeMACWing(), promotes=["*"])
-        self.add_subsystem("b50_wing", ComputeB50(), promotes=["*"])
-        self.add_subsystem("sweep_wing", ComputeSweepWing(), promotes=["*"])
-        self.add_subsystem("toc_wing", ComputeToCWing(), promotes=["*"])
-        self.add_subsystem("wetarea_wing", ComputeWetAreaWing(), promotes=["*"])
-        self.add_subsystem("mfw", ComputeMFW(), promotes=["*"])
+    def setup(self):
+        self.add_subsystem(
+            "y_wing",
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_PLANFORM),
+            promotes=["*"],
+        )
+        if self.options["compute_thicknesses"]:
+            self.add_subsystem(
+                "toc_wing",
+                oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_THICKNESS),
+                promotes=["*"],
+            )
+        self.add_subsystem(
+            "wetarea_wing",
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_WET_AREA),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "mfw", oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_MFW), promotes=["*"]
+        )
