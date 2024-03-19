@@ -61,7 +61,15 @@ class ComputeChordGlobalPositions(om.AddSubtractComp):
             scaling_factors=[1.0, -1.0, -0.25],
             units="m",
         )
-
+        self.add_equation(
+            "data:geometry:wing:MAC:leading_edge:x",
+            [
+                "data:geometry:wing:MAC:at25percent:x",
+                "data:geometry:wing:MAC:length",
+            ],
+            scaling_factors=[1.0, -0.25],
+            units="m",
+        )
         for chord_id in ["kink", "tip"]:
             self.add_equation(
                 f"data:geometry:wing:{chord_id}:leading_edge:x",
