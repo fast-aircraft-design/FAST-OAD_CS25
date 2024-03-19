@@ -12,7 +12,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-SERVICE_WING_GEOMETRY_PLANFORM = "service.geometry.wing.y_positions"
+SERVICE_WING_GEOMETRY_PLANFORM = "service.geometry.wing.planform"
+SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS = "service.geometry.wing.global_positions"
 SERVICE_WING_GEOMETRY_THICKNESS = "service.geometry.wing.thickness"
 SERVICE_WING_GEOMETRY_WET_AREA = "service.geometry.wing.wet_area"
 SERVICE_WING_GEOMETRY_MFW = "service.geometry.wing.mfw"

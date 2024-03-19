@@ -16,8 +16,13 @@ import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 
+from .constants import SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS
 
-@oad.RegisterOpenMDAOSystem("fastoad.geometry.global_chord_positions")
+
+@oad.RegisterSubmodel(
+    SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
+    "fastoad.submodel.geometry.wing.global_chord_positions.legacy",
+)
 class ChordGlobalPositions(om.Group):
     """
     Computes leading edge X positions of wing chords (oot, kink, tip) with respect to aircraft nose.
