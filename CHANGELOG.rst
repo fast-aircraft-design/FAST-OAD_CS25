@@ -7,6 +7,19 @@ Version 0.3.0
 =============
 Changed:
 
+- FAST-OAD-CS25 is now officially compatible with Python 3.10. Support of Python 3.7 has been abandoned. (#26)
+- Trailing edge of wing inner part can now have a non-zero sweep angle.(#27)
+- Now the criteria for computation of wing can be controlled through options. (#29)
+- Computation of wing geometry now uses sub-models and has now an option for (de)activating the computation of wing thickness. (#29)
+
+Fixed:
+- Fixed component for computing global positions of wing chords, which is now a sub-model of geometry module (#28)
+
+
+Version 0.3.0
+=============
+Changed:
+
 - OpenMDAO 3.18+ is now required. (#18)
 - Submodels have been introduced in module "fastoad.loop.wing_area". (#7)
 - Load factors are now explicitly in output data. (#23)
