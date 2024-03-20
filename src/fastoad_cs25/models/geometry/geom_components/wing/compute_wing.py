@@ -22,6 +22,7 @@ from .constants import (
     SERVICE_WING_GEOMETRY_PLANFORM,
     SERVICE_WING_GEOMETRY_THICKNESS,
     SERVICE_WING_GEOMETRY_WET_AREA,
+    SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
 )
 from ...constants import SERVICE_WING_GEOMETRY
 
@@ -35,8 +36,13 @@ class ComputeWingGeometry(om.Group):
 
     def setup(self):
         self.add_subsystem(
-            "y_wing",
+            "planform",
             oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_PLANFORM),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "global_positions",
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS),
             promotes=["*"],
         )
         if self.options["compute_thicknesses"]:

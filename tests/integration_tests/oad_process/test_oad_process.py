@@ -2,7 +2,7 @@
 Test module for Overall Aircraft Design process
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -38,6 +38,16 @@ from tests import root_folder_path
 DATA_FOLDER_PATH = pth.join(pth.dirname(__file__), "data")
 RESULTS_FOLDER_PATH = pth.join(pth.dirname(__file__), "results")
 
+TUTO_REF_DATA = pth.join(
+    root_folder_path,
+    "src",
+    "fastoad_cs25",
+    "notebooks",
+    "01_tutorial",
+    "data",
+    "CeRAS01_baseline.xml",
+)
+
 
 @pytest.fixture(scope="module")
 def cleanup():
@@ -67,6 +77,17 @@ def test_oad_process(cleanup):
         problem, outfile=pth.join(RESULTS_FOLDER_PATH, "connections.html"), show_browser=False
     )
     om.n2(problem, outfile=pth.join(RESULTS_FOLDER_PATH, "n2.html"), show_browser=False)
+
+    # Check that weight-performances loop correctly converged
+    _check_weight_performance_loop(problem)
+
+
+def test_base_configuration_file(cleanup):
+    results_folder_path = pth.join(RESULTS_FOLDER_PATH, "base_conf_file")
+    configuration_file_path = pth.join(results_folder_path, "base_conf.yml")
+    api.generate_configuration_file(configuration_file_path, overwrite=True)
+    api.generate_inputs(configuration_file_path, TUTO_REF_DATA, overwrite=True)
+    problem = api.evaluate_problem(configuration_file_path)
 
     # Check that weight-performances loop correctly converged
     _check_weight_performance_loop(problem)
@@ -231,16 +252,7 @@ def test_api_eval_breguet(cleanup):
 
     # Generation of inputs ----------------------------------------------------
     # We get the same inputs as in tutorial notebook
-    source_xml = pth.join(
-        root_folder_path,
-        "src",
-        "fastoad_cs25",
-        "notebooks",
-        "01_tutorial",
-        "data",
-        "CeRAS01_baseline.xml",
-    )
-    api.generate_inputs(configuration_file_path, source_xml, overwrite=True)
+    api.generate_inputs(configuration_file_path, TUTO_REF_DATA, overwrite=True)
 
     # Run model ---------------------------------------------------------------
     problem = api.evaluate_problem(configuration_file_path, True)
