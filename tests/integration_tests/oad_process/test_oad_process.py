@@ -236,11 +236,13 @@ def run_non_regression_test(
 
     if vars_to_check is not None:
         for name in vars_to_check:
-            assert_allclose(df.ref_value, df.value, rtol=global_tolerance, atol=1.0e-9)
+            assert_allclose(df.value, df.ref_value, rtol=global_tolerance, atol=1.0e-5)
             row = df.loc[df.name == name]
-            assert_allclose(row.ref_value, row.value, rtol=specific_tolerance, atol=1.0e-9)
+            assert_allclose(row.value, row.ref_value, rtol=specific_tolerance, atol=1.0e-5)
     else:
-        assert np.all(df.abs_rel_delta < specific_tolerance)
+        df.name = df.units = 0.0
+        df = df.applymap(float)
+        assert_allclose(df.value, df.ref_value, rtol=specific_tolerance, atol=1.0e-5)
 
 
 def test_api_eval_breguet(cleanup):

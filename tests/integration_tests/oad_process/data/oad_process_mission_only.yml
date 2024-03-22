@@ -23,3 +23,9 @@ model:
         out_file: ./flight_points.csv
         use_initializer_iteration: false
         adjust_fuel: false
+
+
+model_options:
+  "*":
+    use_inner_solver: false
+
