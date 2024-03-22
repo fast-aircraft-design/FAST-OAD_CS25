@@ -2,7 +2,7 @@
     FAST - Copyright (c) 2016 ONERA ISAE
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
@@ -33,11 +34,11 @@ from ..constants import SERVICE_CENTERS_OF_GRAVITY
 
 
 @RegisterSubmodel(SERVICE_CENTERS_OF_GRAVITY, "fastoad.submodel.weight.cg.legacy")
-class CG(om.Group):
+class CG(oad.CycleGroup):
     """Model that computes the global center of gravity"""
 
     def setup(self):
-
+        super().setup()
         self.add_subsystem(
             "ht_cg", RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_CG), promotes=["*"]
         )
@@ -67,14 +68,6 @@ class CG(om.Group):
         self.add_subsystem(
             "aircraft", RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_CG), promotes=["*"]
         )
-
-        # Solvers setup
-        self.nonlinear_solver = om.NonlinearBlockGS()
-        self.nonlinear_solver.options["iprint"] = 0
-        self.nonlinear_solver.options["maxiter"] = 200
-
-        self.linear_solver = om.LinearBlockGS()
-        self.linear_solver.options["iprint"] = 0
 
 
 @RegisterSubmodel(SERVICE_AIRCRAFT_CG, "fastoad.submodel.weight.cg.aircraft.legacy")
