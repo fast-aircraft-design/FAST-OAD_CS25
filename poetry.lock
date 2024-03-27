@@ -555,13 +555,13 @@ files = [
 
 [[package]]
 name = "fast-oad-core"
-version = "1.6.0"
+version = "1.7.1"
 description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "fast_oad_core-1.6.0-py3-none-any.whl", hash = "sha256:8c8c16576fed3037b2506982f7ec248e6daceb81731da20700a332ed13fcc6dd"},
-    {file = "fast_oad_core-1.6.0.tar.gz", hash = "sha256:8572daaac2d7393aadd119502664411bcbbfa0ec918147740940618a66a9455a"},
+    {file = "fast_oad_core-1.7.1-py3-none-any.whl", hash = "sha256:4aa0f9515ca122cb3233f2a2a268dd8879177084d381b29bfd5fcea334e0c731"},
+    {file = "fast_oad_core-1.7.1.tar.gz", hash = "sha256:e437726798d7afd17c8c3e889b832b78cf923af7d2f3d754fad28c43cbb0084c"},
 ]
 
 [package.dependencies]
@@ -578,7 +578,7 @@ jupyterlab = ">=3.3.0,<4.0.0"
 lxml = ">=4.6.5,<5.0.0"
 notebook = ">=6.0,<7.0"
 numpy = ">=1.22.0,<2.0.0"
-openmdao = ">=3.18,<4.0"
+openmdao = ">=3.27,<4.0"
 pandas = ">=1.3.4,<2.0.0"
 plotly = ">=5.0.0,<6.0.0"
 pyDOE2 = ">=1.3.0,<2.0.0"
@@ -1573,27 +1573,27 @@ files = [
 
 [[package]]
 name = "openmdao"
-version = "3.18.0"
+version = "3.27.0"
 description = "OpenMDAO framework infrastructure"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "openmdao-3.18.0.tar.gz", hash = "sha256:1baccd656a21cc7faab40d92f23efcdae9a68b27f4bd6938ab978137f13d6598"},
+    {file = "openmdao-3.27.0.tar.gz", hash = "sha256:5b3cfb5947a4465ef78f3c1f439f8546324fef77ea7aa6beaf5dd0100f827958"},
 ]
 
 [package.dependencies]
 networkx = ">=2.0"
 numpy = "*"
-pyDOE2 = "*"
-pyparsing = "*"
+packaging = "*"
 requests = "*"
 scipy = "*"
 
 [package.extras]
-all = ["aiounittest", "bokeh (>=1.3.4)", "colorama", "ipympl", "ipyparallel", "ipython", "ipywidgets (>=7.6.5)", "jupyter", "jupyter-book", "jupyter-sphinx", "matplotlib", "nbconvert", "notebook", "num2words", "numpydoc (>=1.1)", "parameterized", "playwright (>=1.20)", "pycodestyle (>=2.4.0)", "pydocstyle (==2.0.0)", "sphinx-sitemap", "tabulate", "testflo", "testflo (>=1.3.6)", "websockets (>8)"]
-docs = ["ipyparallel", "jupyter", "jupyter-book", "jupyter-sphinx", "matplotlib", "nbconvert", "numpydoc (>=1.1)", "sphinx-sitemap", "tabulate", "testflo"]
-notebooks = ["ipympl", "ipython", "ipywidgets (>=7.6.5)", "notebook", "tabulate"]
-test = ["aiounittest", "num2words", "numpydoc (>=1.1)", "parameterized", "playwright (>=1.20)", "pycodestyle (>=2.4.0)", "pydocstyle (==2.0.0)", "testflo (>=1.3.6)", "websockets (>8)"]
+all = ["aiounittest", "bokeh (>=1.3.4)", "colorama", "ipympl", "ipyparallel", "jupyter-book (==0.14)", "matplotlib", "notebook", "num2words", "numpydoc (>=1.1)", "parameterized", "playwright (>=1.20)", "pyDOE2", "pycodestyle (>=2.4.0)", "pydocstyle (>=2.0.0)", "sphinx-sitemap", "testflo (>=1.3.6)", "websockets (>8)"]
+docs = ["ipyparallel", "jupyter-book (==0.14)", "matplotlib", "numpydoc (>=1.1)", "sphinx-sitemap"]
+doe = ["pyDOE2"]
+notebooks = ["ipympl", "notebook"]
+test = ["aiounittest", "num2words", "numpydoc (>=1.1)", "parameterized", "playwright (>=1.20)", "pycodestyle (>=2.4.0)", "pydocstyle (>=2.0.0)", "testflo (>=1.3.6)", "websockets (>8)"]
 visualization = ["bokeh (>=1.3.4)", "colorama", "matplotlib"]
 
 [[package]]
@@ -2955,4 +2955,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "b9af4cafd81271c3b78f8fc36635d735f6c1e7499b68993cc581bada7fc998a0"
+content-hash = "2fbb0aefdd07cbeaaffb6e0a090c10e49b2eb011bece4748f7d6aeb7ffd62ba4"

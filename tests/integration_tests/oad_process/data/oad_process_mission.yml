@@ -40,3 +40,9 @@ model:
         is_sizing: true
   wing_area:
     id: fastoad.loop.wing_area
+
+
+model_options:
+  "*":
+    use_inner_solver: false
+

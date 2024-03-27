@@ -15,7 +15,6 @@ Submodel for computing wing planform.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import fastoad.api as oad
-import openmdao.api as om
 
 from .compute_b_50 import ComputeB50
 from .compute_l1_l4 import ComputeL1AndL4Wing
@@ -30,16 +29,11 @@ from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 @oad.RegisterSubmodel(
     SERVICE_WING_GEOMETRY_PLANFORM, "fastoad.submodel.geometry.wing.planform.legacy"
 )
-class ComputeWingGeometry(om.Group):
+class ComputeWingGeometry(oad.CycleGroup):
     """Computation of wing planform"""
 
     def setup(self):
-        # These solvers are needed because sweep angle of inner trailing edge depends
-        # on sweep angle of outer trailing edge, that depends on (virtual) root chord,
-        # that depend on sweep angle of inner trailing edge.
-        self.nonlinear_solver = om.NonlinearBlockGS()
-        self.linear_solver = om.DirectSolver()
-
+        super().setup()
         self.add_subsystem("y_wing", ComputeYWing(), promotes=["*"])
         self.add_subsystem("l14_wing", ComputeL1AndL4Wing(), promotes=["*"])
         self.add_subsystem("l2l3_wing", ComputeL2AndL3Wing(), promotes=["*"])

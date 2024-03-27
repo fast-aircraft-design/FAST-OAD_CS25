@@ -61,6 +61,10 @@ model:
   wing_area:
     id: fastoad.loop.wing_area
 
+model_options:
+  "*":
+    use_inner_solver: false
+
 optimization: # This section is needed only if optimization process is run
   design_variables:
     - name: data:geometry:wing:aspect_ratio
