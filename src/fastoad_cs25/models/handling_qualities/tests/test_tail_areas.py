@@ -46,6 +46,12 @@ def test_compute_ht_area(input_xml):
         "data:weight:airframe:landing_gear:front:CG:x",
         "data:weight:aircraft:MTOW",
         "settings:weight:aircraft:CG:range",
+        "data:geometry:vertical_tail:tip:chord",
+        "data:geometry:vertical_tail:span",
+        "data:geometry:vertical_tail:sweep_0",
+        "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
+        "data:geometry:vertical_tail:MAC:at25percent:x:local",
+        "data:geometry:horizontal_tail:MAC:at25percent:x:local",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -57,6 +63,18 @@ def test_compute_ht_area(input_xml):
     assert wet_area == pytest.approx(70.31, abs=1e-2)
     ht_area = problem["data:geometry:horizontal_tail:area"]
     assert ht_area == pytest.approx(35.15, abs=1e-2)
+
+    input_list.remove("data:geometry:has_T_tail")
+    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars.add_output("data:geometry:has_T_tail", 1.0)
+    problem_ttail = run_system(ComputeHTArea(), input_vars)
+
+    ht_lp = problem_ttail["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"]
+    assert ht_lp == pytest.approx(21.8, abs=1e-2)
+    wet_area = problem_ttail["data:geometry:horizontal_tail:wetted_area"]
+    assert wet_area == pytest.approx(45.59, abs=1e-2)
+    ht_area = problem_ttail["data:geometry:horizontal_tail:area"]
+    assert ht_area == pytest.approx(28.5, abs=1e-2)
 
 
 def test_compute_vt_area(input_xml):

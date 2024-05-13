@@ -27,7 +27,7 @@ class ComputeVTDistance(om.ExplicitComponent):
 
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
-        self.add_input("data:geometry:has_T_tail", val=np.nan)
+        self.add_input("settings:geometry:vertical_tail:position_ratio_on_fuselage", val=0.88)
 
         self.add_output("data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", units="m")
 
@@ -39,15 +39,10 @@ class ComputeVTDistance(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        tail_type = np.round(inputs["data:geometry:has_T_tail"])
         fus_length = inputs["data:geometry:fuselage:length"]
         fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
+        vtp_aero_center_ratio = inputs["settings:geometry:vertical_tail:position_ratio_on_fuselage"]
 
-        if tail_type == 1:
-            lp_vt = 0.93 * fus_length - fa_length
-        elif tail_type == 0:
-            lp_vt = 0.88 * fus_length - fa_length
-        else:
-            raise ValueError("Value of data:geometry:has_T_tail can only be 0 or 1")
+        lp_vt = vtp_aero_center_ratio * fus_length - fa_length
 
         outputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"] = lp_vt

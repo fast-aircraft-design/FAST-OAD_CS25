@@ -468,6 +468,8 @@ def test_polar_high_lift():
 
     assert cd[cl == 1.0] == approx(0.091497, abs=1e-5)
     assert cd[cl == 1.5] == approx(0.180787, abs=1e-5)
+    assert cd[cl == 1.0] == approx(1.091497, abs=1e-5)
+    assert cd[cl == 1.5] == approx(1.180787, abs=1e-5)
 
 
 def test_compute_cl_alpha_low_speed():

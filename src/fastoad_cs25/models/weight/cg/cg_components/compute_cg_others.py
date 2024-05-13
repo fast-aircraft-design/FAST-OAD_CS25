@@ -40,6 +40,10 @@ class ComputeOthersCG(om.ExplicitComponent):
         self.add_input("data:geometry:cabin:NPAX1", val=np.nan)
         self.add_input("data:geometry:cabin:seats:economical:count_by_row", val=np.nan)
         self.add_input("data:geometry:cabin:seats:economical:length", val=np.nan, units="m")
+        self.add_input(
+            "settings:weight:airframe:landing_gear:front:CG:position_ratio_on_front_fuselage",
+            val=0.75,
+        )
 
         # TODO: add description of these CGs
         self.add_output("data:weight:airframe:fuselage:CG:x", units="m")
@@ -75,7 +79,10 @@ class ComputeOthersCG(om.ExplicitComponent):
         )
         self.declare_partials(
             "data:weight:airframe:landing_gear:front:CG:x",
-            "data:geometry:fuselage:front_length",
+            [
+                "data:geometry:fuselage:front_length",
+                "settings:weight:airframe:landing_gear:front:CG:position_ratio_on_front_fuselage",
+            ],
             method="fd",
         )
         self.declare_partials(
@@ -193,11 +200,14 @@ class ComputeOthersCG(om.ExplicitComponent):
         npax1 = inputs["data:geometry:cabin:NPAX1"]
         front_seat_number_eco = inputs["data:geometry:cabin:seats:economical:count_by_row"]
         ls_eco = inputs["data:geometry:cabin:seats:economical:length"]
+        front_lg_position = inputs[
+            "settings:weight:airframe:landing_gear:front:CG:position_ratio_on_front_fuselage"
+        ]
 
+        # Assume fuselage CG is at 45% of fuselage length
         x_cg_a2 = 0.45 * fus_length
 
-        # Assume cg of nose landing gear is at 75% of lav
-        x_cg_a52 = lav * 0.75
+        x_cg_a52 = lav * front_lg_position
         x_cg_a6 = x_cg_b1
         x_cg_b2 = x_cg_b1
         x_cg_b3 = x_cg_b1

@@ -34,6 +34,16 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:has_T_tail", val=np.nan)
+        self.add_input("data:geometry:vertical_tail:tip:chord", val=np.nan, units="m")
+        self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
+        self.add_input("data:geometry:vertical_tail:sweep_0", val=np.nan, units="rad")
+        self.add_input("data:geometry:vertical_tail:MAC:at25percent:x:local", val=np.nan, units="m")
+        self.add_input(
+            "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
+        )
+        self.add_input(
+            "data:geometry:horizontal_tail:MAC:at25percent:x:local", val=np.nan, units="m"
+        )
         self.add_input("data:weight:airframe:landing_gear:main:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:airframe:landing_gear:front:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
@@ -44,6 +54,12 @@ class ComputeHTArea(om.ExplicitComponent):
             val=0.91,
             desc="(does not apply for T-tails) distance to aircraft nose of 25% MAC of "
             "horizontal tail divided by fuselage length",
+        )
+        self.add_input(
+            "settings:geometry:horizontal_tail:position_ratio_on_VTP",
+            val=0.15,
+            desc="(applies only for T-tails) distance between HTP root leading"
+            "edge and VTP tip leading edge divided by VTP tip chord",
         )
 
         self.add_output(
@@ -79,6 +95,16 @@ class ComputeHTArea(om.ExplicitComponent):
             "settings:geometry:horizontal_tail:position_ratio_on_fuselage"
         ]
 
+        vtp_tip_chord = inputs["data:geometry:vertical_tail:tip:chord"]
+        vtp_span = inputs["data:geometry:vertical_tail:span"]
+        vtp_sweep_0 = inputs["data:geometry:vertical_tail:sweep_0"]
+        vtp_aero_center = inputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"]
+        vtp_x0 = inputs["data:geometry:vertical_tail:MAC:at25percent:x:local"]
+        htp_leading_edge_position = inputs[
+            "settings:geometry:horizontal_tail:position_ratio_on_VTP"
+        ]
+        htp_x0 = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
+
         delta_lg = x_main_lg - x_front_lg
         atm = Atmosphere(0.0)
         rho = atm.density
@@ -107,11 +133,17 @@ class ComputeHTArea(om.ExplicitComponent):
         ht_volume_coeff = cm_front_lg
 
         if tail_type == 1:
-            aero_centers_distance = fuselage_length - x_wing_aero_center
-            wet_area_coeff = 1.6
+            aero_centers_distance = (
+                vtp_aero_center
+                - vtp_x0
+                + vtp_span * np.tan(vtp_sweep_0)
+                + htp_leading_edge_position * vtp_tip_chord
+                + htp_x0
+            )
+            wet_area_coeff = 1.6  # TBD: these wet_area coefficients seem interverted
         elif tail_type == 0:
             aero_centers_distance = htp_aero_center_ratio * fuselage_length - x_wing_aero_center
-            wet_area_coeff = 2.0
+            wet_area_coeff = 2.0  # TBD: these wet_area coefficients seem interverted
         else:
             raise ValueError("Value of data:geometry:has_T_tail can only be 0 or 1")
 
