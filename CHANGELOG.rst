@@ -3,7 +3,15 @@ Changelog
 =========
 
 
-Version 0.3.0
+Version 0.5.0
+=============
+Changed:
+
+- Allowing deactivation of inner solvers. (#33)
+- Having ISA temperature offset as input of engine deck. (#31)
+
+
+Version 0.4.0
 =============
 Changed:
 
