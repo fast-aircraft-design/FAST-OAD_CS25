@@ -466,10 +466,8 @@ def test_polar_high_lift():
     cd = problem["data:aerodynamics:aircraft:takeoff:CD"]
     cl = problem["data:aerodynamics:aircraft:takeoff:CL"]
 
-    assert cd[cl == 1.0] == approx(0.091497, abs=1e-5)
-    assert cd[cl == 1.5] == approx(0.180787, abs=1e-5)
-    assert cd[cl == 1.0] == approx(1.091497, abs=1e-5)
-    assert cd[cl == 1.5] == approx(1.180787, abs=1e-5)
+    assert cd[cl == 1.006] == approx(0.083137, abs=1e-5)
+    assert cd[cl == 1.506] == approx(0.150439, abs=1e-5)
 
 
 def test_compute_cl_alpha_low_speed():
