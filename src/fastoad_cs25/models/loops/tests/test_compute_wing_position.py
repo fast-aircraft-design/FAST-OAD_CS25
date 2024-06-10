@@ -2,7 +2,7 @@
 test module for wing position computation
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@ test module for wing position computation
 import os.path as pth
 
 import openmdao.api as om
-from fastoad._utils.testing import run_system
+from fastoad.testing import run_system
 from numpy.testing import assert_allclose
 
 from ..compute_wing_position import ComputeWingPosition

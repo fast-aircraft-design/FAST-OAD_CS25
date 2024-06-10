@@ -2,7 +2,7 @@
 Test module for XFOIL component
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,7 @@ import os.path as pth
 import shutil
 
 import pytest
-from fastoad._utils.testing import run_system
+from fastoad.testing import run_system
 from openmdao.core.indepvarcomp import IndepVarComp
 
 from ..xfoil_polar import DEFAULT_2D_CL_MAX, XfoilPolar
