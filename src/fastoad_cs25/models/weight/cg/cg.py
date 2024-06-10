@@ -34,7 +34,12 @@ from ..constants import SERVICE_CENTERS_OF_GRAVITY
 
 
 @RegisterSubmodel(SERVICE_CENTERS_OF_GRAVITY, "fastoad.submodel.weight.cg.legacy")
-class CG(oad.CycleGroup):
+class CG(
+    oad.CycleGroup,
+    default_linear_solver="om.LinearBlockGS",
+    default_linear_options={"iprint": 0},
+    default_nonlinear_options={"maxiter": 200, "iprint": 0},
+):
     """Model that computes the global center of gravity"""
 
     def setup(self):

@@ -31,7 +31,12 @@ from ...constants import PAYLOAD_FROM_NPAX
 
 
 @RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
-class MassBreakdown(oad.CycleGroup):
+class MassBreakdown(
+    oad.CycleGroup,
+    default_linear_solver="om.LinearBlockGS",
+    default_linear_options={"iprint": 0},
+    default_nonlinear_options={"maxiter": 50, "iprint": 0},
+):
     """
     Computes analytically the mass of each part of the aircraft, and the resulting sum,
     the Overall Weight Empty (OWE).
