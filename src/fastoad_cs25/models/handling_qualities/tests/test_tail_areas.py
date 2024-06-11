@@ -53,7 +53,7 @@ def test_compute_ht_area(input_xml):
         "data:geometry:vertical_tail:MAC:at25percent:x:local",
         "data:geometry:horizontal_tail:MAC:at25percent:x:local",
     ]
-
+        # Testing conventional tail
     input_vars = input_xml.read(only=input_list).to_ivc()
     problem = run_system(ComputeHTArea(), input_vars)
 
