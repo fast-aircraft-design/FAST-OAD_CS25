@@ -53,7 +53,7 @@ def test_compute_ht_area(input_xml):
         "data:geometry:vertical_tail:MAC:at25percent:x:local",
         "data:geometry:horizontal_tail:MAC:at25percent:x:local",
     ]
-        # Testing conventional tail
+    # Testing conventional tail
     input_vars = input_xml.read(only=input_list).to_ivc()
     problem = run_system(ComputeHTArea(), input_vars)
 
@@ -64,7 +64,7 @@ def test_compute_ht_area(input_xml):
     ht_area = problem["data:geometry:horizontal_tail:area"]
     assert ht_area == pytest.approx(35.15, abs=1e-2)
 
-        # Testing T-tail
+    # Testing T-tail
     input_list.remove("data:geometry:has_T_tail")
     input_vars = input_xml.read(only=input_list).to_ivc()
     input_vars.add_output("data:geometry:has_T_tail", 1.0)
