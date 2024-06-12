@@ -1,4 +1,5 @@
 """Constants for geometry submodels."""
+
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -18,6 +19,7 @@ SERVICE_FUSELAGE_CNBETA = "service.geometry.fuselage.cnbeta"
 SERVICE_HORIZONTAL_TAIL_GEOMETRY = "service.geometry.horizontal_tail"
 SERVICE_NACELLE_PYLON_GEOMETRY = "service.geometry.nacelle_and_pylon"
 SERVICE_VERTICAL_TAIL_GEOMETRY = "service.geometry.vertical_tail"
+SERVICE_VERTICAL_TAIL_GEOMETRY_GLOBAL_POSITIONS = "service.geometry.vertical_tail.global_positions"
 SERVICE_WING_GEOMETRY = "service.geometry.wing"
 SERVICE_AIRCRAFT_WETTED_AREA = "service.geometry.aircraft.wetted_area"
 SERVICE_AIRCRAFT_AERODYNAMIC_CENTER = "service.geometry.aircraft.aerodynamic_center"
