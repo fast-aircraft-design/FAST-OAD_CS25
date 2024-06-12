@@ -17,6 +17,9 @@ SERVICE_FUSELAGE_GEOMETRY_BASIC = "service.geometry.fuselage.basic"
 SERVICE_FUSELAGE_GEOMETRY_WITH_CABIN_SIZING = "service.geometry.fuselage.with_cabin_sizing"
 SERVICE_FUSELAGE_CNBETA = "service.geometry.fuselage.cnbeta"
 SERVICE_HORIZONTAL_TAIL_GEOMETRY = "service.geometry.horizontal_tail"
+SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS = (
+    "service.geometry.horizontal_tail.global_positions"
+)
 SERVICE_NACELLE_PYLON_GEOMETRY = "service.geometry.nacelle_and_pylon"
 SERVICE_VERTICAL_TAIL_GEOMETRY = "service.geometry.vertical_tail"
 SERVICE_VERTICAL_TAIL_GEOMETRY_GLOBAL_POSITIONS = "service.geometry.vertical_tail.global_positions"
