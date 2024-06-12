@@ -36,18 +36,15 @@ class HTChordGlobalPositions(om.Group):
         # AddSubtractComp does not allow to set default values of inputs and we do not
         # manage value discrepancies at global level, so we need to do it here, hence
         # the need for the current group.
-        # self.set_input_defaults(
-        #     f"data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m"
-        # )
         self.set_input_defaults(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        # self.set_input_defaults(
-        #     f"data:geometry:horizontal_tail:tip:leading_edge:x:local", val=np.nan, units="m"
-        # )
-        # self.set_input_defaults(
-        #     "data:geometry:horizontal_tail:MAC:leading_edge:x:local", val=np.nan, units="m"
-        # )
+        self.set_input_defaults(
+            "data:geometry:horizontal_tail:tip:leading_edge:x:local", val=np.nan, units="m"
+        )
+        self.set_input_defaults(
+            "data:geometry:horizontal_tail:MAC:leading_edge:x:local", val=np.nan, units="m"
+        )
         self.set_input_defaults("data:geometry:horizontal_tail:MAC:length", val=np.nan, units="m")
 
 

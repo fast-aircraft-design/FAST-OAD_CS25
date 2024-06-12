@@ -36,18 +36,18 @@ class VTChordGlobalPositions(om.Group):
         # AddSubtractComp does not allow to set default values of inputs and we do not
         # manage value discrepancies at global level, so we need to do it here, hence
         # the need for the current group.
-        # self.set_input_defaults(
-        #     f"data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m"
-        # )
+        # Cannot set default inputs because it is already set for the wing and OpenMDAO tries to
+        # verify np.nan == np.nan which is False
+        # self.set_input_defaults("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.set_input_defaults(
             "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        # self.set_input_defaults(
-        #     f"data:geometry:vertical_tail:tip:leading_edge:x:local", val=np.nan, units="m"
-        # )
-        # self.set_input_defaults(
-        #     "data:geometry:vertical_tail:MAC:leading_edge:x:local", val=np.nan, units="m"
-        # )
+        self.set_input_defaults(
+            "data:geometry:vertical_tail:tip:leading_edge:x:local", val=np.nan, units="m"
+        )
+        self.set_input_defaults(
+            "data:geometry:vertical_tail:MAC:leading_edge:x:local", val=np.nan, units="m"
+        )
         self.set_input_defaults("data:geometry:vertical_tail:MAC:length", val=np.nan, units="m")
 
 
