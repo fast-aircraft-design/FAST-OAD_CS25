@@ -24,7 +24,7 @@ from ...constants import SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS
     SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS,
     "fastoad.submodel.geometry.horizontal_tail.global_chord_positions.legacy",
 )
-class ChordGlobalPositions(om.Group):
+class HTChordGlobalPositions(om.Group):
     """
     Computes leading edge X positions of horizontal tail chords (root, tip)
     with respect to aircraft nose.

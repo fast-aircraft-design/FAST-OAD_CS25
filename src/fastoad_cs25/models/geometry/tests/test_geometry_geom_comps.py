@@ -33,6 +33,7 @@ from ..geom_components.ht.components import (
     ComputeHTClalpha,
     ComputeHTMAC,
     ComputeHTSweep,
+    ComputeHTLocalPositions,
 )
 from ..geom_components.vt.components import (
     ComputeVTChords,
@@ -43,7 +44,8 @@ from ..geom_components.vt.components import (
     ComputeVTLocalPositions,
 )
 
-from ..geom_components.vt.vt_global_positions import ComputeChordGlobalPositions
+from ..geom_components.vt.vt_global_positions import VTChordGlobalPositions
+from ..geom_components.ht.ht_global_positions import HTChordGlobalPositions
 
 
 @pytest.fixture(scope="module")
@@ -207,6 +209,48 @@ def test_compute_ht_sweep(input_xml):
     assert sweep_100 == pytest.approx(8.81, abs=1e-2)
 
 
+def test_compute_ht_local_positions(input_xml):
+    """Tests computation of the horizontal tail local positions"""
+
+    input_list = [
+        "data:geometry:horizontal_tail:taper_ratio",
+        "data:geometry:horizontal_tail:MAC:at25percent:x:local",
+        "data:geometry:horizontal_tail:MAC:length",
+        "data:geometry:horizontal_tail:span",
+        "data:geometry:horizontal_tail:sweep_25",
+    ]
+    input_vars = input_xml.read(only=input_list).to_ivc()
+    problem = run_system(ComputeHTLocalPositions(), input_vars)
+
+    tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(2.82, abs=1e-2)
+    root_le_x_local = problem["data:geometry:horizontal_tail:root:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(-0.47, abs=1e-2)
+    mac_le_x_local = problem["data:geometry:horizontal_tail:MAC:leading_edge:x:local"]
+    assert mac_le_x_local == pytest.approx(0.88, abs=1e-2)
+
+
+def test_compute_ht_global_positions(input_xml):
+    """Tests computation of the horizontal tail global positions"""
+
+    input_list = [
+        "data:geometry:wing:MAC:at25percent:x",
+        "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
+        "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
+        "data:geometry:horizontal_tail:MAC:length",
+        "data:geometry:horizontal_tail:tip:leading_edge:x:local",
+    ]
+    input_vars = input_xml.read(only=input_list).to_ivc()
+    problem = run_system(HTChordGlobalPositions(), input_vars)
+
+    tip_le_x = problem["data:geometry:horizontal_tail:tip:leading_edge:x"]
+    assert tip_le_x == pytest.approx(35.28, abs=1e-2)
+    root_le_x = problem["data:geometry:horizontal_tail:root:leading_edge:x"]
+    assert root_le_x == pytest.approx(32.46, abs=1e-2)
+    mac_le_x = problem["data:geometry:horizontal_tail:MAC:leading_edge:x"]
+    assert mac_le_x == pytest.approx(33.34, abs=1e-2)
+
+
 def test_compute_fuselage_cnbeta(input_xml):
     """Tests computation of the yawing moment due to sideslip"""
 
@@ -364,7 +408,7 @@ def test_compute_vt_global_positions(input_xml):
         "data:geometry:vertical_tail:tip:leading_edge:x:local",
     ]
     input_vars = input_xml.read(only=input_list).to_ivc()
-    problem = run_system(ComputeChordGlobalPositions(), input_vars)
+    problem = run_system(VTChordGlobalPositions(), input_vars)
 
     tip_le_x = problem["data:geometry:vertical_tail:tip:leading_edge:x"]
     assert tip_le_x == pytest.approx(34.78, abs=1e-2)
