@@ -40,7 +40,10 @@ from ..geom_components.vt.components import (
     ComputeVTDistance,
     ComputeVTMAC,
     ComputeVTSweep,
+    ComputeVTLocalPositions,
 )
+
+from ..geom_components.vt.vt_global_positions import ComputeChordGlobalPositions
 
 
 @pytest.fixture(scope="module")
@@ -327,6 +330,48 @@ def test_compute_vt_cl(input_xml):
 
     cl_alpha = problem["data:aerodynamics:vertical_tail:cruise:CL_alpha"]
     assert cl_alpha == pytest.approx(2.55, abs=1e-2)
+
+
+def test_compute_vt_local_positions(input_xml):
+    """Tests computation of the vertical tail local positions"""
+
+    input_list = [
+        "data:geometry:vertical_tail:taper_ratio",
+        "data:geometry:vertical_tail:MAC:at25percent:x:local",
+        "data:geometry:vertical_tail:MAC:length",
+        "data:geometry:vertical_tail:span",
+        "data:geometry:vertical_tail:sweep_25",
+    ]
+    input_vars = input_xml.read(only=input_list).to_ivc()
+    problem = run_system(ComputeVTLocalPositions(), input_vars)
+
+    tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(4.20, abs=1e-2)
+    root_le_x_local = problem["data:geometry:vertical_tail:root:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(-0.65, abs=1e-2)
+    mac_le_x_local = problem["data:geometry:vertical_tail:MAC:leading_edge:x:local"]
+    assert mac_le_x_local == pytest.approx(1.34, abs=1e-2)
+
+
+def test_compute_vt_global_positions(input_xml):
+    """Tests computation of the vertical tail global positions"""
+
+    input_list = [
+        "data:geometry:wing:MAC:at25percent:x",
+        "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
+        "data:geometry:vertical_tail:MAC:leading_edge:x:local",
+        "data:geometry:vertical_tail:MAC:length",
+        "data:geometry:vertical_tail:tip:leading_edge:x:local",
+    ]
+    input_vars = input_xml.read(only=input_list).to_ivc()
+    problem = run_system(ComputeChordGlobalPositions(), input_vars)
+
+    tip_le_x = problem["data:geometry:vertical_tail:tip:leading_edge:x"]
+    assert tip_le_x == pytest.approx(34.78, abs=1e-2)
+    root_le_x = problem["data:geometry:vertical_tail:root:leading_edge:x"]
+    assert root_le_x == pytest.approx(30.58, abs=1e-2)
+    mac_le_x = problem["data:geometry:vertical_tail:MAC:leading_edge:x"]
+    assert mac_le_x == pytest.approx(31.92, abs=1e-2)
 
 
 def test_geometry_total_area(input_xml):
