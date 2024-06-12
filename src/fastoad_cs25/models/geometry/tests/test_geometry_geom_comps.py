@@ -19,6 +19,7 @@ Test module for geometry functions of cg components
 import os.path as pth
 
 import pytest
+import openmdao.api as om
 from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
 
@@ -212,14 +213,13 @@ def test_compute_ht_sweep(input_xml):
 def test_compute_ht_local_positions(input_xml):
     """Tests computation of the horizontal tail local positions"""
 
-    input_list = [
-        "data:geometry:horizontal_tail:taper_ratio",
-        "data:geometry:horizontal_tail:MAC:at25percent:x:local",
-        "data:geometry:horizontal_tail:MAC:length",
-        "data:geometry:horizontal_tail:span",
-        "data:geometry:horizontal_tail:sweep_25",
-    ]
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:horizontal_tail:taper_ratio", 0.30)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 1.67)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
+    input_vars.add_output("data:geometry:horizontal_tail:span", 12.40)
+    input_vars.add_output("data:geometry:horizontal_tail:sweep_25", 28.00)
+
     problem = run_system(ComputeHTLocalPositions(), input_vars)
 
     tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
@@ -233,14 +233,13 @@ def test_compute_ht_local_positions(input_xml):
 def test_compute_ht_global_positions(input_xml):
     """Tests computation of the horizontal tail global positions"""
 
-    input_list = [
-        "data:geometry:wing:MAC:at25percent:x",
-        "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-        "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
-        "data:geometry:horizontal_tail:MAC:length",
-        "data:geometry:horizontal_tail:tip:leading_edge:x:local",
-    ]
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", 16.98)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:leading_edge:x:local", 0.88)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
+    input_vars.add_output("data:geometry:horizontal_tail:tip:leading_edge:x:local", 2.82)
+
     problem = run_system(HTChordGlobalPositions(), input_vars)
 
     tip_le_x = problem["data:geometry:horizontal_tail:tip:leading_edge:x"]
@@ -379,14 +378,13 @@ def test_compute_vt_cl(input_xml):
 def test_compute_vt_local_positions(input_xml):
     """Tests computation of the vertical tail local positions"""
 
-    input_list = [
-        "data:geometry:vertical_tail:taper_ratio",
-        "data:geometry:vertical_tail:MAC:at25percent:x:local",
-        "data:geometry:vertical_tail:MAC:length",
-        "data:geometry:vertical_tail:span",
-        "data:geometry:vertical_tail:sweep_25",
-    ]
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:vertical_tail:taper_ratio", 0.30)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 2.43)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
+    input_vars.add_output("data:geometry:vertical_tail:span", 6.94)
+    input_vars.add_output("data:geometry:vertical_tail:sweep_25", 35.00)
+
     problem = run_system(ComputeVTLocalPositions(), input_vars)
 
     tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
@@ -400,14 +398,13 @@ def test_compute_vt_local_positions(input_xml):
 def test_compute_vt_global_positions(input_xml):
     """Tests computation of the vertical tail global positions"""
 
-    input_list = [
-        "data:geometry:wing:MAC:at25percent:x",
-        "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
-        "data:geometry:vertical_tail:MAC:leading_edge:x:local",
-        "data:geometry:vertical_tail:MAC:length",
-        "data:geometry:vertical_tail:tip:leading_edge:x:local",
-    ]
-    input_vars = input_xml.read(only=input_list).to_ivc()
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", 15.86)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:leading_edge:x:local", 1.34)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x:local", 4.20)
+
     problem = run_system(VTChordGlobalPositions(), input_vars)
 
     tip_le_x = problem["data:geometry:vertical_tail:tip:leading_edge:x"]
