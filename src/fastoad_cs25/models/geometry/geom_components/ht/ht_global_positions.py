@@ -48,51 +48,61 @@ class HTChordGlobalPositions(om.Group):
         self.set_input_defaults("data:geometry:horizontal_tail:MAC:length", val=np.nan, units="m")
 
 
-class ComputeChordGlobalPositions(om.AddSubtractComp):
+class ComputeChordGlobalPositions(om.Group):
     """
     Computes leading edge X positions of horizontal tail chords with respect to aircraft nose.
     """
 
     def setup(self):
-        self.add_equation(
-            "data:geometry:horizontal_tail:MAC:at25percent:x",
-            [
-                "data:geometry:wing:MAC:at25percent:x",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-            ],
-            scaling_factors=[1.0, 1.0],
-            units="m",
+        self.add_subsystem(
+            "MAC25_x",
+            om.AddSubtractComp(
+                "data:geometry:horizontal_tail:MAC:at25percent:x",
+                [
+                    "data:geometry:wing:MAC:at25percent:x",
+                    "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
+                ],
+                scaling_factors=[1.0, 1.0],
+                units="m",
+            ),
+            promotes=["*"],
         )
-        self.add_equation(
-            "data:geometry:horizontal_tail:root:leading_edge:x",
-            [
-                "data:geometry:wing:MAC:at25percent:x",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-                "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
-                "data:geometry:horizontal_tail:MAC:length",
-            ],
-            scaling_factors=[1.0, 1.0, -1.0, -0.25],
-            units="m",
+        self.add_subsystem(
+            "MAC_x",
+            om.AddSubtractComp(
+                "data:geometry:horizontal_tail:MAC:leading_edge:x",
+                [
+                    "data:geometry:horizontal_tail:MAC:at25percent:x",
+                    "data:geometry:horizontal_tail:MAC:length",
+                ],
+                scaling_factors=[1.0, -0.25],
+                units="m",
+            ),
+            promotes=["*"],
         )
-        self.add_equation(
-            "data:geometry:horizontal_tail:MAC:leading_edge:x",
-            [
-                "data:geometry:wing:MAC:at25percent:x",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-                "data:geometry:horizontal_tail:MAC:length",
-            ],
-            scaling_factors=[1.0, 1.0, -0.25],
-            units="m",
+        self.add_subsystem(
+            "center_x",
+            om.AddSubtractComp(
+                "data:geometry:horizontal_tail:root:leading_edge:x",
+                [
+                    "data:geometry:horizontal_tail:MAC:leading_edge:x",
+                    "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
+                ],
+                scaling_factors=[1.0, -1.0],
+                units="m",
+            ),
+            promotes=["*"],
         )
-        self.add_equation(
-            "data:geometry:horizontal_tail:tip:leading_edge:x",
-            [
-                "data:geometry:horizontal_tail:tip:leading_edge:x:local",
-                "data:geometry:wing:MAC:at25percent:x",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-                "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
-                "data:geometry:horizontal_tail:MAC:length",
-            ],
-            scaling_factors=[1.0, 1.0, 1.0, -1.0, -0.25],
-            units="m",
+        self.add_subsystem(
+            "tip_x",
+            om.AddSubtractComp(
+                "data:geometry:horizontal_tail:tip:leading_edge:x",
+                [
+                    "data:geometry:horizontal_tail:root:leading_edge:x",
+                    "data:geometry:horizontal_tail:tip:leading_edge:x:local",
+                ],
+                scaling_factors=[1.0, 1.0],
+                units="m",
+            ),
+            promotes=["*"],
         )
