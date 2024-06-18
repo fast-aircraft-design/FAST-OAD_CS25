@@ -25,7 +25,7 @@ class ComputeVTLocalPositions(om.ExplicitComponent):
     """Vertical tail local positions estimation"""
 
     def setup(self):
-        self.add_input("data:geometry:vertical_tail:taper_ratio", val=np.nan)
+        self.add_input("data:geometry:vertical_tail:MAC:z", val=np.nan, units="m")
         self.add_input("data:geometry:vertical_tail:MAC:at25percent:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:vertical_tail:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
@@ -47,15 +47,14 @@ class ComputeVTLocalPositions(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs):
-        taper_v = inputs["data:geometry:vertical_tail:taper_ratio"]
+        z_mac = inputs["data:geometry:vertical_tail:MAC:z"]
         x0_vt = inputs["data:geometry:vertical_tail:MAC:at25percent:x:local"]
         mac_vt = inputs["data:geometry:vertical_tail:MAC:length"]
         b_v = inputs["data:geometry:vertical_tail:span"]
         sweep_0_vt = inputs["data:geometry:vertical_tail:sweep_0"]
 
         x_mac = x0_vt - mac_vt * 0.25
-        y_mac = b_v / 3 * (1 + 2 * taper_v) / (1 + taper_v)
-        x_root = x_mac - y_mac * np.tan(sweep_0_vt)
+        x_root = x_mac - z_mac * np.tan(sweep_0_vt)
         x_tip = x_root + b_v * np.tan(sweep_0_vt)
 
         outputs["data:geometry:vertical_tail:tip:leading_edge:x:local"] = x_tip

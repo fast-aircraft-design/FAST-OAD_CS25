@@ -25,7 +25,7 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
     """Horizontal tail local positions estimation"""
 
     def setup(self):
-        self.add_input("data:geometry:horizontal_tail:taper_ratio", val=np.nan)
+        self.add_input("data:geometry:horizontal_tail:MAC:y", val=np.nan, units="m")
         self.add_input(
             "data:geometry:horizontal_tail:MAC:at25percent:x:local", val=np.nan, units="m"
         )
@@ -49,14 +49,13 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs):
-        taper_h = inputs["data:geometry:horizontal_tail:taper_ratio"]
+        y_mac = inputs["data:geometry:horizontal_tail:MAC:y"]
         x0_ht = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
         mac_ht = inputs["data:geometry:horizontal_tail:MAC:length"]
         b_h = inputs["data:geometry:horizontal_tail:span"]
         sweep_0_ht = inputs["data:geometry:horizontal_tail:sweep_0"]
 
         x_mac = x0_ht - mac_ht * 0.25
-        y_mac = b_h / 2 / 3 * (1 + 2 * taper_h) / (1 + taper_h)
         x_root = x_mac - y_mac * np.tan(sweep_0_ht)
         x_tip = x_root + b_h / 2 * np.tan(sweep_0_ht)
 

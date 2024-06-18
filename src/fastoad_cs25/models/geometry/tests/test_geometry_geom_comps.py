@@ -214,7 +214,7 @@ def test_compute_ht_local_positions(input_xml):
     """Tests computation of the horizontal tail local positions"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:horizontal_tail:taper_ratio", 0.30)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:y", 2.54)
     input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 1.67)
     input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
     input_vars.add_output("data:geometry:horizontal_tail:span", 12.40)
@@ -379,7 +379,7 @@ def test_compute_vt_local_positions(input_xml):
     """Tests computation of the vertical tail local positions"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:vertical_tail:taper_ratio", 0.30)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:z", 2.85)
     input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 2.43)
     input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
     input_vars.add_output("data:geometry:vertical_tail:span", 6.94)
