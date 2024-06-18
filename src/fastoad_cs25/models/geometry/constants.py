@@ -22,7 +22,6 @@ SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS = (
 )
 SERVICE_NACELLE_PYLON_GEOMETRY = "service.geometry.nacelle_and_pylon"
 SERVICE_VERTICAL_TAIL_GEOMETRY = "service.geometry.vertical_tail"
-SERVICE_VERTICAL_TAIL_GEOMETRY_GLOBAL_POSITIONS = "service.geometry.vertical_tail.global_positions"
 SERVICE_WING_GEOMETRY = "service.geometry.wing"
 SERVICE_AIRCRAFT_WETTED_AREA = "service.geometry.aircraft.wetted_area"
 SERVICE_AIRCRAFT_AERODYNAMIC_CENTER = "service.geometry.aircraft.aerodynamic_center"

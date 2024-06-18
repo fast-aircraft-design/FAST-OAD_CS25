@@ -28,10 +28,12 @@ from .components import (
     ComputeVTSweep,
     ComputeVTLocalPositions,
 )
+
+from .vt_global_positions import VTChordGlobalPositions
+
 from ...constants import (
     SERVICE_FUSELAGE_CNBETA,
     SERVICE_VERTICAL_TAIL_GEOMETRY,
-    SERVICE_VERTICAL_TAIL_GEOMETRY_GLOBAL_POSITIONS,
 )
 
 
@@ -53,8 +55,4 @@ class ComputeVerticalTailGeometry(om.Group):
         self.add_subsystem("vt_mac", ComputeVTMAC(), promotes=["*"])
         self.add_subsystem("vt_sweep", ComputeVTSweep(), promotes=["*"])
         self.add_subsystem("vt_local_positions", ComputeVTLocalPositions(), promotes=["*"])
-        self.add_subsystem(
-            "global_positions",
-            RegisterSubmodel.get_submodel(SERVICE_VERTICAL_TAIL_GEOMETRY_GLOBAL_POSITIONS),
-            promotes=["*"],
-        )
+        self.add_subsystem("global_positions", VTChordGlobalPositions(), promotes=["*"])
