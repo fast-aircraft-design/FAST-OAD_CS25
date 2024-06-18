@@ -218,14 +218,14 @@ def test_compute_ht_local_positions(input_xml):
     input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 1.67)
     input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
     input_vars.add_output("data:geometry:horizontal_tail:span", 12.40)
-    input_vars.add_output("data:geometry:horizontal_tail:sweep_25", 28.00)
+    input_vars.add_output("data:geometry:horizontal_tail:sweep_0", 33.38, units="deg")
 
     problem = run_system(ComputeHTLocalPositions(), input_vars)
 
     tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
-    assert tip_le_x_local == pytest.approx(2.82, abs=1e-2)
+    assert tip_le_x_local == pytest.approx(3.28, abs=1e-2)
     root_le_x_local = problem["data:geometry:horizontal_tail:root:leading_edge:x:local"]
-    assert root_le_x_local == pytest.approx(-0.47, abs=1e-2)
+    assert root_le_x_local == pytest.approx(-0.79, abs=1e-2)
     mac_le_x_local = problem["data:geometry:horizontal_tail:MAC:leading_edge:x:local"]
     assert mac_le_x_local == pytest.approx(0.88, abs=1e-2)
 
@@ -383,14 +383,14 @@ def test_compute_vt_local_positions(input_xml):
     input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 2.43)
     input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
     input_vars.add_output("data:geometry:vertical_tail:span", 6.94)
-    input_vars.add_output("data:geometry:vertical_tail:sweep_25", 35.00)
+    input_vars.add_output("data:geometry:vertical_tail:sweep_0", 40.51, units="deg")
 
     problem = run_system(ComputeVTLocalPositions(), input_vars)
 
     tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
-    assert tip_le_x_local == pytest.approx(4.20, abs=1e-2)
+    assert tip_le_x_local == pytest.approx(4.84, abs=1e-2)
     root_le_x_local = problem["data:geometry:vertical_tail:root:leading_edge:x:local"]
-    assert root_le_x_local == pytest.approx(-0.65, abs=1e-2)
+    assert root_le_x_local == pytest.approx(-1.10, abs=1e-2)
     mac_le_x_local = problem["data:geometry:vertical_tail:MAC:leading_edge:x:local"]
     assert mac_le_x_local == pytest.approx(1.34, abs=1e-2)
 
