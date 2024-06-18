@@ -16,7 +16,6 @@
 
 import fastoad.api as oad
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .components import (
     ComputeHTChord,
@@ -25,10 +24,10 @@ from .components import (
     ComputeHTSweep,
     ComputeHTLocalPositions,
 )
-from ...constants import (
-    SERVICE_HORIZONTAL_TAIL_GEOMETRY,
-    SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS,
-)
+
+from .ht_global_positions import HTChordGlobalPositions
+
+from ...constants import SERVICE_HORIZONTAL_TAIL_GEOMETRY
 
 
 @oad.RegisterSubmodel(
@@ -43,8 +42,4 @@ class ComputeHorizontalTailGeometry(om.Group):
         self.add_subsystem("ht_sweep", ComputeHTSweep(), promotes=["*"])
         self.add_subsystem("ht_cl_alpha", ComputeHTClalpha(), promotes=["*"])
         self.add_subsystem("ht_local_positions", ComputeHTLocalPositions(), promotes=["*"])
-        self.add_subsystem(
-            "global_positions",
-            RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_GEOMETRY_GLOBAL_POSITIONS),
-            promotes=["*"],
-        )
+        self.add_subsystem("global_positions", HTChordGlobalPositions(), promotes=["*"])
