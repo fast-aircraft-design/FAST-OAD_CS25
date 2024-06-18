@@ -31,7 +31,7 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         )
         self.add_input("data:geometry:horizontal_tail:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
-        self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:horizontal_tail:sweep_0", val=np.nan, units="rad")
 
         self.add_output("data:geometry:horizontal_tail:tip:leading_edge:x:local", units="m")
         self.add_output("data:geometry:horizontal_tail:root:leading_edge:x:local", units="m")
@@ -53,12 +53,12 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         x0_ht = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
         mac_ht = inputs["data:geometry:horizontal_tail:MAC:length"]
         b_h = inputs["data:geometry:horizontal_tail:span"]
-        sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
+        sweep_0_ht = inputs["data:geometry:horizontal_tail:sweep_0"]
 
         x_mac = x0_ht - mac_ht * 0.25
         y_mac = b_h / 2 / 3 * (1 + 2 * taper_h) / (1 + taper_h)
-        x_root = x_mac - y_mac * np.tan(sweep_25_ht / 180.0 * np.pi)
-        x_tip = x_root + b_h / 2 * np.tan(sweep_25_ht / 180.0 * np.pi)
+        x_root = x_mac - y_mac * np.tan(sweep_0_ht)
+        x_tip = x_root + b_h / 2 * np.tan(sweep_0_ht)
 
         outputs["data:geometry:horizontal_tail:tip:leading_edge:x:local"] = x_tip
         outputs["data:geometry:horizontal_tail:root:leading_edge:x:local"] = x_root
