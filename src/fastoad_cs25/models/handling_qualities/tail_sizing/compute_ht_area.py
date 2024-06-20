@@ -35,12 +35,7 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:has_T_tail", val=np.nan)
         self.add_input("data:geometry:vertical_tail:tip:chord", val=np.nan, units="m")
-        self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
-        self.add_input("data:geometry:vertical_tail:sweep_0", val=np.nan, units="rad")
-        self.add_input("data:geometry:vertical_tail:MAC:at25percent:x:local", val=np.nan, units="m")
-        self.add_input(
-            "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
-        )
+        self.add_input("data:geometry:vertical_tail:tip:leading_edge:x", val=np.nan, units="m")
         self.add_input(
             "data:geometry:horizontal_tail:MAC:at25percent:x:local", val=np.nan, units="m"
         )
@@ -96,10 +91,7 @@ class ComputeHTArea(om.ExplicitComponent):
         ]
 
         vtp_tip_chord = inputs["data:geometry:vertical_tail:tip:chord"]
-        vtp_span = inputs["data:geometry:vertical_tail:span"]
-        vtp_sweep_0 = inputs["data:geometry:vertical_tail:sweep_0"]
-        vtp_aero_center = inputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"]
-        vtp_x0 = inputs["data:geometry:vertical_tail:MAC:at25percent:x:local"]
+        vt_le_x = inputs["data:geometry:vertical_tail:tip:leading_edge:x"]
         htp_leading_edge_position = inputs[
             "settings:geometry:horizontal_tail:position_ratio_on_VTP"
         ]
@@ -131,15 +123,8 @@ class ComputeHTArea(om.ExplicitComponent):
         # cm_wheel = mtow * g * lever_arm / (pdyn * wing_area * wing_mac)
 
         ht_volume_coeff = cm_front_lg
-
         if tail_type == 1:
-            aero_centers_distance = (
-                vtp_aero_center
-                - vtp_x0
-                + vtp_span * np.tan(vtp_sweep_0)
-                + htp_leading_edge_position * vtp_tip_chord
-                + htp_x0
-            )
+            aero_centers_distance = +vt_le_x + htp_leading_edge_position * vtp_tip_chord + htp_x0
             wet_area_coeff = 1.6  # TBD: these wet_area coefficients seem interverted
         elif tail_type == 0:
             aero_centers_distance = htp_aero_center_ratio * fuselage_length - x_wing_aero_center
