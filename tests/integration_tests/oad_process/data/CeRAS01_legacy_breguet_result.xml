@@ -222,6 +222,7 @@
       </rubber_engine>
     </propulsion>
     <load_case>
+      <GLA_intensity>0.5</GLA_intensity>
       <lc1>
         <U_gust units="m/s">15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>
         <Vc_EAS units="m/s">375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
