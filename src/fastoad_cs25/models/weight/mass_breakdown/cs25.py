@@ -34,6 +34,9 @@ class Loads(ExplicitComponent):
 
     """
 
+    def initialize(self):
+        self.options.declare("fuel_load_alleviation", types=bool, default=True)
+
     def setup(self):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
@@ -47,6 +50,8 @@ class Loads(ExplicitComponent):
         self.add_input("data:load_case:lc2:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
+        self.add_input("data:load_case:manoeuvre_load_factor", val=2.5)
+        self.add_input("data:load_case:GLA_intensity", val=1.0)
 
         self.add_output("data:mission:sizing:cs25:load_factor_1")
         self.add_output("data:mission:sizing:cs25:load_factor_2")
@@ -72,6 +77,8 @@ class Loads(ExplicitComponent):
         u_gust2 = inputs["data:load_case:lc2:U_gust"]
         alt_2 = inputs["data:load_case:lc2:altitude"]
         vc_eas2 = inputs["data:load_case:lc2:Vc_EAS"]
+        n_manoeuvre = inputs["data:load_case:manoeuvre_load_factor"]
+        gla_intensity = inputs["data:load_case:GLA_intensity"]
 
         # calculation of mean geometric chord
         chord_geom = wing_area / span
@@ -88,7 +95,7 @@ class Loads(ExplicitComponent):
             cl_alpha,
             u_gust1,
         )
-        n1 = 1.5 * max(2.5, n_gust_1)
+        n1 = 1.5 * max(n_manoeuvre, n_gust_1 * gla_intensity)
         n1m1 = n1 * m1
 
         # load case #2
@@ -102,9 +109,13 @@ class Loads(ExplicitComponent):
             cl_alpha,
             u_gust2,
         )
-        n2 = 1.5 * max(2.5, n_gust_2)
-        mcv = min(0.8 * mfw, mtow - mzfw)
-        n2m2 = n2 * (mtow - 0.55 * mcv)
+        n2 = 1.5 * max(n_manoeuvre, n_gust_2 * gla_intensity)
+
+        if not self.options["fuel_load_alleviation"]:
+            n2m2 = n2 * mtow
+        else:
+            mcv = min(0.8 * mfw, mtow - mzfw)
+            n2m2 = n2 * (mtow - 0.55 * mcv)
 
         outputs["data:mission:sizing:cs25:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:load_factor_2"] = n2
@@ -129,7 +140,7 @@ class Loads(ExplicitComponent):
         mu_g = 2 * mass / rho / wing_area / chord_geom / cl_alpha
         k_g = 0.88 * mu_g / (5.3 + mu_g)  # attenuation factor
         n_gust = 1 + (sea_level_density / 2 / 9.81) * k_g * u_gust * (
-            vc_eas * cl_alpha / mass / wing_area
+            vc_eas * cl_alpha / (mass / wing_area)
         )
 
         return n_gust
