@@ -378,20 +378,20 @@ def test_compute_vt_local_positions(input_xml):
     """Tests computation of the vertical tail local positions"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:vertical_tail:MAC:z", 2.85)
-    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 2.43)
-    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
-    input_vars.add_output("data:geometry:vertical_tail:span", 6.94)
-    input_vars.add_output("data:geometry:vertical_tail:sweep_0", 40.51, units="deg")
+    input_vars.add_output("data:geometry:vertical_tail:MAC:z", 2.716)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 3.361)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.161)
+    input_vars.add_output("data:geometry:vertical_tail:span", 6.62)
+    input_vars.add_output("data:geometry:vertical_tail:sweep_0", 40.516, units="deg")
 
     problem = run_system(ComputeVTLocalPositions(), input_vars)
 
-    tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
-    assert tip_le_x_local == pytest.approx(4.84, abs=1e-2)
-    root_le_x_local = problem["data:geometry:vertical_tail:root:leading_edge:x:local"]
-    assert root_le_x_local == pytest.approx(-1.10, abs=1e-2)
     mac_le_x_local = problem["data:geometry:vertical_tail:MAC:leading_edge:x:local"]
-    assert mac_le_x_local == pytest.approx(1.34, abs=1e-2)
+    assert mac_le_x_local == pytest.approx(2.321, abs=1e-2)
+    root_le_x_local = problem["data:geometry:vertical_tail:root:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(0.0, abs=1e-2)
+    tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(5.657, abs=1e-2)
 
 
 def test_compute_vt_global_positions(input_xml):
