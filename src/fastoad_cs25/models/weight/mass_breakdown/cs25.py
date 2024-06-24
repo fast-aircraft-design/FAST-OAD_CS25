@@ -15,15 +15,15 @@ Computation of load cases
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
+import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
-from openmdao.core.explicitcomponent import ExplicitComponent
 from stdatm import Atmosphere
 
 from .constants import SERVICE_GUST_LOADS
 
 
 @RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.gust_loads")
-class Loads(ExplicitComponent):
+class Loads(om.ExplicitComponent):
     """
     Computes gust load cases
 
