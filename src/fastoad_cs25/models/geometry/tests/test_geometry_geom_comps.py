@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -18,8 +18,8 @@ Test module for geometry functions of cg components
 
 import os.path as pth
 
-import pytest
 import openmdao.api as om
+import pytest
 from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
 
@@ -32,21 +32,20 @@ from ..geom_components.fuselage.compute_fuselage import (
 from ..geom_components.ht.components import (
     ComputeHTChord,
     ComputeHTClalpha,
+    ComputeHTLocalPositions,
     ComputeHTMAC,
     ComputeHTSweep,
-    ComputeHTLocalPositions,
 )
+from ..geom_components.ht.ht_global_positions import HTChordGlobalPositions
 from ..geom_components.vt.components import (
     ComputeVTChords,
     ComputeVTClalpha,
     ComputeVTDistance,
+    ComputeVTLocalPositions,
     ComputeVTMAC,
     ComputeVTSweep,
-    ComputeVTLocalPositions,
 )
-
 from ..geom_components.vt.vt_global_positions import VTChordGlobalPositions
-from ..geom_components.ht.ht_global_positions import HTChordGlobalPositions
 
 
 @pytest.fixture(scope="module")
@@ -214,20 +213,20 @@ def test_compute_ht_local_positions(input_xml):
     """Tests computation of the horizontal tail local positions"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:geometry:horizontal_tail:MAC:y", 2.54)
-    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 1.67)
-    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
-    input_vars.add_output("data:geometry:horizontal_tail:span", 12.40)
-    input_vars.add_output("data:geometry:horizontal_tail:sweep_0", 33.38, units="deg")
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:y", 2.519)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 2.441)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.141)
+    input_vars.add_output("data:geometry:horizontal_tail:span", 12.28)
+    input_vars.add_output("data:geometry:horizontal_tail:sweep_0", 33.316, units="deg")
 
     problem = run_system(ComputeHTLocalPositions(), input_vars)
 
-    tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
-    assert tip_le_x_local == pytest.approx(3.28, abs=1e-2)
-    root_le_x_local = problem["data:geometry:horizontal_tail:root:leading_edge:x:local"]
-    assert root_le_x_local == pytest.approx(-0.79, abs=1e-2)
     mac_le_x_local = problem["data:geometry:horizontal_tail:MAC:leading_edge:x:local"]
-    assert mac_le_x_local == pytest.approx(0.88, abs=1e-2)
+    assert mac_le_x_local == pytest.approx(1.656, abs=1e-2)
+    root_le_x_local = problem["data:geometry:horizontal_tail:root:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(0.0, abs=1e-2)
+    tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(4.036, abs=1e-2)
 
 
 def test_compute_ht_global_positions(input_xml):
