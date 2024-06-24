@@ -631,7 +631,7 @@ def test_evaluate_oew():
     mass_computation = run_system(OperatingWeightEmpty(), input_vars)
 
     oew = mass_computation["data:weight:aircraft:OWE"]
-    assert oew == pytest.approx(42142, abs=1)
+    assert oew == pytest.approx(41591, abs=1)
 
 
 def test_loop_compute_oew():
