@@ -2,7 +2,7 @@
 Test module for geometry functions of cg components
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,8 +20,8 @@ import os.path as pth
 
 import openmdao.api as om
 import pytest
-from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
+from fastoad.testing import run_system
 
 from ..cg import ComputeAircraftCG
 from ..cg_components.compute_cg_control_surfaces import ComputeControlSurfacesCG

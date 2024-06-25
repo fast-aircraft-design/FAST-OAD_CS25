@@ -13,7 +13,7 @@
 
 import openmdao.api as om
 import pytest
-from fastoad._utils.testing import run_system
+from fastoad.testing import run_system
 
 from ..compute_wing import ComputeWingGeometry
 
