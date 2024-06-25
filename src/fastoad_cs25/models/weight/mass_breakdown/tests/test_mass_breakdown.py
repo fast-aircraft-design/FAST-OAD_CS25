@@ -96,7 +96,7 @@ def test_compute_loads():
         "data:load_case:lc2:Vc_EAS",
     ]
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:load_case:GLA_intensity", val=0.5)
+    ivc.add_output("data:load_case:gust_intensity", val=0.5)
     problem = run_system(Loads(), ivc)
 
     n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]

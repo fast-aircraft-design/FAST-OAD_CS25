@@ -334,7 +334,7 @@
             </taxi>
         </propulsion>
         <load_case>
-            <GLA_intensity>0.0</GLA_intensity>
+            <gust_intensity>0.0</gust_intensity>
             <lc1>
                 <U_gust units="m/s">
                     15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>

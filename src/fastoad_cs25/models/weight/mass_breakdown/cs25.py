@@ -35,7 +35,13 @@ class Loads(om.ExplicitComponent):
     """
 
     def initialize(self):
-        self.options.declare("fuel_load_alleviation", types=bool, default=True)
+        self.options.declare(
+            "fuel_load_alleviation",
+            types=bool,
+            default=True,
+            desc="If False this simulates a dry wing,"
+            "i.d. the sizing load 2 does not take into account the fuel weight.",
+        )
 
     def setup(self):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
@@ -51,7 +57,7 @@ class Loads(om.ExplicitComponent):
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
         self.add_input("data:load_case:manoeuvre_load_factor", val=2.5)
-        self.add_input("data:load_case:GLA_intensity", val=1.0)
+        self.add_input("data:load_case:gust_intensity", val=1.0)
 
         self.add_output("data:mission:sizing:cs25:load_factor_1")
         self.add_output("data:mission:sizing:cs25:load_factor_2")
@@ -78,7 +84,7 @@ class Loads(om.ExplicitComponent):
         alt_2 = inputs["data:load_case:lc2:altitude"]
         vc_eas2 = inputs["data:load_case:lc2:Vc_EAS"]
         n_manoeuvre = inputs["data:load_case:manoeuvre_load_factor"]
-        gla_intensity = inputs["data:load_case:GLA_intensity"]
+        gust_intensity = inputs["data:load_case:gust_intensity"]
 
         # calculation of mean geometric chord
         chord_geom = wing_area / span
@@ -95,7 +101,7 @@ class Loads(om.ExplicitComponent):
             cl_alpha,
             u_gust1,
         )
-        n1 = 1.5 * max(n_manoeuvre, n_gust_1 * gla_intensity)
+        n1 = 1.5 * max(n_manoeuvre, n_gust_1 * gust_intensity)
         n1m1 = n1 * m1
 
         # load case #2
@@ -109,7 +115,7 @@ class Loads(om.ExplicitComponent):
             cl_alpha,
             u_gust2,
         )
-        n2 = 1.5 * max(n_manoeuvre, n_gust_2 * gla_intensity)
+        n2 = 1.5 * max(n_manoeuvre, n_gust_2 * gust_intensity)
 
         if not self.options["fuel_load_alleviation"]:
             n2m2 = n2 * mtow
