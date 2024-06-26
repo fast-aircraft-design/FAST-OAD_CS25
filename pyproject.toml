@@ -12,7 +12,7 @@ packages = [
 ]
 exclude = ["**/tests/**"]
 
-homepage = "https://github.com/fast-aircraft-design/FAST-OAD"
+homepage = "https://github.com/fast-aircraft-design/FAST-OAD_CS25"
 keywords = [
     "aircraft",
     "design",
