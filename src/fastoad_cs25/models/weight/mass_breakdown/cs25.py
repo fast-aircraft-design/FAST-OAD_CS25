@@ -40,7 +40,7 @@ class Loads(om.ExplicitComponent):
             types=bool,
             default=True,
             desc="If False this simulates a dry wing,"
-            "i.d. the sizing load 2 does not take into account the fuel weight.",
+            "i.e. the sizing load 2 does not take into account the fuel weight.",
         )
 
     def setup(self):
