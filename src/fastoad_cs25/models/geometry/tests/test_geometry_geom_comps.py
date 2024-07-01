@@ -133,7 +133,7 @@ def test_compute_ht_mac(input_xml):
     """Tests computation of the horizontal tail mac"""
 
     input_list = [
-        "data:geometry:horizontal_tail:root:chord",
+        "data:geometry:horizontal_tail:center:chord",
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:span",
         "data:geometry:horizontal_tail:sweep_25",
@@ -166,7 +166,7 @@ def test_compute_ht_chord(input_xml):
 
     span = problem["data:geometry:horizontal_tail:span"]
     assert span == pytest.approx(12.28, abs=1e-2)
-    root_chord = problem["data:geometry:horizontal_tail:root:chord"]
+    root_chord = problem["data:geometry:horizontal_tail:center:chord"]
     assert root_chord == pytest.approx(4.406, abs=1e-3)
     tip_chord = problem["data:geometry:horizontal_tail:tip:chord"]
     assert tip_chord == pytest.approx(1.322, abs=1e-3)
@@ -193,7 +193,7 @@ def test_compute_ht_sweep(input_xml):
     """Tests computation of the horizontal tail sweep"""
 
     input_list = [
-        "data:geometry:horizontal_tail:root:chord",
+        "data:geometry:horizontal_tail:center:chord",
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:span",
         "data:geometry:horizontal_tail:sweep_25",
@@ -223,7 +223,7 @@ def test_compute_ht_local_positions(input_xml):
 
     mac_le_x_local = problem["data:geometry:horizontal_tail:MAC:leading_edge:x:local"]
     assert mac_le_x_local == pytest.approx(1.656, abs=1e-2)
-    root_le_x_local = problem["data:geometry:horizontal_tail:root:leading_edge:x:local"]
+    root_le_x_local = problem["data:geometry:horizontal_tail:center:leading_edge:x:local"]
     assert root_le_x_local == pytest.approx(0.0, abs=1e-2)
     tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
     assert tip_le_x_local == pytest.approx(4.036, abs=1e-2)
@@ -243,7 +243,7 @@ def test_compute_ht_global_positions(input_xml):
 
     tip_le_x = problem["data:geometry:horizontal_tail:tip:leading_edge:x"]
     assert tip_le_x == pytest.approx(35.28, abs=1e-2)
-    root_le_x = problem["data:geometry:horizontal_tail:root:leading_edge:x"]
+    root_le_x = problem["data:geometry:horizontal_tail:center:leading_edge:x"]
     assert root_le_x == pytest.approx(32.46, abs=1e-2)
     mac_le_x = problem["data:geometry:horizontal_tail:MAC:leading_edge:x"]
     assert mac_le_x == pytest.approx(33.34, abs=1e-2)

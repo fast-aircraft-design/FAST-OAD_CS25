@@ -34,7 +34,7 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         self.add_input("data:geometry:horizontal_tail:sweep_0", val=np.nan, units="rad")
 
         self.add_output("data:geometry:horizontal_tail:tip:leading_edge:x:local", units="m")
-        self.add_output("data:geometry:horizontal_tail:root:leading_edge:x:local", units="m")
+        self.add_output("data:geometry:horizontal_tail:center:leading_edge:x:local", units="m")
         self.add_output("data:geometry:horizontal_tail:MAC:leading_edge:x:local", units="m")
 
     def setup_partials(self):
@@ -42,7 +42,7 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
             "data:geometry:horizontal_tail:tip:leading_edge:x:local", "*", method="fd"
         )
         self.declare_partials(
-            "data:geometry:horizontal_tail:root:leading_edge:x:local", "*", method="fd"
+            "data:geometry:horizontal_tail:center:leading_edge:x:local", "*", method="fd"
         )
         self.declare_partials(
             "data:geometry:horizontal_tail:MAC:leading_edge:x:local", "*", method="fd"
@@ -60,5 +60,5 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         x_tip = x_root + b_h / 2 * np.tan(sweep_0_ht)
 
         outputs["data:geometry:horizontal_tail:tip:leading_edge:x:local"] = x_tip
-        outputs["data:geometry:horizontal_tail:root:leading_edge:x:local"] = x_root
+        outputs["data:geometry:horizontal_tail:center:leading_edge:x:local"] = x_root
         outputs["data:geometry:horizontal_tail:MAC:leading_edge:x:local"] = x_mac

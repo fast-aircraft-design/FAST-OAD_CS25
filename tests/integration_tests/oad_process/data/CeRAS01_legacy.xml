@@ -86,9 +86,9 @@
             </x>
           </at25percent>
         </MAC>
-        <root>
-          <chord units="m">4.28717628073<!--chord length at root of horizontal tail--></chord>
-        </root>
+        <center>
+          <chord units="m">4.28717628073<!--chord length at center of horizontal tail--></chord>
+        </center>
         <tip>
           <chord units="m">1.28615288422<!--chord length at tip of horizontal tail--></chord>
         </tip>

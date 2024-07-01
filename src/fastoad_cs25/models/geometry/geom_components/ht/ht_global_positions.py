@@ -76,7 +76,7 @@ class ComputeChordGlobalPositions(om.Group):
         self.add_subsystem(
             "center_x",
             om.AddSubtractComp(
-                "data:geometry:horizontal_tail:root:leading_edge:x",
+                "data:geometry:horizontal_tail:center:leading_edge:x",
                 [
                     "data:geometry:horizontal_tail:MAC:leading_edge:x",
                     "data:geometry:horizontal_tail:MAC:leading_edge:x:local",
@@ -91,7 +91,7 @@ class ComputeChordGlobalPositions(om.Group):
             om.AddSubtractComp(
                 "data:geometry:horizontal_tail:tip:leading_edge:x",
                 [
-                    "data:geometry:horizontal_tail:root:leading_edge:x",
+                    "data:geometry:horizontal_tail:center:leading_edge:x",
                     "data:geometry:horizontal_tail:tip:leading_edge:x:local",
                 ],
                 scaling_factors=[1.0, 1.0],

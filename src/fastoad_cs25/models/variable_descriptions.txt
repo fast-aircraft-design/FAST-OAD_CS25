@@ -97,7 +97,7 @@ data:geometry:horizontal_tail:MAC:length || mean aerodynamic chord length of hor
 data:geometry:horizontal_tail:MAC:y || Y-position of mean aerodynamic chord of horizontal tail
 data:geometry:horizontal_tail:area || horizontal tail area
 data:geometry:horizontal_tail:aspect_ratio || aspect ratio of horizontal tail
-data:geometry:horizontal_tail:root:chord || chord length at root of horizontal tail
+data:geometry:horizontal_tail:center:chord || chord length at center of horizontal tail
 data:geometry:horizontal_tail:span || horizontal tail span
 data:geometry:horizontal_tail:sweep_0 || sweep angle at leading edge of horizontal tail
 data:geometry:horizontal_tail:sweep_100 || sweep angle at trailing edge of horizontal tail
