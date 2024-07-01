@@ -1,4 +1,5 @@
 """Constants for geometry submodels."""
+
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify

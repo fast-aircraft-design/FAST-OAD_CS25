@@ -20,3 +20,4 @@ from .compute_ht_chords import ComputeHTChord
 from .compute_ht_cl_alpha import ComputeHTClalpha
 from .compute_ht_mac import ComputeHTMAC
 from .compute_ht_sweep import ComputeHTSweep
+from .compute_ht_local_positions import ComputeHTLocalPositions

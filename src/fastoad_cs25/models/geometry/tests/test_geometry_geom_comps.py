@@ -18,6 +18,7 @@ Test module for geometry functions of cg components
 
 import os.path as pth
 
+import openmdao.api as om
 import pytest
 from fastoad.io import VariableIO
 from fastoad.testing import run_system
@@ -31,16 +32,20 @@ from ..geom_components.fuselage.compute_fuselage import (
 from ..geom_components.ht.components import (
     ComputeHTChord,
     ComputeHTClalpha,
+    ComputeHTLocalPositions,
     ComputeHTMAC,
     ComputeHTSweep,
 )
+from ..geom_components.ht.ht_global_positions import HTChordGlobalPositions
 from ..geom_components.vt.components import (
     ComputeVTChords,
     ComputeVTClalpha,
     ComputeVTDistance,
+    ComputeVTLocalPositions,
     ComputeVTMAC,
     ComputeVTSweep,
 )
+from ..geom_components.vt.vt_global_positions import VTChordGlobalPositions
 
 
 @pytest.fixture(scope="module")
@@ -128,7 +133,7 @@ def test_compute_ht_mac(input_xml):
     """Tests computation of the horizontal tail mac"""
 
     input_list = [
-        "data:geometry:horizontal_tail:root:chord",
+        "data:geometry:horizontal_tail:center:chord",
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:span",
         "data:geometry:horizontal_tail:sweep_25",
@@ -161,7 +166,7 @@ def test_compute_ht_chord(input_xml):
 
     span = problem["data:geometry:horizontal_tail:span"]
     assert span == pytest.approx(12.28, abs=1e-2)
-    root_chord = problem["data:geometry:horizontal_tail:root:chord"]
+    root_chord = problem["data:geometry:horizontal_tail:center:chord"]
     assert root_chord == pytest.approx(4.406, abs=1e-3)
     tip_chord = problem["data:geometry:horizontal_tail:tip:chord"]
     assert tip_chord == pytest.approx(1.322, abs=1e-3)
@@ -188,7 +193,7 @@ def test_compute_ht_sweep(input_xml):
     """Tests computation of the horizontal tail sweep"""
 
     input_list = [
-        "data:geometry:horizontal_tail:root:chord",
+        "data:geometry:horizontal_tail:center:chord",
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:span",
         "data:geometry:horizontal_tail:sweep_25",
@@ -202,6 +207,46 @@ def test_compute_ht_sweep(input_xml):
     assert sweep_0 == pytest.approx(33.317, abs=1e-3)
     sweep_100 = problem["data:geometry:horizontal_tail:sweep_100"]
     assert sweep_100 == pytest.approx(8.81, abs=1e-2)
+
+
+def test_compute_ht_local_positions(input_xml):
+    """Tests computation of the horizontal tail local positions"""
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:y", 2.519)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:local", 2.441)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.141)
+    input_vars.add_output("data:geometry:horizontal_tail:span", 12.28)
+    input_vars.add_output("data:geometry:horizontal_tail:sweep_0", 33.316, units="deg")
+
+    problem = run_system(ComputeHTLocalPositions(), input_vars)
+
+    mac_le_x_local = problem["data:geometry:horizontal_tail:MAC:leading_edge:x:local"]
+    assert mac_le_x_local == pytest.approx(1.656, abs=1e-2)
+    root_le_x_local = problem["data:geometry:horizontal_tail:center:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(0.0, abs=1e-2)
+    tip_le_x_local = problem["data:geometry:horizontal_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(4.036, abs=1e-2)
+
+
+def test_compute_ht_global_positions(input_xml):
+    """Tests computation of the horizontal tail global positions"""
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", 16.98)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:leading_edge:x:local", 0.88)
+    input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17)
+    input_vars.add_output("data:geometry:horizontal_tail:tip:leading_edge:x:local", 2.82)
+
+    problem = run_system(HTChordGlobalPositions(), input_vars)
+
+    tip_le_x = problem["data:geometry:horizontal_tail:tip:leading_edge:x"]
+    assert tip_le_x == pytest.approx(35.28, abs=1e-2)
+    root_le_x = problem["data:geometry:horizontal_tail:center:leading_edge:x"]
+    assert root_le_x == pytest.approx(32.46, abs=1e-2)
+    mac_le_x = problem["data:geometry:horizontal_tail:MAC:leading_edge:x"]
+    assert mac_le_x == pytest.approx(33.34, abs=1e-2)
 
 
 def test_compute_fuselage_cnbeta(input_xml):
@@ -327,6 +372,46 @@ def test_compute_vt_cl(input_xml):
 
     cl_alpha = problem["data:aerodynamics:vertical_tail:cruise:CL_alpha"]
     assert cl_alpha == pytest.approx(2.55, abs=1e-2)
+
+
+def test_compute_vt_local_positions(input_xml):
+    """Tests computation of the vertical tail local positions"""
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:vertical_tail:MAC:z", 2.716)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:local", 3.361)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.161)
+    input_vars.add_output("data:geometry:vertical_tail:span", 6.62)
+    input_vars.add_output("data:geometry:vertical_tail:sweep_0", 40.516, units="deg")
+
+    problem = run_system(ComputeVTLocalPositions(), input_vars)
+
+    mac_le_x_local = problem["data:geometry:vertical_tail:MAC:leading_edge:x:local"]
+    assert mac_le_x_local == pytest.approx(2.321, abs=1e-2)
+    root_le_x_local = problem["data:geometry:vertical_tail:root:leading_edge:x:local"]
+    assert root_le_x_local == pytest.approx(0.0, abs=1e-2)
+    tip_le_x_local = problem["data:geometry:vertical_tail:tip:leading_edge:x:local"]
+    assert tip_le_x_local == pytest.approx(5.657, abs=1e-2)
+
+
+def test_compute_vt_global_positions(input_xml):
+    """Tests computation of the vertical tail global positions"""
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", 15.86)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:leading_edge:x:local", 1.34)
+    input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36)
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x:local", 4.20)
+
+    problem = run_system(VTChordGlobalPositions(), input_vars)
+
+    tip_le_x = problem["data:geometry:vertical_tail:tip:leading_edge:x"]
+    assert tip_le_x == pytest.approx(34.78, abs=1e-2)
+    root_le_x = problem["data:geometry:vertical_tail:root:leading_edge:x"]
+    assert root_le_x == pytest.approx(30.58, abs=1e-2)
+    mac_le_x = problem["data:geometry:vertical_tail:MAC:leading_edge:x"]
+    assert mac_le_x == pytest.approx(31.92, abs=1e-2)
 
 
 def test_geometry_total_area(input_xml):

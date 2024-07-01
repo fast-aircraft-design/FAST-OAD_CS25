@@ -26,7 +26,7 @@ class ComputeHTMAC(om.ExplicitComponent):
     """Horizontal tail mean aerodynamic chord estimation"""
 
     def setup(self):
-        self.add_input("data:geometry:horizontal_tail:root:chord", val=np.nan, units="m")
+        self.add_input("data:geometry:horizontal_tail:center:chord", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:tip:chord", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
@@ -38,13 +38,16 @@ class ComputeHTMAC(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials(
             "data:geometry:horizontal_tail:MAC:length",
-            ["data:geometry:horizontal_tail:root:chord", "data:geometry:horizontal_tail:tip:chord"],
+            [
+                "data:geometry:horizontal_tail:center:chord",
+                "data:geometry:horizontal_tail:tip:chord",
+            ],
             method="fd",
         )
         self.declare_partials(
             "data:geometry:horizontal_tail:MAC:at25percent:x:local",
             [
-                "data:geometry:horizontal_tail:root:chord",
+                "data:geometry:horizontal_tail:center:chord",
                 "data:geometry:horizontal_tail:tip:chord",
                 "data:geometry:horizontal_tail:sweep_25",
                 "data:geometry:horizontal_tail:span",
@@ -54,7 +57,7 @@ class ComputeHTMAC(om.ExplicitComponent):
         self.declare_partials(
             "data:geometry:horizontal_tail:MAC:y",
             [
-                "data:geometry:horizontal_tail:root:chord",
+                "data:geometry:horizontal_tail:center:chord",
                 "data:geometry:horizontal_tail:tip:chord",
                 "data:geometry:horizontal_tail:span",
             ],
@@ -62,7 +65,7 @@ class ComputeHTMAC(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs):
-        root_chord = inputs["data:geometry:horizontal_tail:root:chord"]
+        root_chord = inputs["data:geometry:horizontal_tail:center:chord"]
         tip_chord = inputs["data:geometry:horizontal_tail:tip:chord"]
         sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
         b_h = inputs["data:geometry:horizontal_tail:span"]

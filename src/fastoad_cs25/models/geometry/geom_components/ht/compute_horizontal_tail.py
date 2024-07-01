@@ -17,7 +17,16 @@
 import fastoad.api as oad
 import openmdao.api as om
 
-from .components import ComputeHTChord, ComputeHTClalpha, ComputeHTMAC, ComputeHTSweep
+from .components import (
+    ComputeHTChord,
+    ComputeHTClalpha,
+    ComputeHTMAC,
+    ComputeHTSweep,
+    ComputeHTLocalPositions,
+)
+
+from .ht_global_positions import HTChordGlobalPositions
+
 from ...constants import SERVICE_HORIZONTAL_TAIL_GEOMETRY
 
 
@@ -32,3 +41,5 @@ class ComputeHorizontalTailGeometry(om.Group):
         self.add_subsystem("ht_mac", ComputeHTMAC(), promotes=["*"])
         self.add_subsystem("ht_sweep", ComputeHTSweep(), promotes=["*"])
         self.add_subsystem("ht_cl_alpha", ComputeHTClalpha(), promotes=["*"])
+        self.add_subsystem("ht_local_positions", ComputeHTLocalPositions(), promotes=["*"])
+        self.add_subsystem("global_positions", HTChordGlobalPositions(), promotes=["*"])
