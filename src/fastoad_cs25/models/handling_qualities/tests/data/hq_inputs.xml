@@ -33,14 +33,36 @@
           </at25percent>
         </MAC>
       </wing>
-      <vertical_tail>
+      <horizontal_tail>
         <MAC>
           <at25percent>
             <x>
+              <local units="m" is_input="True">1.656</local>
+            </x>
+          </at25percent>
+        </MAC>
+      </horizontal_tail>
+      <vertical_tail>
+        <area units="m**2" is_input="True">25.118<!--vertical tail area--></area>
+        <span units="m" is_input="True">6.62<!--vertical tail span--></span>
+        <sweep_0 units="deg" is_input="True">40.515<!--sweep angle at leading edge of vertical tail--></sweep_0>
+        <sweep_25 units="deg" is_input="True">35.0<!--sweep angle at 25% chord of vertical tail--></sweep_25>
+        <taper_ratio is_input="True">0.3<!--taper ratio of vertical tail--></taper_ratio>
+        <MAC>
+          <length units="m" is_input="True">4.161<!--mean aerodynamic chord length of vertical tail--></length>
+          <at25percent>
+            <x>
+              <local units="m" is_input="True">2.321</local>
               <from_wingMAC25 units="m" is_input="True">16.55<!--distance along X between 25% MAC of wing and 25% MAC of vertical tail--></from_wingMAC25>
             </x>
           </at25percent>
         </MAC>
+        <root>
+          <chord units="m" is_input="True">5.838<!--chord length at root of vertical tail--></chord>
+        </root>
+        <tip>
+          <chord units="m" is_input="True">1.751<!--chord length at tip of vertical tail--></chord>
+        </tip>
       </vertical_tail>
     </geometry>
     <weight>

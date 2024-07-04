@@ -500,7 +500,7 @@ def test_compute_ht_cg(input_xml):
     """Tests computation of the horizontal tail center of gravity"""
 
     input_list = [
-        "data:geometry:horizontal_tail:root:chord",
+        "data:geometry:horizontal_tail:center:chord",
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
         "data:geometry:horizontal_tail:span",

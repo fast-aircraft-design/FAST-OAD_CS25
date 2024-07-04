@@ -44,7 +44,7 @@ classifiers = [
 # the commit fail because "files were modified by this hook". In that case,
 # doing again the commit including changes in docs/requirements.txt will succeed.
 python = ">=3.8, <3.11"
-fast-oad-core = "^1.7.2"
+fast-oad-core = "^1.7.3"
 pyparsing = "^3.0.0"  # needed, but not declared as required, by OpenMDAO for file_wrap utility.
 
 [tool.poetry.group.test.dependencies]

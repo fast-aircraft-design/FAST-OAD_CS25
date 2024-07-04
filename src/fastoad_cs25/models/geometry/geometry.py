@@ -73,13 +73,13 @@ class Geometry(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "compute_ht",
-            RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_GEOMETRY),
+            "compute_vt",
+            RegisterSubmodel.get_submodel(SERVICE_VERTICAL_TAIL_GEOMETRY),
             promotes=["*"],
         )
         self.add_subsystem(
-            "compute_vt",
-            RegisterSubmodel.get_submodel(SERVICE_VERTICAL_TAIL_GEOMETRY),
+            "compute_ht",
+            RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_GEOMETRY),
             promotes=["*"],
         )
         self.add_subsystem(

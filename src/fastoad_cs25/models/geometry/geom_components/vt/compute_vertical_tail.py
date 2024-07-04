@@ -1,6 +1,7 @@
 """
     Estimation of geometry of vertical tail
 """
+
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -25,8 +26,15 @@ from .components import (
     ComputeVTDistance,
     ComputeVTMAC,
     ComputeVTSweep,
+    ComputeVTLocalPositions,
 )
-from ...constants import SERVICE_FUSELAGE_CNBETA, SERVICE_VERTICAL_TAIL_GEOMETRY
+
+from .vt_global_positions import VTChordGlobalPositions
+
+from ...constants import (
+    SERVICE_FUSELAGE_CNBETA,
+    SERVICE_VERTICAL_TAIL_GEOMETRY,
+)
 
 
 @oad.RegisterSubmodel(
@@ -46,3 +54,5 @@ class ComputeVerticalTailGeometry(om.Group):
         self.add_subsystem("vt_chords", ComputeVTChords(), promotes=["*"])
         self.add_subsystem("vt_mac", ComputeVTMAC(), promotes=["*"])
         self.add_subsystem("vt_sweep", ComputeVTSweep(), promotes=["*"])
+        self.add_subsystem("vt_local_positions", ComputeVTLocalPositions(), promotes=["*"])
+        self.add_subsystem("global_positions", VTChordGlobalPositions(), promotes=["*"])

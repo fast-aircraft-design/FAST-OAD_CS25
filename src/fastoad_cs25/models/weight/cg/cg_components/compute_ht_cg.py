@@ -29,7 +29,7 @@ class ComputeHTcg(om.ExplicitComponent):
     """Horizontal tail center of gravity estimation"""
 
     def setup(self):
-        self.add_input("data:geometry:horizontal_tail:root:chord", val=np.nan, units="m")
+        self.add_input("data:geometry:horizontal_tail:center:chord", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:tip:chord", val=np.nan, units="m")
         self.add_input(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
@@ -48,7 +48,7 @@ class ComputeHTcg(om.ExplicitComponent):
         self.declare_partials("data:weight:airframe:horizontal_tail:CG:x", "*", method="fd")
 
     def compute(self, inputs, outputs):
-        root_chord = inputs["data:geometry:horizontal_tail:root:chord"]
+        root_chord = inputs["data:geometry:horizontal_tail:center:chord"]
         tip_chord = inputs["data:geometry:horizontal_tail:tip:chord"]
         b_h = inputs["data:geometry:horizontal_tail:span"]
         sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
