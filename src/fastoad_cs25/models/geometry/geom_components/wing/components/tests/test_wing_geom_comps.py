@@ -17,7 +17,7 @@ Test module for geometry functions of cg components
 
 import openmdao.api as om
 import pytest
-from fastoad._utils.testing import run_system
+from fastoad.testing import run_system
 
 from ..compute_b_50 import ComputeB50
 from ..compute_l1_l4 import ComputeL1AndL4Wing

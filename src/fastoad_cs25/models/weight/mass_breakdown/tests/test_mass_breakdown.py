@@ -2,7 +2,7 @@
 Test module for mass breakdown functions
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +19,8 @@ import os.path as pth
 
 import openmdao.api as om
 import pytest
-from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
+from fastoad.testing import run_system
 
 from ..a_airframe import (
     EmpennageWeight,
@@ -96,6 +96,7 @@ def test_compute_loads():
         "data:load_case:lc2:Vc_EAS",
     ]
     ivc = get_indep_var_comp(input_list)
+    ivc.add_output("data:load_case:gust_intensity", val=0.5)
     problem = run_system(Loads(), ivc)
 
     n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
@@ -106,6 +107,37 @@ def test_compute_loads():
     assert n2m2 == pytest.approx(254130, abs=10)
     assert n1 == pytest.approx(3.75, abs=0.01)
     assert n2 == pytest.approx(3.75, abs=0.01)
+
+    # Now without fuel alleviation
+    problem = run_system(Loads(fuel_load_alleviation=False), ivc)
+
+    n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
+    n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
+
+    assert n1m1 == pytest.approx(240968, abs=10)
+    assert n2m2 == pytest.approx(284242, abs=10)
+
+    # Now with different MLA
+    ivc.add_output("data:load_case:manoeuvre_load_factor", val=2.25)
+    problem = run_system(Loads(), ivc)
+
+    n1 = problem["data:mission:sizing:cs25:load_factor_1"]
+    n2 = problem["data:mission:sizing:cs25:load_factor_2"]
+    assert n1 == pytest.approx(3.375, abs=0.01)
+    assert n2 == pytest.approx(3.375, abs=0.01)
+
+    # Now without gust load alleviation
+    ivc = get_indep_var_comp(input_list)
+    problem = run_system(Loads(), ivc)
+
+    n1 = problem["data:mission:sizing:cs25:load_factor_1"]
+    n2 = problem["data:mission:sizing:cs25:load_factor_2"]
+    n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
+    n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
+    assert n1 == pytest.approx(4.198, abs=0.01)
+    assert n2 == pytest.approx(3.81, abs=0.01)
+    assert n1m1 == pytest.approx(269789, abs=10)
+    assert n2m2 == pytest.approx(258500, abs=10)
 
 
 def test_compute_wing_weight():

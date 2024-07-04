@@ -3,7 +3,7 @@ test module for modules in aerodynamics/components
 """
 
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -18,8 +18,8 @@ test module for modules in aerodynamics/components
 import os.path as pth
 
 import numpy as np
-from fastoad._utils.testing import run_system
 from fastoad.io import VariableIO
+from fastoad.testing import run_system
 from numpy.testing import assert_allclose
 from openmdao.core.group import Group
 from openmdao.core.indepvarcomp import IndepVarComp

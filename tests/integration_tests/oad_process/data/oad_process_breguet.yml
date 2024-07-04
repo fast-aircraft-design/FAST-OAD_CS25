@@ -38,5 +38,5 @@ model:
 
 model_options:
   "*":
-    use_inner_solver: false
+    use_inner_solvers: false
 

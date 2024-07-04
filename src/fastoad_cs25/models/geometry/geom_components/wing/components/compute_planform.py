@@ -29,7 +29,11 @@ from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 @oad.RegisterSubmodel(
     SERVICE_WING_GEOMETRY_PLANFORM, "fastoad.submodel.geometry.wing.planform.legacy"
 )
-class ComputeWingGeometry(oad.CycleGroup):
+class ComputeWingGeometry(
+    oad.CycleGroup,
+    default_linear_options={"iprint": 0},
+    default_nonlinear_options={"maxiter": 50, "iprint": 0},
+):
     """Computation of wing planform"""
 
     def setup(self):

@@ -318,6 +318,7 @@
             </rubber_engine>
         </propulsion>
         <load_case>
+            <gust_intensity>0.0</gust_intensity>
             <lc1>
                 <U_gust units="m/s" is_input="True">
                     15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>

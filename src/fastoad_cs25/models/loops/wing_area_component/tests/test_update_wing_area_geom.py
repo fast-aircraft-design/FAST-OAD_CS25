@@ -15,7 +15,7 @@ test module for wing area computation
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import openmdao.api as om
-from fastoad._utils.testing import run_system
+from fastoad.testing import run_system
 from numpy.testing import assert_allclose
 from openmdao.utils.assert_utils import assert_check_partials
 
