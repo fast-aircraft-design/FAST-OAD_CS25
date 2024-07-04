@@ -3,6 +3,17 @@ Changelog
 =========
 
 
+Version 0.6.0
+=============
+Changed:
+
+- More control on calculation of load factors. (#38)
+- Update on geometry of tail planes (#36)
+
+Fixed:
+
+- Restored the default solver behaviors of v0.4 for models with inner loop. (#39)
+
 Version 0.5.0
 =============
 Changed:
@@ -21,6 +32,7 @@ Changed:
 - Computation of wing geometry now uses sub-models and has now an option for (de)activating the computation of wing thickness. (#29)
 
 Fixed:
+
 - Fixed component for computing global positions of wing chords, which is now a sub-model of geometry module (#28)
 
 
