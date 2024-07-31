@@ -3,6 +3,12 @@ Changelog
 =========
 
 
+Version 0.6.1
+=============
+Added:
+
+- Compatibility with Python 3.11. (#43)
+
 Version 0.6.0
 =============
 Changed:
