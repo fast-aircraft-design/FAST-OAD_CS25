@@ -60,10 +60,8 @@ sphinxcontrib-bibtex = "^2.3.0"
 
 [tool.poetry.group.lint.dependencies]
 pre-commit = "^2.14.1"
-black = { version = "22.1", extras = ["jupyter"] }
-pylint = "^2.10.2"
-flake8 = "^4.0.1"
 nbstripout = "^0.5.0"
+ruff = "0.5.5"
 
 [tool.poetry.plugins."fastoad.plugins"]
 "cs25" = "fastoad_cs25"
@@ -77,8 +75,24 @@ style = "semver"
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry_dynamic_versioning.backend"
 
-[tool.black]
+[tool.ruff]
 line-length = 100
+target-version = "py39"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.pytest.ini_options]
 minversion = "8.0"
