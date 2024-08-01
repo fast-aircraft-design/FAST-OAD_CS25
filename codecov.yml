@@ -1,0 +1,31 @@
+# For more configuration details:
+# https://docs.codecov.io/docs/codecov-yaml
+
+# Check if this file is valid by running in bash:
+# curl -X POST --data-binary @codecov.yml https://codecov.io/validate
+
+ignore:
+  - "src/fastoad_cs25/configurations/"
+  - "src/fastoad_cs25/notebooks/"
+  - "src/fastoad_cs25/source_data_files/"
+  - "src/conftest.py"
+
+coverage:
+  status:
+    project:
+      default:
+        # basic
+        target: auto
+        threshold: 1%
+        base: auto
+        #        flags:
+        #          - unittests
+        #        paths:
+        #          - "src"
+        # advanced
+        #        branches:
+        #          - master
+        #        if_not_found: success
+        #        if_ci_failed: error
+        informational: true
+#        only_pulls: false
