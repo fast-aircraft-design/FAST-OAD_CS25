@@ -1,6 +1,6 @@
 """Compressibility drag computation."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,8 @@ from ..constants import SERVICE_CD_COMPRESSIBILITY
 
 
 @RegisterSubmodel(
-    SERVICE_CD_COMPRESSIBILITY, "fastoad.submodel.aerodynamics.CD.compressibility.legacy"
+    SERVICE_CD_COMPRESSIBILITY,
+    "fastoad.submodel.aerodynamics.CD.compressibility.legacy",
 )
 class CdCompressibility(om.ExplicitComponent):
     """
@@ -37,7 +38,6 @@ class CdCompressibility(om.ExplicitComponent):
     """
 
     def setup(self):
-
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
         self.add_input("data:geometry:wing:sweep_25", units="deg", val=np.nan)

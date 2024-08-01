@@ -1,5 +1,5 @@
 """
-    Estimation of wing chords (l2 and l3)
+Estimation of wing chords (l2 and l3)
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO

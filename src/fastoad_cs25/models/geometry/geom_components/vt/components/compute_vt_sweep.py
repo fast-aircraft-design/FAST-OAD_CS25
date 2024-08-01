@@ -1,5 +1,5 @@
 """
-    Estimation of vertical tail sweeps
+Estimation of vertical tail sweeps
 """
 
 #  This file is part of FAST-OAD_CS25

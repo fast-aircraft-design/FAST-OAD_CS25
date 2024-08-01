@@ -75,7 +75,6 @@ class XfoilPolar(om.ExternalCodeComp):
         self.options.declare(OPTION_ITER_LIMIT, default=500, types=int)
 
     def setup(self):
-
         self.add_input("xfoil:reynolds", val=np.nan)
         self.add_input("xfoil:mach", val=np.nan)
         self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
@@ -85,7 +84,6 @@ class XfoilPolar(om.ExternalCodeComp):
         self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs):
-
         # Create result folder first (if it must fail, let it fail as soon as possible)
         result_folder_path = self.options[OPTION_RESULT_FOLDER_PATH]
         if result_folder_path != "":

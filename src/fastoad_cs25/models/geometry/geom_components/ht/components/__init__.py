@@ -2,7 +2,7 @@
 Estimation of horizontal tail geometry (components)
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +18,6 @@ Estimation of horizontal tail geometry (components)
 
 from .compute_ht_chords import ComputeHTChord
 from .compute_ht_cl_alpha import ComputeHTClalpha
+from .compute_ht_local_positions import ComputeHTLocalPositions
 from .compute_ht_mac import ComputeHTMAC
 from .compute_ht_sweep import ComputeHTSweep
-from .compute_ht_local_positions import ComputeHTLocalPositions

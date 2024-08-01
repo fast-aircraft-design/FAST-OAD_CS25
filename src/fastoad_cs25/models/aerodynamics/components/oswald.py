@@ -2,7 +2,7 @@
 Computation of Oswald coefficient
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -64,7 +64,8 @@ class InducedDragCoefficient(om.ExplicitComponent):
 
 
 @RegisterSubmodel(
-    SERVICE_OSWALD_COEFFICIENT, "fastoad.submodel.aerodynamics.oswald_coefficient.legacy"
+    SERVICE_OSWALD_COEFFICIENT,
+    "fastoad.submodel.aerodynamics.oswald_coefficient.legacy",
 )
 class OswaldCoefficient(om.ExplicitComponent):
     """Computes Oswald efficiency number"""
@@ -111,9 +112,7 @@ class OswaldCoefficient(om.ExplicitComponent):
         lamda = l4_wing / l2_wing
         delta_lamda = -0.357 + 0.45 * np.exp(0.0375 * sweep_25 / 180.0 * np.pi)
         lamda = lamda - delta_lamda
-        f_lamda = (
-            0.0524 * lamda**4 - 0.15 * lamda**3 + 0.1659 * lamda**2 - 0.0706 * lamda + 0.0119
-        )
+        f_lamda = 0.0524 * lamda**4 - 0.15 * lamda**3 + 0.1659 * lamda**2 - 0.0706 * lamda + 0.0119
         e_theory = 1 / (1 + f_lamda * aspect_ratio)
 
         if mach <= 0.4:

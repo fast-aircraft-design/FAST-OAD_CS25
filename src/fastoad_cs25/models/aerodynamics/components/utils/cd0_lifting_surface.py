@@ -55,9 +55,7 @@ def compute_cd0_lifting_surface(
     cf = get_flat_plate_friction_drag_coefficient(geometry.MAC_length, mach, reynolds)
 
     # Contribution of relative thickness
-    thickness_contribution = (
-        4.688 * geometry.thickness_ratio**2 + 3.146 * geometry.thickness_ratio
-    )
+    thickness_contribution = 4.688 * geometry.thickness_ratio**2 + 3.146 * geometry.thickness_ratio
 
     # Contribution of camber
     sweep_25 = np.radians(geometry.sweep_angle_25)
@@ -72,9 +70,7 @@ def compute_cd0_lifting_surface(
         camber_contribution = 0.0
 
     # Correction from sweep angle
-    sweep_correction = (
-        1 - 0.000178 * geometry.sweep_angle_25**2 - 0.0065 * geometry.sweep_angle_25
-    )
+    sweep_correction = 1 - 0.000178 * geometry.sweep_angle_25**2 - 0.0065 * geometry.sweep_angle_25
 
     cd0_ht = (
         (

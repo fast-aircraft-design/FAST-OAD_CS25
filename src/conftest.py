@@ -1,5 +1,5 @@
 """
-    Basic settings for tests
+Basic settings for tests
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO

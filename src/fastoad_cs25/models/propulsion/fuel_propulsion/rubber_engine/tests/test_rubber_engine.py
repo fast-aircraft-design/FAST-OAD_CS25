@@ -124,9 +124,7 @@ def test_max_thrust():
     # Check with Takeoff altitude
     atm = Atmosphere(0, altitude_in_feet=False)
     max_thrust_ratio = engine.max_thrust(atm, machs, 0)
-    ref_max_thrust_ratio = (
-        0.9553 * atm.density / 1.225 * (1 - 0.72971 * machs + 0.35886 * machs**2)
-    )
+    ref_max_thrust_ratio = 0.9553 * atm.density / 1.225 * (1 - 0.72971 * machs + 0.35886 * machs**2)
     np.testing.assert_allclose(max_thrust_ratio, ref_max_thrust_ratio, rtol=1e-4)
 
     # Check Cruise above 11000 with compression rate != 30 and bypass ratio != 5

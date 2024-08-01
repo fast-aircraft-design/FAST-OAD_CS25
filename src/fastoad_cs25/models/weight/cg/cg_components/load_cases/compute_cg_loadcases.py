@@ -1,4 +1,5 @@
 """Computes and aggregates CG ratios for load cases."""
+
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -28,7 +29,6 @@ class CGRatiosForLoadCases(om.Group):
     """Aggregation of CG ratios from load case calculations."""
 
     def setup(self):
-
         # We add in our group all the components for declared services that provide CG ratio
         # for specific load_cases
         for load_case_count in count():

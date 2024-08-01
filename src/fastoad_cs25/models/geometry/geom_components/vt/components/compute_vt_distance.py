@@ -1,5 +1,5 @@
 """
-    Estimation of vertical tail distance
+Estimation of vertical tail distance
 """
 
 #  This file is part of FAST-OAD_CS25
@@ -24,7 +24,6 @@ class ComputeVTDistance(om.ExplicitComponent):
     """Vertical tail distance estimation"""
 
     def setup(self):
-
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("settings:geometry:vertical_tail:position_ratio_on_fuselage", val=0.88)

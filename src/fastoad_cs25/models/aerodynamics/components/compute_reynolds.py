@@ -1,6 +1,6 @@
 """Computation of Reynolds number"""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -12,7 +12,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import numpy as np
 from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao.core.explicitcomponent import ExplicitComponent
@@ -22,7 +21,8 @@ from ..constants import SERVICE_REYNOLDS_COEFFICIENT
 
 
 @RegisterSubmodel(
-    SERVICE_REYNOLDS_COEFFICIENT, "fastoad.submodel.aerodynamics.reynolds_coefficient.legacy"
+    SERVICE_REYNOLDS_COEFFICIENT,
+    "fastoad.submodel.aerodynamics.reynolds_coefficient.legacy",
 )
 class ComputeReynolds(ExplicitComponent):
     """Computation of Reynolds number"""

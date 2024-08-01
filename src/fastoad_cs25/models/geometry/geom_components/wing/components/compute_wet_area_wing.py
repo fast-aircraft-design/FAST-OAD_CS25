@@ -1,5 +1,5 @@
 """
-    Estimation of wing wet area
+Estimation of wing wet area
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO

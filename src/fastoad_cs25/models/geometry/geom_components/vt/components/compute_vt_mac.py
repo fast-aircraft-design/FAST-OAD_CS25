@@ -1,5 +1,5 @@
 """
-    Estimation of vertical tail mean aerodynamic chords
+Estimation of vertical tail mean aerodynamic chords
 """
 
 #  This file is part of FAST-OAD_CS25

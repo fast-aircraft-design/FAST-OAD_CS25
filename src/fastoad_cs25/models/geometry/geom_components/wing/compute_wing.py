@@ -18,11 +18,11 @@ import fastoad.api as oad
 import openmdao.api as om
 
 from .constants import (
+    SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
     SERVICE_WING_GEOMETRY_MFW,
     SERVICE_WING_GEOMETRY_PLANFORM,
     SERVICE_WING_GEOMETRY_THICKNESS,
     SERVICE_WING_GEOMETRY_WET_AREA,
-    SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
 )
 from ...constants import SERVICE_WING_GEOMETRY
 
@@ -57,5 +57,7 @@ class ComputeWingGeometry(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "mfw", oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_MFW), promotes=["*"]
+            "mfw",
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_MFW),
+            promotes=["*"],
         )

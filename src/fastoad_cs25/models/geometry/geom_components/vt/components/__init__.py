@@ -3,7 +3,7 @@ Estimation of vertical tail geometry (components)
 """
 
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +20,6 @@ Estimation of vertical tail geometry (components)
 from .compute_vt_chords import ComputeVTChords
 from .compute_vt_clalpha import ComputeVTClalpha
 from .compute_vt_distance import ComputeVTDistance
+from .compute_vt_local_positions import ComputeVTLocalPositions
 from .compute_vt_mac import ComputeVTMAC
 from .compute_vt_sweep import ComputeVTSweep
-from .compute_vt_local_positions import ComputeVTLocalPositions

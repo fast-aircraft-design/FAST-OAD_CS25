@@ -1,6 +1,6 @@
 """Computation of aerodynamic characteristics at takeoff."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,10 @@
 
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
+from fastoad.module_management.service_registry import (
+    RegisterOpenMDAOSystem,
+    RegisterSubmodel,
+)
 
 from .constants import PolarType, SERVICE_HIGH_LIFT, SERVICE_POLAR
 
@@ -37,5 +40,7 @@ class AerodynamicsTakeoff(om.Group):
 
         polar_type_option = {"polar_type": PolarType.TAKEOFF}
         self.add_subsystem(
-            "polar", RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option), promotes=["*"]
+            "polar",
+            RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            promotes=["*"],
         )

@@ -1,6 +1,6 @@
 """Computation of CL characteristics at low speed."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -33,10 +33,14 @@ class ComputeAlpha(om.ExplicitComponent):
         polar_type = "low_speed" if self.options["low_speed_aero"] else "cruise"
         CL0_default = 0.2 if self.options["low_speed_aero"] else 0.1  # pylint: disable=invalid-name
         self.add_input(
-            f"data:aerodynamics:aircraft:{polar_type}:CL", shape_by_conn=True, val=np.nan
+            f"data:aerodynamics:aircraft:{polar_type}:CL",
+            shape_by_conn=True,
+            val=np.nan,
         )
         self.add_input(
-            f"data:aerodynamics:aircraft:{polar_type}:CL_alpha", val=np.nan, units="1/rad"
+            f"data:aerodynamics:aircraft:{polar_type}:CL_alpha",
+            val=np.nan,
+            units="1/rad",
         )
         self.add_input(f"data:aerodynamics:aircraft:{polar_type}:CL0", val=CL0_default)
 

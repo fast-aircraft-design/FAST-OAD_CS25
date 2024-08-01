@@ -1,5 +1,5 @@
 """
-    Estimation of yawing moment due to sideslip
+Estimation of yawing moment due to sideslip
 """
 
 #  This file is part of FAST-OAD_CS25

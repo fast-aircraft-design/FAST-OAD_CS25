@@ -1,5 +1,5 @@
 """
-    FAST - Copyright (c) 2016 ONERA ISAE
+FAST - Copyright (c) 2016 ONERA ISAE
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
@@ -50,7 +50,6 @@ class Geometry(om.Group):
         )
 
     def setup(self):
-
         if self.options[CABIN_SIZING_OPTION]:
             self.add_subsystem(
                 "compute_fuselage",

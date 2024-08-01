@@ -135,8 +135,8 @@ class ComputeHTArea(om.ExplicitComponent):
         htp_area = ht_volume_coeff / aero_centers_distance * wing_area * wing_mac
         wet_area_htp = wet_area_coeff * htp_area
 
-        outputs[
-            "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"
-        ] = aero_centers_distance
+        outputs["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"] = (
+            aero_centers_distance
+        )
         outputs["data:geometry:horizontal_tail:wetted_area"] = wet_area_htp
         outputs["data:geometry:horizontal_tail:area"] = htp_area

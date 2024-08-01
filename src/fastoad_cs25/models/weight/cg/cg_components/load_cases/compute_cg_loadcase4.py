@@ -1,5 +1,5 @@
 """
-    Estimation of center of gravity for load case 4
+Estimation of center of gravity for load case 4
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO

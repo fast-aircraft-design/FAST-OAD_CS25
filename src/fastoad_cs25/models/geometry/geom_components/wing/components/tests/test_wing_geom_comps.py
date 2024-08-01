@@ -14,7 +14,6 @@ Test module for geometry functions of cg components
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import openmdao.api as om
 import pytest
 from fastoad.testing import run_system

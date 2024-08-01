@@ -1,6 +1,6 @@
 """Computation of form drag for nacelles and pylons."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +21,8 @@ from ..constants import SERVICE_CD0_NACELLES_PYLONS
 
 
 @RegisterSubmodel(
-    SERVICE_CD0_NACELLES_PYLONS, "fastoad.submodel.aerodynamics.CD0.nacelles_pylons.legacy"
+    SERVICE_CD0_NACELLES_PYLONS,
+    "fastoad.submodel.aerodynamics.CD0.nacelles_pylons.legacy",
 )
 class Cd0NacellesAndPylons(om.ExplicitComponent):
     """Computation of form drag for nacelles and pylons."""

@@ -1,6 +1,6 @@
 """Sum of form drags from aircraft components."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -32,7 +32,9 @@ class Cd0Total(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:wing:low_speed:CD0", shape_by_conn=True, val=np.nan)
             self.add_input(
-                "data:aerodynamics:fuselage:low_speed:CD0", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:fuselage:low_speed:CD0",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input("data:aerodynamics:horizontal_tail:low_speed:CD0", val=np.nan)
             self.add_input("data:aerodynamics:vertical_tail:low_speed:CD0", val=np.nan)

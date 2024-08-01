@@ -56,7 +56,6 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
         outputs["wing_area:geom"] = wing_area_mission
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
         lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
         root_thickness_ratio = inputs["data:geometry:wing:root:thickness_ratio"]
         tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
@@ -122,7 +121,6 @@ class WingAreaConstraintsGeom(om.ExplicitComponent):
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
         mfw = inputs["data:weight:aircraft:MFW"]
         mission_fuel = inputs["data:weight:aircraft:sizing_block_fuel"]
 

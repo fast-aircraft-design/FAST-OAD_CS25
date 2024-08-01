@@ -12,6 +12,5 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 SERVICE_CENTERS_OF_GRAVITY = "service.weight.cg"
 SERVICE_MASS_BREAKDOWN = "service.weight.mass_breakdown"

@@ -1,5 +1,5 @@
 """
-    Estimation of vertical tail lift coefficient
+Estimation of vertical tail lift coefficient
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2023 ONERA & ISAE-SUPAERO
