@@ -35,7 +35,6 @@ class UpdateWingAreaAero(om.ExplicitComponent):
     """Computes wing area for having enough lift at required approach speed."""
 
     def setup(self):
-
         self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
         self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
         self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
@@ -48,7 +47,6 @@ class UpdateWingAreaAero(om.ExplicitComponent):
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
         approach_speed = inputs["data:TLAR:approach_speed"]
         mlw = inputs["data:weight:aircraft:MLW"]
         max_cl = inputs["data:aerodynamics:aircraft:landing:CL_max"]
@@ -61,7 +59,6 @@ class UpdateWingAreaAero(om.ExplicitComponent):
         outputs["wing_area:aero"] = wing_area_approach
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
         approach_speed = inputs["data:TLAR:approach_speed"]
         mlw = inputs["data:weight:aircraft:MLW"]
         max_cl = inputs["data:aerodynamics:aircraft:landing:CL_max"]
@@ -85,7 +82,6 @@ class UpdateWingAreaAero(om.ExplicitComponent):
 )
 class WingAreaConstraintsAero(om.ExplicitComponent):
     def setup(self):
-
         self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
         self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
         self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
@@ -96,7 +92,6 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
         approach_speed = inputs["data:TLAR:approach_speed"]
         mlw = inputs["data:weight:aircraft:MLW"]
         max_cl = inputs["data:aerodynamics:aircraft:landing:CL_max"]
@@ -110,7 +105,6 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
         )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
         approach_speed = inputs["data:TLAR:approach_speed"]
         mlw = inputs["data:weight:aircraft:MLW"]
         wing_area = inputs["data:geometry:wing:area"]
@@ -120,7 +114,7 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
 
         partials[
             "data:aerodynamics:aircraft:landing:additional_CL_capacity", "data:TLAR:approach_speed"
-        ] = (2.0 * (mlw * g) / (0.5 * rho_sl * stall_speed**3.0 * wing_area) / 1.23)
+        ] = 2.0 * (mlw * g) / (0.5 * rho_sl * stall_speed**3.0 * wing_area) / 1.23
         partials[
             "data:aerodynamics:aircraft:landing:additional_CL_capacity",
             "data:aerodynamics:aircraft:landing:CL_max",

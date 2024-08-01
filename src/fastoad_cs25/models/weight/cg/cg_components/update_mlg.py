@@ -1,5 +1,5 @@
 """
-    Estimation of main landing gear center of gravity
+Estimation of main landing gear center of gravity
 """
 
 #  This file is part of FAST-OAD_CS25

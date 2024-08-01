@@ -111,9 +111,7 @@ class OswaldCoefficient(om.ExplicitComponent):
         lamda = l4_wing / l2_wing
         delta_lamda = -0.357 + 0.45 * np.exp(0.0375 * sweep_25 / 180.0 * np.pi)
         lamda = lamda - delta_lamda
-        f_lamda = (
-            0.0524 * lamda**4 - 0.15 * lamda**3 + 0.1659 * lamda**2 - 0.0706 * lamda + 0.0119
-        )
+        f_lamda = 0.0524 * lamda**4 - 0.15 * lamda**3 + 0.1659 * lamda**2 - 0.0706 * lamda + 0.0119
         e_theory = 1 / (1 + f_lamda * aspect_ratio)
 
         if mach <= 0.4:

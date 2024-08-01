@@ -1,5 +1,5 @@
 """
-    Estimation centers of gravity of other components
+Estimation centers of gravity of other components
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO

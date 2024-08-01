@@ -1,5 +1,5 @@
 """
-    Estimation of nacelle and pylon geometry
+Estimation of nacelle and pylon geometry
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
@@ -64,7 +64,6 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
     """Nacelle and pylon geometry estimation"""
 
     def setup(self):
-
         self.add_input("data:propulsion:MTO_thrust", val=np.nan, units="N")
         self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan)
         self.add_input("data:geometry:propulsion:layout", val=np.nan)

@@ -1,5 +1,5 @@
 """
-    Estimation of aerodynamic center
+Estimation of aerodynamic center
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2023 ONERA & ISAE-SUPAERO

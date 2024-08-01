@@ -1,5 +1,5 @@
 """
-    Estimation of max fuel weight
+Estimation of max fuel weight
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO
@@ -45,8 +45,6 @@ class ComputeMFW(om.ExplicitComponent):
         el_ext = inputs["data:geometry:wing:tip:thickness_ratio"]
 
         # TODO: remove hard coded value
-        mfw = (
-            224 * (wing_area**1.5 * lambda_wing ** (-0.4) * (0.6 * el_emp + 0.4 * el_ext)) + 1570
-        )
+        mfw = 224 * (wing_area**1.5 * lambda_wing ** (-0.4) * (0.6 * el_emp + 0.4 * el_ext)) + 1570
 
         outputs["data:weight:aircraft:MFW"] = mfw

@@ -1,5 +1,5 @@
 """
-    Estimation of horizontal tail chords and span
+Estimation of horizontal tail chords and span
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO

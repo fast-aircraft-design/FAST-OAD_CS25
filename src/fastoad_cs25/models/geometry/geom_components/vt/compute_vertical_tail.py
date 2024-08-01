@@ -1,5 +1,5 @@
 """
-    Estimation of geometry of vertical tail
+Estimation of geometry of vertical tail
 """
 
 #  This file is part of FAST-OAD_CS25
@@ -14,7 +14,6 @@
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 
 import fastoad.api as oad
 import openmdao.api as om

@@ -12,6 +12,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """Computation of propulsion mass."""
+
 from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao import api as om
 

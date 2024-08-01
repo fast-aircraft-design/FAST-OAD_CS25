@@ -1,5 +1,5 @@
 """
-    Estimation of wing center of gravity
+Estimation of wing center of gravity
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
@@ -27,7 +27,6 @@ class ComputeWingCG(om.ExplicitComponent):
     """Wing center of gravity estimation"""
 
     def setup(self):
-
         self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
         self.add_input("data:geometry:wing:spar_ratio:front:root", val=np.nan)
         self.add_input("data:geometry:wing:spar_ratio:front:kink", val=np.nan)

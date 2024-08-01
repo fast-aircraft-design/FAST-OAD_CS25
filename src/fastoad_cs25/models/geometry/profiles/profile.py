@@ -37,7 +37,6 @@ class Profile:
     # pylint: disable=invalid-name  # X and Z are valid names in this context
 
     def __init__(self, chord_length: float = 0.0):
-
         self._rel_mean_line_and_thickness = pd.DataFrame(columns=[X, Z, THICKNESS])
         """
         Data of mean line and thickness, computed after inputs of :meth:`set_points`_.
@@ -60,7 +59,6 @@ class Profile:
 
     @thickness_ratio.setter
     def thickness_ratio(self, value: float):
-
         # FIXME: mean line is modified accordingly to conform to legacy algorithm, but it
         #        is questionable
         if self._max_relative_thickness != 0.0:

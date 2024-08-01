@@ -1,5 +1,5 @@
 """
-    Estimation of wing B50
+Estimation of wing B50
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO

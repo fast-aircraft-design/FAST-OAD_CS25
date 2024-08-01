@@ -93,14 +93,12 @@ class _ComputeWingArea(om.ExplicitComponent):
         self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
         wing_area_mission = inputs["wing_area:geom"]
         wing_area_approach = inputs["wing_area:aero"]
 
         outputs["data:geometry:wing:area"] = np.nanmax([wing_area_mission, wing_area_approach])
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
-
         wing_area_mission = inputs["wing_area:geom"]
         wing_area_approach = inputs["wing_area:aero"]
 

@@ -37,7 +37,6 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         self.options.declare("landing_flag", default=False, types=bool)
 
     def setup(self):
-
         if self.options["landing_flag"]:
             self.add_input("data:mission:sizing:landing:flap_angle", val=np.nan, units="deg")
             self.add_input("data:mission:sizing:landing:slat_angle", val=np.nan, units="deg")
@@ -68,7 +67,6 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-
         if self.options["landing_flag"]:
             flap_angle = inputs["data:mission:sizing:landing:flap_angle"]
             slat_angle = inputs["data:mission:sizing:landing:slat_angle"]
@@ -163,13 +161,7 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
 
         # cl created by the flap in 2D
         delta_cl_flap = (
-            2.0
-            * np.pi
-            / np.sqrt(1 - mach**2)
-            * ratio_c_flap
-            * alpha_flap
-            * flap_angle
-            * k_cl_slot
+            2.0 * np.pi / np.sqrt(1 - mach**2) * ratio_c_flap * alpha_flap * flap_angle * k_cl_slot
         )
 
         # ratio of chord with slat extended compared to clean chord

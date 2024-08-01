@@ -1,5 +1,5 @@
 """
-    Estimation of geometry of fuselase part A - Cabin (Commercial)
+Estimation of geometry of fuselase part A - Cabin (Commercial)
 """
 
 #  This file is part of FAST-OAD_CS25
@@ -114,7 +114,6 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
     """Geometry of fuselage part A - Cabin (Commercial) estimation"""
 
     def setup(self):
-
         self.add_input("data:geometry:cabin:seats:economical:width", val=np.nan, units="m")
         self.add_input("data:geometry:cabin:seats:economical:length", val=np.nan, units="m")
         self.add_input("data:geometry:cabin:seats:economical:count_by_row", val=np.nan)

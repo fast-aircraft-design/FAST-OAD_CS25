@@ -1,5 +1,5 @@
 """
-    Estimation of tanks center of gravity
+Estimation of tanks center of gravity
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
@@ -60,7 +60,6 @@ class ComputeTanksCG(om.ExplicitComponent):
         self.declare_partials("data:weight:fuel_tank:CG:x", "*", method="fd")
 
     def compute(self, inputs, outputs):
-
         # TODO: decompose into a function to make the code more clear
         front_spar_ratio_root = inputs["data:geometry:wing:spar_ratio:front:root"]
         front_spar_ratio_kink = inputs["data:geometry:wing:spar_ratio:front:kink"]

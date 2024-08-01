@@ -1,5 +1,5 @@
 """
-    Estimation of horizontal tail lift coefficient
+Estimation of horizontal tail lift coefficient
 """
 
 #  This file is part of FAST-OAD_CS25

@@ -1,5 +1,5 @@
 """
-    Estimation of global center of gravity
+Estimation of global center of gravity
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2022 ONERA & ISAE-SUPAERO
