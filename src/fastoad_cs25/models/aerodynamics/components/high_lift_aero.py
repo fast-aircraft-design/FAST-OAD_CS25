@@ -2,7 +2,7 @@
 Computation of lift and drag increment due to high-lift devices
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -57,10 +57,12 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         self.add_input("data:geometry:slat:chord_ratio", val=np.nan)
         self.add_input("data:geometry:slat:span_ratio", val=np.nan)
         self.add_input(
-            "tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k", val=1.0
+            "tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k",
+            val=1.0,
         )
         self.add_input(
-            "tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k", val=1.0
+            "tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k",
+            val=1.0,
         )
 
     def setup_partials(self):

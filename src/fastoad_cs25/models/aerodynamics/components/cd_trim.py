@@ -1,6 +1,6 @@
 """Computation of trim drag."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -29,7 +29,9 @@ class CdTrim(om.ExplicitComponent):
     def setup(self):
         if self.options["low_speed_aero"]:
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CL", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CL",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD:trim",

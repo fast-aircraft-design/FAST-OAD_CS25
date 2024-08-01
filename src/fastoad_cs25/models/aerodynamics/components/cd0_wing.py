@@ -1,6 +1,6 @@
 """Computation of form drag for wing."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,10 @@ import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
-from .utils.cd0_lifting_surface import LiftingSurfaceGeometry, compute_cd0_lifting_surface
+from .utils.cd0_lifting_surface import (
+    LiftingSurfaceGeometry,
+    compute_cd0_lifting_surface,
+)
 from ..constants import SERVICE_CD0_WING
 
 
@@ -36,7 +39,9 @@ class Cd0Wing(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CL", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CL",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output(

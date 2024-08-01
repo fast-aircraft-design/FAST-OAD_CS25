@@ -1,6 +1,6 @@
 """Computation of max CL in landing conditions."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -27,7 +27,8 @@ class ComputeMaxClLanding(ExplicitComponent):
         self.add_input("data:aerodynamics:aircraft:landing:CL_max_clean", val=np.nan)
         self.add_input("data:aerodynamics:high_lift_devices:landing:CL", val=np.nan)
         self.add_input(
-            "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k", val=np.nan
+            "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k",
+            val=np.nan,
         )
         self.add_output("data:aerodynamics:aircraft:landing:CL_max")
 

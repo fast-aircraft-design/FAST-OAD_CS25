@@ -1,6 +1,6 @@
 """Computation of CL and CD for whole aircraft."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -34,16 +34,23 @@ class ComputePolar(om.ExplicitComponent):
 
         if self.options["polar_type"] != PolarType.HIGH_SPEED:
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CL", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CL",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CD0", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CD0",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CD:trim", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:low_speed:CD:trim",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient", val=np.nan
+                "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
+                val=np.nan,
             )
 
             if self.options["polar_type"] == PolarType.TAKEOFF:
@@ -85,7 +92,9 @@ class ComputePolar(om.ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
             self.add_input("data:aerodynamics:aircraft:cruise:CD0", shape_by_conn=True, val=np.nan)
             self.add_input(
-                "data:aerodynamics:aircraft:cruise:CD:trim", shape_by_conn=True, val=np.nan
+                "data:aerodynamics:aircraft:cruise:CD:trim",
+                shape_by_conn=True,
+                val=np.nan,
             )
             self.add_input(
                 "data:aerodynamics:aircraft:cruise:CD:compressibility",

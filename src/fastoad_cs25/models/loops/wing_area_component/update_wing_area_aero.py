@@ -2,7 +2,7 @@
 Computation of wing area following aerodynamic constraints
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +15,15 @@ Computation of wing area following aerodynamic constraints
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-from scipy.constants import g
-
 import openmdao.api as om
-
 from fastoad.module_management.service_registry import RegisterSubmodel
-from fastoad_cs25.models.loops.constants import (
-    SERVICE_WING_AREA_LOOP_AERO,
-    SERVICE_WING_AREA_CONSTRAINT_AERO,
-)
-
+from scipy.constants import g
 from stdatm import Atmosphere
+
+from fastoad_cs25.models.loops.constants import (
+    SERVICE_WING_AREA_CONSTRAINT_AERO,
+    SERVICE_WING_AREA_LOOP_AERO,
+)
 
 
 @RegisterSubmodel(
@@ -78,7 +76,8 @@ class UpdateWingAreaAero(om.ExplicitComponent):
 
 
 @RegisterSubmodel(
-    SERVICE_WING_AREA_CONSTRAINT_AERO, "fastoad.submodel.loops.wing.area.constraint.aero.legacy"
+    SERVICE_WING_AREA_CONSTRAINT_AERO,
+    "fastoad.submodel.loops.wing.area.constraint.aero.legacy",
 )
 class WingAreaConstraintsAero(om.ExplicitComponent):
     def setup(self):
@@ -113,7 +112,8 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
         stall_speed = approach_speed / 1.23
 
         partials[
-            "data:aerodynamics:aircraft:landing:additional_CL_capacity", "data:TLAR:approach_speed"
+            "data:aerodynamics:aircraft:landing:additional_CL_capacity",
+            "data:TLAR:approach_speed",
         ] = 2.0 * (mlw * g) / (0.5 * rho_sl * stall_speed**3.0 * wing_area) / 1.23
         partials[
             "data:aerodynamics:aircraft:landing:additional_CL_capacity",
