@@ -2,7 +2,7 @@
 Estimation of horizontal tail area
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -92,9 +92,7 @@ class ComputeHTArea(om.ExplicitComponent):
 
         vtp_tip_chord = inputs["data:geometry:vertical_tail:tip:chord"]
         vt_le_x = inputs["data:geometry:vertical_tail:tip:leading_edge:x"]
-        htp_leading_edge_position = inputs[
-            "settings:geometry:horizontal_tail:position_ratio_on_VTP"
-        ]
+        htp_le_position_ratio = inputs["settings:geometry:horizontal_tail:position_ratio_on_VTP"]
         htp_x0 = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
 
         delta_lg = x_main_lg - x_front_lg
@@ -125,7 +123,7 @@ class ComputeHTArea(om.ExplicitComponent):
         ht_volume_coeff = cm_front_lg
         if tail_type == 1:
             aero_centers_distance = (
-                vt_le_x + htp_leading_edge_position * vtp_tip_chord + htp_x0 - x_wing_aero_center
+                vt_le_x + htp_le_position_ratio * vtp_tip_chord + htp_x0 - x_wing_aero_center
             )
             wet_area_coeff = 2.0  # TODO: explore more thoroughly this coefficient
         elif tail_type == 0:
