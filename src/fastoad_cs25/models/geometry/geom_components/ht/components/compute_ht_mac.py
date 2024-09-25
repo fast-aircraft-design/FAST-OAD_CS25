@@ -70,17 +70,17 @@ class ComputeHTMAC(om.ExplicitComponent):
         sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
         b_h = inputs["data:geometry:horizontal_tail:span"]
 
-        tmp = (
-            root_chord * 0.25 + b_h / 2 * math.tan(sweep_25_ht / 180.0 * math.pi) - tip_chord * 0.25
-        )
-
         mac_ht = (
             (root_chord**2 + root_chord * tip_chord + tip_chord**2)
             / (tip_chord + root_chord)
             * 2
             / 3
         )
-        x0_ht = (tmp * (root_chord + 2 * tip_chord)) / (3 * (root_chord + tip_chord))
+
+        x0_ht = (root_chord / 4) + (b_h / 6) * math.tan(sweep_25_ht / 180.0 * math.pi) * (
+            (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
+        )
+
         y0_ht = (b_h * (0.5 * root_chord + tip_chord)) / (3 * (root_chord + tip_chord))
 
         outputs["data:geometry:horizontal_tail:MAC:length"] = mac_ht

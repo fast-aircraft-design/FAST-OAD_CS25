@@ -146,7 +146,7 @@ def test_compute_ht_mac(input_xml):
     length = problem["data:geometry:horizontal_tail:MAC:length"]
     assert length == pytest.approx(3.141, abs=1e-3)
     ht_x0 = problem["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
-    assert ht_x0 == pytest.approx(1.656, abs=1e-3)
+    assert ht_x0 == pytest.approx(2.441, abs=1e-3)
     ht_y0 = problem["data:geometry:horizontal_tail:MAC:y"]
     assert ht_y0 == pytest.approx(2.519, abs=1e-3)
 
