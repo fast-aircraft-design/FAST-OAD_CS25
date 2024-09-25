@@ -56,7 +56,8 @@ def test_compute_ht_area(input_xml):
     # Testing conventional tail
     input_vars = input_xml.read(only=input_list).to_ivc()
 
-    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 19.89)
+    # Input needed, but value not used for conventional tail
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 0.0)
 
     problem = run_system(ComputeHTArea(), input_vars)
 
@@ -71,15 +72,15 @@ def test_compute_ht_area(input_xml):
     input_list.remove("data:geometry:has_T_tail")
     input_vars = input_xml.read(only=input_list).to_ivc()
     input_vars.add_output("data:geometry:has_T_tail", 1.0)
-    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 19.89)
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 32.21272)
     problem_ttail = run_system(ComputeHTArea(), input_vars)
 
     ht_lp = problem_ttail["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"]
-    assert ht_lp == pytest.approx(5.35, abs=1e-2)
+    assert ht_lp == pytest.approx(17.68, abs=1e-2)
     wet_area = problem_ttail["data:geometry:horizontal_tail:wetted_area"]
-    assert wet_area == pytest.approx(232.20, abs=1e-2)
+    assert wet_area == pytest.approx(70.31, abs=1e-2)
     ht_area = problem_ttail["data:geometry:horizontal_tail:area"]
-    assert ht_area == pytest.approx(116.10, abs=1e-2)
+    assert ht_area == pytest.approx(35.15, abs=1e-2)
 
 
 def test_compute_vt_area(input_xml):
