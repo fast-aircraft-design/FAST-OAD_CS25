@@ -291,7 +291,7 @@ def test_compute_vt_mac(input_xml):
     length = problem["data:geometry:vertical_tail:MAC:length"]
     assert length == pytest.approx(4.161, abs=1e-3)
     vt_x0 = problem["data:geometry:vertical_tail:MAC:at25percent:x:local"]
-    assert vt_x0 == pytest.approx(2.321, abs=1e-3)
+    assert vt_x0 == pytest.approx(3.361, abs=1e-3)
     vt_z0 = problem["data:geometry:vertical_tail:MAC:z"]
     assert vt_z0 == pytest.approx(2.716, abs=1e-3)
 

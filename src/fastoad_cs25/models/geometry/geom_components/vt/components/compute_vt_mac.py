@@ -60,15 +60,17 @@ class ComputeVTMAC(om.ExplicitComponent):
         sweep_25_vt = inputs["data:geometry:vertical_tail:sweep_25"]
         b_v = inputs["data:geometry:vertical_tail:span"]
 
-        tmp = root_chord * 0.25 + b_v * math.tan(sweep_25_vt / 180.0 * math.pi) - tip_chord * 0.25
-
         mac_vt = (
             (root_chord**2 + root_chord * tip_chord + tip_chord**2)
             / (tip_chord + root_chord)
             * 2.0
             / 3.0
         )
-        x0_vt = (tmp * (root_chord + 2 * tip_chord)) / (3 * (root_chord + tip_chord))
+
+        x0_vt = (root_chord / 4) + (b_v / 3) * math.tan(sweep_25_vt / 180.0 * math.pi) * (
+            (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
+        )
+
         z0_vt = (2 * b_v * (0.5 * root_chord + tip_chord)) / (3 * (root_chord + tip_chord))
 
         outputs["data:geometry:vertical_tail:MAC:length"] = mac_vt
