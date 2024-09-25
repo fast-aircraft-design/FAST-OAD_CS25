@@ -124,7 +124,9 @@ class ComputeHTArea(om.ExplicitComponent):
 
         ht_volume_coeff = cm_front_lg
         if tail_type == 1:
-            aero_centers_distance = vt_le_x + htp_leading_edge_position * vtp_tip_chord + htp_x0
+            aero_centers_distance = (
+                vt_le_x + htp_leading_edge_position * vtp_tip_chord + htp_x0 - x_wing_aero_center
+            )
             wet_area_coeff = 2.0  # TODO: explore more thoroughly this coefficient
         elif tail_type == 0:
             aero_centers_distance = htp_aero_center_ratio * fuselage_length - x_wing_aero_center
