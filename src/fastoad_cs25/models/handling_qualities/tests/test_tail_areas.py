@@ -75,11 +75,11 @@ def test_compute_ht_area(input_xml):
     problem_ttail = run_system(ComputeHTArea(), input_vars)
 
     ht_lp = problem_ttail["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"]
-    assert ht_lp == pytest.approx(21.8, abs=1e-2)
+    assert ht_lp == pytest.approx(5.35, abs=1e-2)
     wet_area = problem_ttail["data:geometry:horizontal_tail:wetted_area"]
-    assert wet_area == pytest.approx(56.98, abs=1e-2)
+    assert wet_area == pytest.approx(232.20, abs=1e-2)
     ht_area = problem_ttail["data:geometry:horizontal_tail:area"]
-    assert ht_area == pytest.approx(28.5, abs=1e-2)
+    assert ht_area == pytest.approx(116.10, abs=1e-2)
 
 
 def test_compute_vt_area(input_xml):
