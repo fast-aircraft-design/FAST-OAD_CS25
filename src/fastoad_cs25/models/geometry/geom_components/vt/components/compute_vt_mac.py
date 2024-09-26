@@ -28,7 +28,7 @@ class ComputeVTMAC(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:geometry:vertical_tail:root:chord", val=np.nan, units="m")
         self.add_input("data:geometry:vertical_tail:tip:chord", val=np.nan, units="m")
-        self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="rad")
         self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
 
         self.add_output("data:geometry:vertical_tail:MAC:length", units="m")
@@ -67,7 +67,7 @@ class ComputeVTMAC(om.ExplicitComponent):
             / 3.0
         )
 
-        x0_vt = (root_chord / 4) + (b_v / 3) * math.tan(sweep_25_vt / 180.0 * math.pi) * (
+        x0_vt = (root_chord / 4) + (b_v / 3) * math.tan(sweep_25_vt) * (
             (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
         )
 

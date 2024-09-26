@@ -28,7 +28,7 @@ class ComputeHTMAC(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:geometry:horizontal_tail:center:chord", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:tip:chord", val=np.nan, units="m")
-        self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
+        self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="rad")
         self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
 
         self.add_output("data:geometry:horizontal_tail:MAC:length", units="m")
@@ -77,7 +77,7 @@ class ComputeHTMAC(om.ExplicitComponent):
             / 3
         )
 
-        x0_ht = (root_chord / 4) + (b_h / 6) * math.tan(sweep_25_ht / 180.0 * math.pi) * (
+        x0_ht = (root_chord / 4) + (b_h / 6) * math.tan(sweep_25_ht) * (
             (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
         )
 
