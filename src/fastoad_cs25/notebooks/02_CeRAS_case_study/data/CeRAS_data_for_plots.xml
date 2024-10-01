@@ -1,6 +1,6 @@
 <!--
   ~ This file is part of FAST-OAD_CS25
-  ~ Copyright (C) 2022 ONERA & ISAE-SUPAERO
+  ~ Copyright (C) 2024 ONERA & ISAE-SUPAERO
   ~ FAST is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
   ~ the Free Software Foundation, either version 3 of the License, or
@@ -80,10 +80,10 @@
                 </root>
                 <tip>
                     <chord units="m" is_input="False">
-                        1.48!--chord length at wing tip-->
+                        1.48<!--chord length at wing tip-->
                     </chord>
                     <thickness_ratio is_input="False">
-                        0.11!--thickness ratio at wing tip-->
+                        0.11<!--thickness ratio at wing tip-->
                     </thickness_ratio>
                     <y units="m" is_input="False">17.04<!--Y-position of wing tip--></y>
                     <leading_edge>
