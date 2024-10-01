@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.7.0
+=============
+Fixed:
+
+- Fixed tail geometry (**Warning**: slight but noticeable changes in tail CG, hence in overall data). (#45)
 
 Version 0.6.1
 =============
