@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 0.7.1
+=============
+Fixed:
+
+- Incorrect comments in a datafile for CeRAS notebook would cause crash with FAST-OAD-core 1.8+. (#47)
+
 Version 0.7.0
 =============
 Fixed:

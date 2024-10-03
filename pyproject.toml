@@ -67,7 +67,7 @@ ruff = "0.5.5"
 "cs25" = "fastoad_cs25"
 
 [tool.poetry-dynamic-versioning]
-enable = false
+enable = true
 vcs = "git"
 style = "semver"
 
