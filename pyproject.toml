@@ -29,10 +29,10 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Physics"
 ]
 
@@ -43,8 +43,8 @@ classifiers = [
 # of poetry.lock file will modify docs/requirements.txt and make
 # the commit fail because "files were modified by this hook". In that case,
 # doing again the commit including changes in docs/requirements.txt will succeed.
-python = ">=3.8, <3.12"
-fast-oad-core = "^1.7.3"
+python = "^3.9"
+fast-oad-core = { version = "^1.7.3", python = "<3.12" }
 pyparsing = "^3.0.0"  # needed, but not declared as required, by OpenMDAO for file_wrap utility.
 
 [tool.poetry.group.test.dependencies]
