@@ -2,6 +2,14 @@
 Changelog
 =========
 
+Version 0.7.2
+=============
+Modified:
+
+- Python 3.12 is now supported. (#48)
+- Python 3.8, that reached end of life, is no longer supported. (#48)
+
+
 Version 0.7.1
 =============
 Fixed:
