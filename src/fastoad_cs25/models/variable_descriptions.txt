@@ -319,6 +319,7 @@ settings:weight:airframe:landing_gear:front:weight_ratio || part of aircraft wei
 settings:weight:airframe:wing:mass:k_mvo || 1.39 for Airbus type aircrafts
 settings:weight:systems:power:mass:k_elec || electricity coefficient: 1.00 if 2 engines (A300, A310 type) / (1.02 if 2 engines (DC9, Caravelle type) / 1.03 if 3 engines (B727 type) / 1.05 if 3 engines (DC10, L1011 type) / 1.08 if 4 engines (B747 type)
 settings:geometry:horizontal_tail:area_factor || scaling factor applied to horizontal tail area
+settings:geometry:vertical_tail:area_factor || scaling factor applied to vertical tail area
 settings:geometry:horizontal_tail:position_ratio_on_fuselage || (does not apply for T-tails) distance to aircraft nose of 25% MAC of horizontal tail divided by fuselage length
 settings:geometry:vertical_tail:position_ratio_on_fuselage || distance to aircraft nose of 25% MAC of vertical tail divided by fuselage length
 test:test_variable || for testing (do not remove, keep first)
