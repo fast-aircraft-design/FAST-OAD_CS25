@@ -57,6 +57,8 @@ class ComputeHTArea(om.ExplicitComponent):
             "edge and VTP tip leading edge divided by VTP tip chord",
         )
 
+        self.add_input("tuning:geometry:horizontal_tail:area_factor", val=1.0)
+
         self.add_output(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", units="m", ref=30.0
         )
@@ -94,6 +96,7 @@ class ComputeHTArea(om.ExplicitComponent):
         vt_le_x = inputs["data:geometry:vertical_tail:tip:leading_edge:x"]
         htp_le_position_ratio = inputs["settings:geometry:horizontal_tail:position_ratio_on_VTP"]
         htp_x0 = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
+        htp_area_factor = inputs["tuning:geometry:horizontal_tail:area_factor"]
 
         delta_lg = x_main_lg - x_front_lg
         atm = Atmosphere(0.0)
@@ -132,7 +135,7 @@ class ComputeHTArea(om.ExplicitComponent):
         else:
             raise ValueError("Value of data:geometry:has_T_tail can only be 0 or 1")
 
-        htp_area = ht_volume_coeff / aero_centers_distance * wing_area * wing_mac
+        htp_area = ht_volume_coeff / aero_centers_distance * wing_area * wing_mac * htp_area_factor
         wet_area_htp = wet_area_coeff * htp_area
 
         outputs["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"] = (

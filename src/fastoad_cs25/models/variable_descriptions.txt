@@ -335,6 +335,8 @@ tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k || correction 
 tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:offset || correction offset to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear
 tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k || correction ratio to apply to computed additional drag from flap to take into account multiple slots flaps
 tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k || correction ratio to apply to computed additional lift from flap to take into account multiple slots flaps
+tuning:geometry:horizontal_tail:area_factor || scaling factor applied to horizontal tail area
+tuning:geometry:vertical_tail:area_factor || scaling factor applied to vertical tail area
 tuning:propulsion:rubber_engine:SFC:k_sl || correction ratio to apply to the computed SFC at sea level
 tuning:propulsion:rubber_engine:SFC:k_cr || correction ratio to apply to the computed SFC at cruise ceiling
 tuning:weight:airframe:flight_controls:mass:k || flight controls (A4): correction ratio to be applied on computed mass
