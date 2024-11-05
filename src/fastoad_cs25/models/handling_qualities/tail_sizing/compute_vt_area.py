@@ -37,7 +37,7 @@ class ComputeVTArea(om.ExplicitComponent):
         self.add_input(
             "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        self.add_input("settings:geometry:vertical_tail:area_factor", val=1.0)
+        self.add_input("tuning:geometry:vertical_tail:area_factor", val=1.0)
 
         self.add_output("data:geometry:vertical_tail:wetted_area", units="m**2", ref=100.0)
         self.add_output("data:geometry:vertical_tail:area", units="m**2", ref=50.0)
@@ -60,7 +60,7 @@ class ComputeVTArea(om.ExplicitComponent):
         cruise_mach = inputs["data:TLAR:cruise_mach"]
         # This one is the distance between the 25% MAC points
         wing_htp_distance = inputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"]
-        vtp_area_factor = inputs["settings:geometry:vertical_tail:area_factor"]
+        vtp_area_factor = inputs["tuning:geometry:vertical_tail:area_factor"]
 
         # Matches suggested goal by Raymer, Fig 16.20
         cn_beta_goal = 0.0569 - 0.01694 * cruise_mach + 0.15904 * cruise_mach**2
