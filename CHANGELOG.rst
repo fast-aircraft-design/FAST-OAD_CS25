@@ -2,11 +2,11 @@
 Changelog
 =========
 
-Version 0.7.23
+Version 0.7.3
 =============
 Modified:
 
-- Added scaling factors for tuning HTP and VTP areas (#49)
+- Added scaling factors for tuning HTP and VTP areas. (#49)
 
 Version 0.7.2
 =============
