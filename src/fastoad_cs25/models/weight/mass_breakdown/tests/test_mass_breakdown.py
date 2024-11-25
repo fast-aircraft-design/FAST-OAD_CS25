@@ -20,6 +20,7 @@ import os.path as pth
 import openmdao.api as om
 import pytest
 from fastoad.io import VariableIO
+from fastoad.module_management.service_registry import RegisterSubmodel
 from fastoad.testing import run_system
 
 from ..a_airframe import (
@@ -40,6 +41,7 @@ from ..c_systems import (
     PowerSystemsWeight,
     TransmissionSystemsWeight,
 )
+from ..constants import SERVICE_MLW_MZFW
 from ..cs25 import Loads
 from ..d_furniture import (
     CargoConfigurationWeight,
@@ -661,3 +663,16 @@ def test_loop_compute_oew():
     mass_computation = run_system(MassBreakdown(payload_from_npax=False), input_vars)
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(42060, abs=1)
+
+    # with analytic mlw evaluation
+    reader = VariableIO(pth.join(pth.dirname(__file__), "data", "mass_breakdown_inputs.xml"))
+    reader.path_separator = ":"
+    input_vars = reader.read(
+        ignore=["data:weight:aircraft:MLW", "data:weight:aircraft:MZFW"]
+    ).to_ivc()
+    RegisterSubmodel.active_models[SERVICE_MLW_MZFW] = (
+        "fastoad.submodel.weight.mass.mlw_mzfw.analytical"
+    )
+    mass_computation = run_system(MassBreakdown(payload_from_npax=False), input_vars)
+    oew = mass_computation["data:weight:aircraft:OWE"]
+    assert oew == pytest.approx(1, abs=1)

@@ -29,6 +29,10 @@ from .constants import (
     SERVICE_SYSTEMS_MASS,
 )
 
+RegisterSubmodel.active_models[SERVICE_MLW_MZFW] = (
+    "fastoad.submodel.weight.mass.mlw_mzfw.legacy"  # Define default submodel to avoid breaking legacy code
+)
+
 
 @RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
 class MassBreakdown(
@@ -66,9 +70,6 @@ class MassBreakdown(
         self.add_subsystem("owe", RegisterSubmodel.get_submodel(SERVICE_OWE), promotes=["*"])
         self.add_subsystem(
             "update_mzfw_and_mlw", RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW), promotes=["*"]
-        )
-        RegisterSubmodel.active_models[SERVICE_MLW_MZFW] = (
-            "fastoad.submodel.weight.mass.mlw_mzfw.legacy"  # Define default submodel
         )
 
 
