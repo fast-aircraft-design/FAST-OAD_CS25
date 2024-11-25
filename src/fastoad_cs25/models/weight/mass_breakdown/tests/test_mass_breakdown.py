@@ -675,4 +675,6 @@ def test_loop_compute_oew():
     )
     mass_computation = run_system(MassBreakdown(payload_from_npax=False), input_vars)
     oew = mass_computation["data:weight:aircraft:OWE"]
-    assert oew == pytest.approx(1, abs=1)
+    mlw = mass_computation["data:weight:aircraft:MLW"]
+    assert oew == pytest.approx(42036, abs=1)
+    assert mlw == pytest.approx(67336, abs=1)
