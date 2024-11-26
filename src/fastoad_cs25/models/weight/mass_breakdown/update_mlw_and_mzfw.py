@@ -64,6 +64,7 @@ class UpdateMLWandMZFWanalytical(ExplicitComponent):
         self.add_input("data:weight:aircraft:OWE", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:max_payload", val=np.nan, units="kg")
         self.add_input("data:mission:sizing:reserve:fuel", val=np.nan, units="kg")
+        self.add_input("data:mission:sizing:holding:fuel", val=np.nan, units="kg")
         self.add_input("data:mission:sizing:diversion:fuel", val=np.nan, units="kg")
 
         self.add_output("data:weight:aircraft:MZFW", units="kg")
@@ -75,11 +76,12 @@ class UpdateMLWandMZFWanalytical(ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         owe = inputs["data:weight:aircraft:OWE"][0]
         max_pl = inputs["data:weight:aircraft:max_payload"][0]
-        fuel_reserve = inputs["data:mission:sizing:reserve:fuel"][0]
+        fuel_reserve = inputs["data:mission:sizing:reserve:fuel"]
         divert_fuel = inputs["data:mission:sizing:diversion:fuel"]
+        holding_fuel = inputs["data:mission:sizing:holding:fuel"]
 
         mzfw = owe + max_pl
-        mlw = mzfw + fuel_reserve + divert_fuel
+        mlw = mzfw + fuel_reserve + divert_fuel + holding_fuel
 
         outputs["data:weight:aircraft:MZFW"] = mzfw
         outputs["data:weight:aircraft:MLW"] = mlw
