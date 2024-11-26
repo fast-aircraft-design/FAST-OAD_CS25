@@ -103,16 +103,6 @@
         <altitude units="ft">20000.0<!--altitude for sizing load case 2 (gust with maximum aircraft mass)--></altitude>
       </lc2>
     </load_case>
-    <mission>
-      <sizing>
-        <reserve>
-          <fuel units="kg">100.</fuel>
-        </reserve>
-        <diversion>
-          <fuel units="kg">200.</fuel>
-        </diversion>
-      </sizing>
-    </mission>
     <weight>
       <aircraft>
         <MFW units="kg">20569.81<!--maximum fuel weight--></MFW>
