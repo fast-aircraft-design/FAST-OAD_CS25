@@ -322,7 +322,7 @@ settings:geometry:horizontal_tail:position_ratio_on_fuselage || (does not apply 
 settings:geometry:vertical_tail:position_ratio_on_fuselage || distance to aircraft nose of 25% MAC of vertical tail divided by fuselage length
 test:test_variable || for testing (do not remove, keep first)
 tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value  || maximum authorized value for compressibility drag. Allows to prevent the model from overestimating the compressibility effect, especially for aircraft models after year 2000.
-tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment || Increment to apply to the computed characteristic Mach (where compressibility drag is 20 d.c.)
+tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment || increment to apply to the computed characteristic Mach (where compressibility drag is 20 d.c.)
 tuning:aerodynamics:aircraft:cruise:CD:k || correction ratio to apply to computed drag coefficient in cruise conditions
 tuning:aerodynamics:aircraft:cruise:CD:offset || correction offset to apply to computed drag coefficient in cruise conditions
 tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k || correction ratio to apply to computed induced drag coefficient in cruise conditions
@@ -339,6 +339,7 @@ tuning:geometry:horizontal_tail:area_factor || scaling factor applied to horizon
 tuning:geometry:vertical_tail:area_factor || scaling factor applied to vertical tail area
 tuning:propulsion:rubber_engine:SFC:k_sl || correction ratio to apply to the computed SFC at sea level
 tuning:propulsion:rubber_engine:SFC:k_cr || correction ratio to apply to the computed SFC at cruise ceiling
+tuning:weight:aircraft:mlw_mzfw_ratio || empiric ratio used for evaluate the MLW from the MZFW
 tuning:weight:airframe:flight_controls:mass:k || flight controls (A4): correction ratio to be applied on computed mass
 tuning:weight:airframe:flight_controls:mass:offset || flight controls (A4): correction offset to be applied on computed mass
 tuning:weight:airframe:fuselage:mass:k || fuselage (A2): correction ratio to be applied on computed mass

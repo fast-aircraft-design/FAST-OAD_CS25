@@ -13,6 +13,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 SERVICE_OWE = "service.mass.owe"
+SERVICE_MLW_MZFW = "service.mass.mlw_mzfw"
 SERVICE_PAYLOAD_MASS = "service.mass.payload"
 SERVICE_AIRFRAME_MASS = "service.mass.airframe"
 SERVICE_PROPULSION_MASS = "service.mass.propulsion"

@@ -16,18 +16,18 @@ import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
+from ...constants import PAYLOAD_FROM_NPAX
+from ..constants import SERVICE_MASS_BREAKDOWN
 from .constants import (
     SERVICE_AIRFRAME_MASS,
     SERVICE_CREW_MASS,
     SERVICE_FURNITURE_MASS,
+    SERVICE_MLW_MZFW,
     SERVICE_OWE,
     SERVICE_PAYLOAD_MASS,
     SERVICE_PROPULSION_MASS,
     SERVICE_SYSTEMS_MASS,
 )
-from .update_mlw_and_mzfw import UpdateMLWandMZFW
-from ..constants import SERVICE_MASS_BREAKDOWN
-from ...constants import PAYLOAD_FROM_NPAX
 
 
 @RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
@@ -64,7 +64,9 @@ class MassBreakdown(
                 promotes=["*"],
             )
         self.add_subsystem("owe", RegisterSubmodel.get_submodel(SERVICE_OWE), promotes=["*"])
-        self.add_subsystem("update_mzfw_and_mlw", UpdateMLWandMZFW(), promotes=["*"])
+        self.add_subsystem(
+            "update_mzfw_and_mlw", RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW), promotes=["*"]
+        )
 
 
 @RegisterSubmodel(SERVICE_OWE, "fastoad.submodel.weight.mass.owe.legacy")

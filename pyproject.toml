@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "FAST-OAD-CS25"
-version = "0.7.0"
+version = "0.7.3"
 description = "FAST-OAD_CS25 is a FAST-OAD plugin with CS25/FAR25-related models."
 readme = "README.md"
 authors = [

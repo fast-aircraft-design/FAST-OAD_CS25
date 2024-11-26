@@ -152,6 +152,9 @@
   </settings>
   <tuning>
     <weight>
+      <aircraft>
+        <mlw_mzfw_ratio>1.06<!--empiric ratio used for evaluate the MLW from the MZFW--></mlw_mzfw_ratio>
+      </aircraft>
       <airframe>
         <flight_controls>
           <mass>
