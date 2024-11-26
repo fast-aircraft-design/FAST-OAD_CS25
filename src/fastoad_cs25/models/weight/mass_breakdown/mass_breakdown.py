@@ -29,11 +29,6 @@ from .constants import (
     SERVICE_SYSTEMS_MASS,
 )
 
-# Define default submodel for MLW evaluation
-RegisterSubmodel.active_models[SERVICE_MLW_MZFW] = (
-    "fastoad.submodel.weight.mass.mlw_mzfw.legacy"  # This avoid breaking legacy code
-)
-
 
 @RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
 class MassBreakdown(
