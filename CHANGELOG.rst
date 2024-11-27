@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 0.7.4
+=============
+Modified:
+
+- Added tuning factor for ratio between MLW and MZFW. (#51)
+
 Version 0.7.3
 =============
 Modified:
