@@ -61,3 +61,6 @@ venv*/
 
 # External tools
 /XFOIL
+
+# Tests folders
+run_pytest*
