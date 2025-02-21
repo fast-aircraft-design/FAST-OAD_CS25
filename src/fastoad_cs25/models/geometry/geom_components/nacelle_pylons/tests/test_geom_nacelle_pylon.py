@@ -92,7 +92,6 @@ def test_geometry_nacelle_pylons_absolute_engine_y():
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units="m")
 
     component = ComputeNacelleAndPylonsGeometry(impose_absolute_engine=True)
-    # component.options["impose_absolute_engine"] = True
 
     problem = run_system(component, input_vars)
 

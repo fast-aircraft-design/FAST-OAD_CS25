@@ -117,7 +117,14 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.declare_partials(
             "data:geometry:propulsion:pylon:length", "data:propulsion:MTO_thrust", method="fd"
         )
-        if not self.options["impose_absolute_engine"]:
+        if self.options["impose_absolute_engine"]:
+            self.declare_partials(
+                "data:geometry:propulsion:engine:y_ratio",
+                ["data:geometry:wing:span", "data:geometry:propulsion:nacelle:y"],
+                method="fd",
+            )
+            inp_fd = "data:geometry:propulsion:nacelle:y"
+        else:
             self.declare_partials(
                 "data:geometry:propulsion:nacelle:y",
                 [
@@ -128,28 +135,30 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 ],
                 method="fd",
             )
-            self.declare_partials(
-                "data:weight:propulsion:engine:CG:x",
-                [
-                    "data:geometry:wing:MAC:at25percent:x",
-                    "data:geometry:wing:MAC:length",
-                    "data:geometry:wing:MAC:leading_edge:x:local",
-                    "data:geometry:wing:kink:leading_edge:x:local",
-                    "data:geometry:wing:tip:leading_edge:x:local",
-                    "data:geometry:wing:root:y",
-                    "data:geometry:wing:kink:y",
-                    "data:geometry:wing:tip:y",
-                    "data:geometry:wing:root:chord",
-                    "data:geometry:wing:kink:chord",
-                    "data:geometry:wing:tip:chord",
-                    "data:geometry:fuselage:length",
-                    "data:propulsion:MTO_thrust",
-                    "data:geometry:fuselage:maximum_width",
-                    "data:geometry:propulsion:engine:y_ratio",
-                    "data:geometry:wing:span",
-                ],
-                method="fd",
-            )
+            inp_fd = "data:geometry:propulsion:engine:y_ratio"
+
+        self.declare_partials(
+            "data:weight:propulsion:engine:CG:x",
+            [
+                "data:geometry:wing:MAC:at25percent:x",
+                "data:geometry:wing:MAC:length",
+                "data:geometry:wing:MAC:leading_edge:x:local",
+                "data:geometry:wing:kink:leading_edge:x:local",
+                "data:geometry:wing:tip:leading_edge:x:local",
+                "data:geometry:wing:root:y",
+                "data:geometry:wing:kink:y",
+                "data:geometry:wing:tip:y",
+                "data:geometry:wing:root:chord",
+                "data:geometry:wing:kink:chord",
+                "data:geometry:wing:tip:chord",
+                "data:geometry:fuselage:length",
+                "data:propulsion:MTO_thrust",
+                "data:geometry:fuselage:maximum_width",
+                "data:geometry:wing:span",
+                inp_fd,
+            ],
+            method="fd",
+        )
         self.declare_partials(
             "data:geometry:propulsion:nacelle:wetted_area",
             "data:propulsion:MTO_thrust",
