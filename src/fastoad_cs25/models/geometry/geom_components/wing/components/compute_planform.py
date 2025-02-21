@@ -16,14 +16,15 @@ Submodel for computing wing planform.
 
 import fastoad.api as oad
 
+from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 from .compute_b_50 import ComputeB50
 from .compute_l1_l4 import ComputeL1AndL4Wing
 from .compute_l2_l3 import ComputeL2AndL3Wing
 from .compute_mac_wing import ComputeMACWing
-from .compute_sweep_wing import ComputeSweepWing
+from .compute_relative_kink import ComputeRelativeKink
+from .compute_sweep_wing import ComputeInnerSweepWing, ComputeSweepWing
 from .compute_x_wing import ComputeXWing
 from .compute_y_wing import ComputeYWing
-from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 
 
 @oad.RegisterSubmodel(
@@ -36,12 +37,25 @@ class ComputeWingGeometry(
 ):
     """Computation of wing planform"""
 
+    def initialize(self):
+        super().initialize()
+        self.options.declare("impose_sweep_100_inner", types=bool, default=False)
+        self.options.declare("impose_absolute_kink", types=bool, default=False)
+
     def setup(self):
         super().setup()
-        self.add_subsystem("y_wing", ComputeYWing(), promotes=["*"])
+        self.add_subsystem(
+            "y_wing",
+            ComputeYWing(impose_absolute_kink=self.options["impose_absolute_kink"]),
+            promotes=["*"],
+        )
         self.add_subsystem("l14_wing", ComputeL1AndL4Wing(), promotes=["*"])
         self.add_subsystem("l2l3_wing", ComputeL2AndL3Wing(), promotes=["*"])
         self.add_subsystem("x_wing", ComputeXWing(), promotes=["*"])
         self.add_subsystem("mac_wing", ComputeMACWing(), promotes=["*"])
         self.add_subsystem("b50_wing", ComputeB50(), promotes=["*"])
         self.add_subsystem("sweep_wing", ComputeSweepWing(), promotes=["*"])
+        if not self.options["impose_sweep_100_inner"]:
+            self.add_subsystem("eval_sweep_inner", ComputeInnerSweepWing(), promotes=["*"])
+        if self.options["impose_absolute_kink"]:
+            self.add_subsystem("eval_relative_kink", ComputeRelativeKink(), promotes=["*"])

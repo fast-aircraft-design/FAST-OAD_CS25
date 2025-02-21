@@ -17,6 +17,7 @@ Estimation of wing geometry
 import fastoad.api as oad
 import openmdao.api as om
 
+from ...constants import SERVICE_WING_GEOMETRY
 from .constants import (
     SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
     SERVICE_WING_GEOMETRY_MFW,
@@ -24,7 +25,6 @@ from .constants import (
     SERVICE_WING_GEOMETRY_THICKNESS,
     SERVICE_WING_GEOMETRY_WET_AREA,
 )
-from ...constants import SERVICE_WING_GEOMETRY
 
 
 @oad.RegisterSubmodel(SERVICE_WING_GEOMETRY, "fastoad.submodel.geometry.wing.legacy")
@@ -33,11 +33,17 @@ class ComputeWingGeometry(om.Group):
 
     def initialize(self):
         self.options.declare("compute_thicknesses", types=bool, default=True)
+        self.options.declare("impose_sweep_100_inner", types=bool, default=False)
+        self.options.declare("impose_absolute_kink", types=bool, default=False)
 
     def setup(self):
+        planform_options = {
+            "impose_sweep_100_inner": self.options["impose_sweep_100_inner"],
+            "impose_absolute_kink": self.options["impose_absolute_kink"],
+        }
         self.add_subsystem(
             "planform",
-            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_PLANFORM),
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY_PLANFORM, planform_options),
             promotes=["*"],
         )
         self.add_subsystem(

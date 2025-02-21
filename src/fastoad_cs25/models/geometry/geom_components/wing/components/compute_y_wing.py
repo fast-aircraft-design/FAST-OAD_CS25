@@ -25,6 +25,9 @@ class ComputeYWing(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Wing Ys estimation"""
 
+    def initialize(self):
+        self.options.declare("impose_absolute_kink", types=bool, default=False)
+
     def setup(self):
         self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
@@ -33,7 +36,8 @@ class ComputeYWing(om.ExplicitComponent):
 
         self.add_output("data:geometry:wing:span", units="m")
         self.add_output("data:geometry:wing:root:y", units="m")
-        self.add_output("data:geometry:wing:kink:y", units="m")
+        if not self.options["impose_absolute_kink"]:
+            self.add_output("data:geometry:wing:kink:y", units="m")
         self.add_output("data:geometry:wing:tip:y", units="m")
 
     def setup_partials(self):
@@ -45,15 +49,16 @@ class ComputeYWing(om.ExplicitComponent):
         self.declare_partials(
             "data:geometry:wing:root:y", "data:geometry:fuselage:maximum_width", method="fd"
         )
-        self.declare_partials(
-            "data:geometry:wing:kink:y",
-            [
-                "data:geometry:wing:area",
-                "data:geometry:wing:aspect_ratio",
-                "data:geometry:wing:kink:span_ratio",
-            ],
-            method="fd",
-        )
+        if not self.options["impose_absolute_kink"]:
+            self.declare_partials(
+                "data:geometry:wing:kink:y",
+                [
+                    "data:geometry:wing:area",
+                    "data:geometry:wing:aspect_ratio",
+                    "data:geometry:wing:kink:span_ratio",
+                ],
+                method="fd",
+            )
         self.declare_partials(
             "data:geometry:wing:tip:y",
             ["data:geometry:wing:area", "data:geometry:wing:aspect_ratio"],
@@ -71,9 +76,11 @@ class ComputeYWing(om.ExplicitComponent):
         # Wing geometry
         y4_wing = span / 2.0
         y2_wing = width_max / 2.0
-        y3_wing = np.maximum(y2_wing, y4_wing * wing_break)
 
         outputs["data:geometry:wing:span"] = span
         outputs["data:geometry:wing:root:y"] = y2_wing
-        outputs["data:geometry:wing:kink:y"] = y3_wing
         outputs["data:geometry:wing:tip:y"] = y4_wing
+
+        if not self.options["impose_absolute_kink"]:
+            y3_wing = np.maximum(y2_wing, y4_wing * wing_break)
+            outputs["data:geometry:wing:kink:y"] = y3_wing
