@@ -63,9 +63,15 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Nacelle and pylon geometry estimation"""
 
+    def initialize(self):
+        self.options.declare("impose_absolute_engine", types=bool, default=False)
+
     def setup(self):
         self.add_input("data:propulsion:MTO_thrust", val=np.nan, units="N")
-        self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan)
+        if self.options["impose_absolute_engine"]:
+            self.add_input("data:geometry:propulsion:nacelle:y", val=np.nan, units="m")
+        else:
+            self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan)
         self.add_input("data:geometry:propulsion:layout", val=np.nan)
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
@@ -87,7 +93,10 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.add_output("data:geometry:propulsion:nacelle:length", units="m")
         self.add_output("data:geometry:propulsion:nacelle:diameter", units="m")
         self.add_output("data:geometry:landing_gear:height", units="m")
-        self.add_output("data:geometry:propulsion:nacelle:y", units="m")
+        if self.options["impose_absolute_engine"]:
+            self.add_output("data:geometry:propulsion:engine:y_ratio")
+        else:
+            self.add_output("data:geometry:propulsion:nacelle:y", units="m")
         self.add_output("data:geometry:propulsion:pylon:wetted_area", units="m**2")
         self.add_output("data:geometry:propulsion:nacelle:wetted_area", units="m**2")
         self.add_output("data:weight:propulsion:engine:CG:x", units="m")
@@ -108,16 +117,26 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.declare_partials(
             "data:geometry:propulsion:pylon:length", "data:propulsion:MTO_thrust", method="fd"
         )
-        self.declare_partials(
-            "data:geometry:propulsion:nacelle:y",
-            [
-                "data:propulsion:MTO_thrust",
-                "data:geometry:fuselage:maximum_width",
+        if self.options["impose_absolute_engine"]:
+            self.declare_partials(
                 "data:geometry:propulsion:engine:y_ratio",
-                "data:geometry:wing:span",
-            ],
-            method="fd",
-        )
+                ["data:geometry:wing:span", "data:geometry:propulsion:nacelle:y"],
+                method="fd",
+            )
+            inp_fd = "data:geometry:propulsion:nacelle:y"
+        else:
+            self.declare_partials(
+                "data:geometry:propulsion:nacelle:y",
+                [
+                    "data:propulsion:MTO_thrust",
+                    "data:geometry:fuselage:maximum_width",
+                    "data:geometry:propulsion:engine:y_ratio",
+                    "data:geometry:wing:span",
+                ],
+                method="fd",
+            )
+            inp_fd = "data:geometry:propulsion:engine:y_ratio"
+
         self.declare_partials(
             "data:weight:propulsion:engine:CG:x",
             [
@@ -135,8 +154,8 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 "data:geometry:fuselage:length",
                 "data:propulsion:MTO_thrust",
                 "data:geometry:fuselage:maximum_width",
-                "data:geometry:propulsion:engine:y_ratio",
                 "data:geometry:wing:span",
+                inp_fd,
             ],
             method="fd",
         )
@@ -175,7 +194,9 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         outputs["data:geometry:propulsion:pylon:length"] = 1.1 * nacelle.length
         outputs["data:geometry:propulsion:fan:length"] = 0.60 * nacelle.length
 
-        y_nacelle = self._compute_nacelle_y(nacelle, inputs, propulsion_layout)
+        y_nacelle, y_nacelle_ratio = self._compute_nacelle_y(
+            nacelle, inputs, propulsion_layout, self.options["impose_absolute_engine"]
+        )
 
         if propulsion_layout == 1:
             if y_nacelle <= kink_chord.y:
@@ -192,7 +213,10 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         else:
             raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
 
-        outputs["data:geometry:propulsion:nacelle:y"] = y_nacelle
+        if self.options["impose_absolute_engine"]:
+            outputs["data:geometry:propulsion:engine:y_ratio"] = y_nacelle_ratio
+        else:
+            outputs["data:geometry:propulsion:nacelle:y"] = y_nacelle
         outputs["data:weight:propulsion:engine:CG:x"] = x_nacelle_cg_absolute
 
         outputs["data:geometry:propulsion:pylon:wetted_area"] = 0.35 * nacelle.wetted_area
@@ -214,17 +238,30 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         return x_nacelle_cg
 
     @staticmethod
-    def _compute_nacelle_y(nacelle, inputs, propulsion_layout):
-        if propulsion_layout == 1:
-            y_nacelle = (
-                inputs["data:geometry:propulsion:engine:y_ratio"]
-                * inputs["data:geometry:wing:span"]
-                / 2.0
-            )
-        elif propulsion_layout == 2:
-            y_nacelle = (
-                inputs["data:geometry:fuselage:maximum_width"] / 2.0 + 0.5 * nacelle.diameter + 0.7
-            )
+    def _compute_nacelle_y(nacelle, inputs, propulsion_layout, is_y_abs):
+        if is_y_abs:
+            if propulsion_layout == 1:
+                y_ratio = inputs["data:geometry:propulsion:nacelle:y"] / (
+                    inputs["data:geometry:wing:span"] / 2
+                )
+            elif propulsion_layout == 2:
+                y_ratio = 0.0
+            else:
+                raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
+            return inputs["data:geometry:propulsion:nacelle:y"], y_ratio
         else:
-            raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
-        return y_nacelle
+            if propulsion_layout == 1:
+                y_nacelle = (
+                    inputs["data:geometry:propulsion:engine:y_ratio"]
+                    * inputs["data:geometry:wing:span"]
+                    / 2.0
+                )
+            elif propulsion_layout == 2:
+                y_nacelle = (
+                    inputs["data:geometry:fuselage:maximum_width"] / 2.0
+                    + 0.5 * nacelle.diameter
+                    + 0.7
+                )
+            else:
+                raise ValueError("Value of data:geometry:propulsion:layout can only be 1 or 2")
+            return y_nacelle, inputs["data:geometry:propulsion:engine:y_ratio"]
