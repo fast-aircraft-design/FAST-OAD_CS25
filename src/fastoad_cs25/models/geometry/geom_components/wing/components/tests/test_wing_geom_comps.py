@@ -14,6 +14,7 @@ Test module for geometry functions of cg components
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 import pytest
 from fastoad.testing import run_system
@@ -23,7 +24,7 @@ from ..compute_l1_l4 import ComputeL1AndL4Wing
 from ..compute_l2_l3 import ComputeL2AndL3Wing
 from ..compute_mac_wing import ComputeMACWing
 from ..compute_mfw import ComputeMFW
-from ..compute_sweep_wing import ComputeSweepWing
+from ..compute_sweep_wing import ComputeInnerSweepWing, ComputeSweepWing
 from ..compute_toc_wing import ComputeToCWing
 from ..compute_wet_area_wing import ComputeWetAreaWing
 from ..compute_x_wing import ComputeXWing
@@ -170,14 +171,66 @@ def test_geometry_wing_sweep():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
-    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
-    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeSweepWing(), input_vars)
+    sweep_0 = problem["data:geometry:wing:sweep_0"]
+    assert sweep_0 == pytest.approx(27.55, abs=1e-2)
+    sweep_100_outer = problem["data:geometry:wing:sweep_100_outer"]
+    assert sweep_100_outer == pytest.approx(16.7, abs=1e-1)
+
+
+def test_geometry_wing_sweep_inner():
+    """Tests computation of the wing sweeps"""
+
+    # With the same inputs
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_100_outer", 16.7, units="deg")
+
+    problem = run_system(ComputeInnerSweepWing(), input_vars)
+
+    sweep_100_inner = problem["data:geometry:wing:sweep_100_inner"]
+    assert sweep_100_inner == pytest.approx(0.0, abs=1e-1)
+
+    # With ratio = 1.0
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:sweep_100_outer", 16.7, units="deg")
+    input_vars.add_output(
+        "data:geometry:wing:sweep_100_ratio",
+        1.0,
+    )
+
+    problem = run_system(ComputeInnerSweepWing(), input_vars)
+
+    sweep_100_inner = problem["data:geometry:wing:sweep_100_inner"]
+    assert sweep_100_inner == pytest.approx(16.7, abs=1e-1)
+
+
+def test_geometry_wing_sweep_complete():
+    """Tests computation of the wing sweeps."""
+
+    class ComputeSweepWingComplete(oad.CycleGroup):
+        def setup(self):
+            super().setup()
+            self.add_subsystem("sweep_wing", ComputeSweepWing(), promotes=["*"])
+            self.add_subsystem("eval_sweep_inner", ComputeInnerSweepWing(), promotes=["*"])
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
+
+    problem = run_system(ComputeSweepWingComplete(), input_vars)
     sweep_0 = problem["data:geometry:wing:sweep_0"]
     assert sweep_0 == pytest.approx(27.55, abs=1e-2)
     sweep_100_inner = problem["data:geometry:wing:sweep_100_inner"]

@@ -31,10 +31,8 @@ class ComputeSweepWing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:virtual_chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units=None)
 
         self.add_output("data:geometry:wing:sweep_0", units="deg")
-        self.add_output("data:geometry:wing:sweep_100_inner", val=0.0, units="deg")
         self.add_output("data:geometry:wing:sweep_100_outer", units="deg")
 
     def setup_partials(self):
@@ -44,17 +42,6 @@ class ComputeSweepWing(om.ExplicitComponent):
                 "data:geometry:wing:tip:leading_edge:x:local",
                 "data:geometry:wing:root:y",
                 "data:geometry:wing:kink:y",
-            ],
-            method="fd",
-        )
-        self.declare_partials(
-            "data:geometry:wing:sweep_100_inner",
-            [
-                "data:geometry:wing:root:y",
-                "data:geometry:wing:root:virtual_chord",
-                "data:geometry:wing:tip:leading_edge:x:local",
-                "data:geometry:wing:tip:y",
-                "data:geometry:wing:tip:chord",
             ],
             method="fd",
         )
@@ -73,7 +60,6 @@ class ComputeSweepWing(om.ExplicitComponent):
     def compute(self, inputs, outputs):
         x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
         y2_wing = inputs["data:geometry:wing:root:y"]
-        y3_wing = inputs["data:geometry:wing:kink:y"]
         y4_wing = inputs["data:geometry:wing:tip:y"]
         l1_wing = inputs["data:geometry:wing:root:virtual_chord"]
         l4_wing = inputs["data:geometry:wing:tip:chord"]
@@ -83,11 +69,36 @@ class ComputeSweepWing(om.ExplicitComponent):
         outputs["data:geometry:wing:sweep_0"] = (
             math.atan(x4_wing / (y4_wing - y2_wing)) / math.pi * 180.0
         )
+
+
+class ComputeInnerSweepWing(om.ExplicitComponent):
+    """Inner Wing sweep estimation"""
+
+    def setup(self):
+        self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:sweep_100_outer", val=np.nan, units="deg")
+        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units=None)
+
+        self.add_output("data:geometry:wing:sweep_100_inner", val=0.0, units="deg")
+
+    def setup_partials(self):
+        self.declare_partials(
+            "data:geometry:wing:sweep_100_inner",
+            [
+                "data:geometry:wing:sweep_100_outer",
+                "data:geometry:wing:sweep_100_ratio",
+            ],
+            method="fd",
+        )
+
+    def compute(self, inputs, outputs):
+        y2_wing = inputs["data:geometry:wing:root:y"]
+        y3_wing = inputs["data:geometry:wing:kink:y"]
+        sweep_100_outer = inputs["data:geometry:wing:sweep_100_outer"]
         if y3_wing == y2_wing:
             ratio = 1.0
         else:
             ratio = inputs["data:geometry:wing:sweep_100_ratio"]
 
-        outputs["data:geometry:wing:sweep_100_inner"] = (
-            outputs["data:geometry:wing:sweep_100_outer"] * ratio
-        )
+        outputs["data:geometry:wing:sweep_100_inner"] = sweep_100_outer * ratio
