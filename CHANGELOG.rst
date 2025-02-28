@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Version 0.7.5
+=============
+Modified:
+
+- Added possibility to specify absolute Y engine position. (#55)
+- Added absolute positioning of kink and absolute trailing edge kink sweep angle. (#56)
+
+Fixed:
+
+- Update of CeRAS Notebook with description of the taxi-out and takeoff phases. (#54)
+
 Version 0.7.4
 =============
 Modified:
