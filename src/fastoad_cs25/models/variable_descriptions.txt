@@ -156,6 +156,8 @@ data:geometry:wing:MAC:y || Y-position of mean aerodynamic chord of wing
 data:geometry:wing:area || wing reference area
 data:geometry:wing:aspect_ratio || wing aspect ratio
 data:geometry:wing:b_50 || actual length between root and tip along 50% of chord
+data:geometry:wing:center:chord || chord length at wing Y axis of symmetry
+data:geometry:wing:center:leading_edge:x:local || X-position of leading edge at wing center w.r.t. leading edge of root chord
 data:geometry:wing:kink:chord || chord length at wing kink
 data:geometry:wing:kink:leading_edge:x:local || X-position of leading edge at wing kink w.r.t. leading edge of root chord
 data:geometry:wing:kink:span_ratio || ratio (Y-position of kink)/(semi-span)

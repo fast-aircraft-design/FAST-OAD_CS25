@@ -20,6 +20,7 @@ import pytest
 from fastoad.testing import run_system
 
 from ..compute_b_50 import ComputeB50
+from ..compute_center_chord import ComputeCenterChord
 from ..compute_l1_l4 import ComputeL1AndL4Wing
 from ..compute_l2_l3 import ComputeL2AndL3Wing
 from ..compute_mac_wing import ComputeMACWing
@@ -211,6 +212,26 @@ def test_geometry_wing_sweep_inner():
 
     sweep_100_inner = problem["data:geometry:wing:sweep_100_inner"]
     assert sweep_100_inner == pytest.approx(16.7, abs=1e-1)
+
+
+def test_geometry_compute_center_chord():
+    """Tests computation of the wing center chord and X position"""
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
+    input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
+    input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
+    input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:chord", 1.882, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.801, units="m")
+    input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
+
+    problem = run_system(ComputeCenterChord(), input_vars)
+    l_center = problem["data:geometry:wing:center:chord"]
+    assert l_center == pytest.approx(7.282, abs=1e-3)
+    x_leading_edge_center = problem["data:geometry:wing:center:leading_edge:x:local"]
+    assert x_leading_edge_center == pytest.approx(-1.022, abs=1e-3)
 
 
 def test_geometry_wing_sweep_complete():
