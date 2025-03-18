@@ -228,9 +228,11 @@ def test_geometry_compute_center_chord():
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeCenterChord(), input_vars)
-    l_center = problem["data:geometry:wing:center:chord"]
+    l_center = problem.get_val("data:geometry:wing:center:chord", units="m")
     assert l_center == pytest.approx(7.282, abs=1e-3)
-    x_leading_edge_center = problem["data:geometry:wing:center:leading_edge:x:local"]
+    x_leading_edge_center = problem.get_val(
+        "data:geometry:wing:center:leading_edge:x:local", units="m"
+    )
     assert x_leading_edge_center == pytest.approx(-1.022, abs=1e-3)
 
 

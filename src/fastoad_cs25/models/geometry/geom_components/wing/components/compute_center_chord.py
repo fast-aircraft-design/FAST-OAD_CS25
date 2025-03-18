@@ -16,12 +16,14 @@ Estimation of center wing chord (l1')
 
 import numpy as np
 import openmdao.api as om
-from scipy.interpolate import interp1d
+from scipy.interpolate import make_interp_spline
 
 
 class ComputeCenterChord(om.ExplicitComponent):
-    # TODO: Document equations. Cite sources
-    """Estimation of center wing chord (l1')"""
+    """
+    Estimation of center wing chord (l1') by extrapolation of the virtual edges of the wing.
+    See Figure 3-3bis of :cite:`supaero:2014`.
+    """
 
     def setup(self):
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
@@ -43,7 +45,6 @@ class ComputeCenterChord(om.ExplicitComponent):
                 "data:geometry:wing:root:chord",
                 "data:geometry:wing:root:y",
                 "data:geometry:wing:kink:chord",
-                "data:geometry:wing:kink:leading_edge:x:local",
                 "data:geometry:wing:kink:y",
                 "data:geometry:wing:tip:chord",
                 "data:geometry:wing:tip:leading_edge:x:local",
@@ -54,12 +55,9 @@ class ComputeCenterChord(om.ExplicitComponent):
         self.declare_partials(
             "data:geometry:wing:center:leading_edge:x:local",
             [
-                "data:geometry:wing:root:chord",
                 "data:geometry:wing:root:y",
-                "data:geometry:wing:kink:chord",
                 "data:geometry:wing:kink:leading_edge:x:local",
                 "data:geometry:wing:kink:y",
-                "data:geometry:wing:tip:chord",
                 "data:geometry:wing:tip:leading_edge:x:local",
                 "data:geometry:wing:tip:y",
             ],
@@ -84,10 +82,12 @@ class ComputeCenterChord(om.ExplicitComponent):
             y_values = np.squeeze([y2_wing, y3_wing, y4_wing])
             x_values = np.squeeze([[0.0], x3_wing, x4_wing])
             l_values = np.squeeze([l2_wing, l3_wing, l4_wing])
-        x_interp = interp1d(y_values, x_values, fill_value="extrapolate")
-        x_leading_edge = x_interp(0.0)
-        l_interp = interp1d(y_values, l_values, fill_value="extrapolate")
-        l_center = l_interp(0.0)
+
+        # Linear interpolation to evaluate the central chord
+        line_x_leading_edge = make_interp_spline(y_values, x_values, k=1)
+        x_leading_edge = line_x_leading_edge(0.0)
+        line_l_center = make_interp_spline(y_values, l_values, k=1)
+        l_center = line_l_center(0.0)
 
         outputs["data:geometry:wing:center:chord"] = l_center
         outputs["data:geometry:wing:center:leading_edge:x:local"] = x_leading_edge
