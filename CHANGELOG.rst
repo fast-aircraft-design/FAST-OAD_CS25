@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 0.7.6
+=============
+Added:
+- Adding center virtual chord evaluation. (#59)
+- Update building and publishing workflow. (#58)
+
 Version 0.7.5
 =============
 Modified:
