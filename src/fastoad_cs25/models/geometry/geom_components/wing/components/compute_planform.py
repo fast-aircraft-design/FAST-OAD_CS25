@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 from .compute_b_50 import ComputeB50
+from .compute_center_chord import ComputeCenterChord
 from .compute_l1_l4 import ComputeL1AndL4Wing
 from .compute_l2_l3 import ComputeL2AndL3Wing
 from .compute_mac_wing import ComputeMACWing
@@ -55,6 +56,7 @@ class ComputeWingGeometry(
         self.add_subsystem("mac_wing", ComputeMACWing(), promotes=["*"])
         self.add_subsystem("b50_wing", ComputeB50(), promotes=["*"])
         self.add_subsystem("sweep_wing", ComputeSweepWing(), promotes=["*"])
+        self.add_subsystem("compute_center_chord", ComputeCenterChord(), promotes=["*"])
         if not self.options["impose_sweep_100_inner"]:
             self.add_subsystem("eval_sweep_inner", ComputeInnerSweepWing(), promotes=["*"])
         if self.options["impose_absolute_kink"]:
