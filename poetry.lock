@@ -568,13 +568,13 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fast-oad-core"
-version = "1.8.1"
+version = "1.8.3"
 description = "FAST-OAD is a framework for performing rapid Overall Aircraft Design"
 optional = false
 python-versions = "<3.13,>=3.9"
 files = [
-    {file = "fast_oad_core-1.8.1-py3-none-any.whl", hash = "sha256:99757f13549b23310a38f1cedafc8742b14a6262d4f64c03f6bd22e3612cb85e"},
-    {file = "fast_oad_core-1.8.1.tar.gz", hash = "sha256:d935c9560df2a41b13efa7f824df8e3b0550ffedea1911d411cec5512c4d950c"},
+    {file = "fast_oad_core-1.8.3-py3-none-any.whl", hash = "sha256:dade9f4a562b0ed740db9522ead10de30baee406292f22f803602698769b5064"},
+    {file = "fast_oad_core-1.8.3.tar.gz", hash = "sha256:c2a84571ba65a2e0cebb5c8d02a0c641b641cd6020cc845bd0501f209ba0b610"},
 ]
 
 [package.dependencies]
@@ -602,7 +602,7 @@ lxml = [
     {version = ">=4.9.3,<6", markers = "python_version >= \"3.11\" and python_version < \"4.0\""},
 ]
 numpy = ">=1.23.2,<3"
-openmdao = ">=3.27,<4.0"
+openmdao = ">3.27,<3.38"
 pandas = [
     {version = ">=1.3.4,<3", markers = "python_version < \"3.11\""},
     {version = ">=1.5.3,<3", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
@@ -621,8 +621,8 @@ tomlkit = ">=0.5.3,<1"
 wop = ">=2.2.0,<3.0.0"
 
 [package.extras]
-mpi = ["mpi4py (>=3.1.3,<4.0.0)", "mpi4py (>=3.1.4,<4.0.0)", "mpi4py (>=3.1.5,<4.0.0)"]
-mpi4py = ["mpi4py (>=3.1.3,<4.0.0)", "mpi4py (>=3.1.4,<4.0.0)", "mpi4py (>=3.1.5,<4.0.0)"]
+mpi = ["mpi4py (>=4.0.2,<5.0.0)"]
+mpi4py = ["mpi4py (>=4.0.2,<5.0.0)"]
 
 [[package]]
 name = "fastjsonschema"
@@ -3538,4 +3538,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "03a91a1bb4f477beccb12b8c83f74260619d0e6da3d2ea3d7f771597ffdfa67e"
+content-hash = "fba1f8a9eeaf538138934e7e32bcf4d1b8a11805c58303c87da74c0a5b01c1b7"
