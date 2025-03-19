@@ -85,9 +85,7 @@ class ComputeCenterChord(om.ExplicitComponent):
 
         # Linear interpolation to evaluate the central chord
         line_x_leading_edge = make_interp_spline(y_values, x_values, k=1)
-        x_leading_edge = line_x_leading_edge(0.0)
         line_l_center = make_interp_spline(y_values, l_values, k=1)
-        l_center = line_l_center(0.0)
 
-        outputs["data:geometry:wing:center:chord"] = l_center
-        outputs["data:geometry:wing:center:leading_edge:x:local"] = x_leading_edge
+        outputs["data:geometry:wing:center:chord"] = line_l_center(0.0)
+        outputs["data:geometry:wing:center:leading_edge:x:local"] = line_x_leading_edge(0.0)
