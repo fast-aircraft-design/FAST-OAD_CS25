@@ -116,7 +116,7 @@ data:geometry:horizontal_tail:wetted_area || wetted area of horizontal tail
 data:geometry:landing_gear:front:distance_to_main || distance between front and main landing gears
 data:geometry:landing_gear:height || height of landing gear
 data:geometry:propulsion:engine:count || number of engines
-data:geometry:propulsion:engine:y_ratio || engine position with respect to total span
+data:geometry:propulsion:engine:y_ratio || engine position with respect to the semi wing span
 data:geometry:propulsion:fan:length || engine length
 data:geometry:propulsion:layout || position of engines (1=under the wing / 2=rear fuselage)
 data:geometry:propulsion:nacelle:diameter || nacelle diameter
