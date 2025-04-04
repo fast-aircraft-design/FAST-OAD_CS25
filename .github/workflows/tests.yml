@@ -76,7 +76,7 @@ jobs:
           name: codecov-FAST-OAD-CS25  # optional
           fail_ci_if_error: false  # optional (default = false)
         env:
-          CODECOV_TOKEN: 96682349-afc0-4b88-8ab5-5aa10d8d0d84
+          CODECOV_TOKEN: ${{ secrets.CODECOV }} # do not use the secret directly in run command, it would write it plainly in the log
 
       - name: Integration tests
         run: poetry run pytest --no-cov tests/integration_tests
