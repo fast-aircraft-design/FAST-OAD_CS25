@@ -118,7 +118,7 @@ def test_compute_cg_loadcases(input_xml):
     cg_ratio_lc = [0.0]  # dummy first item to ensure cg_ratio_lc[i] is for load case i
     for i, cg_class in enumerate(classes):
         problem = run_system(cg_class(), input_vars)
-        cg_ratio_lc.append(problem[f"data:weight:aircraft:load_case_{i+1}:CG:MAC_position"])
+        cg_ratio_lc.append(problem[f"data:weight:aircraft:load_case_{i + 1}:CG:MAC_position"])
 
     assert cg_ratio_lc[1] == pytest.approx(0.364907, abs=1e-6)
     assert cg_ratio_lc[2] == pytest.approx(0.285139, abs=1e-6)

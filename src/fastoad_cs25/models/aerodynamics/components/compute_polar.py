@@ -86,7 +86,7 @@ class ComputePolar(om.ExplicitComponent):
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
             else:
-                raise AttributeError(f'Unknown polar type: {self.options["polar_type"]}')
+                raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
             self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
@@ -112,7 +112,7 @@ class ComputePolar(om.ExplicitComponent):
             self.add_output("data:aerodynamics:aircraft:cruise:optimal_CD")
 
         else:
-            raise AttributeError(f'Unknown polar type: {self.options["polar_type"]}')
+            raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -138,7 +138,7 @@ class ComputePolar(om.ExplicitComponent):
                 delta_cl_hl = 0.0
                 delta_cd_hl = 0.0
             else:
-                raise AttributeError(f'Unknown polar type: {self.options["polar_type"]}')
+                raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
             cl = inputs["data:aerodynamics:aircraft:cruise:CL"]
@@ -149,7 +149,7 @@ class ComputePolar(om.ExplicitComponent):
             delta_cl_hl = 0.0
             delta_cd_hl = 0.0
         else:
-            raise AttributeError(f'Unknown polar type: {self.options["polar_type"]}')
+            raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         cl = cl + delta_cl_hl
         cd = (
