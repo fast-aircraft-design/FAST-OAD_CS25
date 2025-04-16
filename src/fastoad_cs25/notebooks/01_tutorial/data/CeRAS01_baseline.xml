@@ -365,10 +365,10 @@
                         0.93<!--thrust rate (between 0.0 and 1.0) during climb phase in sizing mission--></thrust_rate>
                 </climb>
                 <cs25>
-                    <sizing_load_1 units="kg">
-                        241541.87594825038<!--sizing load during gust with minimum aircraft mass--></sizing_load_1>
-                    <sizing_load_2 units="kg">
-                        251847.8282255141<!--sizing load during gust with maximum aircraft mass--></sizing_load_2>
+                    <sizing_load_1 units="N">
+                        2368716.6377679096<!--sizing load during gust with minimum aircraft mass--></sizing_load_1>
+                    <sizing_load_2 units="N">
+                        2469783.5046677375<!--sizing load during gust with maximum aircraft mass--></sizing_load_2>
                 </cs25>
                 <descent>
                     <thrust_rate>

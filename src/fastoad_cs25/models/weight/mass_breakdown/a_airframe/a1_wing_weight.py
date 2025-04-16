@@ -17,6 +17,7 @@ Estimation of wing weight
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
+from scipy.constants import g
 
 from .constants import SERVICE_WING_MASS
 
@@ -50,8 +51,8 @@ class WingWeight(om.ExplicitComponent):
         self.add_input("data:geometry:propulsion:layout", val=np.nan)
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
-        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="kg")
-        self.add_input("data:mission:sizing:cs25:sizing_load_2", val=np.nan, units="kg")
+        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="N")
+        self.add_input("data:mission:sizing:cs25:sizing_load_2", val=np.nan, units="N")
         self.add_input("tuning:weight:airframe:wing:mass:k", val=1.0)
         self.add_input("tuning:weight:airframe:wing:mass:offset", val=0.0, units="kg")
         self.add_input("tuning:weight:airframe:wing:bending_sizing:mass:k", val=1.0)
@@ -88,9 +89,12 @@ class WingWeight(om.ExplicitComponent):
         cantilevered_area = inputs["data:geometry:wing:outer_area"]
         mtow = inputs["data:weight:aircraft:MTOW"]
         mlw = inputs["data:weight:aircraft:MLW"]
-        max_nm = max(
-            inputs["data:mission:sizing:cs25:sizing_load_1"],
-            inputs["data:mission:sizing:cs25:sizing_load_2"],
+        max_nm = (
+            max(
+                inputs["data:mission:sizing:cs25:sizing_load_1"],
+                inputs["data:mission:sizing:cs25:sizing_load_2"],
+            )
+            / g
         )
         engine_count = inputs["data:geometry:propulsion:engine:count"]
         engine_on_fuselage = inputs["data:geometry:propulsion:layout"] == 2

@@ -1,6 +1,7 @@
 """
 Test module for mass breakdown functions
 """
+
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2024 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -13,15 +14,16 @@ Test module for mass breakdown functions
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-# pylint: disable=redefined-outer-name  # needed for pytest fixtures
-import os.path as pth
+from pathlib import Path
 
 import openmdao.api as om
 import pytest
 from fastoad.io import VariableIO
 from fastoad.testing import run_system
+from openmdao.core.group import Group
+from scipy.constants import g
 
+from ....loads.loads import ComputeLoads
 from ..a_airframe import (
     EmpennageWeight,
     FlightControlsWeight,
@@ -40,7 +42,6 @@ from ..c_systems import (
     PowerSystemsWeight,
     TransmissionSystemsWeight,
 )
-from ..cs25 import Loads
 from ..d_furniture import (
     CargoConfigurationWeight,
     FoodWaterWeight,
@@ -55,7 +56,7 @@ from ..payload import ComputePayload
 
 def get_indep_var_comp(var_names):
     """Reads required input data and returns an IndepVarcomp() instance"""
-    reader = VariableIO(pth.join(pth.dirname(__file__), "data", "mass_breakdown_inputs.xml"))
+    reader = VariableIO(Path(__file__).parent / "data" / "mass_breakdown_inputs.xml")
     reader.path_separator = ":"
     ivc = reader.read(only=var_names).to_ivc()
     return ivc
@@ -77,67 +78,6 @@ def test_compute_payload():
     problem = run_system(ComputePayload(), ivc)
     assert problem["data:weight:aircraft:payload"] == pytest.approx(150.0, abs=0.1)
     assert problem["data:weight:aircraft:max_payload"] == pytest.approx(300.0, abs=0.1)
-
-
-def test_compute_loads():
-    """Tests computation of sizing loads"""
-    input_list = [
-        "data:geometry:wing:area",
-        "data:geometry:wing:span",
-        "data:weight:aircraft:MZFW",
-        "data:weight:aircraft:MFW",
-        "data:weight:aircraft:MTOW",
-        "data:aerodynamics:aircraft:cruise:CL_alpha",
-        "data:load_case:lc1:U_gust",
-        "data:load_case:lc1:altitude",
-        "data:load_case:lc1:Vc_EAS",
-        "data:load_case:lc2:U_gust",
-        "data:load_case:lc2:altitude",
-        "data:load_case:lc2:Vc_EAS",
-    ]
-    ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:load_case:gust_intensity", val=0.5)
-    problem = run_system(Loads(), ivc)
-
-    n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
-    n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
-    n1 = problem["data:mission:sizing:cs25:load_factor_1"]
-    n2 = problem["data:mission:sizing:cs25:load_factor_2"]
-    assert n1m1 == pytest.approx(240968, abs=10)
-    assert n2m2 == pytest.approx(254130, abs=10)
-    assert n1 == pytest.approx(3.75, abs=0.01)
-    assert n2 == pytest.approx(3.75, abs=0.01)
-
-    # Now without fuel alleviation
-    problem = run_system(Loads(fuel_load_alleviation=False), ivc)
-
-    n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
-    n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
-
-    assert n1m1 == pytest.approx(240968, abs=10)
-    assert n2m2 == pytest.approx(284242, abs=10)
-
-    # Now with different MLA
-    ivc.add_output("data:load_case:manoeuvre_load_factor", val=2.25)
-    problem = run_system(Loads(), ivc)
-
-    n1 = problem["data:mission:sizing:cs25:load_factor_1"]
-    n2 = problem["data:mission:sizing:cs25:load_factor_2"]
-    assert n1 == pytest.approx(3.375, abs=0.01)
-    assert n2 == pytest.approx(3.375, abs=0.01)
-
-    # Now without gust load alleviation
-    ivc = get_indep_var_comp(input_list)
-    problem = run_system(Loads(), ivc)
-
-    n1 = problem["data:mission:sizing:cs25:load_factor_1"]
-    n2 = problem["data:mission:sizing:cs25:load_factor_2"]
-    n1m1 = problem["data:mission:sizing:cs25:sizing_load_1"]
-    n2m2 = problem["data:mission:sizing:cs25:sizing_load_2"]
-    assert n1 == pytest.approx(4.198, abs=0.01)
-    assert n2 == pytest.approx(3.81, abs=0.01)
-    assert n1m1 == pytest.approx(269789, abs=10)
-    assert n2m2 == pytest.approx(258500, abs=10)
 
 
 def test_compute_wing_weight():
@@ -171,8 +111,8 @@ def test_compute_wing_weight():
     ]
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000, units="kg")
-    ivc.add_output("data:mission:sizing:cs25:sizing_load_2", 250000, units="kg")
+    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000 * g, units="N")
+    ivc.add_output("data:mission:sizing:cs25:sizing_load_2", 250000 * g, units="N")
 
     problem = run_system(WingWeight(), ivc)
 
@@ -193,7 +133,7 @@ def test_compute_fuselage_weight():
     ]
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000, units="kg")
+    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000 * g, units="N")
 
     problem = run_system(FuselageWeight(), ivc)
 
@@ -232,8 +172,8 @@ def test_compute_flight_controls_weight():
         "settings:weight:airframe:flight_controls:mass:k_fc",
     ]
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000, units="kg")
-    ivc.add_output("data:mission:sizing:cs25:sizing_load_2", 250000, units="kg")
+    ivc.add_output("data:mission:sizing:cs25:sizing_load_1", 241000 * g, units="N")
+    ivc.add_output("data:mission:sizing:cs25:sizing_load_2", 250000 * g, units="N")
     problem = run_system(FlightControlsWeight(), ivc)
 
     val = problem["data:weight:airframe:flight_controls:mass"]
@@ -624,11 +564,16 @@ def test_evaluate_oew():
     """
     Tests a simple evaluation of Operating Empty Weight from sample XML data.
     """
-    reader = VariableIO(pth.join(pth.dirname(__file__), "data", "mass_breakdown_inputs.xml"))
+    reader = VariableIO(Path(__file__).parent / "data" / "mass_breakdown_inputs.xml")
     reader.path_separator = ":"
     input_vars = reader.read().to_ivc()
 
-    mass_computation = run_system(OperatingWeightEmpty(), input_vars)
+    group = Group()
+    group.add_subsystem(
+        "sizing_loads", ComputeLoads(), promotes=["*"]
+    )  # need to plug load evaluation
+    group.add_subsystem("mass_breakdown", OperatingWeightEmpty(), promotes=["*"])
+    mass_computation = run_system(group, input_vars)
 
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(41591, abs=1)
@@ -639,7 +584,7 @@ def test_loop_compute_oew():
     Tests a weight computation loop matching the max payload criterion.
     """
     # With payload from npax
-    reader = VariableIO(pth.join(pth.dirname(__file__), "data", "mass_breakdown_inputs.xml"))
+    reader = VariableIO(Path(__file__).parent / "data" / "mass_breakdown_inputs.xml")
     reader.path_separator = ":"
     input_vars = reader.read(
         ignore=[
@@ -648,16 +593,24 @@ def test_loop_compute_oew():
             "data:weight:aircraft:max_payload",
         ]
     ).to_ivc()
-    mass_computation = run_system(MassBreakdown(), input_vars)
+    group = Group()
+    group.add_subsystem(
+        "sizing_loads", ComputeLoads(), promotes=["*"]
+    )  # need to plug load evaluation
+    group.add_subsystem("mass_breakdown", MassBreakdown(), promotes=["*"])
+    mass_computation = run_system(group, input_vars)
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(41591, abs=1)
 
     # with payload as input
-    reader = VariableIO(pth.join(pth.dirname(__file__), "data", "mass_breakdown_inputs.xml"))
+    reader = VariableIO(Path(__file__).parent / "data" / "mass_breakdown_inputs.xml")
     reader.path_separator = ":"
     input_vars = reader.read(
         ignore=["data:weight:aircraft:MLW", "data:weight:aircraft:MZFW"]
     ).to_ivc()
-    mass_computation = run_system(MassBreakdown(payload_from_npax=False), input_vars)
+    group = Group()
+    group.add_subsystem("sizing_loads", ComputeLoads(), promotes=["*"])
+    group.add_subsystem("mass_breakdown", MassBreakdown(payload_from_npax=False), promotes=["*"])
+    mass_computation = run_system(group, input_vars)
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(42060, abs=1)

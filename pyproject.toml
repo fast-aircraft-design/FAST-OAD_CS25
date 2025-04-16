@@ -100,6 +100,9 @@ addopts = "--cov-report term-missing --cov-report html --verbose"
 testpaths = ["src", "tests"]
 norecursedirs = ["dist", "build", ".tox"]
 filterwarnings = ["default"]
+markers = [
+    "skip_if_no_xfoil",
+]
 
 [tool.coverage.run]
 branch = true

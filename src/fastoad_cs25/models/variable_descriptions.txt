@@ -195,8 +195,14 @@ data:load_case:lc1:altitude || altitude for sizing load case 1 (gust with minimu
 data:load_case:lc2:U_gust || gust vertical speed for sizing load case 2 (gust with maximum aircraft mass)
 data:load_case:lc2:Vc_EAS || equivalent air speed for sizing load case 2 (gust with maximum aircraft mass)
 data:load_case:lc2:altitude || altitude for sizing load case 2 (gust with maximum aircraft mass)
-data:load_case:manoeuvre_load_factor || limit positive manoeuvring load factor
+data:load_case:maneuver_load_factor || limit positive manoeuvring load factor (pull-up)
 data:load_case:gust_intensity || a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated
+data:mission:sizing:cs25:load_factor_1 || max between gust and positive manoeuvring load factor for sizing load case 1
+data:mission:sizing:cs25:load_factor_2 || max between gust and positive manoeuvring load factor for sizing load case 2
+data:mission:sizing:cs25:safety_factor_1 || safety factor for sizing load case 1 (gust with minimum aircraft mass) 
+data:mission:sizing:cs25:safety_factor_2 || safety factor for sizing load case 2 (gust with maximum aircraft mass)
+data:mission:sizing:cs25:sizing_load_1 || sizing load for load case 1 (gust with minimum aircraft mass)
+data:mission:sizing:cs25:sizing_load_2 || sizing load for load case 2 (gust with maximum aircraft mass)
 data:propulsion:MTO_thrust || maximum thrust of one engine at sea level
 data:propulsion:SFC || Specific Fuel Consumption (can be a vector)
 data:propulsion:altitude || altitude for propulsion calculation (can be a vector)

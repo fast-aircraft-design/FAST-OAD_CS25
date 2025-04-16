@@ -20,5 +20,3 @@ SERVICE_PROPULSION_MASS = "service.mass.propulsion"
 SERVICE_SYSTEMS_MASS = "service.mass.systems"
 SERVICE_FURNITURE_MASS = "service.mass.furniture"
 SERVICE_CREW_MASS = "service.mass.crew"
-
-SERVICE_GUST_LOADS = "service.gust_loads"

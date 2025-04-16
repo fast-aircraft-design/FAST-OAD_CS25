@@ -17,6 +17,7 @@ Estimation of fuselage weight
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
+from scipy.constants import g
 
 from .constants import SERVICE_FUSELAGE_MASS
 
@@ -33,7 +34,7 @@ class FuselageWeight(om.ExplicitComponent):
         self.add_input("data:geometry:fuselage:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
-        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="kg")
+        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="N")
         self.add_input("tuning:weight:airframe:fuselage:mass:k", val=1.0)
         self.add_input("tuning:weight:airframe:fuselage:mass:offset", val=0.0, units="kg")
         self.add_input("settings:weight:airframe:fuselage:mass:k_lg", val=1.05)
@@ -56,7 +57,7 @@ class FuselageWeight(om.ExplicitComponent):
 
         temp_a2 = (
             fuselage_wet_area
-            * (10 + 1.2 * np.sqrt(width_max * height_max) + 0.00019 * n1m1 / height_max**1.7)
+            * (10 + 1.2 * np.sqrt(width_max * height_max) + 0.00019 * n1m1 / g / height_max**1.7)
             * k_lg
             * k_fus
         )
