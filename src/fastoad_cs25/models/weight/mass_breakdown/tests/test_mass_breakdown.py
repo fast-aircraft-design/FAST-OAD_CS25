@@ -598,7 +598,7 @@ def test_loop_compute_oew():
         "sizing_loads", ComputeLoads(), promotes=["*"]
     )  # need to plug load evaluation
     group.add_subsystem("mass_breakdown", MassBreakdown(), promotes=["*"])
-    mass_computation = run_system(group, input_vars)
+    mass_computation = run_system(group, input_vars, nonlinear_solver="om.NonlinearBlockGS")
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(41591, abs=1)
 
@@ -611,6 +611,6 @@ def test_loop_compute_oew():
     group = Group()
     group.add_subsystem("sizing_loads", ComputeLoads(), promotes=["*"])
     group.add_subsystem("mass_breakdown", MassBreakdown(payload_from_npax=False), promotes=["*"])
-    mass_computation = run_system(group, input_vars)
+    mass_computation = run_system(group, input_vars, nonlinear_solver="om.NonlinearBlockGS")
     oew = mass_computation["data:weight:aircraft:OWE"]
     assert oew == pytest.approx(42060, abs=1)
