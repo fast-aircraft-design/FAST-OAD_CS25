@@ -1,5 +1,5 @@
 """
-Computation of load cases
+Computation of dimensioning load cases
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2023 ONERA & ISAE-SUPAERO
@@ -17,15 +17,16 @@ Computation of load cases
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
+from scipy.constants import g
 from stdatm import Atmosphere
 
-from .constants import SERVICE_GUST_LOADS
+from ..constants import SERVICE_GUST_LOADS
 
 
-@RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.gust_loads")
-class Loads(om.ExplicitComponent):
+@RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.loads.gust.legacy")
+class GustLoads(om.ExplicitComponent):
     """
-    Computes gust load cases
+    Computes CS25 vertical gust loading evaluated at two different load cases:
 
     Load case 1: with wings with almost no fuel
     Load case 2: at maximum take-off weight
@@ -56,19 +57,18 @@ class Loads(om.ExplicitComponent):
         self.add_input("data:load_case:lc2:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
-        self.add_input("data:load_case:manoeuvre_load_factor", val=2.5)
         self.add_input("data:load_case:gust_intensity", val=1.0)
+        self.add_input("data:mission:sizing:cs25:safety_factor_1", val=1.5)
+        self.add_input("data:mission:sizing:cs25:safety_factor_2", val=1.5)
 
-        self.add_output("data:mission:sizing:cs25:load_factor_1")
-        self.add_output("data:mission:sizing:cs25:load_factor_2")
-        self.add_output("data:mission:sizing:cs25:sizing_load_1", units="kg")
-        self.add_output("data:mission:sizing:cs25:sizing_load_2", units="kg")
+        self.add_output("data:mission:sizing:cs25:gust:load_factor_1")
+        self.add_output("data:mission:sizing:cs25:gust:load_factor_2")
+        self.add_output("data:mission:sizing:cs25:gust:sizing_load_1", units="N")
+        self.add_output("data:mission:sizing:cs25:gust:sizing_load_2", units="N")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
 
-    # pylint: disable=too-many-locals
-    # pylint: disable=invalid-name
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         sea_level_density = Atmosphere(0).density
         wing_area = inputs["data:geometry:wing:area"]
@@ -83,8 +83,9 @@ class Loads(om.ExplicitComponent):
         u_gust2 = inputs["data:load_case:lc2:U_gust"]
         alt_2 = inputs["data:load_case:lc2:altitude"]
         vc_eas2 = inputs["data:load_case:lc2:Vc_EAS"]
-        n_manoeuvre = inputs["data:load_case:manoeuvre_load_factor"]
         gust_intensity = inputs["data:load_case:gust_intensity"]
+        sf1 = inputs["data:mission:sizing:cs25:safety_factor_1"]
+        sf2 = inputs["data:mission:sizing:cs25:safety_factor_2"]
 
         # calculation of mean geometric chord
         chord_geom = wing_area / span
@@ -101,8 +102,8 @@ class Loads(om.ExplicitComponent):
             cl_alpha,
             u_gust1,
         )
-        n1 = 1.5 * max(n_manoeuvre, n_gust_1 * gust_intensity)
-        n1m1 = n1 * m1
+        n1 = sf1 * n_gust_1 * gust_intensity
+        n1m1 = n1 * m1 * g
 
         # load case #2
         n_gust_2 = self.__n_gust(
@@ -115,18 +116,18 @@ class Loads(om.ExplicitComponent):
             cl_alpha,
             u_gust2,
         )
-        n2 = 1.5 * max(n_manoeuvre, n_gust_2 * gust_intensity)
+        n2 = sf2 * n_gust_2 * gust_intensity
 
         if not self.options["fuel_load_alleviation"]:
-            n2m2 = n2 * mtow
+            n2m2 = n2 * mtow * g
         else:
-            mcv = min(0.8 * mfw, mtow - mzfw)
-            n2m2 = n2 * (mtow - 0.55 * mcv)
+            mcv = min(0.8 * mfw, mtow - mzfw)  # fuel mass in the overhanging part of wing
+            n2m2 = n2 * (mtow - 0.55 * mcv) * g
 
-        outputs["data:mission:sizing:cs25:load_factor_1"] = n1
-        outputs["data:mission:sizing:cs25:load_factor_2"] = n2
-        outputs["data:mission:sizing:cs25:sizing_load_1"] = n1m1
-        outputs["data:mission:sizing:cs25:sizing_load_2"] = n2m2
+        outputs["data:mission:sizing:cs25:gust:load_factor_1"] = n1
+        outputs["data:mission:sizing:cs25:gust:load_factor_2"] = n2
+        outputs["data:mission:sizing:cs25:gust:sizing_load_1"] = n1m1
+        outputs["data:mission:sizing:cs25:gust:sizing_load_2"] = n2m2
 
     @staticmethod
     def __n_gust(mass, wing_area, rho, sea_level_density, chord_geom, vc_eas, cl_alpha, u_gust):
@@ -145,8 +146,6 @@ class Loads(om.ExplicitComponent):
         """
         mu_g = 2 * mass / rho / wing_area / chord_geom / cl_alpha
         k_g = 0.88 * mu_g / (5.3 + mu_g)  # attenuation factor
-        n_gust = 1 + (sea_level_density / 2 / 9.81) * k_g * u_gust * (
+        return 1 + (sea_level_density / 2 / g) * k_g * u_gust * (
             vc_eas * cl_alpha / (mass / wing_area)
-        )
-
-        return n_gust
+        )  # n_gust

@@ -12,6 +12,8 @@ model:
     id: fastoad.geometry.legacy
   weight:
     id: fastoad.weight.legacy
+  loads:
+    id: fastoad.loads.legacy
   mtow:
     id: fastoad.mass_performances.compute_MTOW
   aerodynamics:

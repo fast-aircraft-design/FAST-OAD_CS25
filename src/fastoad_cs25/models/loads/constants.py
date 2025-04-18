@@ -1,8 +1,6 @@
-"""
-Test package
-"""
+"""Constants for loads submodels."""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2025 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +12,6 @@ Test package
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from pathlib import Path
-
-root_folder_path = Path(__file__).parent.parent
-""" Path of the whole project folder """
+SERVICE_SIZING_LOADS_ENVELOPE = "service.loads.sizing_loads_envelope"
+SERVICE_GUST_LOADS = "service.loads.gust_loads"
+SERVICE_MANEUVER_LOADS = "service.loads.maneuver_loads"

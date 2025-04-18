@@ -18,6 +18,8 @@ model:
   weight:
     id: fastoad.weight.legacy
     payload_from_npax: false
+  loads:
+    id: fastoad.loads.legacy
   mtow:
     id: fastoad.mass_performances.compute_MTOW
   aerodynamics_highspeed:
