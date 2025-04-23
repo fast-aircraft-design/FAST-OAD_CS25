@@ -11,13 +11,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_SIZING_LOADS_ENVELOPE
 
 
-@RegisterSubmodel(SERVICE_SIZING_LOADS_ENVELOPE, "fastoad.submodel.loads.envelope.legacy")
+@oad.RegisterSubmodel(SERVICE_SIZING_LOADS_ENVELOPE, "fastoad.submodel.loads.envelope.legacy")
 class SizingLoadsEnvelope(om.ExplicitComponent):
     """
     Computes CS25 sizing loading evaluated at two different load cases:

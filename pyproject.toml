@@ -100,9 +100,9 @@ addopts = "--cov-report term-missing --cov-report html --verbose"
 testpaths = ["src", "tests"]
 norecursedirs = ["dist", "build", ".tox"]
 filterwarnings = ["default"]
-markers = [
-    "skip_if_no_xfoil",
-]
+
+# Use @pytest.mark.skip_if_no_xfoil() before a test to skip it if xfoil_path fixture returns None and OS is not Windows.
+markers = ["skip_if_no_xfoil: skip test if XFOIL is not installed or not found in the system PATH"]
 
 [tool.coverage.run]
 branch = true

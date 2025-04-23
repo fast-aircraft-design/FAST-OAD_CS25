@@ -1,8 +1,8 @@
 """
-Computation of dimensioning load cases
+Python module for the computation of gust sizing load cases.
 """
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2023 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2025 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -14,16 +14,16 @@ Computation of dimensioning load cases
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 from scipy.constants import g
 from stdatm import Atmosphere
 
 from ..constants import SERVICE_GUST_LOADS
 
 
-@RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.loads.gust.legacy")
+@oad.RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.loads.gust.legacy")
 class GustLoads(om.ExplicitComponent):
     """
     Computes CS25 vertical gust loading evaluated at two different load cases:

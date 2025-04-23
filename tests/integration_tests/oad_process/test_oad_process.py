@@ -66,9 +66,9 @@ def test_oad_process(cleanup):
 
     RESULTS_FOLDER_PATH.mkdir(parents=True, exist_ok=True)
     om.view_connections(
-        problem, outfile=str(RESULTS_FOLDER_PATH / "connections.html"), show_browser=False
+        problem, outfile=(RESULTS_FOLDER_PATH / "connections.html").as_posix(), show_browser=False
     )
-    om.n2(problem, outfile=str(RESULTS_FOLDER_PATH / "n2.html"), show_browser=False)
+    om.n2(problem, outfile=(RESULTS_FOLDER_PATH / "n2.html").as_posix(), show_browser=False)
 
     # Check that weight-performances loop correctly converged
     _check_weight_performance_loop(problem)
@@ -192,7 +192,7 @@ def run_non_regression_test(
     problem.write_outputs()
 
     om.view_connections(
-        problem, outfile=str(results_folder_path / "connections.html"), show_browser=False
+        problem, outfile=(results_folder_path / "connections.html").as_posix(), show_browser=False
     )
 
     if check_weight_perfo_loop:

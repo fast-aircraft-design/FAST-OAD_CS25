@@ -1,5 +1,5 @@
 """
-Computation of dimensioning load cases
+Python module for the computation of maneuver sizing load cases.
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2023 ONERA & ISAE-SUPAERO
@@ -14,15 +14,15 @@ Computation of dimensioning load cases
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 from scipy.constants import g
 
 from ..constants import SERVICE_MANEUVER_LOADS
 
 
-@RegisterSubmodel(SERVICE_MANEUVER_LOADS, "fastoad.submodel.loads.maneuver.legacy")
+@oad.RegisterSubmodel(SERVICE_MANEUVER_LOADS, "fastoad.submodel.loads.maneuver.legacy")
 class ManeuverLoads(om.ExplicitComponent):
     """
     Computes CS25 pull-up maneuver evaluated at two different load cases:
