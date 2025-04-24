@@ -34,7 +34,7 @@ class FuselageWeight(om.ExplicitComponent):
         self.add_input("data:geometry:fuselage:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
-        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="N")
+        self.add_input("data:mission:sizing:cs25:envelope:max_sizing_load_1", val=np.nan, units="N")
         self.add_input("tuning:weight:airframe:fuselage:mass:k", val=1.0)
         self.add_input("tuning:weight:airframe:fuselage:mass:offset", val=0.0, units="kg")
         self.add_input("settings:weight:airframe:fuselage:mass:k_lg", val=1.05)
@@ -49,7 +49,7 @@ class FuselageWeight(om.ExplicitComponent):
         fuselage_wet_area = inputs["data:geometry:fuselage:wetted_area"]
         width_max = inputs["data:geometry:fuselage:maximum_width"]
         height_max = inputs["data:geometry:fuselage:maximum_height"]
-        n1m1 = inputs["data:mission:sizing:cs25:sizing_load_1"]
+        n1m1 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_1"]
         k_a2 = inputs["tuning:weight:airframe:fuselage:mass:k"]
         offset_a2 = inputs["tuning:weight:airframe:fuselage:mass:offset"]
         k_lg = inputs["settings:weight:airframe:fuselage:mass:k_lg"]

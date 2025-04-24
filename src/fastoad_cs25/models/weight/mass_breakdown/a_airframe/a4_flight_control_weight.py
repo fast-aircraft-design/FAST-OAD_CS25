@@ -35,8 +35,7 @@ class FlightControlsWeight(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:b_50", val=np.nan, units="m")
-        self.add_input("data:mission:sizing:cs25:sizing_load_1", val=np.nan, units="N")
-        self.add_input("data:mission:sizing:cs25:sizing_load_2", val=np.nan, units="N")
+        self.add_input("data:mission:sizing:cs25:sizing_load", val=np.nan, units="N")
         self.add_input(
             "settings:weight:airframe:flight_controls:mass:k_fc", val=0.85
         )  # FIXME: this one should depend on a boolan electric/not-electric flight_controls
@@ -55,13 +54,7 @@ class FlightControlsWeight(om.ExplicitComponent):
         k_a4 = inputs["tuning:weight:airframe:flight_controls:mass:k"]
         offset_a4 = inputs["tuning:weight:airframe:flight_controls:mass:offset"]
 
-        max_nm = (
-            max(
-                inputs["data:mission:sizing:cs25:sizing_load_1"],
-                inputs["data:mission:sizing:cs25:sizing_load_2"],
-            )
-            / g
-        )
+        max_nm = inputs["data:mission:sizing:cs25:sizing_load"] / g
 
         temp_a4 = k_fc * max_nm * (fus_length**0.66 + b_50**0.66)
 

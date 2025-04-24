@@ -13,5 +13,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 SERVICE_SIZING_LOADS_ENVELOPE = "service.loads.sizing_loads_envelope"
+SERVICE_SIZING_LOADS_MAX = "service.loads.sizing_loads_max"
 SERVICE_GUST_LOADS = "service.loads.gust_loads"
 SERVICE_MANEUVER_LOADS = "service.loads.maneuver_loads"

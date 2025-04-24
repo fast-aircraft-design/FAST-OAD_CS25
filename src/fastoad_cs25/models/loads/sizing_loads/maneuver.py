@@ -15,9 +15,7 @@ Python module for the computation of maneuver sizing load cases.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import fastoad.api as oad
-import numpy as np
 import openmdao.api as om
-from scipy.constants import g
 
 from ..constants import SERVICE_MANEUVER_LOADS
 
@@ -25,7 +23,7 @@ from ..constants import SERVICE_MANEUVER_LOADS
 @oad.RegisterSubmodel(SERVICE_MANEUVER_LOADS, "fastoad.submodel.loads.maneuver.legacy")
 class ManeuverLoads(om.ExplicitComponent):
     """
-    Computes CS25 pull-up maneuver evaluated at two different load cases:
+    Computes CS25 pull-up maneuver load factors evaluated at two different load cases:
 
     Load case 1: with wings with almost no fuel
     Load case 2: at maximum take-off weight
@@ -34,54 +32,34 @@ class ManeuverLoads(om.ExplicitComponent):
 
     """
 
-    def initialize(self):
-        self.options.declare(
-            "fuel_load_alleviation",
-            types=bool,
-            default=True,
-            desc="If False this simulates a dry wing,"
-            "i.e. the sizing load 2 does not take into account the fuel weight.",
-        )
-
     def setup(self):
-        self.add_input("data:weight:aircraft:MZFW", val=np.nan, units="kg")
-        self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
-        self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
         self.add_input("data:load_case:maneuver_load_factor", val=2.5)
-        self.add_input("data:mission:sizing:cs25:safety_factor_1", val=1.5)
-        self.add_input("data:mission:sizing:cs25:safety_factor_2", val=1.5)
+        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5)
 
         self.add_output("data:mission:sizing:cs25:maneuver:load_factor_1")
         self.add_output("data:mission:sizing:cs25:maneuver:load_factor_2")
-        self.add_output("data:mission:sizing:cs25:maneuver:sizing_load_1", units="N")
-        self.add_output("data:mission:sizing:cs25:maneuver:sizing_load_2", units="N")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials(
+            "data:mission:sizing:cs25:maneuver:load_factor_1",
+            ["data:load_case:maneuver_load_factor", "data:mission:sizing:cs25:safety_factor"],
+            method="fd",
+        )
+        self.declare_partials(
+            "data:mission:sizing:cs25:maneuver:load_factor_2",
+            ["data:load_case:maneuver_load_factor", "data:mission:sizing:cs25:safety_factor"],
+            method="fd",
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        mzfw = inputs["data:weight:aircraft:MZFW"]
-        mfw = inputs["data:weight:aircraft:MFW"]
-        mtow = inputs["data:weight:aircraft:MTOW"]
         n_maneuver = inputs["data:load_case:maneuver_load_factor"]
-        sf1 = inputs["data:mission:sizing:cs25:safety_factor_1"]
-        sf2 = inputs["data:mission:sizing:cs25:safety_factor_2"]
+        sf = inputs["data:mission:sizing:cs25:safety_factor"]
 
         # load case #1
-        m1 = 1.05 * mzfw
-        n1 = sf1 * n_maneuver
-        n1m1 = n1 * m1 * g
+        n1 = sf * n_maneuver
 
         # load case #2
-        n2 = sf2 * n_maneuver
-
-        if not self.options["fuel_load_alleviation"]:
-            n2m2 = n2 * mtow * g
-        else:
-            mcv = min(0.8 * mfw, mtow - mzfw)  # fuel mass in the overhanging part of wing
-            n2m2 = n2 * (mtow - 0.55 * mcv) * g
+        n2 = sf * n_maneuver
 
         outputs["data:mission:sizing:cs25:maneuver:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:maneuver:load_factor_2"] = n2
-        outputs["data:mission:sizing:cs25:maneuver:sizing_load_1"] = n1m1
-        outputs["data:mission:sizing:cs25:maneuver:sizing_load_2"] = n2m2

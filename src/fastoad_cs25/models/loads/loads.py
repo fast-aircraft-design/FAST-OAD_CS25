@@ -20,6 +20,7 @@ from .constants import (
     SERVICE_GUST_LOADS,
     SERVICE_MANEUVER_LOADS,
     SERVICE_SIZING_LOADS_ENVELOPE,
+    SERVICE_SIZING_LOADS_MAX,
 )
 
 
@@ -41,16 +42,23 @@ class ComputeLoads(om.Group):
         }
         self.add_subsystem(
             "gust_loads",
-            RegisterSubmodel.get_submodel(SERVICE_GUST_LOADS, fuel_load_alleviation_option),
+            RegisterSubmodel.get_submodel(SERVICE_GUST_LOADS),
             promotes=["*"],
         )
         self.add_subsystem(
             "maneuver_loads",
-            RegisterSubmodel.get_submodel(SERVICE_MANEUVER_LOADS, fuel_load_alleviation_option),
+            RegisterSubmodel.get_submodel(SERVICE_MANEUVER_LOADS),
             promotes=["*"],
         )
         self.add_subsystem(
             "sizing_loads_envelope",
-            RegisterSubmodel.get_submodel(SERVICE_SIZING_LOADS_ENVELOPE),
+            RegisterSubmodel.get_submodel(
+                SERVICE_SIZING_LOADS_ENVELOPE, fuel_load_alleviation_option
+            ),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "sizing_loads_max",
+            RegisterSubmodel.get_submodel(SERVICE_SIZING_LOADS_MAX),
             promotes=["*"],
         )

@@ -26,7 +26,7 @@ from ..constants import SERVICE_GUST_LOADS
 @oad.RegisterSubmodel(SERVICE_GUST_LOADS, "fastoad.submodel.loads.gust.legacy")
 class GustLoads(om.ExplicitComponent):
     """
-    Computes CS25 vertical gust loading evaluated at two different load cases:
+    Computes CS25 vertical gust load factors evaluated at two different load cases:
 
     Load case 1: with wings with almost no fuel
     Load case 2: at maximum take-off weight
@@ -35,20 +35,10 @@ class GustLoads(om.ExplicitComponent):
 
     """
 
-    def initialize(self):
-        self.options.declare(
-            "fuel_load_alleviation",
-            types=bool,
-            default=True,
-            desc="If False this simulates a dry wing,"
-            "i.e. the sizing load 2 does not take into account the fuel weight.",
-        )
-
     def setup(self):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:weight:aircraft:MZFW", val=np.nan, units="kg")
-        self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
         self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan, units="1/rad")
         self.add_input("data:load_case:lc1:U_gust", val=np.nan, units="m/s")
@@ -58,23 +48,20 @@ class GustLoads(om.ExplicitComponent):
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
         self.add_input("data:load_case:gust_intensity", val=1.0)
-        self.add_input("data:mission:sizing:cs25:safety_factor_1", val=1.5)
-        self.add_input("data:mission:sizing:cs25:safety_factor_2", val=1.5)
+        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5)
 
         self.add_output("data:mission:sizing:cs25:gust:load_factor_1")
         self.add_output("data:mission:sizing:cs25:gust:load_factor_2")
-        self.add_output("data:mission:sizing:cs25:gust:sizing_load_1", units="N")
-        self.add_output("data:mission:sizing:cs25:gust:sizing_load_2", units="N")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("data:mission:sizing:cs25:gust:load_factor_1", "*", method="fd")
+        self.declare_partials("data:mission:sizing:cs25:gust:load_factor_2", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         sea_level_density = Atmosphere(0).density
         wing_area = inputs["data:geometry:wing:area"]
         span = inputs["data:geometry:wing:span"]
         mzfw = inputs["data:weight:aircraft:MZFW"]
-        mfw = inputs["data:weight:aircraft:MFW"]
         mtow = inputs["data:weight:aircraft:MTOW"]
         cl_alpha = inputs["data:aerodynamics:aircraft:cruise:CL_alpha"]
         u_gust1 = inputs["data:load_case:lc1:U_gust"]
@@ -84,8 +71,7 @@ class GustLoads(om.ExplicitComponent):
         alt_2 = inputs["data:load_case:lc2:altitude"]
         vc_eas2 = inputs["data:load_case:lc2:Vc_EAS"]
         gust_intensity = inputs["data:load_case:gust_intensity"]
-        sf1 = inputs["data:mission:sizing:cs25:safety_factor_1"]
-        sf2 = inputs["data:mission:sizing:cs25:safety_factor_2"]
+        sf = inputs["data:mission:sizing:cs25:safety_factor"]
 
         # calculation of mean geometric chord
         chord_geom = wing_area / span
@@ -102,8 +88,7 @@ class GustLoads(om.ExplicitComponent):
             cl_alpha,
             u_gust1,
         )
-        n1 = sf1 * n_gust_1 * gust_intensity
-        n1m1 = n1 * m1 * g
+        n1 = sf * n_gust_1 * gust_intensity
 
         # load case #2
         n_gust_2 = self.__n_gust(
@@ -116,18 +101,10 @@ class GustLoads(om.ExplicitComponent):
             cl_alpha,
             u_gust2,
         )
-        n2 = sf2 * n_gust_2 * gust_intensity
-
-        if not self.options["fuel_load_alleviation"]:
-            n2m2 = n2 * mtow * g
-        else:
-            mcv = min(0.8 * mfw, mtow - mzfw)  # fuel mass in the overhanging part of wing
-            n2m2 = n2 * (mtow - 0.55 * mcv) * g
+        n2 = sf * n_gust_2 * gust_intensity
 
         outputs["data:mission:sizing:cs25:gust:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:gust:load_factor_2"] = n2
-        outputs["data:mission:sizing:cs25:gust:sizing_load_1"] = n1m1
-        outputs["data:mission:sizing:cs25:gust:sizing_load_2"] = n2m2
 
     @staticmethod
     def __n_gust(mass, wing_area, rho, sea_level_density, chord_geom, vc_eas, cl_alpha, u_gust):
