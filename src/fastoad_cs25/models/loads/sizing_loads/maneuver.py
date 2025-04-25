@@ -15,7 +15,9 @@ Python module for the computation of maneuver sizing load cases.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import fastoad.api as oad
+import numpy as np
 import openmdao.api as om
+from openmdao.api import convert_units
 
 from ..constants import SERVICE_MANEUVER_LOADS
 
@@ -33,27 +35,40 @@ class ManeuverLoads(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:load_case:maneuver_load_factor", val=2.5)
-        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5)
+        self.add_input("data:load_case:maneuver_load_factor", val=0.0, units="unitless")
+        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5, units="unitless")
+        self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
 
-        self.add_output("data:mission:sizing:cs25:maneuver:load_factor_1")
-        self.add_output("data:mission:sizing:cs25:maneuver:load_factor_2")
+        self.add_output("data:mission:sizing:cs25:maneuver:load_factor_1", units="unitless")
+        self.add_output("data:mission:sizing:cs25:maneuver:load_factor_2", units="unitless")
 
     def setup_partials(self):
         self.declare_partials(
             "data:mission:sizing:cs25:maneuver:load_factor_1",
-            ["data:load_case:maneuver_load_factor", "data:mission:sizing:cs25:safety_factor"],
+            [
+                "data:load_case:maneuver_load_factor",
+                "data:mission:sizing:cs25:safety_factor",
+                "data:weight:aircraft:MTOW",
+            ],
             method="fd",
         )
         self.declare_partials(
             "data:mission:sizing:cs25:maneuver:load_factor_2",
-            ["data:load_case:maneuver_load_factor", "data:mission:sizing:cs25:safety_factor"],
+            [
+                "data:load_case:maneuver_load_factor",
+                "data:mission:sizing:cs25:safety_factor",
+                "data:weight:aircraft:MTOW",
+            ],
             method="fd",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         n_maneuver = inputs["data:load_case:maneuver_load_factor"]
         sf = inputs["data:mission:sizing:cs25:safety_factor"]
+        mtow = inputs["data:weight:aircraft:MTOW"]
+
+        if n_maneuver == 0.0:
+            n_maneuver = self.__n_manouver(mtow)
 
         # load case #1
         n1 = sf * n_maneuver
@@ -63,3 +78,16 @@ class ManeuverLoads(om.ExplicitComponent):
 
         outputs["data:mission:sizing:cs25:maneuver:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:maneuver:load_factor_2"] = n2
+
+    @staticmethod
+    def __n_manouver(w_kg):
+        """
+        See CS 25.337 Limit manoeuvring load factors
+        Computes the maneuver load factor based on weight (in kg).
+        - Converts weight to pounds.
+        - Uses the formula: 2 * (1 + 24000 / (w + 10000))
+        - Clip the result between 2.5 and 3.8.
+        """
+        w = convert_units(w_kg, "kg", "lb")
+        raw_n = 2 * (1 + 24000 / (w + 10000))
+        return max(2.5, min(3.8, raw_n))

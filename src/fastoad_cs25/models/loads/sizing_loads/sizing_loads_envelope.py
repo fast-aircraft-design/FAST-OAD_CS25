@@ -47,17 +47,18 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
         self.add_input("data:weight:aircraft:MZFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("data:mission:sizing:cs25:gust:load_factor_1")
-        self.add_input("data:mission:sizing:cs25:gust:load_factor_2")
-        self.add_input("data:mission:sizing:cs25:maneuver:load_factor_1")
-        self.add_input("data:mission:sizing:cs25:maneuver:load_factor_2")
+        self.add_input("data:mission:sizing:cs25:gust:load_factor_1", units="unitless")
+        self.add_input("data:mission:sizing:cs25:gust:load_factor_2", units="unitless")
+        self.add_input("data:mission:sizing:cs25:maneuver:load_factor_1", units="unitless")
+        self.add_input("data:mission:sizing:cs25:maneuver:load_factor_2", units="unitless")
 
-        self.add_output("data:mission:sizing:cs25:envelope:max_load_factor_1")
-        self.add_output("data:mission:sizing:cs25:envelope:max_load_factor_2")
+        self.add_output("data:mission:sizing:cs25:envelope:max_load_factor_1", units="unitless")
+        self.add_output("data:mission:sizing:cs25:envelope:max_load_factor_2", units="unitless")
         self.add_output("data:mission:sizing:cs25:envelope:max_sizing_load_1", units="N")
         self.add_output("data:mission:sizing:cs25:envelope:max_sizing_load_2", units="N")
 
     def setup_partials(self):
+        # Load factor outputs
         self.declare_partials(
             "data:mission:sizing:cs25:envelope:max_load_factor_1",
             [
@@ -75,27 +76,12 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
             method="fd",
         )
 
+        # Sizing load outputs
         self.declare_partials(
-            "data:mission:sizing:cs25:envelope:max_sizing_load_1",
-            [
-                "data:weight:aircraft:MZFW",
-                "data:weight:aircraft:MFW",
-                "data:weight:aircraft:MTOW",
-                "data:mission:sizing:cs25:gust:load_factor_1",
-                "data:mission:sizing:cs25:maneuver:load_factor_1",
-            ],
-            method="fd",
+            "data:mission:sizing:cs25:envelope:max_sizing_load_1", "*", method="fd"
         )
         self.declare_partials(
-            "data:mission:sizing:cs25:envelope:max_sizing_load_2",
-            [
-                "data:weight:aircraft:MZFW",
-                "data:weight:aircraft:MFW",
-                "data:weight:aircraft:MTOW",
-                "data:mission:sizing:cs25:gust:load_factor_2",
-                "data:mission:sizing:cs25:maneuver:load_factor_2",
-            ],
-            method="fd",
+            "data:mission:sizing:cs25:envelope:max_sizing_load_2", "*", method="fd"
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):

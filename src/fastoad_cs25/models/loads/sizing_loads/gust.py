@@ -47,11 +47,11 @@ class GustLoads(om.ExplicitComponent):
         self.add_input("data:load_case:lc2:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc2:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc2:Vc_EAS", val=np.nan, units="m/s")
-        self.add_input("data:load_case:gust_intensity", val=1.0)
-        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5)
+        self.add_input("data:load_case:gust_intensity", val=1.0, units="unitless")
+        self.add_input("data:mission:sizing:cs25:safety_factor", val=1.5, units="unitless")
 
-        self.add_output("data:mission:sizing:cs25:gust:load_factor_1")
-        self.add_output("data:mission:sizing:cs25:gust:load_factor_2")
+        self.add_output("data:mission:sizing:cs25:gust:load_factor_1", units="unitless")
+        self.add_output("data:mission:sizing:cs25:gust:load_factor_2", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("data:mission:sizing:cs25:gust:load_factor_1", "*", method="fd")

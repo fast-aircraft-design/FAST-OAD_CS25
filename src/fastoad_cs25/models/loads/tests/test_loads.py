@@ -23,6 +23,7 @@ from scipy.constants import g
 
 from ..loads import ComputeLoads
 from ..sizing_loads.gust import GustLoads
+from ..sizing_loads.maneuver import ManeuverLoads
 
 
 def get_indep_var_comp(var_names):
@@ -31,6 +32,19 @@ def get_indep_var_comp(var_names):
     reader.path_separator = ":"
     ivc = reader.read(only=var_names).to_ivc()
     return ivc
+
+
+@pytest.mark.parametrize(
+    "w_kg, expected",
+    [
+        (1000, 3.8),  # very low weight, should clip to max 3.8
+        (100000, 2.5),  # high weight, should clip to min 2.5
+        (20000, 2.88),  # in-between value
+    ],
+)
+def test__n_manouver(w_kg, expected):
+    result = ManeuverLoads._ManeuverLoads__n_manouver(w_kg)
+    assert result == pytest.approx(expected, abs=0.01)
 
 
 def test_gust_load_factor():
