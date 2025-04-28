@@ -1,3 +1,4 @@
+"""Python package for evaluating aerostructural loads."""
 #  This file is part of FAST-OAD : A framework for rapid Overall Aircraft Design
 #  Copyright (C) 2025 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
@@ -11,11 +12,10 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 
 # from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
-
 from .constants import (
     SERVICE_GUST_LOADS,
     SERVICE_MANEUVER_LOADS,
@@ -24,7 +24,7 @@ from .constants import (
 )
 
 
-@RegisterOpenMDAOSystem("fastoad.loads.legacy")  # TODO add ModelDomain.LOADS
+@oad.RegisterOpenMDAOSystem("fastoad.loads.legacy")  # TODO add ModelDomain.LOADS
 class ComputeLoads(om.Group):
     def initialize(self):
         self.options.declare(
@@ -42,23 +42,23 @@ class ComputeLoads(om.Group):
         }
         self.add_subsystem(
             "gust_loads",
-            RegisterSubmodel.get_submodel(SERVICE_GUST_LOADS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_GUST_LOADS),
             promotes=["*"],
         )
         self.add_subsystem(
             "maneuver_loads",
-            RegisterSubmodel.get_submodel(SERVICE_MANEUVER_LOADS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_MANEUVER_LOADS),
             promotes=["*"],
         )
         self.add_subsystem(
             "sizing_loads_envelope",
-            RegisterSubmodel.get_submodel(
+            oad.RegisterSubmodel.get_submodel(
                 SERVICE_SIZING_LOADS_ENVELOPE, fuel_load_alleviation_option
             ),
             promotes=["*"],
         )
         self.add_subsystem(
             "sizing_loads_max",
-            RegisterSubmodel.get_submodel(SERVICE_SIZING_LOADS_MAX),
+            oad.RegisterSubmodel.get_submodel(SERVICE_SIZING_LOADS_MAX),
             promotes=["*"],
         )

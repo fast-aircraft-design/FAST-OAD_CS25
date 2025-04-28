@@ -601,8 +601,6 @@ def test_loop_compute_oew():
     assert oew == pytest.approx(41591, abs=1)
 
     # with payload as input
-    reader = VariableIO(Path(__file__).parent / "data" / "mass_breakdown_inputs.xml")
-    reader.path_separator = ":"
     input_vars = reader.read(
         ignore=["data:weight:aircraft:MLW", "data:weight:aircraft:MZFW"]
     ).to_ivc()

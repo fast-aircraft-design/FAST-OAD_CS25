@@ -45,20 +45,12 @@ class ManeuverLoads(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials(
             "data:mission:sizing:cs25:maneuver:load_factor_1",
-            [
-                "data:load_case:maneuver_load_factor",
-                "data:mission:sizing:cs25:safety_factor",
-                "data:weight:aircraft:MTOW",
-            ],
+            "*",
             method="fd",
         )
         self.declare_partials(
             "data:mission:sizing:cs25:maneuver:load_factor_2",
-            [
-                "data:load_case:maneuver_load_factor",
-                "data:mission:sizing:cs25:safety_factor",
-                "data:weight:aircraft:MTOW",
-            ],
+            "*",
             method="fd",
         )
 
@@ -67,8 +59,10 @@ class ManeuverLoads(om.ExplicitComponent):
         sf = inputs["data:mission:sizing:cs25:safety_factor"]
         mtow = inputs["data:weight:aircraft:MTOW"]
 
-        if n_maneuver == 0.0:
-            n_maneuver = self.__n_manouver(mtow)
+        if (
+            n_maneuver == 0.0
+        ):  # n_maneuver not provided by the user, so we evaluate it using CS 25.337
+            n_maneuver = self.__n_maneuver(mtow)
 
         # load case #1
         n1 = sf * n_maneuver
@@ -80,14 +74,14 @@ class ManeuverLoads(om.ExplicitComponent):
         outputs["data:mission:sizing:cs25:maneuver:load_factor_2"] = n2
 
     @staticmethod
-    def __n_manouver(w_kg):
+    def __n_maneuver(w_kg):
         """
-        See CS 25.337 Limit manoeuvring load factors
-        Computes the maneuver load factor based on weight (in kg).
+        See CS 25.337 Limit manoeuvring load factors.
+        Computes the maneuver load factor based on gross weight (in kg).
         - Converts weight to pounds.
         - Uses the formula: 2 * (1 + 24000 / (w + 10000))
         - Clip the result between 2.5 and 3.8.
         """
         w = convert_units(w_kg, "kg", "lb")
         raw_n = 2 * (1 + 24000 / (w + 10000))
-        return max(2.5, min(3.8, raw_n))
+        return np.clip(raw_n, 2.5, 3.8)

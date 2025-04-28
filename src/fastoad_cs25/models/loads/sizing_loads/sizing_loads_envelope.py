@@ -30,8 +30,7 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
     Load case 1: with wings with almost no fuel
     Load case 2: at maximum take-off weight
 
-    Based on formulas in :cite:`supaero:2014`, §6.3
-
+    Based on formulas in :cite:`supaero:2014`, §6.3.
     """
 
     def initialize(self):
@@ -78,10 +77,23 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
 
         # Sizing load outputs
         self.declare_partials(
-            "data:mission:sizing:cs25:envelope:max_sizing_load_1", "*", method="fd"
+            "data:mission:sizing:cs25:envelope:max_sizing_load_1",
+            [
+                "data:mission:sizing:cs25:gust:load_factor_1",
+                "data:mission:sizing:cs25:maneuver:load_factor_1",
+                "data:weight:aircraft:MZFW",
+            ],
+            method="fd",
         )
         self.declare_partials(
-            "data:mission:sizing:cs25:envelope:max_sizing_load_2", "*", method="fd"
+            "data:mission:sizing:cs25:envelope:max_sizing_load_2",
+            [
+                "data:mission:sizing:cs25:gust:load_factor_2",
+                "data:mission:sizing:cs25:maneuver:load_factor_2",
+                "data:weight:aircraft:MFW",
+                "data:weight:aircraft:MTOW",
+            ],
+            method="fd",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -96,22 +108,19 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
 
         # load case #1
         m1 = 1.05 * mzfw
-        n1m1_maneuver = n1_maneuver * m1 * g
-        n1m1_gust = n1_gust * m1 * g
 
         # load case #2
         if not self.options["fuel_load_alleviation"]:
-            n2m2_maneuver = n2_maneuver * mtow * g
-            n2m2_gust = n2_gust * mtow * g
+            m2 = mtow
         else:
             mcv = min(0.8 * mfw, mtow - mzfw)  # fuel mass in the overhanging part of wing
-            n2m2_maneuver = n2_maneuver * (mtow - 0.55 * mcv) * g
-            n2m2_gust = n2_gust * (mtow - 0.55 * mcv) * g
+            m2 = mtow - 0.55 * mcv
 
         n1 = max(n1_gust, n1_maneuver)
         n2 = max(n2_gust, n2_maneuver)
-        n1m1 = max(n1m1_gust, n1m1_maneuver)
-        n2m2 = max(n2m2_gust, n2m2_maneuver)
+
+        n1m1 = n1 * m1 * g
+        n2m2 = n2 * m2 * g
 
         outputs["data:mission:sizing:cs25:envelope:max_load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:envelope:max_load_factor_2"] = n2

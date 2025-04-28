@@ -36,10 +36,7 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials(
             "data:mission:sizing:cs25:sizing_load",
-            [
-                "data:mission:sizing:cs25:envelope:max_sizing_load_1",
-                "data:mission:sizing:cs25:envelope:max_sizing_load_2",
-            ],
+            "*",
             method="fd",
         )
 
@@ -47,6 +44,6 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
         n1m1 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_1"]
         n2m2 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_2"]
 
-        n_m = max(n1m1, n2m2)
+        nm = max(n1m1, n2m2)
 
-        outputs["data:mission:sizing:cs25:sizing_load"] = n_m
+        outputs["data:mission:sizing:cs25:sizing_load"] = nm

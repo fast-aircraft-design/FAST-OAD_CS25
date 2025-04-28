@@ -1,5 +1,5 @@
 """
-Test module for load functions
+Test module for load functions.
 """
 #  This file is part of FAST-OAD_CS25
 #  Copyright (C) 2025 ONERA & ISAE-SUPAERO
@@ -42,8 +42,8 @@ def get_indep_var_comp(var_names):
         (20000, 2.88),  # in-between value
     ],
 )
-def test__n_manouver(w_kg, expected):
-    result = ManeuverLoads._ManeuverLoads__n_manouver(w_kg)
+def test__n_maneuver(w_kg, expected):
+    result = ManeuverLoads._ManeuverLoads__n_maneuver(w_kg)
     assert result == pytest.approx(expected, abs=0.01)
 
 

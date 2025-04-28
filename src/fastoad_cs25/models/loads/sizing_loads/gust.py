@@ -54,8 +54,36 @@ class GustLoads(om.ExplicitComponent):
         self.add_output("data:mission:sizing:cs25:gust:load_factor_2", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("data:mission:sizing:cs25:gust:load_factor_1", "*", method="fd")
-        self.declare_partials("data:mission:sizing:cs25:gust:load_factor_2", "*", method="fd")
+        self.declare_partials(
+            "data:mission:sizing:cs25:gust:load_factor_1",
+            [
+                "data:geometry:wing:area",
+                "data:geometry:wing:span",
+                "data:weight:aircraft:MZFW",
+                "data:aerodynamics:aircraft:cruise:CL_alpha",
+                "data:load_case:lc1:U_gust",
+                "data:load_case:lc1:altitude",
+                "data:load_case:lc1:Vc_EAS",
+                "data:load_case:gust_intensity",
+                "data:mission:sizing:cs25:safety_factor",
+            ],
+            method="fd",
+        )
+        self.declare_partials(
+            "data:mission:sizing:cs25:gust:load_factor_2",
+            [
+                "data:geometry:wing:area",
+                "data:geometry:wing:span",
+                "data:weight:aircraft:MTOW",
+                "data:aerodynamics:aircraft:cruise:CL_alpha",
+                "data:load_case:lc2:U_gust",
+                "data:load_case:lc2:altitude",
+                "data:load_case:lc2:Vc_EAS",
+                "data:load_case:gust_intensity",
+                "data:mission:sizing:cs25:safety_factor",
+            ],
+            method="fd",
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         sea_level_density = Atmosphere(0).density
@@ -109,17 +137,17 @@ class GustLoads(om.ExplicitComponent):
     @staticmethod
     def __n_gust(mass, wing_area, rho, sea_level_density, chord_geom, vc_eas, cl_alpha, u_gust):
         """
-        Computes a reference gust load.
+        Computes a reference vertical gust load factor.
 
-        :param mass:
-        :param wing_area:
-        :param rho:
-        :param sea_level_density:
-        :param chord_geom:
-        :param vc_eas: Vc (Equivalent AirSpeed)
-        :param cl_alpha:
-        :param u_gust:
-        :return:
+        :param mass: Aircraft mass [kg]
+        :param wing_area: Wing reference area [m2]
+        :param rho: Air density at flight altitude [kg/m3]
+        :param sea_level_density: Air density at sea level [kg/m3]
+        :param chord_geom: Geometric mean aerodynamic chord [m]
+        :param vc_eas: Equivalent airspeed at cruising condition Vc [m/s]
+        :param cl_alpha: Wing lift alpha curve slope [1/rad]
+        :param u_gust: Gust vertical velocity [m/s]
+        :return: Gust load factor (n_gust) [dimensionless]
         """
         mu_g = 2 * mass / rho / wing_area / chord_geom / cl_alpha
         k_g = 0.88 * mu_g / (5.3 + mu_g)  # attenuation factor
