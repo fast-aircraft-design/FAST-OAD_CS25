@@ -195,8 +195,18 @@ data:load_case:lc1:altitude || altitude for sizing load case 1 (gust with minimu
 data:load_case:lc2:U_gust || gust vertical speed for sizing load case 2 (gust with maximum aircraft mass)
 data:load_case:lc2:Vc_EAS || equivalent air speed for sizing load case 2 (gust with maximum aircraft mass)
 data:load_case:lc2:altitude || altitude for sizing load case 2 (gust with maximum aircraft mass)
-data:load_case:manoeuvre_load_factor || limit positive manoeuvring load factor
+data:load_case:maneuver_load_factor || desired limit positive manoeuvring load factor (pull-up). If 0.0: evalued using CS 25.337
 data:load_case:gust_intensity || a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated
+data:mission:sizing:cs25:envelope:max_load_factor_1 || max between gust and positive manoeuvring load factor for sizing load case 1
+data:mission:sizing:cs25:envelope:max_load_factor_2 || max between gust and positive manoeuvring load factor for sizing load case 2
+data:mission:sizing:cs25:envelope:max_sizing_load_1 || wing load for load case 1 (gust with minimum aircraft mass)
+data:mission:sizing:cs25:envelope:max_sizing_load_2 || wing load for load case 2 (gust with maximum aircraft mass)
+data:mission:sizing:cs25:gust:load_factor_1 || gust load factor for sizing load case 1
+data:mission:sizing:cs25:gust:load_factor_2 || gust load factor for sizing load case 2
+data:mission:sizing:cs25:maneuver:load_factor_1 || positive manoeuvring load factor for sizing load case 1 with safety factor
+data:mission:sizing:cs25:maneuver:load_factor_2 || positive manoeuvring load factor for sizing load case 2 with safety factor
+data:mission:sizing:cs25:safety_factor || safety factor for sizing load cases
+data:mission:sizing:cs25:sizing_load || maximum sizing load 
 data:propulsion:MTO_thrust || maximum thrust of one engine at sea level
 data:propulsion:SFC || Specific Fuel Consumption (can be a vector)
 data:propulsion:altitude || altitude for propulsion calculation (can be a vector)

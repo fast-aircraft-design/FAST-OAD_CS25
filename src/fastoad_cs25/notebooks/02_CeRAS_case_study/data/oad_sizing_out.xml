@@ -416,8 +416,8 @@
       </SPP_study>
       <sizing>
         <cs25>
-          <sizing_load_1 units="kg" is_input="False">242582.07752640772<!--sizing load during gust with minimum aircraft mass--></sizing_load_1>
-          <sizing_load_2 units="kg" is_input="False">258291.37897705915<!--sizing load during gust with maximum aircraft mass--></sizing_load_2>
+          <sizing_load_1 units="N" is_input="False">2378917.530574346<!--sizing load during gust with minimum aircraft mass--></sizing_load_1>
+          <sizing_load_2 units="N" is_input="False">2532973.151645377<!--sizing load during gust with maximum aircraft mass--></sizing_load_2>
         </cs25>
         <landing>
           <flap_angle units="deg" is_input="True">30.0<!--flap angle during landing phase in sizing mission--></flap_angle>

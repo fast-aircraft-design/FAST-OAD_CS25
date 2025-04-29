@@ -142,7 +142,7 @@
         <root>
           <chord units="m" is_input="False">6.128838026153156<!--chord length at root of vertical tail--></chord>
           <leading_edge>
-            <x units="m" is_input="False">29.477739872847263<local units="m" is_input="False">4.440892098500626e-16<!--X-position of leading edge at vertical tail tip w.r.t. leading edge of root chord--></local></x>
+            <x units="m" is_input="False">29.477739872847263<local units="m" is_input="False">-0.0<!--X-position of leading edge at vertical tail tip w.r.t. leading edge of root chord--></local></x>
           </leading_edge>
         </root>
         <tip>
@@ -222,7 +222,7 @@
     </handling_qualities>
     <load_case>
       <gust_intensity is_input="True">0.5<!--a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated--></gust_intensity>
-      <manoeuvre_load_factor is_input="True">2.5<!--limit positive manoeuvring load factor--></manoeuvre_load_factor>
+      <maneuver_load_factor is_input="True">2.5<!--limit positive manoeuvring load factor--></maneuver_load_factor>
       <lc1>
         <U_gust units="m/s" is_input="True">15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>
         <Vc_EAS units="m/s" is_input="True">375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
@@ -261,8 +261,8 @@
         <cs25>
           <load_factor_1 is_input="False">3.75</load_factor_1>
           <load_factor_2 is_input="False">3.75</load_factor_2>
-          <sizing_load_1 units="kg" is_input="False">246422.77051970272</sizing_load_1>
-          <sizing_load_2 units="kg" is_input="False">259162.77666729141</sizing_load_2>
+          <sizing_load_1 units="N" is_input="False">2416581.8625170426</sizing_load_1>
+          <sizing_load_2 units="N" is_input="False">2541518.643804293</sizing_load_2>
         </cs25>
         <global_reserve>
           <distance units="m" is_input="False">0.0<!--covered ground distance during route "global_reserve" in mission "sizing"--></distance>
@@ -324,7 +324,7 @@
         <MTOW units="kg" is_input="False">77086.92304594585<!--maximum takeoff weight--></MTOW>
         <MZFW units="kg" is_input="False">62583.560782701934<!--maximum zero fuel weight--></MZFW>
         <OWE units="kg" is_input="False">42975.560782701934<!--Mass of crew--></OWE>
-        <additional_fuel_capacity units="kg" is_input="False">-7.358954462688416e-06<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
+        <additional_fuel_capacity units="kg" is_input="False">0.000011<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
         <max_payload units="kg" is_input="False">19608.0<!--max payload weight--></max_payload>
         <payload units="kg" is_input="False">13608.0<!--_inp_data:weight:aircraft:payload--></payload>
         <sizing_block_fuel units="kg" is_input="False">20503.362270602855<!--block fuel quantity (i.e. loaded before taxi-out) used for sizing process--></sizing_block_fuel>
