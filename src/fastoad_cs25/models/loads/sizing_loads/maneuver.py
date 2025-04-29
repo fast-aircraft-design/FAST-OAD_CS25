@@ -56,7 +56,7 @@ class ManeuverLoads(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         n_maneuver = inputs["data:load_case:maneuver_load_factor"]
-        sf = inputs["data:mission:sizing:cs25:safety_factor"]
+        safety_factor = inputs["data:mission:sizing:cs25:safety_factor"]
         mtow = inputs["data:weight:aircraft:MTOW"]
 
         if (
@@ -65,10 +65,10 @@ class ManeuverLoads(om.ExplicitComponent):
             n_maneuver = self.__n_maneuver(mtow)
 
         # load case #1
-        n1 = sf * n_maneuver
+        n1 = safety_factor * n_maneuver
 
         # load case #2
-        n2 = sf * n_maneuver
+        n2 = safety_factor * n_maneuver
 
         outputs["data:mission:sizing:cs25:maneuver:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:maneuver:load_factor_2"] = n2

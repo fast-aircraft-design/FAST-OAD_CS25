@@ -99,7 +99,7 @@ class GustLoads(om.ExplicitComponent):
         alt_2 = inputs["data:load_case:lc2:altitude"]
         vc_eas2 = inputs["data:load_case:lc2:Vc_EAS"]
         gust_intensity = inputs["data:load_case:gust_intensity"]
-        sf = inputs["data:mission:sizing:cs25:safety_factor"]
+        safety_factor = inputs["data:mission:sizing:cs25:safety_factor"]
 
         # calculation of mean geometric chord
         chord_geom = wing_area / span
@@ -116,7 +116,7 @@ class GustLoads(om.ExplicitComponent):
             cl_alpha,
             u_gust1,
         )
-        n1 = sf * n_gust_1 * gust_intensity
+        n1 = safety_factor * n_gust_1 * gust_intensity
 
         # load case #2
         n_gust_2 = self.__n_gust(
@@ -129,7 +129,7 @@ class GustLoads(om.ExplicitComponent):
             cl_alpha,
             u_gust2,
         )
-        n2 = sf * n_gust_2 * gust_intensity
+        n2 = safety_factor * n_gust_2 * gust_intensity
 
         outputs["data:mission:sizing:cs25:gust:load_factor_1"] = n1
         outputs["data:mission:sizing:cs25:gust:load_factor_2"] = n2
