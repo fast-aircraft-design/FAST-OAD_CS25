@@ -82,7 +82,7 @@
         <center>
           <chord units="m" is_input="False">4.362840133313165<!--chord length at center of horizontal tail--></chord>
           <leading_edge>
-            <x units="m" is_input="False">31.71477312903165<!--_inp_data:geometry:horizontal_tail:center:leading_edge:x--><local units="m" is_input="False">-2.220446049250313e-16<!--X-position of the leading edge at center of horizontal tail w.r.t. leading edge of center chord--></local></x>
+            <x units="m" is_input="False">31.71477312903165<!--_inp_data:geometry:horizontal_tail:center:leading_edge:x--><local units="m" is_input="False">-0.0<!--X-position of the leading edge at center of horizontal tail w.r.t. leading edge of center chord--></local></x>
           </leading_edge>
         </center>
         <tip>
@@ -222,7 +222,7 @@
     </handling_qualities>
     <load_case>
       <gust_intensity is_input="True">0.0<!--a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated--></gust_intensity>
-      <manoeuvre_load_factor is_input="True">2.5<!--limit positive manoeuvring load factor--></manoeuvre_load_factor>
+      <maneuver_load_factor is_input="True">2.5<!--limit positive manoeuvring load factor--></maneuver_load_factor>
       <lc1>
         <U_gust units="m/s" is_input="True">15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>
         <Vc_EAS units="m/s" is_input="True">375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
@@ -261,8 +261,8 @@
         <cs25>
           <load_factor_1 is_input="False">3.75</load_factor_1>
           <load_factor_2 is_input="False">3.75</load_factor_2>
-          <sizing_load_1 units="kg" is_input="False">249254.59066519403</sizing_load_1>
-          <sizing_load_2 units="kg" is_input="False">262309.19884847995</sizing_load_2>
+          <sizing_load_1 units="N" is_input="False">2444352.531546825</sizing_load_1>
+          <sizing_load_2 units="N" is_input="False">2572374.504887446</sizing_load_2>
         </cs25>
         <global_reserve>
           <distance units="m" is_input="False">0.0<!--covered ground distance during route "global_reserve" in mission "sizing"--></distance>
@@ -324,7 +324,7 @@
         <MTOW units="kg" is_input="False">78072.45659716826<!--maximum takeoff weight--></MTOW>
         <MZFW units="kg" is_input="False">63302.75321510128<!--maximum zero fuel weight--></MZFW>
         <OWE units="kg" is_input="False">43694.75321510128<!--Mass of crew--></OWE>
-        <additional_fuel_capacity units="kg" is_input="False">-1.389114186167717e-05<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
+        <additional_fuel_capacity units="kg" is_input="False">-0.000013<!--fuel mass capacity of wing that exceeds sizing mission requirement--></additional_fuel_capacity>
         <max_payload units="kg" is_input="False">19608.0<!--max payload weight--></max_payload>
         <payload units="kg" is_input="False">13608.0<!--_inp_data:weight:aircraft:payload--></payload>
         <sizing_block_fuel units="kg" is_input="False">20769.703395958124<!--block fuel quantity (i.e. loaded before taxi-out) used for sizing process--></sizing_block_fuel>

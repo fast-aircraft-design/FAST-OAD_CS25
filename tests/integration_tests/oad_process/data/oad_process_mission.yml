@@ -24,6 +24,8 @@ model:
       use_xfoil: false
     weight:
       id: fastoad.weight.legacy
+    loads:
+      id: fastoad.loads.legacy
     mtow:
       id: fastoad.mass_performances.compute_MTOW
     hq:
