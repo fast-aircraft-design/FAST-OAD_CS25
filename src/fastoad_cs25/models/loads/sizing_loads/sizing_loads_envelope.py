@@ -25,7 +25,7 @@ from ..constants import SERVICE_SIZING_LOADS_ENVELOPE
 @oad.RegisterSubmodel(SERVICE_SIZING_LOADS_ENVELOPE, "fastoad.submodel.loads.envelope.legacy")
 class SizingLoadsEnvelope(om.ExplicitComponent):
     """
-    Computes CS25 sizing loading evaluated at two different load cases:
+    Computes CS25 sizing loads evaluated at two different load cases:
 
     Load case 1: with wings with almost no fuel
     Load case 2: at maximum take-off weight
