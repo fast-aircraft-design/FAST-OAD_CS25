@@ -32,7 +32,10 @@ class ComputeYWing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
+        if self.options["impose_absolute_kink"]:
+            self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
+        else:
+            self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
 
         self.add_output("data:geometry:wing:span", units="m")
         self.add_output("data:geometry:wing:root:y", units="m")
@@ -68,7 +71,6 @@ class ComputeYWing(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
         wing_area = inputs["data:geometry:wing:area"]
-        wing_break = inputs["data:geometry:wing:kink:span_ratio"]
         width_max = inputs["data:geometry:fuselage:maximum_width"]
 
         span = math.sqrt(lambda_wing * wing_area)
@@ -82,5 +84,6 @@ class ComputeYWing(om.ExplicitComponent):
         outputs["data:geometry:wing:tip:y"] = y4_wing
 
         if not self.options["impose_absolute_kink"]:
+            wing_break = inputs["data:geometry:wing:kink:span_ratio"]
             y3_wing = np.maximum(y2_wing, y4_wing * wing_break)
             outputs["data:geometry:wing:kink:y"] = y3_wing
