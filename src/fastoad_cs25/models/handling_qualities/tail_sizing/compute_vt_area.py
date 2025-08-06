@@ -27,9 +27,9 @@ class ComputeVTArea(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
-        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
-        self.add_input("data:aerodynamics:fuselage:cruise:CnBeta", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan, units="unitless")
+        self.add_input("data:aerodynamics:fuselage:cruise:CnBeta", val=np.nan, units="unitless")
         self.add_input("data:aerodynamics:vertical_tail:cruise:CL_alpha", val=np.nan, units="1/rad")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
@@ -37,7 +37,7 @@ class ComputeVTArea(om.ExplicitComponent):
         self.add_input(
             "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        self.add_input("tuning:geometry:vertical_tail:area_factor", val=1.0)
+        self.add_input("tuning:geometry:vertical_tail:area_factor", val=1.0, units="unitless")
 
         self.add_output("data:geometry:vertical_tail:wetted_area", units="m**2", ref=100.0)
         self.add_output("data:geometry:vertical_tail:area", units="m**2", ref=50.0)

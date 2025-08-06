@@ -31,14 +31,14 @@ class ComputeToCWing(om.ExplicitComponent):
     """Wing ToC estimation"""
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
-        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
-        self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
+        self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan, units="unitless")
 
-        self.add_output("data:geometry:wing:thickness_ratio")
-        self.add_output("data:geometry:wing:root:thickness_ratio")
-        self.add_output("data:geometry:wing:kink:thickness_ratio")
-        self.add_output("data:geometry:wing:tip:thickness_ratio")
+        self.add_output("data:geometry:wing:thickness_ratio", units="unitless")
+        self.add_output("data:geometry:wing:root:thickness_ratio", units="unitless")
+        self.add_output("data:geometry:wing:kink:thickness_ratio", units="unitless")
+        self.add_output("data:geometry:wing:tip:thickness_ratio", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("data:geometry:wing:thickness_ratio", "*", method="fd")
@@ -52,7 +52,7 @@ class ComputeToCWing(om.ExplicitComponent):
         wing_break = inputs["data:geometry:wing:kink:span_ratio"]
 
         # Relative thickness
-        el_aero = 0.89 - (cruise_mach + 0.02) * math.sqrt(math.cos(sweep_25 / 180.0 * math.pi))
+        el_aero = 0.89 - (cruise_mach + 0.02) * np.sqrt(np.cos(sweep_25))
         el_emp = 1.24 * el_aero
         if wing_break == 0.0:
             el_break = el_emp  # Kink is set on root chord

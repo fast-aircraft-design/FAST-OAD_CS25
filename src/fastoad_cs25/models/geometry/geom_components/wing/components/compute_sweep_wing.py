@@ -32,8 +32,8 @@ class ComputeSweepWing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:root:virtual_chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
 
-        self.add_output("data:geometry:wing:sweep_0", units="deg")
-        self.add_output("data:geometry:wing:sweep_100_outer", units="deg")
+        self.add_output("data:geometry:wing:sweep_0", units="rad")
+        self.add_output("data:geometry:wing:sweep_100_outer", units="rad")
 
     def setup_partials(self):
         self.declare_partials(
@@ -63,12 +63,10 @@ class ComputeSweepWing(om.ExplicitComponent):
         y4_wing = inputs["data:geometry:wing:tip:y"]
         l1_wing = inputs["data:geometry:wing:root:virtual_chord"]
         l4_wing = inputs["data:geometry:wing:tip:chord"]
-        outputs["data:geometry:wing:sweep_100_outer"] = (
-            math.atan((x4_wing + l4_wing - l1_wing) / (y4_wing - y2_wing)) / math.pi * 180.0
+        outputs["data:geometry:wing:sweep_100_outer"] = np.atan(
+            (x4_wing + l4_wing - l1_wing) / (y4_wing - y2_wing)
         )
-        outputs["data:geometry:wing:sweep_0"] = (
-            math.atan(x4_wing / (y4_wing - y2_wing)) / math.pi * 180.0
-        )
+        outputs["data:geometry:wing:sweep_0"] = np.atan(x4_wing / (y4_wing - y2_wing))
 
 
 class ComputeInnerSweepWing(om.ExplicitComponent):
@@ -78,7 +76,7 @@ class ComputeInnerSweepWing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:sweep_100_outer", val=np.nan, units="deg")
-        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units=None)
+        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units="unitless")
 
         self.add_output("data:geometry:wing:sweep_100_inner", val=0.0, units="deg")
 

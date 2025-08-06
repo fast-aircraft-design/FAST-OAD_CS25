@@ -58,7 +58,7 @@ def compute_cd0_lifting_surface(
     thickness_contribution = 4.688 * geometry.thickness_ratio**2 + 3.146 * geometry.thickness_ratio
 
     # Contribution of camber
-    sweep_25 = np.radians(geometry.sweep_angle_25)
+    sweep_25 = np.deg2rad(geometry.sweep_angle_25)
     if geometry.cambered:
         camber_contribution = (
             2.859 * (lift_coefficient / np.cos(sweep_25) ** 2) ** 3

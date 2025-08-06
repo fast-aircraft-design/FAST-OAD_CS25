@@ -27,6 +27,12 @@ def test_chord_global_positions():
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 5.5, units="m")
 
     problem = run_system(ComputeChordGlobalPositions(), input_vars)
-    assert problem["data:geometry:wing:root:leading_edge:x"] == pytest.approx(7.0, abs=1e-2)
-    assert problem["data:geometry:wing:kink:leading_edge:x"] == pytest.approx(9.0, abs=1e-2)
-    assert problem["data:geometry:wing:tip:leading_edge:x"] == pytest.approx(12.5, abs=1e-2)
+    assert problem.get_val("data:geometry:wing:root:leading_edge:x", units="m") == pytest.approx(
+        7.0, abs=1e-2
+    )
+    assert problem.get_val("data:geometry:wing:kink:leading_edge:x", units="m") == pytest.approx(
+        9.0, abs=1e-2
+    )
+    assert problem.get_val("data:geometry:wing:tip:leading_edge:x", units="m") == pytest.approx(
+        12.5, abs=1e-2
+    )

@@ -16,11 +16,11 @@ import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
+from ..constants import SERVICE_CD0_HORIZONTAL_TAIL
 from .utils.cd0_lifting_surface import (
     LiftingSurfaceGeometry,
     compute_cd0_lifting_surface,
 )
-from ..constants import SERVICE_CD0_HORIZONTAL_TAIL
 
 
 @RegisterSubmodel(
@@ -40,19 +40,25 @@ class Cd0HorizontalTail(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:horizontal_tail:MAC:length", val=np.nan, units="m")
-        self.add_input("data:geometry:horizontal_tail:thickness_ratio", val=np.nan)
+        self.add_input(
+            "data:geometry:horizontal_tail:thickness_ratio", val=np.nan, units="unitless"
+        )
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:horizontal_tail:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
-        self.add_input("settings:aerodynamics:wing:CD:fuselage_interaction", val=0.04)
+        self.add_input(
+            "settings:aerodynamics:wing:CD:fuselage_interaction", val=0.04, units="unitless"
+        )
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
-            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD0")
+            self.add_input(
+                "data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless"
+            )
+            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD0", units="unitless")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:horizontal_tail:cruise:CD0")
+            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan, units="unitless")
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:horizontal_tail:cruise:CD0", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

@@ -24,13 +24,18 @@ class ComputeMaxClLanding(ExplicitComponent):
     """Computation of max CL in landing conditions."""
 
     def setup(self):
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max_clean", val=np.nan)
-        self.add_input("data:aerodynamics:high_lift_devices:landing:CL", val=np.nan)
+        self.add_input(
+            "data:aerodynamics:aircraft:landing:CL_max_clean", val=np.nan, units="unitless"
+        )
+        self.add_input(
+            "data:aerodynamics:high_lift_devices:landing:CL", val=np.nan, units="unitless"
+        )
         self.add_input(
             "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k",
             val=np.nan,
+            units="unitless",
         )
-        self.add_output("data:aerodynamics:aircraft:landing:CL_max")
+        self.add_output("data:aerodynamics:aircraft:landing:CL_max", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

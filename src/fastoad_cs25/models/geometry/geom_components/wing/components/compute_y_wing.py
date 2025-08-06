@@ -15,8 +15,6 @@ Estimation of wing Ys (sections span)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 
@@ -29,13 +27,13 @@ class ComputeYWing(om.ExplicitComponent):
         self.options.declare("impose_absolute_kink", types=bool, default=False)
 
     def setup(self):
-        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         if self.options["impose_absolute_kink"]:
             self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         else:
-            self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
+            self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan, units="unitless")
 
         self.add_output("data:geometry:wing:span", units="m")
         self.add_output("data:geometry:wing:root:y", units="m")
@@ -73,7 +71,7 @@ class ComputeYWing(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         width_max = inputs["data:geometry:fuselage:maximum_width"]
 
-        span = math.sqrt(lambda_wing * wing_area)
+        span = np.sqrt(lambda_wing * wing_area)
 
         # Wing geometry
         y4_wing = span / 2.0

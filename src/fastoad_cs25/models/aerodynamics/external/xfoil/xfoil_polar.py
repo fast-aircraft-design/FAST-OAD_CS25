@@ -29,8 +29,9 @@ from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao.utils.file_wrap import InputFileGenerator
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
-from . import resources, xfoil699
+
 from ...constants import SERVICE_XFOIL
+from . import resources, xfoil699
 
 OPTION_RESULT_POLAR_FILENAME = "result_polar_filename"
 OPTION_RESULT_FOLDER_PATH = "result_folder_path"
@@ -75,11 +76,11 @@ class XfoilPolar(om.ExternalCodeComp):
         self.options.declare(OPTION_ITER_LIMIT, default=500, types=int)
 
     def setup(self):
-        self.add_input("xfoil:reynolds", val=np.nan)
-        self.add_input("xfoil:mach", val=np.nan)
-        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
+        self.add_input("xfoil:reynolds", val=np.nan, units="unitless")
+        self.add_input("xfoil:mach", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan, units="unitless")
 
-        self.add_output("xfoil:CL_max_2D")
+        self.add_output("xfoil:CL_max_2D", units="unitless")
 
         self.declare_partials("*", "*", method="fd")
 

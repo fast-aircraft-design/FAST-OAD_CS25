@@ -38,18 +38,30 @@ class CdCompressibility(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
-        self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
-        self.add_input("data:geometry:wing:sweep_25", units="deg", val=np.nan)
-        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value", val=0.5)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+        self.add_input(
+            "data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan, units="unitless"
+        )
+        self.add_input(
+            "data:geometry:wing:sweep_25",
+            units="rad",
+            val=np.nan,
+        )
+        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan, units="unitless")
+        self.add_input(
+            "tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value",
+            val=0.5,
+            units="unitless",
+        )
         self.add_input(
             "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment",
             val=0.0,
+            units="unitless",
         )
         self.add_output(
             "data:aerodynamics:aircraft:cruise:CD:compressibility",
             copy_shape="data:aerodynamics:aircraft:cruise:CL",
+            units="unitless",
         )
 
     def setup_partials(self):
@@ -75,8 +87,8 @@ class CdCompressibility(om.ExplicitComponent):
 
         # Computation of characteristic Mach for actual sweep angle and relative thickness
         m_charac_comp = (
-            m_charac_comp_0 * np.cos(np.radians(28)) + 0.12 - thickness_ratio
-        ) / np.cos(np.radians(sweep_angle))
+            m_charac_comp_0 * np.cos(np.deg2rad(28)) + 0.12 - thickness_ratio
+        ) / np.cos(sweep_angle)
 
         cd_comp = np.minimum(max_cd_comp, 0.002 * np.exp(42.58 * (m - m_charac_comp)))
 

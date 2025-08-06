@@ -45,7 +45,7 @@ class ComputeB50(om.ExplicitComponent):
         l4_wing = inputs["data:geometry:wing:tip:chord"]
         span = inputs["data:geometry:wing:span"]
 
-        sweep_50 = math.atan((x4_wing + l4_wing * 0.5 - 0.5 * l1_wing) / (y4_wing - y2_wing))
-        b_50 = span / math.cos(sweep_50)
+        sweep_50 = np.atan((x4_wing + l4_wing * 0.5 - 0.5 * l1_wing) / (y4_wing - y2_wing))
+        b_50 = span / np.cos(sweep_50)
 
         outputs["data:geometry:wing:b_50"] = b_50

@@ -30,46 +30,76 @@ class Cd0Total(om.ExplicitComponent):
         self.add_input("data:geometry:aircraft:wetted_area", val=np.nan, units="m**2")
 
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:CD0", shape_by_conn=True, val=np.nan)
+            self.add_input(
+                "data:aerodynamics:wing:low_speed:CD0",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
             self.add_input(
                 "data:aerodynamics:fuselage:low_speed:CD0",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
-            self.add_input("data:aerodynamics:horizontal_tail:low_speed:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:vertical_tail:low_speed:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:nacelles:low_speed:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:pylons:low_speed:CD0", val=np.nan)
+            self.add_input(
+                "data:aerodynamics:horizontal_tail:low_speed:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input(
+                "data:aerodynamics:vertical_tail:low_speed:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input("data:aerodynamics:nacelles:low_speed:CD0", val=np.nan, units="unitless")
+            self.add_input("data:aerodynamics:pylons:low_speed:CD0", val=np.nan, units="unitless")
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD0",
                 copy_shape="data:aerodynamics:wing:low_speed:CD0",
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD0:clean",
                 copy_shape="data:aerodynamics:wing:low_speed:CD0",
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD0:parasitic",
                 copy_shape="data:aerodynamics:wing:low_speed:CD0",
+                units="unitless",
             )
         else:
-            self.add_input("data:aerodynamics:wing:cruise:CD0", shape_by_conn=True, val=np.nan)
-            self.add_input("data:aerodynamics:fuselage:cruise:CD0", shape_by_conn=True, val=np.nan)
-            self.add_input("data:aerodynamics:horizontal_tail:cruise:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:vertical_tail:cruise:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:nacelles:cruise:CD0", val=np.nan)
-            self.add_input("data:aerodynamics:pylons:cruise:CD0", val=np.nan)
+            self.add_input(
+                "data:aerodynamics:wing:cruise:CD0",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
+            self.add_input(
+                "data:aerodynamics:fuselage:cruise:CD0",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
+            self.add_input(
+                "data:aerodynamics:horizontal_tail:cruise:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input(
+                "data:aerodynamics:vertical_tail:cruise:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input("data:aerodynamics:nacelles:cruise:CD0", val=np.nan, units="unitless")
+            self.add_input("data:aerodynamics:pylons:cruise:CD0", val=np.nan, units="unitless")
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD0",
                 copy_shape="data:aerodynamics:wing:cruise:CD0",
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD0:clean",
                 copy_shape="data:aerodynamics:wing:cruise:CD0",
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD0:parasitic",
                 copy_shape="data:aerodynamics:wing:cruise:CD0",
+                units="unitless",
             )
 
     def setup_partials(self):

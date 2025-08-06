@@ -54,7 +54,7 @@ def test_geometry_wing_l1_l4():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
-    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
@@ -71,7 +71,7 @@ def test_geometry_wing_l1_l4():
     input_vars.add_output("data:geometry:wing:area", 114.011, units="m**2")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:sweep_100_inner", 16.7, units="deg")
-    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
@@ -92,7 +92,7 @@ def test_geometry_wing_l2_l3():
     input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:sweep_100_inner", 0.0, units="deg")
-    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
@@ -113,7 +113,7 @@ def test_geometry_wing_l2_l3():
     input_vars.add_output("data:geometry:wing:span", 31.603, units="m")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:sweep_100_inner", -150.0, units="deg")  # unused
-    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units=None)
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.38, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:root:virtual_chord", 4.953, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
@@ -157,9 +157,9 @@ def test_geometry_wing_mfw():
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:root:thickness_ratio", 0.159, units=None)
-    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units=None)
+    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units="unitless")
+    input_vars.add_output("data:geometry:wing:root:thickness_ratio", 0.159, units="unitless")
+    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units="unitless")
 
     problem = run_system(ComputeMFW(), input_vars)
     mfw = problem["data:weight:aircraft:MFW"]
@@ -178,9 +178,9 @@ def test_geometry_wing_sweep():
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeSweepWing(), input_vars)
-    sweep_0 = problem["data:geometry:wing:sweep_0"]
+    sweep_0 = problem.get_val("data:geometry:wing:sweep_0", units="deg")
     assert sweep_0 == pytest.approx(27.55, abs=1e-2)
-    sweep_100_outer = problem["data:geometry:wing:sweep_100_outer"]
+    sweep_100_outer = problem.get_val("data:geometry:wing:sweep_100_outer", units="deg")
     assert sweep_100_outer == pytest.approx(16.7, abs=1e-1)
 
 
@@ -203,10 +203,7 @@ def test_geometry_wing_sweep_inner():
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:sweep_100_outer", 16.7, units="deg")
-    input_vars.add_output(
-        "data:geometry:wing:sweep_100_ratio",
-        1.0,
-    )
+    input_vars.add_output("data:geometry:wing:sweep_100_ratio", 1.0, units="unitless")
 
     problem = run_system(ComputeInnerSweepWing(), input_vars)
 
@@ -254,11 +251,11 @@ def test_geometry_wing_sweep_complete():
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.222, units="m")
 
     problem = run_system(ComputeSweepWingComplete(), input_vars)
-    sweep_0 = problem["data:geometry:wing:sweep_0"]
+    sweep_0 = problem.get_val("data:geometry:wing:sweep_0", units="deg")
     assert sweep_0 == pytest.approx(27.55, abs=1e-2)
-    sweep_100_inner = problem["data:geometry:wing:sweep_100_inner"]
+    sweep_100_inner = problem.get_val("data:geometry:wing:sweep_100_inner", units="deg")
     assert sweep_100_inner == pytest.approx(0.0, abs=1e-1)
-    sweep_100_outer = problem["data:geometry:wing:sweep_100_outer"]
+    sweep_100_outer = problem.get_val("data:geometry:wing:sweep_100_outer", units="deg")
     assert sweep_100_outer == pytest.approx(16.7, abs=1e-1)
 
 
@@ -266,9 +263,9 @@ def test_geometry_wing_toc():
     """Tests computation of the wing ToC (Thickness of Chord)"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
-    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
+    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units="unitless")
 
     problem = run_system(ComputeToCWing(), input_vars)
     toc_aero = problem["data:geometry:wing:thickness_ratio"]
@@ -282,9 +279,9 @@ def test_geometry_wing_toc():
 
     # With no kink
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
-    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units="unitless")
 
     problem = run_system(ComputeToCWing(), input_vars)
     toc_aero = problem["data:geometry:wing:thickness_ratio"]
@@ -338,8 +335,8 @@ def test_geometry_wing_y():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
+    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units="unitless")
+    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units="unitless")
 
     problem = run_system(ComputeYWing(), input_vars)
     span = problem["data:geometry:wing:span"]
@@ -355,8 +352,8 @@ def test_geometry_wing_y():
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
-    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units=None)
-    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
+    input_vars.add_output("data:geometry:wing:aspect_ratio", 9.48, units="unitless")
+    input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units="unitless")
 
     problem = run_system(ComputeYWing(), input_vars)
     span = problem["data:geometry:wing:span"]

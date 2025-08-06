@@ -16,7 +16,7 @@ import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 
-from ..constants import PolarType, SERVICE_POLAR
+from ..constants import SERVICE_POLAR, PolarType
 
 
 @RegisterSubmodel(SERVICE_POLAR, "fastoad.submodel.aerodynamics.polar.legacy")
@@ -37,79 +37,114 @@ class ComputePolar(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CL",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:CD0",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:CD:trim",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
                 val=np.nan,
+                units="unitless",
             )
 
             if self.options["polar_type"] == PolarType.TAKEOFF:
-                self.add_input("data:aerodynamics:high_lift_devices:takeoff:CL", val=np.nan)
-                self.add_input("data:aerodynamics:high_lift_devices:takeoff:CD", val=np.nan)
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:takeoff:CL", val=np.nan, units="unitless"
+                )
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:takeoff:CD", val=np.nan, units="unitless"
+                )
                 self.add_output(
                     "data:aerodynamics:aircraft:takeoff:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
                 self.add_output(
                     "data:aerodynamics:aircraft:takeoff:CD",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
 
             elif self.options["polar_type"] == PolarType.LANDING:
-                self.add_input("data:aerodynamics:high_lift_devices:landing:CL", val=np.nan)
-                self.add_input("data:aerodynamics:high_lift_devices:landing:CD", val=np.nan)
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:landing:CL", val=np.nan, units="unitless"
+                )
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:landing:CD", val=np.nan, units="unitless"
+                )
                 self.add_output(
                     "data:aerodynamics:landing:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
                 self.add_output(
                     "data:aerodynamics:aircraft:landing:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
                 self.add_output(
                     "data:aerodynamics:aircraft:landing:CD",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
             elif self.options["polar_type"] == PolarType.LOW_SPEED:
                 self.add_output(
                     "data:aerodynamics:aircraft:low_speed:CD",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                    units="unitless",
                 )
             else:
                 raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
-            self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
-            self.add_input("data:aerodynamics:aircraft:cruise:CD0", shape_by_conn=True, val=np.nan)
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:CL",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:CD0",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
             self.add_input(
                 "data:aerodynamics:aircraft:cruise:CD:trim",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input(
                 "data:aerodynamics:aircraft:cruise:CD:compressibility",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
-            self.add_input("data:aerodynamics:aircraft:cruise:induced_drag_coefficient", val=np.nan)
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:induced_drag_coefficient",
+                val=np.nan,
+                units="unitless",
+            )
 
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD",
                 copy_shape="data:aerodynamics:aircraft:cruise:CL",
+                units="unitless",
             )
-            self.add_output("data:aerodynamics:aircraft:cruise:L_D_max")
-            self.add_output("data:aerodynamics:aircraft:cruise:optimal_CL")
-            self.add_output("data:aerodynamics:aircraft:cruise:optimal_CD")
+            self.add_output("data:aerodynamics:aircraft:cruise:L_D_max", units="unitless")
+            self.add_output("data:aerodynamics:aircraft:cruise:optimal_CL", units="unitless")
+            self.add_output("data:aerodynamics:aircraft:cruise:optimal_CD", units="unitless")
 
         else:
             raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")

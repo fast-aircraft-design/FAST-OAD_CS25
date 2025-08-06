@@ -16,7 +16,6 @@ Estimation of static margin
 
 import numpy as np
 import openmdao.api as om
-
 from fastoad.module_management.constants import ModelDomain
 from fastoad.module_management.service_registry import RegisterOpenMDAOSystem
 
@@ -34,10 +33,10 @@ class ComputeStaticMargin(om.ExplicitComponent):
         self.options.declare("target", types=float, allow_none=True, default=None)
 
     def setup(self):
-        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
-        self.add_input("data:aerodynamics:cruise:neutral_point:x", val=np.nan)
+        self.add_input("data:weight:aircraft:CG:aft:MAC_position", units="unitless", val=np.nan)
+        self.add_input("data:aerodynamics:cruise:neutral_point:x", units="unitless", val=np.nan)
 
-        self.add_output("data:handling_qualities:static_margin")
+        self.add_output("data:handling_qualities:static_margin", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

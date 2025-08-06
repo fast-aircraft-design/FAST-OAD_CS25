@@ -71,8 +71,8 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         if self.options["impose_absolute_engine"]:
             self.add_input("data:geometry:propulsion:nacelle:y", val=np.nan, units="m")
         else:
-            self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan)
-        self.add_input("data:geometry:propulsion:layout", val=np.nan)
+            self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:propulsion:layout", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:leading_edge:x:local", val=np.nan, units="m")
@@ -94,7 +94,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.add_output("data:geometry:propulsion:nacelle:diameter", units="m")
         self.add_output("data:geometry:landing_gear:height", units="m")
         if self.options["impose_absolute_engine"]:
-            self.add_output("data:geometry:propulsion:engine:y_ratio")
+            self.add_output("data:geometry:propulsion:engine:y_ratio", units="unitless")
         else:
             self.add_output("data:geometry:propulsion:nacelle:y", units="m")
         self.add_output("data:geometry:propulsion:pylon:wetted_area", units="m**2")
