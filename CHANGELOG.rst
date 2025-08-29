@@ -2,9 +2,25 @@
 Changelog
 =========
 
+Version 0.8.0
+=============
+Added:
+
+- Created new loads discipline and updated tests. (#64)
+- Add global position evaluation of center cord. (#70)
+- Add the newly inserted ModelDomain.LOADS. (#71)
+
+Fixed:
+
+- Fix engine Y ratio description. (#61)
+- Hide explicit Codecov token. (#62)
+- Bump ruff version to 0.11.5. (#63)
+- No more need for kink:span_ratio if impose_absolute_kink is true. (#67)
+
 Version 0.7.6
 =============
 Added:
+
 - Adding center virtual chord evaluation. (#59)
 - Update building and publishing workflow. (#58)
 
