@@ -25,7 +25,8 @@ from .constants import SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS
 )
 class ChordGlobalPositions(om.Group):
     """
-    Computes leading edge X positions of wing chords (oot, kink, tip) with respect to aircraft nose.
+    Computes leading edge X positions of wing chords (center, kink, tip) with respect to aircraft
+    nose.
     """
 
     def setup(self):
@@ -34,7 +35,7 @@ class ChordGlobalPositions(om.Group):
         # AddSubtractComp does not allow to set default values of inputs and we do not
         # manage value discrepancies at global level, so we need to do it here, hence
         # the need for the current group.
-        for chord_id in ["kink", "tip"]:
+        for chord_id in ["center", "kink", "tip"]:
             self.set_input_defaults(
                 f"data:geometry:wing:{chord_id}:leading_edge:x:local", val=np.nan, units="m"
             )
@@ -70,7 +71,7 @@ class ComputeChordGlobalPositions(om.AddSubtractComp):
             scaling_factors=[1.0, -0.25],
             units="m",
         )
-        for chord_id in ["kink", "tip"]:
+        for chord_id in ["center", "kink", "tip"]:
             self.add_equation(
                 f"data:geometry:wing:{chord_id}:leading_edge:x",
                 [
