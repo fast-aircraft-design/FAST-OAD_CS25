@@ -14,8 +14,8 @@
 
 import fastoad.api as oad
 import openmdao.api as om
+from fastoad.module_management.constants import ModelDomain
 
-# from fastoad.module_management.constants import ModelDomain
 from .constants import (
     SERVICE_GUST_LOADS,
     SERVICE_MANEUVER_LOADS,
@@ -24,7 +24,7 @@ from .constants import (
 )
 
 
-@oad.RegisterOpenMDAOSystem("fastoad.loads.legacy")  # TODO add ModelDomain.LOADS
+@oad.RegisterOpenMDAOSystem("fastoad.loads.legacy", domain=ModelDomain.LOADS)
 class ComputeLoads(om.Group):
     def initialize(self):
         self.options.declare(
