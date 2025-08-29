@@ -7,7 +7,7 @@ Version 0.8.0
 Added:
 
 - Created new loads discipline and updated tests. (#64)
-- Add global position evaluation of center cord. (#70)
+- Add global position evaluation of center chord. (#70)
 - Add the newly inserted ModelDomain.LOADS. (#71)
 
 Fixed:
