@@ -25,7 +25,8 @@ from .constants import SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS
 )
 class ChordGlobalPositions(om.Group):
     """
-    Computes leading edge X positions of wing chords (center, kink, tip) with respect to aircraft nose.
+    Computes leading edge X positions of wing chords (center, kink, tip) with respect to aircraft
+    nose.
     """
 
     def setup(self):
