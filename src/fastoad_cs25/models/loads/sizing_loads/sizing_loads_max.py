@@ -15,6 +15,7 @@ Python module for the computation of the maximum sizing loads.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import fastoad.api as oad
+import numpy as np
 import openmdao.api as om
 
 from ..constants import SERVICE_SIZING_LOADS_MAX
@@ -30,8 +31,11 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:mission:sizing:cs25:envelope:max_sizing_load_1", units="N")
         self.add_input("data:mission:sizing:cs25:envelope:max_sizing_load_2", units="N")
+        self.add_input("data:mission:sizing:cs25:envelope:max_load_factor_1", units="unitless")
+        self.add_input("data:mission:sizing:cs25:envelope:max_load_factor_2", units="unitless")
 
         self.add_output("data:mission:sizing:cs25:sizing_load", units="N")
+        self.add_output("data:mission:sizing:cs25:sizing_load_factor", units="unitless")
 
     def setup_partials(self):
         self.declare_partials(
@@ -40,10 +44,21 @@ class SizingLoadsEnvelope(om.ExplicitComponent):
             method="fd",
         )
 
+        self.declare_partials(
+            "data:mission:sizing:cs25:sizing_load_factor",
+            "*",
+            method="fd",
+        )
+
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         n1m1 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_1"]
         n2m2 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_2"]
+        n1 = inputs["data:mission:sizing:cs25:envelope:max_load_factor_1"]
+        n2 = inputs["data:mission:sizing:cs25:envelope:max_load_factor_2"]
 
-        nm = max(n1m1, n2m2)
+        id_max = int(np.argmax([n1m1, n2m2]))
+        nm = [n1m1, n2m2][id_max]
+        n = [n1, n2][id_max]
 
         outputs["data:mission:sizing:cs25:sizing_load"] = nm
+        outputs["data:mission:sizing:cs25:sizing_load_factor"] = n
