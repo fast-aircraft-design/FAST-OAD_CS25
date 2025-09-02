@@ -115,6 +115,8 @@ def test_compute_loads():
     assert n2 == pytest.approx(3.75, abs=0.01)
     nm = problem["data:mission:sizing:cs25:sizing_load"]
     assert nm == pytest.approx(254130 * g, abs=10)
+    n = problem["data:mission:sizing:cs25:sizing_load_factor"]
+    assert n == pytest.approx(3.75, abs=0.01)
 
     # Now without fuel alleviation
     problem = run_system(ComputeLoads(fuel_load_alleviation=False), ivc)
@@ -135,6 +137,8 @@ def test_compute_loads():
     n2 = problem["data:mission:sizing:cs25:envelope:max_load_factor_2"]
     assert n1 == pytest.approx(3.375, abs=0.01)
     assert n2 == pytest.approx(3.375, abs=0.01)
+    n = problem["data:mission:sizing:cs25:sizing_load_factor"]
+    assert n == pytest.approx(3.375, abs=0.01)
 
     # Now without gust load alleviation
     ivc = get_indep_var_comp(input_list)
@@ -150,3 +154,5 @@ def test_compute_loads():
     assert n2m2 == pytest.approx(258553 * g, abs=10)
     nm = problem["data:mission:sizing:cs25:sizing_load"]
     assert nm == pytest.approx(269848 * g, abs=10)
+    n = problem["data:mission:sizing:cs25:sizing_load_factor"]
+    assert n == pytest.approx(4.198, abs=0.01)
