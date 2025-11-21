@@ -1,115 +1,126 @@
-[tool.poetry]
+# Project metadata (PEP 621) ===============================================
+[project]
 name = "FAST-OAD-CS25"
-version = "0.8.0"
 description = "FAST-OAD_CS25 is a FAST-OAD plugin with CS25/FAR25-related models."
 readme = "README.md"
-authors = [
-    "Christophe DAVID <christophe.david@onera.fr>",
-    "Scott DELBECQ <Scott.DELBECQ@isae-supaero.fr>"
-]
-packages = [
-    { include = "fastoad_cs25", from = "src" },
-]
-exclude = ["**/tests/**"]
-
-homepage = "https://github.com/fast-aircraft-design/FAST-OAD_CS25"
-keywords = [
-    "aircraft",
-    "design",
-    "multi-disciplinary"
-]
 license = "GPL-3.0-only"
+keywords = ["aircraft", "design", "multi-disciplinary"]
+authors = [
+    { name = "Christophe DAVID", email = "christophe.david@onera.fr" },
+    { name = "Scott DELBECQ", email = "Scott.DELBECQ@isae-supaero.fr" },
+]
+maintainers = [
+    { name = "Enrico STRAGIOTTI", email = "enrico.stragiotti@onera.fr" },
+    { name = "Eric NGUYEN VAN", email = "Eric.Nguyen_Van@onera.fr" },
+    { name = "Florent LUTZ", email = "Florent.LUTZ2@isae-supaero.fr" },
+]
+requires-python = ">=3.10,<3.13"
+dynamic = ["classifiers", "version"] # Needed to use poetry-dynamic-versioning
+
+# User dependencies ------------------------------------------------------------
+dependencies = [
+    # IMPORTANT: when modifying this list, docs/requirements.txt must be updated for
+    # ReadTheDocs to be able to compile the documentation.
+    # A pre-commit hook has been added to do this task. As a result, any modification
+    # of poetry.lock file will modify docs/requirements.txt and make
+    # the commit fail because "files were modified by this hook". In that case,
+    # doing again the commit including changes in docs/requirements.txt will succeed.
+    "fast-oad-core>=1.8.4; python_version<'3.13'",
+]
+
+[project.urls]
+homepage = "https://github.com/fast-aircraft-design/FAST-OAD_CS25"
+
+# Entry points -----------------------------------------------------------------
+[project.entry-points."fastoad.plugins"]
+cs25 = "fastoad_cs25"
+
+
+# Poetry settings ==============================================================
+[tool.poetry]
+requires-poetry = ">=2.0"                                      # You should upgrade poetry to v2 using 'pipx upgrade poetry'
+version         = "0.8.0"                                      # This version number is overwritten by GitHub packaging workflow
+packages        = [{ include = "fastoad_cs25", from = "src" }]
+exclude         = ["**/tests/**"]
+
+# Suitable classifiers based on python requirement and license are not automatically added if classifiers are statically defined in the project section
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
-    "Intended Audience :: Science/Research",
     "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Natural Language :: English",
+    "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
-    "Operating System :: MacOS",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Physics"
+    "Topic :: Scientific/Engineering :: Physics",
 ]
 
-[tool.poetry.dependencies]
-# IMPORTANT: when modifying this list, docs/requirements.txt must be updated for
-# ReadTheDocs to be able to compile the documentation.
-# A pre-commit hook has been added to do this task. As a result, any modification
-# of poetry.lock file will modify docs/requirements.txt and make
-# the commit fail because "files were modified by this hook". In that case,
-# doing again the commit including changes in docs/requirements.txt will succeed.
-python = "^3.9"
-fast-oad-core = { version = "^1.8.4", python = "<3.13" }
-pyparsing = "^3.0.0"  # needed, but not declared as required, by OpenMDAO for file_wrap utility.
-
+# Development dependencies -----------------------------------------------------
+# Development dependencies using Poetry groups instead of [project.optional-dependencies]
 [tool.poetry.group.test.dependencies]
-pytest = "^8.0"
-pytest-cov = "^5.0"
-coverage = { version = "^7.0", extras = ["toml"] }
-nbval = ">=0.11"
+pytest     = "^9.0"
+pytest-cov = "^7.0"
+coverage   = { version = "^7.0", extras = ["toml"] }
+nbval      = "^0.11"
 
 [tool.poetry.group.doc.dependencies]
-sphinx = "^4.1.2"
-sphinx-rtd-theme = "^1.0"
-sphinxcontrib-bibtex = "^2.3.0"
+sphinx               = ">=7.1.2"
+sphinx-rtd-theme     = ">=2.0"
+sphinxcontrib-bibtex = "^2.6.3"
 
 [tool.poetry.group.lint.dependencies]
-pre-commit = "^3.5.0"
-nbstripout = ">=0.6.0"
-ruff = "0.11.5"
+pre-commit = "^4.4.0"
+nbstripout = "^0.6.0"
+ruff       = "0.14.4"
 
-[tool.poetry.plugins."fastoad.plugins"]
-"cs25" = "fastoad_cs25"
 
+# Poetry plugins ==================================================
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.9" # Used for the poetry export hook in pre-commit
+
+
+# Dynamic versioning settings ==================================================
+# poetry-dynamic-versioning has to be installed in the same environment as
+# Poetry (normally outside your project environment).
+# see https://github.com/mtkennerly/poetry-dynamic-versioning#installation
 [tool.poetry-dynamic-versioning]
 enable = true
-vcs = "git"
-style = "semver"
+vcs    = "git"
+style  = "semver"
 
+
+# Packaging system =============================================================
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+requires      = ["poetry-core>=2.0.0,<3.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 build-backend = "poetry_dynamic_versioning.backend"
 
-[tool.ruff]
-line-length = 100
-target-version = "py39"
-extend-include = ["*.ipynb"]
 
-[tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["E4", "E7", "E9", "F"]
-ignore = []
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
+# Pytest settings ==============================================================
 [tool.pytest.ini_options]
-minversion = "8.0"
-addopts = "--cov-report term-missing --cov-report html --verbose"
-testpaths = ["src", "tests"]
-norecursedirs = ["dist", "build", ".tox"]
+minversion     = "8.0"
+addopts        = "--cov-report term-missing --cov-report html --verbose"
+testpaths      = ["src", "tests"]
+norecursedirs  = [".tox", "build", "dist"]
 filterwarnings = ["default"]
-
 # Use @pytest.mark.skip_if_no_xfoil() before a test to skip it if xfoil_path fixture returns None and OS is not Windows.
 markers = ["skip_if_no_xfoil: skip test if XFOIL is not installed or not found in the system PATH"]
 
+
+# Coverage settings ============================================================
 [tool.coverage.run]
 branch = true
 source = ["fastoad_cs25"]
-omit = ["*/test/*", "*/tests/*"]
+omit   = ["*/test/*", "*/tests/*"]
+
 [tool.coverage.paths]
 source = ["src/"]
+
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration
 exclude_lines = [
@@ -123,5 +134,24 @@ exclude_lines = [
     "raise NotImplementedError",
     # Don't complain if non-runnable code isn't run:
     "if 0:",
-    "if __name__ = = .__main__.:"
+    "if __name__ = = .__main__.:",
 ]
+
+
+# Ruff settings ================================================================
+[tool.ruff]
+line-length    = 100
+target-version = "py310"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+# Enable Pyflakes `F`) and a subset of the pycodestyle `E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings `W`) or
+# McCabe complexity `C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable   = ["ALL"]
+unfixable = []
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
