@@ -26,6 +26,7 @@ dependencies = [
     # the commit fail because "files were modified by this hook". In that case,
     # doing again the commit including changes in docs/requirements.txt will succeed.
     "fast-oad-core>=1.8.4; python_version<'3.13'",
+    "pyparsing (>=3.2.5,<4.0.0)", # needed, but not declared as required, by OpenMDAO for file_wrap utility.
 ]
 
 [project.urls]
