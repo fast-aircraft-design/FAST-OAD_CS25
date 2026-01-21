@@ -26,6 +26,8 @@ from .constants import (
     SERVICE_LANDING_MAX_CL,
     SERVICE_LANDING_MAX_CL_CLEAN,
     SERVICE_XFOIL,
+    SERVICE_POLAR,
+    PolarType,
 )
 from .external.xfoil.xfoil_polar import (
     OPTION_ALPHA_END,
@@ -42,6 +44,7 @@ class AerodynamicsLanding(om.Group):
 
     - Computes CL and CD increments due to high-lift devices at landing.
     - Computes maximum CL of the aircraft in landing conditions.
+    - Optionally, it can compute the polar in landing configuration.
 
     Maximum 2D CL without high-lift is computed using XFoil (or provided as input if option
     use_xfoil is set to False). 3D CL is deduced using sweep angle.
@@ -87,6 +90,12 @@ class AerodynamicsLanding(om.Group):
             allow_none=True,
             desc="The path to the XFOIL executable. Needed for non-Windows OS.",
         )
+        self.options.declare(
+            "compute_polar",
+            default=False,
+            types=bool,
+            desc="If True, the polar with high lift in landing settings is calculated",
+        )
 
     def setup(self):
         self.add_subsystem(
@@ -129,6 +138,14 @@ class AerodynamicsLanding(om.Group):
             RegisterSubmodel.get_submodel(SERVICE_LANDING_MAX_CL),
             promotes=["*"],
         )
+
+        if self.options["compute_polar"]:
+            polar_type_option = {"polar_type": PolarType.LANDING}
+            self.add_subsystem(
+                "compute_landing_polar",
+                RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+                promotes=["*"],
+            )
 
         if self.options["use_xfoil"]:
             self.connect("data:aerodynamics:aircraft:landing:mach", "xfoil_run.xfoil:mach")
