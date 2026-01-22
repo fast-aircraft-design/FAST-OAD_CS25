@@ -90,12 +90,6 @@ class AerodynamicsLanding(om.Group):
             allow_none=True,
             desc="The path to the XFOIL executable. Needed for non-Windows OS.",
         )
-        self.options.declare(
-            "compute_polar",
-            default=False,
-            types=bool,
-            desc="If True, the polar with high lift in landing settings is calculated",
-        )
 
     def setup(self):
         self.add_subsystem(
@@ -139,20 +133,19 @@ class AerodynamicsLanding(om.Group):
             promotes=["*"],
         )
 
-        if self.options["compute_polar"]:
-            polar_type_option = {"polar_type": PolarType.LANDING}
-            self.add_subsystem(
-                "compute_landing_polar",
-                RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
-                promotes=["*"],
-            )
-
         if self.options["use_xfoil"]:
             self.connect("data:aerodynamics:aircraft:landing:mach", "xfoil_run.xfoil:mach")
             self.connect("data:aerodynamics:wing:landing:reynolds", "xfoil_run.xfoil:reynolds")
             self.connect(
                 "xfoil_run.xfoil:CL_max_2D", "data:aerodynamics:aircraft:landing:CL_max_clean_2D"
             )
+
+        polar_type_option = {"polar_type": PolarType.LANDING}
+        self.add_subsystem(
+            "compute_landing_polar",
+            RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            promotes=["*"],
+        )
 
 
 @RegisterSubmodel(
