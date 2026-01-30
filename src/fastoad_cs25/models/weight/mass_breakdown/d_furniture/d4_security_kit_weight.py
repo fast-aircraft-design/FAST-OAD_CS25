@@ -32,7 +32,7 @@ class SecurityKitWeight(om.ExplicitComponent):
     """ Passenger security kit weight estimation (D4) """
 
     def setup(self):
-        self.add_input("data:TLAR:NPAX", val=np.nan)
+        self.add_input("data:TLAR:NPAX", val=np.nan, units="unitless")
         self.add_input("tuning:weight:furniture:security_kit:mass:k", val=1.0)
         self.add_input("tuning:weight:furniture:security_kit:mass:offset", val=0.0, units="kg")
 
