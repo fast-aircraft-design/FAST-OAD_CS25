@@ -33,12 +33,12 @@ class ComputeL2AndL3Wing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:virtual_taper_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:virtual_taper_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
 
         self.add_output("data:geometry:wing:root:chord", units="m")
         self.add_output("data:geometry:wing:kink:chord", units="m")
-        self.add_output("data:geometry:wing:taper_ratio")
+        self.add_output("data:geometry:wing:taper_ratio", units="unitless")
 
     def setup_partials(self):
         self.declare_partials(

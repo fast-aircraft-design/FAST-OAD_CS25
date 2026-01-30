@@ -46,7 +46,7 @@ class ComputeAeroCenter(om.ExplicitComponent):
             "data:aerodynamics:horizontal_tail:cruise:CL_alpha", val=np.nan, units="1/rad"
         )
 
-        self.add_output("data:aerodynamics:cruise:neutral_point:x")
+        self.add_output("data:aerodynamics:cruise:neutral_point:x", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

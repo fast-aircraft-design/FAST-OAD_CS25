@@ -35,7 +35,7 @@ class ComputeWettedArea(om.ExplicitComponent):
         self.add_input("data:geometry:vertical_tail:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:propulsion:nacelle:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:propulsion:pylon:wetted_area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:propulsion:engine:count", val=np.nan)
+        self.add_input("data:geometry:propulsion:engine:count", val=np.nan, units="unitless")
 
         self.add_output("data:geometry:aircraft:wetted_area", units="m**2")
 

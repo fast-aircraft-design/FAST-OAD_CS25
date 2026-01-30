@@ -38,7 +38,7 @@ class ComputeCnBetaFuselage(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
-        self.add_output("data:aerodynamics:fuselage:cruise:CnBeta")
+        self.add_output("data:aerodynamics:fuselage:cruise:CnBeta", units="1/rad")
 
     def setup_partials(self):
         self.declare_partials("data:aerodynamics:fuselage:cruise:CnBeta", "*", method="fd")

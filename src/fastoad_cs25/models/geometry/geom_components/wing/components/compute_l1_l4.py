@@ -29,7 +29,7 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:virtual_taper_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:virtual_taper_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:sweep_100_inner", val=0.0, units="rad")
 
