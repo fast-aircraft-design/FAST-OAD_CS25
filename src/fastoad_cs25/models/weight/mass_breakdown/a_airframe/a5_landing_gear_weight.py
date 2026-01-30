@@ -33,7 +33,7 @@ class LandingGearWeight(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("tuning:weight:airframe:landing_gear:mass:k", val=1.0)
+        self.add_input("tuning:weight:airframe:landing_gear:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:landing_gear:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:airframe:landing_gear:main:mass", units="kg")

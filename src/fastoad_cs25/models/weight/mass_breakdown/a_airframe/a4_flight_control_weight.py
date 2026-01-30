@@ -37,9 +37,9 @@ class FlightControlsWeight(om.ExplicitComponent):
         self.add_input("data:geometry:wing:b_50", val=np.nan, units="m")
         self.add_input("data:mission:sizing:cs25:sizing_load", val=np.nan, units="N")
         self.add_input(
-            "settings:weight:airframe:flight_controls:mass:k_fc", val=0.85
+            "settings:weight:airframe:flight_controls:mass:k_fc", val=0.85, units="unitless"
         )  # FIXME: this one should depend on a boolan electric/not-electric flight_controls
-        self.add_input("tuning:weight:airframe:flight_controls:mass:k", val=1.0)
+        self.add_input("tuning:weight:airframe:flight_controls:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:flight_controls:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:airframe:flight_controls:mass", units="kg")

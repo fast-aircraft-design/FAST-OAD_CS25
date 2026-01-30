@@ -31,10 +31,10 @@ class PylonsWeight(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:propulsion:pylon:wetted_area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:propulsion:layout", val=np.nan)
+        self.add_input("data:geometry:propulsion:layout", val=np.nan, units="unitless")
         self.add_input("data:weight:propulsion:engine:mass", val=np.nan, units="kg")
-        self.add_input("data:geometry:propulsion:engine:count", val=np.nan)
-        self.add_input("tuning:weight:airframe:pylon:mass:k", val=1.0)
+        self.add_input("data:geometry:propulsion:engine:count", val=np.nan, units="unitless")
+        self.add_input("tuning:weight:airframe:pylon:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:pylon:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:airframe:pylon:mass", units="kg")
