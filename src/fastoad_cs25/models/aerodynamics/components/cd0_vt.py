@@ -39,18 +39,18 @@ class Cd0VerticalTail(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:vertical_tail:MAC:length", val=np.nan, units="m")
-        self.add_input("data:geometry:vertical_tail:thickness_ratio", val=np.nan)
+        self.add_input("data:geometry:vertical_tail:thickness_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:vertical_tail:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
-            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:vertical_tail:low_speed:CD0")
+            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:vertical_tail:low_speed:CD0", units="unitless")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:vertical_tail:cruise:CD0")
+            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan, units="unitless")
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:vertical_tail:cruise:CD0", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

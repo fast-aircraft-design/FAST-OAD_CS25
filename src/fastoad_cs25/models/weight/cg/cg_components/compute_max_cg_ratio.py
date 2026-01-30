@@ -23,16 +23,17 @@ class ComputeMaxCGratio(om.ExplicitComponent):
     """Maximum center of gravity ratio estimation"""
 
     def setup(self):
-        self.add_input("data:weight:aircraft:empty:CG:MAC_position", val=np.nan)
-        self.add_input("data:weight:aircraft:load_cases:CG:MAC_position:maximum", val=np.nan)
+        self.add_input("data:weight:aircraft:empty:CG:MAC_position", val=np.nan, units="unitless")
+        self.add_input("data:weight:aircraft:load_cases:CG:MAC_position:maximum", val=np.nan, units="unitless")
         self.add_input(
             "settings:weight:aircraft:CG:aft:MAC_position:margin",
             val=0.05,
+            units="unitless",
             desc="Added margin for getting most aft CG position, "
             "as ratio of mean aerodynamic chord",
         )
 
-        self.add_output("data:weight:aircraft:CG:aft:MAC_position")
+        self.add_output("data:weight:aircraft:CG:aft:MAC_position", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

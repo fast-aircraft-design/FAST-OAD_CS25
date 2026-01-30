@@ -26,7 +26,7 @@ class ComputePayload(om.ExplicitComponent):
     """Computes payload from NPAX"""
 
     def setup(self):
-        self.add_input("data:TLAR:NPAX", val=np.nan)
+        self.add_input("data:TLAR:NPAX", val=np.nan, units="unitless")
         self.add_input(
             "settings:weight:aircraft:payload:design_mass_per_passenger",
             val=90.72,

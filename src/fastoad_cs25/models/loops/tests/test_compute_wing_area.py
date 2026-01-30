@@ -26,14 +26,14 @@ from ..compute_wing_area import ComputeWingArea
 @pytest.fixture(scope="session")
 def base_ivc():
     ivc = om.IndepVarComp()
-    ivc.add_output("data:geometry:wing:aspect_ratio", 9.48)
-    ivc.add_output("data:geometry:wing:root:thickness_ratio", 0.15)
-    ivc.add_output("data:geometry:wing:tip:thickness_ratio", 0.11)
+    ivc.add_output("data:geometry:wing:aspect_ratio", 9.48, units="unitless")
+    ivc.add_output("data:geometry:wing:root:thickness_ratio", 0.15, units="unitless")
+    ivc.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units="unitless")
     ivc.add_output("data:weight:aircraft:sizing_block_fuel", val=20500, units="kg")
     ivc.add_output("data:TLAR:approach_speed", val=132, units="kn")
     ivc.add_output("data:weight:aircraft:MLW", val=66300, units="kg")
     ivc.add_output("data:weight:aircraft:MFW", val=21000, units="kg")
-    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.80)
+    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.80, units="unitless")
 
     return ivc
 

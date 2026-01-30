@@ -24,9 +24,9 @@ class ComputeVTChords(om.ExplicitComponent):
     """Vertical tail chords and span estimation"""
 
     def setup(self):
-        self.add_input("data:geometry:vertical_tail:aspect_ratio", val=np.nan)
+        self.add_input("data:geometry:vertical_tail:aspect_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:vertical_tail:area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:vertical_tail:taper_ratio", val=np.nan)
+        self.add_input("data:geometry:vertical_tail:taper_ratio", val=np.nan, units="unitless")
 
         self.add_output("data:geometry:vertical_tail:span", units="m")
         self.add_output("data:geometry:vertical_tail:root:chord", units="m")

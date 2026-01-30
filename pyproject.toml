@@ -40,7 +40,6 @@ cs25 = "fastoad_cs25"
 # Poetry settings ==============================================================
 [tool.poetry]
 requires-poetry = ">=2.0"                                      # You should upgrade poetry to v2 using 'pipx upgrade poetry'
-version         = "0.8.0"                                      # This version number is overwritten by GitHub packaging workflow
 packages        = [{ include = "fastoad_cs25", from = "src" }]
 exclude         = ["**/tests/**"]
 
@@ -64,6 +63,8 @@ classifiers = [
 
 # Development dependencies -----------------------------------------------------
 # Development dependencies using Poetry groups instead of [project.optional-dependencies]
+version = "0.8.0"                                      # This version number is overwritten by GitHub packaging workflow
+
 [tool.poetry.group.test.dependencies]
 pytest     = "^9.0"
 pytest-cov = "^7.0"

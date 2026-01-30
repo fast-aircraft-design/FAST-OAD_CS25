@@ -49,39 +49,39 @@ class LifeSupportSystemsWeight(om.ExplicitComponent):
         self.add_input("data:geometry:cabin:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:sweep_0", val=np.nan, units="rad")
         self.add_input("data:geometry:propulsion:nacelle:diameter", val=np.nan, units="m")
-        self.add_input("data:geometry:propulsion:engine:count", val=np.nan)
-        self.add_input("data:geometry:cabin:NPAX1", val=np.nan)
-        self.add_input("data:geometry:cabin:crew_count:technical", val=np.nan)
-        self.add_input("data:geometry:cabin:crew_count:commercial", val=np.nan)
+        self.add_input("data:geometry:propulsion:engine:count", val=np.nan, units="unitless")
+        self.add_input("data:geometry:cabin:NPAX1", val=np.nan, units="unitless")
+        self.add_input("data:geometry:cabin:crew_count:technical", val=np.nan, units="unitless")
+        self.add_input("data:geometry:cabin:crew_count:commercial", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:weight:propulsion:engine:mass", val=np.nan, units="kg")
-        self.add_input("tuning:weight:systems:life_support:insulation:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:insulation:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:life_support:insulation:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:systems:life_support:air_conditioning:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:air_conditioning:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:life_support:air_conditioning:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:systems:life_support:de-icing:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:de-icing:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:life_support:de-icing:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:systems:life_support:cabin_lighting:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:cabin_lighting:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:life_support:cabin_lighting:mass:offset", val=0.0, units="kg"
         )
         self.add_input(
-            "tuning:weight:systems:life_support:seats_crew_accommodation:mass:k", val=1.0
+            "tuning:weight:systems:life_support:seats_crew_accommodation:mass:k", val=1.0, units="unitless"
         )
         self.add_input(
             "tuning:weight:systems:life_support:seats_crew_accommodation:mass:offset",
             val=0.0,
             units="kg",
         )
-        self.add_input("tuning:weight:systems:life_support:oxygen:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:oxygen:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:systems:life_support:oxygen:mass:offset", val=0.0, units="kg")
-        self.add_input("tuning:weight:systems:life_support:safety_equipment:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:life_support:safety_equipment:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:life_support:safety_equipment:mass:offset", val=0.0, units="kg"
         )

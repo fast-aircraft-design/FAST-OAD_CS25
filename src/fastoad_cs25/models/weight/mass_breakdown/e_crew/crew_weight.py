@@ -30,8 +30,8 @@ class CrewWeight(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:geometry:cabin:crew_count:technical", val=np.nan)
-        self.add_input("data:geometry:cabin:crew_count:commercial", val=np.nan)
+        self.add_input("data:geometry:cabin:crew_count:technical", val=np.nan, units="unitless")
+        self.add_input("data:geometry:cabin:crew_count:commercial", val=np.nan, units="unitless")
 
         self.add_output("data:weight:crew:mass", units="kg")
 

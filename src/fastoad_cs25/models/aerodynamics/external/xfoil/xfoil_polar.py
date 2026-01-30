@@ -75,11 +75,11 @@ class XfoilPolar(om.ExternalCodeComp):
         self.options.declare(OPTION_ITER_LIMIT, default=500, types=int)
 
     def setup(self):
-        self.add_input("xfoil:reynolds", val=np.nan)
-        self.add_input("xfoil:mach", val=np.nan)
-        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
+        self.add_input("xfoil:reynolds", val=np.nan, units="unitless")
+        self.add_input("xfoil:mach", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan, units="unitless")
 
-        self.add_output("xfoil:CL_max_2D")
+        self.add_output("xfoil:CL_max_2D", units="unitless")
 
         self.declare_partials("*", "*", method="fd")
 

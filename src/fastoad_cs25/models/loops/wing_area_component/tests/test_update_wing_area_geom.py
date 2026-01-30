@@ -24,9 +24,9 @@ from ..update_wing_area_geom import UpdateWingAreaGeom, WingAreaConstraintsGeom
 
 def test_update_wing_area_geom():
     ivc = om.IndepVarComp()
-    ivc.add_output("data:geometry:wing:aspect_ratio", 9.48)
-    ivc.add_output("data:geometry:wing:root:thickness_ratio", 0.15)
-    ivc.add_output("data:geometry:wing:tip:thickness_ratio", 0.11)
+    ivc.add_output("data:geometry:wing:aspect_ratio", 9.48, units="unitless")
+    ivc.add_output("data:geometry:wing:root:thickness_ratio", 0.15, units="unitless")
+    ivc.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units="unitless")
     ivc.add_output("data:weight:aircraft:sizing_block_fuel", val=20500, units="kg")
 
     problem = run_system(UpdateWingAreaGeom(), ivc)

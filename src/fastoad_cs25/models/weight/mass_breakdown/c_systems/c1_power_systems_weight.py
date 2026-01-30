@@ -36,22 +36,22 @@ class PowerSystemsWeight(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:geometry:cabin:NPAX1", val=np.nan)
+        self.add_input("data:geometry:cabin:NPAX1", val=np.nan, units="unitless")
         self.add_input("data:weight:airframe:flight_controls:mass", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("tuning:weight:systems:power:auxiliary_power_unit:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:power:auxiliary_power_unit:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:power:auxiliary_power_unit:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:systems:power:electric_systems:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:power:electric_systems:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:power:electric_systems:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:systems:power:hydraulic_systems:mass:k", val=1.0)
+        self.add_input("tuning:weight:systems:power:hydraulic_systems:mass:k", val=1.0, units="unitless")
         self.add_input(
             "tuning:weight:systems:power:hydraulic_systems:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("settings:weight:systems:power:mass:k_elec", val=1.0)
+        self.add_input("settings:weight:systems:power:mass:k_elec", val=1.0, units="unitless")
 
         self.add_output("data:weight:systems:power:auxiliary_power_unit:mass", units="kg")
         self.add_output("data:weight:systems:power:electric_systems:mass", units="kg")
