@@ -80,7 +80,7 @@ class ComputeAircraftCG(om.ExplicitComponent):
     """Compute position of aircraft CG from CG ratio"""
 
     def setup(self):
-        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
+        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
 

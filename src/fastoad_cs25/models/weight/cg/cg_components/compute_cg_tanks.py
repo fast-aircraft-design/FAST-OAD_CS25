@@ -35,12 +35,12 @@ class ComputeTanksCG(om.ExplicitComponent):
         self.ratio = self.options["ratio"]
 
     def setup(self):
-        self.add_input("data:geometry:wing:spar_ratio:front:root", val=np.nan)
-        self.add_input("data:geometry:wing:spar_ratio:front:kink", val=np.nan)
-        self.add_input("data:geometry:wing:spar_ratio:front:tip", val=np.nan)
-        self.add_input("data:geometry:wing:spar_ratio:rear:root", val=np.nan)
-        self.add_input("data:geometry:wing:spar_ratio:rear:kink", val=np.nan)
-        self.add_input("data:geometry:wing:spar_ratio:rear:tip", val=np.nan)
+        self.add_input("data:geometry:wing:spar_ratio:front:root", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:spar_ratio:front:kink", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:spar_ratio:front:tip", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:spar_ratio:rear:root", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:spar_ratio:rear:kink", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:spar_ratio:rear:tip", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
