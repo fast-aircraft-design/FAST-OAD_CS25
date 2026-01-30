@@ -13,6 +13,7 @@
 
 """Computation of propulsion mass."""
 
+import fastoad.api as oad
 from openmdao import api as om
 
 from .constants import SERVICE_ENGINE_MASS, SERVICE_FUEL_LINES_MASS, SERVICE_UNCONSUMABLES_MASS
