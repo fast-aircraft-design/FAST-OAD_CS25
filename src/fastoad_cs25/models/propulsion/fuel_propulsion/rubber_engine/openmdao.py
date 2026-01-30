@@ -86,12 +86,14 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
         component.add_input(
             "data:propulsion:rubber_engine:delta_t4_climb",
             -50,
+            units="unitless",
             desc="As it is a delta, unit is K or °C, but is not "
             "specified to avoid OpenMDAO making unwanted conversion",
         )
         component.add_input(
             "data:propulsion:rubber_engine:delta_t4_cruise",
             -100,
+            units="unitless",
             desc="As it is a delta, unit is K or °C, but is not "
             "specified to avoid OpenMDAO making unwanted conversion",
         )
