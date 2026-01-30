@@ -14,8 +14,6 @@ Estimation of geometry of fuselase part A - Cabin (Commercial)
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from math import sqrt
-
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
@@ -90,10 +88,10 @@ class ComputeFuselageGeometryBasic(om.ExplicitComponent):
         cabin_length = 0.81 * fus_length
         x_cg_d2 = lav + 0.35 * lpax
         x_cg_c6 = lav + 0.1 * lpax
-        pnc = int((npax_1 + 17) / 35)
+        pnc = np.ceil((npax_1 + 17) / 35)
 
         # Equivalent diameter of the fuselage
-        fus_dia = sqrt(b_f * h_f)
+        fus_dia = np.sqrt(b_f * h_f)
         wet_area_nose = 2.45 * fus_dia * lav
         wet_area_cyl = 3.1416 * fus_dia * l_cyl
         wet_area_tail = 2.3 * fus_dia * lar
@@ -249,9 +247,9 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
         )
 
         # Number of rows = Npax / N
-        npax_1 = int(1.05 * npax)
-        n_rows = int(npax_1 / front_seat_number_eco)
-        pnc = int((npax + 17) / 35)
+        npax_1 = np.ceil(1.05 * npax)
+        n_rows = np.ceil(npax_1 / front_seat_number_eco)
+        pnc = np.ceil((npax + 17) / 35)
         # Length of pax cabin = Length of seat area + Width of 1 Emergency
         # exits
         lpax = (n_rows * ls_eco) + 1 * w_exit
@@ -275,7 +273,7 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
         x_cg_d2 = lav - (front_seat_number_eco - 4) * ls_eco + lpax / 2
 
         # Equivalent diameter of the fuselage
-        fus_dia = sqrt(b_f * h_f)
+        fus_dia = np.sqrt(b_f * h_f)
         wet_area_nose = 2.45 * fus_dia * lav
         wet_area_cyl = 3.1416 * fus_dia * l_cyl
         wet_area_tail = 2.3 * fus_dia * lar
