@@ -15,13 +15,13 @@
 import fastoad.api as oad
 from openmdao import api as om
 
+from ..constants import SERVICE_FURNITURE_MASS
 from .constants import (
     SERVICE_FOOD_WATER_MASS,
     SERVICE_PASSENGER_SEATS_MASS,
     SERVICE_SECURITY_KIT_MASS,
     SERVICE_TOILETS_MASS,
 )
-from ..constants import SERVICE_FURNITURE_MASS
 
 
 @oad.RegisterSubmodel(
@@ -45,7 +45,7 @@ class FurnitureWeight(om.Group):
         )
         self.add_subsystem(
             "security_kit_weight",
-            oad.RegisterSubmodel.get_submodel(SERVICE_SECURITY_KIT_MASS, ""),
+            oad.RegisterSubmodel.get_submodel(SERVICE_SECURITY_KIT_MASS),
             promotes=["*"],
         )
         self.add_subsystem(

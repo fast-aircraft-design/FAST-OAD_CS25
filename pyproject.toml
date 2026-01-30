@@ -39,7 +39,7 @@ cs25 = "fastoad_cs25"
 
 # Poetry settings ==============================================================
 [tool.poetry]
-requires-poetry = ">=2.0"                                      # You should upgrade poetry to v2 using 'pipx upgrade poetry'
+requires-poetry = ">=2.0" # This is the minimum required Poetry version
 packages        = [{ include = "fastoad_cs25", from = "src" }]
 exclude         = ["**/tests/**"]
 
