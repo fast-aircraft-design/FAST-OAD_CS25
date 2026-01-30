@@ -206,6 +206,7 @@ def test_geometry_wing_sweep_inner():
     input_vars.add_output(
         "data:geometry:wing:sweep_100_ratio",
         1.0,
+        units="unitless"
     )
 
     problem = run_system(ComputeInnerSweepWing(), input_vars)

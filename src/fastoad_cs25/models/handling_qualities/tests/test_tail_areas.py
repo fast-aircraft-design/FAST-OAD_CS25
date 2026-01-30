@@ -57,7 +57,7 @@ def test_compute_ht_area(input_xml):
     input_vars = input_xml.read(only=input_list).to_ivc()
 
     # Input needed, but value not used for conventional tail
-    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 0.0)
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 0.0, units="m")
 
     problem = run_system(ComputeHTArea(), input_vars)
 
@@ -71,8 +71,8 @@ def test_compute_ht_area(input_xml):
     # Testing T-tail
     input_list.remove("data:geometry:has_T_tail")
     input_vars = input_xml.read(only=input_list).to_ivc()
-    input_vars.add_output("data:geometry:has_T_tail", 1.0)
-    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 32.21272)
+    input_vars.add_output("data:geometry:has_T_tail", 1.0, units="unitless")
+    input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x", 32.21272, units="m")
     problem_ttail = run_system(ComputeHTArea(), input_vars)
 
     ht_lp = problem_ttail["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"]
@@ -98,8 +98,8 @@ def test_compute_vt_area(input_xml):
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
-    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.364924)
-    input_vars.add_output("data:aerodynamics:fuselage:cruise:CnBeta", -0.117901)
+    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.364924, units="unitless")
+    input_vars.add_output("data:aerodynamics:fuselage:cruise:CnBeta", -0.117901, units="1/rad")
 
     component = ComputeVTArea()
 

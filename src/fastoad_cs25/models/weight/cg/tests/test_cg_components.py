@@ -473,8 +473,8 @@ def test_compute_max_cg_ratio(input_xml):
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
-    input_vars.add_output("data:weight:aircraft:empty:CG:MAC_position", 0.387846)
-    input_vars.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", 0.388971)
+    input_vars.add_output("data:weight:aircraft:empty:CG:MAC_position", 0.387846, units="unitless")
+    input_vars.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", 0.388971, units="unitless")
 
     problem = run_system(ComputeMaxCGratio(), input_vars)
 
@@ -488,7 +488,7 @@ def test_compute_aircraft_cg(input_xml):
     input_list = ["data:geometry:wing:MAC:length", "data:geometry:wing:MAC:at25percent:x"]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
-    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.388971)
+    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.388971, units="unitless")
 
     problem = run_system(ComputeAircraftCG(), input_vars)
 
@@ -550,7 +550,7 @@ def test_geometry_update_mlg(input_xml):
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
-    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.364924)
+    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.364924, units="unitless")
     input_vars.add_output("data:weight:airframe:landing_gear:front:CG:x", 5.07, units="m")
 
     problem = run_system(UpdateMLG(), input_vars)

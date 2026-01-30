@@ -39,8 +39,8 @@ def test_compute_static_margin(input_xml):
     """Tests computation of static margin"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.438971)
-    input_vars.add_output("data:aerodynamics:cruise:neutral_point:x", 0.537521)
+    input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.438971, units="unitless")
+    input_vars.add_output("data:aerodynamics:cruise:neutral_point:x", 0.537521, units="unitless")
 
     problem = run_system(ComputeStaticMargin(), input_vars)
     static_margin = problem["data:handling_qualities:static_margin"]
