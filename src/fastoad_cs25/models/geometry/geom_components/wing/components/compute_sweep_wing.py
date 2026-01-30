@@ -78,7 +78,7 @@ class ComputeInnerSweepWing(om.ExplicitComponent):
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:sweep_100_outer", val=np.nan, units="deg")
-        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units=None)
+        self.add_input("data:geometry:wing:sweep_100_ratio", val=0.0, units="unitless")
 
         self.add_output("data:geometry:wing:sweep_100_inner", val=0.0, units="deg")
 
