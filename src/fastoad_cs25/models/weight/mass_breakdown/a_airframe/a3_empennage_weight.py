@@ -30,13 +30,13 @@ class EmpennageWeight(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:geometry:has_T_tail", val=np.nan)
+        self.add_input("data:geometry:has_T_tail", val=np.nan, units="unitless")
         self.add_input("data:geometry:horizontal_tail:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:vertical_tail:area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:propulsion:layout", val=np.nan)
-        self.add_input("tuning:weight:airframe:horizontal_tail:mass:k", val=1.0)
+        self.add_input("data:geometry:propulsion:layout", val=np.nan, units="unitless")
+        self.add_input("tuning:weight:airframe:horizontal_tail:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:horizontal_tail:mass:offset", val=0.0, units="kg")
-        self.add_input("tuning:weight:airframe:vertical_tail:mass:k", val=1.0)
+        self.add_input("tuning:weight:airframe:vertical_tail:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:vertical_tail:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:airframe:horizontal_tail:mass", units="kg")

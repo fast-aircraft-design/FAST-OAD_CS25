@@ -32,8 +32,8 @@ class EngineWeight(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:propulsion:MTO_thrust", val=np.nan, units="N")
-        self.add_input("data:geometry:propulsion:engine:count", val=np.nan)
-        self.add_input("tuning:weight:propulsion:engine:mass:k", val=1.0)
+        self.add_input("data:geometry:propulsion:engine:count", val=np.nan, units="unitless")
+        self.add_input("tuning:weight:propulsion:engine:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:propulsion:engine:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:propulsion:engine:mass", units="kg")

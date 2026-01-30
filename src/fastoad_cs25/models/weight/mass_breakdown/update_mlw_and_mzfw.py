@@ -32,7 +32,7 @@ class UpdateMLWandMZFW(ExplicitComponent):
         self.add_input("data:weight:aircraft:OWE", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:max_payload", val=np.nan, units="kg")
         # Add tuning factor for mzfw and mlw
-        self.add_input("tuning:weight:aircraft:mlw_mzfw_ratio", val=1.06)
+        self.add_input("tuning:weight:aircraft:mlw_mzfw_ratio", val=1.06, units="unitless")
 
         self.add_output("data:weight:aircraft:MZFW", units="kg")
         self.add_output("data:weight:aircraft:MLW", units="kg")
