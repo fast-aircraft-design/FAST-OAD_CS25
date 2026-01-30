@@ -75,13 +75,13 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
     """
 
     def setup(self, component: Component):
-        component.add_input("data:propulsion:rubber_engine:bypass_ratio", np.nan)
-        component.add_input("data:propulsion:rubber_engine:overall_pressure_ratio", np.nan)
+        component.add_input("data:propulsion:rubber_engine:bypass_ratio", np.nan, units="unitless")
+        component.add_input("data:propulsion:rubber_engine:overall_pressure_ratio", np.nan, units="unitless")
         component.add_input(
             "data:propulsion:rubber_engine:turbine_inlet_temperature", np.nan, units="K"
         )
         component.add_input("data:propulsion:MTO_thrust", np.nan, units="N")
-        component.add_input("data:propulsion:rubber_engine:maximum_mach", np.nan)
+        component.add_input("data:propulsion:rubber_engine:maximum_mach", np.nan, units="unitless")
         component.add_input("data:propulsion:rubber_engine:design_altitude", np.nan, units="m")
         component.add_input(
             "data:propulsion:rubber_engine:delta_t4_climb",
@@ -95,9 +95,9 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
             desc="As it is a delta, unit is K or °C, but is not "
             "specified to avoid OpenMDAO making unwanted conversion",
         )
-        component.add_input("tuning:propulsion:rubber_engine:SFC:k_sl", 1.0)
-        component.add_input("tuning:propulsion:rubber_engine:SFC:k_cr", 1.0)
-        component.add_input("data:geometry:propulsion:engine:count", 2)
+        component.add_input("tuning:propulsion:rubber_engine:SFC:k_sl", 1.0, units="unitless")
+        component.add_input("tuning:propulsion:rubber_engine:SFC:k_cr", 1.0, units="unitless")
+        component.add_input("data:geometry:propulsion:engine:count", 2, units="unitless")
 
     @staticmethod
     def get_model(inputs) -> IPropulsion:
