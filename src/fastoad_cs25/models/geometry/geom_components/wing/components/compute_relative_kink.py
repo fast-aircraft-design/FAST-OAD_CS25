@@ -26,7 +26,7 @@ class ComputeRelativeKink(om.ExplicitComponent):
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
 
-        self.add_output("data:geometry:wing:kink:span_ratio")
+        self.add_output("data:geometry:wing:kink:span_ratio", units="unitless")
 
     def setup_partials(self):
         self.declare_partials(
