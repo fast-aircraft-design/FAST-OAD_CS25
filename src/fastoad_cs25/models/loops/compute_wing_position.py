@@ -27,10 +27,10 @@ class ComputeWingPosition(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:handling_qualities:static_margin", val=np.nan)
-        self.add_input("data:handling_qualities:static_margin:target", val=np.nan)
+        self.add_input("data:handling_qualities:static_margin", val=np.nan, units="unitless")
+        self.add_input("data:handling_qualities:static_margin:target", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
-        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
+        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan, units="unitless")
         self.add_input("data:weight:aircraft:CG:aft:x", val=np.nan, units="m")
 
         self.add_output("data:geometry:wing:MAC:at25percent:x", val=17.0, units="m")

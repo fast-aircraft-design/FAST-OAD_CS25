@@ -35,7 +35,7 @@ class UpdateWingAreaAero(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
         self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
+        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan, units="unitless")
 
         # My plan is to not promote this variable and connect it by hand so that it foes not
         # appear in the output file as is but only as a constraints in the other component. We
@@ -83,10 +83,10 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:TLAR:approach_speed", val=np.nan, units="m/s")
         self.add_input("data:weight:aircraft:MLW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan)
+        self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
 
-        self.add_output("data:aerodynamics:aircraft:landing:additional_CL_capacity")
+        self.add_output("data:aerodynamics:aircraft:landing:additional_CL_capacity", units="unitless")
 
         self.declare_partials(of="*", wrt="*", method="exact")
 
