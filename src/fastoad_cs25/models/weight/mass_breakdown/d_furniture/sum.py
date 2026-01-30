@@ -12,7 +12,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao import api as om
 
 from .constants import (
@@ -23,8 +22,7 @@ from .constants import (
 )
 from ..constants import SERVICE_FURNITURE_MASS
 
-
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_FURNITURE_MASS, "fastoad.submodel.weight.mass.furniture.cargo_configuration.legacy"
 )
 class FurnitureWeight(om.Group):
@@ -35,21 +33,21 @@ class FurnitureWeight(om.Group):
     def setup(self):
         self.add_subsystem(
             "passenger_seats_weight",
-            RegisterSubmodel.get_submodel(SERVICE_PASSENGER_SEATS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_PASSENGER_SEATS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "food_water_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FOOD_WATER_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FOOD_WATER_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "security_kit_weight",
-            RegisterSubmodel.get_submodel(SERVICE_SECURITY_KIT_MASS, ""),
+            oad.RegisterSubmodel.get_submodel(SERVICE_SECURITY_KIT_MASS, ""),
             promotes=["*"],
         )
         self.add_subsystem(
-            "toilets_weight", RegisterSubmodel.get_submodel(SERVICE_TOILETS_MASS), promotes=["*"]
+            "toilets_weight", oad.RegisterSubmodel.get_submodel(SERVICE_TOILETS_MASS), promotes=["*"]
         )
 
         weight_sum = om.AddSubtractComp()

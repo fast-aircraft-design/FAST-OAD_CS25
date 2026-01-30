@@ -14,12 +14,11 @@
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from ..constants import PolarType, SERVICE_POLAR
 
-
-@RegisterSubmodel(SERVICE_POLAR, "fastoad.submodel.aerodynamics.polar.legacy")
+@oad.RegisterSubmodel(SERVICE_POLAR, "fastoad.submodel.aerodynamics.polar.legacy")
 class ComputePolar(om.ExplicitComponent):
     """Computation of CL and CD for whole aircraft."""
 
@@ -171,7 +170,6 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:cruise:L_D_max"] = Cl_opt / Cd_opt
             outputs["data:aerodynamics:aircraft:cruise:optimal_CL"] = Cl_opt
             outputs["data:aerodynamics:aircraft:cruise:optimal_CD"] = Cd_opt
-
 
 def get_optimum_ClCd(ClCd):
     lift_drag_ratio = ClCd[1, :] / ClCd[0, :]

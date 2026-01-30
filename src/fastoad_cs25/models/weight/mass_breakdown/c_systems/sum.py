@@ -12,7 +12,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao import api as om
 
 from .constants import (
@@ -25,8 +24,7 @@ from .constants import (
 )
 from ..constants import SERVICE_SYSTEMS_MASS
 
-
-@RegisterSubmodel(SERVICE_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.legacy")
+@oad.RegisterSubmodel(SERVICE_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.legacy")
 class SystemsWeight(om.Group):
     """
     Computes mass of systems.
@@ -35,32 +33,32 @@ class SystemsWeight(om.Group):
     def setup(self):
         self.add_subsystem(
             "power_systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_POWER_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_POWER_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "life_support_systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_LIFE_SUPPORT_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_LIFE_SUPPORT_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "navigation_systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_NAVIGATION_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_NAVIGATION_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "transmission_systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_TRANSMISSION_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_TRANSMISSION_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "fixed_operational_systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FIXED_OPERATIONAL_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FIXED_OPERATIONAL_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "flight_kit_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FLIGHT_KIT_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FLIGHT_KIT_MASS),
             promotes=["*"],
         )
 

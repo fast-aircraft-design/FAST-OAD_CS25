@@ -16,12 +16,11 @@ Estimation of crew weight
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from ..constants import SERVICE_CREW_MASS
 
-
-@RegisterSubmodel(SERVICE_CREW_MASS, "fastoad.submodel.weight.mass.crew.legacy")
+@oad.RegisterSubmodel(SERVICE_CREW_MASS, "fastoad.submodel.weight.mass.crew.legacy")
 class CrewWeight(om.ExplicitComponent):
     """
     Weight estimation for aircraft crew

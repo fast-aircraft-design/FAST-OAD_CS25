@@ -14,12 +14,11 @@
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from ..constants import SERVICE_CD_COMPRESSIBILITY
 
-
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CD_COMPRESSIBILITY,
     "fastoad.submodel.aerodynamics.CD.compressibility.legacy",
 )

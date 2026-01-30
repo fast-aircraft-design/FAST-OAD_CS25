@@ -17,7 +17,7 @@ Computation of wing area
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
+import fastoad.api as oad
 
 from .constants import (
     SERVICE_WING_AREA_CONSTRAINT_AERO,
@@ -26,8 +26,7 @@ from .constants import (
     SERVICE_WING_AREA_LOOP_GEOM,
 )
 
-
-@RegisterOpenMDAOSystem("fastoad.loop.wing_area", domain=ModelDomain.OTHER)
+@oad.RegisterOpenMDAOSystem("fastoad.loop.wing_area", domain=ModelDomain.OTHER)
 class ComputeWingArea(om.Group):
     """
     Computes needed wing area for:
@@ -44,7 +43,7 @@ class ComputeWingArea(om.Group):
         if self.options["use_fuel"]:
             self.add_subsystem(
                 "wing_area_geom",
-                RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_GEOM),
+                oad.RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_GEOM),
                 promotes_inputs=["*"],
                 promotes_outputs=[],
             )
@@ -53,7 +52,7 @@ class ComputeWingArea(om.Group):
         if self.options["use_approach_speed"]:
             self.add_subsystem(
                 "wing_area_aero",
-                RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_AERO),
+                oad.RegisterSubmodel.get_submodel(SERVICE_WING_AREA_LOOP_AERO),
                 promotes_inputs=["*"],
                 promotes_outputs=[],
             )
@@ -68,15 +67,14 @@ class ComputeWingArea(om.Group):
             )
         self.add_subsystem(
             "geom_constraint",
-            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_GEOM),
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_GEOM),
             promotes=["*"],
         )
         self.add_subsystem(
             "aero_constraint",
-            RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_AERO),
+            oad.RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_AERO),
             promotes=["*"],
         )
-
 
 class _ComputeWingArea(om.ExplicitComponent):
     """

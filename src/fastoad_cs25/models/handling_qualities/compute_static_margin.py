@@ -18,10 +18,9 @@ import numpy as np
 import openmdao.api as om
 
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem
+import fastoad.api as oad
 
-
-@RegisterOpenMDAOSystem(
+@oad.RegisterOpenMDAOSystem(
     "fastoad.handling_qualities.static_margin", domain=ModelDomain.HANDLING_QUALITIES
 )
 class ComputeStaticMargin(om.ExplicitComponent):

@@ -19,15 +19,15 @@ from fastoad.model_base.propulsion import (
     IOMPropulsionWrapper,
     IPropulsion,
 )
-from fastoad.module_management.service_registry import RegisterPropulsion
+
 from fastoad.openmdao.validity_checker import ValidityDomainChecker
+import fastoad.api as oad
 from openmdao.core.component import Component
 
 from .constants import RUBBER_ENGINE_DESCRIPTION
 from .rubber_engine import RubberEngine
 
-
-@RegisterPropulsion("fastoad.wrapper.propulsion.rubber_engine", desc=RUBBER_ENGINE_DESCRIPTION)
+@oad.RegisterPropulsion("fastoad.wrapper.propulsion.rubber_engine", desc=RUBBER_ENGINE_DESCRIPTION)
 class OMRubberEngineWrapper(IOMPropulsionWrapper):
     """
     Wrapper class of for rubber engine model.
@@ -127,7 +127,6 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
             RubberEngine(**engine_params), inputs["data:geometry:propulsion:engine:count"]
         )
 
-
 @ValidityDomainChecker(
     {
         "data:propulsion:altitude": (None, 20000.0),
@@ -149,7 +148,7 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
         ),  # limitation of max thrust model
     }
 )
-# @RegisterOpenMDAOSystem(
+# @oad.RegisterOpenMDAOSystem(
 #     "fastoad.propulsion.rubber_engine",
 #     desc=RUBBER_ENGINE_DESCRIPTION,
 #     domain=ModelDomain.PROPULSION,

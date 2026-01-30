@@ -17,7 +17,6 @@ Estimation of geometry of vertical tail
 
 import fastoad.api as oad
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .components import (
     ComputeVTChords,
@@ -33,7 +32,6 @@ from ...constants import (
     SERVICE_VERTICAL_TAIL_GEOMETRY,
 )
 
-
 @oad.RegisterSubmodel(
     SERVICE_VERTICAL_TAIL_GEOMETRY, "fastoad.submodel.geometry.vertical_tail.legacy"
 )
@@ -43,7 +41,7 @@ class ComputeVerticalTailGeometry(om.Group):
     def setup(self):
         self.add_subsystem(
             "fuselage_cnbeta",
-            RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_CNBETA),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_CNBETA),
             promotes=["*"],
         )
         self.add_subsystem("vt_aspect_ratio", ComputeVTDistance(), promotes=["*"])

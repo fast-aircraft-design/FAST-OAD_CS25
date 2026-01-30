@@ -18,14 +18,14 @@ import math
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
+
 from scipy import interpolate
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
 from ..constants import SERVICE_TANKS_CG
 
-
-@RegisterSubmodel(SERVICE_TANKS_CG, "fastoad.submodel.weight.cg.tanks.legacy")
+@oad.RegisterSubmodel(SERVICE_TANKS_CG, "fastoad.submodel.weight.cg.tanks.legacy")
 class ComputeTanksCG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Tanks center of gravity estimation"""

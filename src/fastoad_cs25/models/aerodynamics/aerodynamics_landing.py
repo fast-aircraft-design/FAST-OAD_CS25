@@ -17,7 +17,8 @@ Aero computation for landing phase
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
+import fastoad.api as oad
+
 from stdatm import Atmosphere
 
 from .constants import (
@@ -34,8 +35,7 @@ from .external.xfoil.xfoil_polar import (
     OPTION_XFOIL_EXE_PATH,
 )
 
-
-@RegisterOpenMDAOSystem("fastoad.aerodynamics.landing.legacy", domain=ModelDomain.AERODYNAMICS)
+@oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.landing.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsLanding(om.Group):
     """
     Computes aerodynamic characteristics at landing.
@@ -91,7 +91,7 @@ class AerodynamicsLanding(om.Group):
     def setup(self):
         self.add_subsystem(
             "mach_reynolds",
-            RegisterSubmodel.get_submodel(SERVICE_LANDING_MACH_REYNOLDS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_LANDING_MACH_REYNOLDS),
             promotes=["*"],
         )
 
@@ -107,26 +107,26 @@ class AerodynamicsLanding(om.Group):
             }
             self.add_subsystem(
                 "xfoil_run",
-                RegisterSubmodel.get_submodel(SERVICE_XFOIL, xfoil_options),
+                oad.RegisterSubmodel.get_submodel(SERVICE_XFOIL, xfoil_options),
                 promotes=["data:geometry:wing:thickness_ratio"],
             )
 
         self.add_subsystem(
             "CL_2D_to_3D",
-            RegisterSubmodel.get_submodel(SERVICE_LANDING_MAX_CL_CLEAN),
+            oad.RegisterSubmodel.get_submodel(SERVICE_LANDING_MAX_CL_CLEAN),
             promotes=["*"],
         )
 
         landing_flag_option = {"landing_flag": True}
         self.add_subsystem(
             "delta_cl_landing",
-            RegisterSubmodel.get_submodel(SERVICE_HIGH_LIFT, landing_flag_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_HIGH_LIFT, landing_flag_option),
             promotes=["*"],
         )
 
         self.add_subsystem(
             "compute_max_cl_landing",
-            RegisterSubmodel.get_submodel(SERVICE_LANDING_MAX_CL),
+            oad.RegisterSubmodel.get_submodel(SERVICE_LANDING_MAX_CL),
             promotes=["*"],
         )
 
@@ -137,8 +137,7 @@ class AerodynamicsLanding(om.Group):
                 "xfoil_run.xfoil:CL_max_2D", "data:aerodynamics:aircraft:landing:CL_max_clean_2D"
             )
 
-
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_LANDING_MACH_REYNOLDS, "fastoad.submodel.aerodynamics.landing.mach_reynolds.legacy"
 )
 class ComputeMachReynolds(om.ExplicitComponent):
@@ -166,8 +165,7 @@ class ComputeMachReynolds(om.ExplicitComponent):
         outputs["data:aerodynamics:aircraft:landing:mach"] = atm.mach
         outputs["data:aerodynamics:wing:landing:reynolds"] = reynolds
 
-
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_LANDING_MAX_CL_CLEAN, "fastoad.submodel.aerodynamics.landing.max_CL_clean.legacy"
 )
 class Compute3DMaxCL(om.ExplicitComponent):

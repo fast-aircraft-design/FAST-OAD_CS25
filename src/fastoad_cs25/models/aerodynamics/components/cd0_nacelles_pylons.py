@@ -14,13 +14,12 @@
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from .utils.friction_drag import get_flat_plate_friction_drag_coefficient
 from ..constants import SERVICE_CD0_NACELLES_PYLONS
 
-
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CD0_NACELLES_PYLONS,
     "fastoad.submodel.aerodynamics.CD0.nacelles_pylons.legacy",
 )

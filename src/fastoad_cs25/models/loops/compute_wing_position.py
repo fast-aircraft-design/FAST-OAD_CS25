@@ -17,10 +17,9 @@ Computation of wing position
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem
+import fastoad.api as oad
 
-
-@RegisterOpenMDAOSystem("fastoad.loop.wing_position", domain=ModelDomain.OTHER)
+@oad.RegisterOpenMDAOSystem("fastoad.loop.wing_position", domain=ModelDomain.OTHER)
 class ComputeWingPosition(om.ExplicitComponent):
     """
     Computes the wing position for a static margin target
