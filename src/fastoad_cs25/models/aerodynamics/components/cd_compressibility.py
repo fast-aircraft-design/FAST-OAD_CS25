@@ -38,17 +38,19 @@ class CdCompressibility(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
-        self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+        self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:sweep_25", units="deg", val=np.nan)
-        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value", val=0.5)
+        self.add_input("data:geometry:wing:thickness_ratio", val=np.nan, units="unitless")
+        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value", val=0.5, units="unitless")
         self.add_input(
             "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment",
             val=0.0,
+            units="unitless",
         )
         self.add_output(
             "data:aerodynamics:aircraft:cruise:CD:compressibility",
+            units="unitless",
             copy_shape="data:aerodynamics:aircraft:cruise:CL",
         )
 

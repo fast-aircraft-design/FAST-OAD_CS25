@@ -32,15 +32,18 @@ class CdTrim(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CL",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD:trim",
+                units="unitless",
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
             )
         else:
-            self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
+            self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan, units="unitless")
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD:trim",
+                units="unitless",
                 copy_shape="data:aerodynamics:aircraft:cruise:CL",
             )
 
