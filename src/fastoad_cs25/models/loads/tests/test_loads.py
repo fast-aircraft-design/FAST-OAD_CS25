@@ -65,7 +65,7 @@ def test_gust_load_factor():
     ]
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:load_case:gust_intensity", val=0.0)
+    ivc.add_output("data:load_case:gust_intensity", val=0.0, units="unitless")
     problem = run_system(GustLoads(), ivc)
 
     n1 = problem["data:mission:sizing:cs25:gust:load_factor_1"]
@@ -75,7 +75,7 @@ def test_gust_load_factor():
     assert n2 == pytest.approx(0.0, abs=0.01)
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:load_case:gust_intensity", val=1.0)
+    ivc.add_output("data:load_case:gust_intensity", val=1.0, units="unitless")
     problem = run_system(GustLoads(), ivc)
 
     n1 = problem["data:mission:sizing:cs25:gust:load_factor_1"]
@@ -102,7 +102,7 @@ def test_compute_loads():
         "data:load_case:lc2:Vc_EAS",
     ]
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:load_case:gust_intensity", val=0.5)
+    ivc.add_output("data:load_case:gust_intensity", val=0.5, units="unitless")
     problem = run_system(ComputeLoads(), ivc)
 
     n1m1 = problem["data:mission:sizing:cs25:envelope:max_sizing_load_1"]
@@ -130,7 +130,7 @@ def test_compute_loads():
     assert nm == pytest.approx(284242 * g, abs=10)
 
     # Now with different maneuver load factor
-    ivc.add_output("data:load_case:maneuver_load_factor", val=2.25)
+    ivc.add_output("data:load_case:maneuver_load_factor", val=2.25, units="unitless")
     problem = run_system(ComputeLoads(), ivc)
 
     n1 = problem["data:mission:sizing:cs25:envelope:max_load_factor_1"]

@@ -41,20 +41,20 @@ def test_OMRubberEngineComponent():
     expected_sfc = [0.993e-5, 1.35e-5, 1.35e-5, 1.84e-5, 1.60e-5]
 
     ivc = om.IndepVarComp()
-    ivc.add_output("data:propulsion:rubber_engine:bypass_ratio", 5)
-    ivc.add_output("data:propulsion:rubber_engine:overall_pressure_ratio", 30)
+    ivc.add_output("data:propulsion:rubber_engine:bypass_ratio", 5, units="unitless")
+    ivc.add_output("data:propulsion:rubber_engine:overall_pressure_ratio", 30, units="unitless")
     ivc.add_output("data:propulsion:rubber_engine:turbine_inlet_temperature", 1500, units="K")
     ivc.add_output("data:propulsion:MTO_thrust", 1, units="N")
-    ivc.add_output("data:propulsion:rubber_engine:maximum_mach", 0.95)
+    ivc.add_output("data:propulsion:rubber_engine:maximum_mach", 0.95, units="unitless")
     ivc.add_output("data:propulsion:rubber_engine:design_altitude", 10000, units="m")
     ivc.add_output("data::rubber_engine:design_altitude", 10000, units="m")
-    ivc.add_output("data:geometry:propulsion:engine:count", 1)
+    ivc.add_output("data:geometry:propulsion:engine:count", 1, units="unitless")
 
-    ivc.add_output("data:propulsion:mach", [machs, machs])
+    ivc.add_output("data:propulsion:mach", [machs, machs], units="unitless")
     ivc.add_output("data:propulsion:altitude", [altitudes, altitudes], units="m")
-    ivc.add_output("data:propulsion:engine_setting", [phases, phases])
-    ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5])
-    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5])
+    ivc.add_output("data:propulsion:engine_setting", [phases, phases], units="unitless")
+    ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5], units="unitless")
+    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless")
     ivc.add_output("data:propulsion:required_thrust", [[0] * 5, thrusts], units="N")
 
     problem = run_system(engine, ivc)
@@ -87,23 +87,23 @@ def test_OMRubberEngineComponentWithSFCCorrections():
     expected_sfc = [0.794e-5, 1.08e-5, 1.08e-5, 1.61e-5, 1.44e-5]
 
     ivc = om.IndepVarComp()
-    ivc.add_output("data:propulsion:rubber_engine:bypass_ratio", 5)
-    ivc.add_output("data:propulsion:rubber_engine:overall_pressure_ratio", 30)
+    ivc.add_output("data:propulsion:rubber_engine:bypass_ratio", 5, units="unitless")
+    ivc.add_output("data:propulsion:rubber_engine:overall_pressure_ratio", 30, units="unitless")
     ivc.add_output("data:propulsion:rubber_engine:turbine_inlet_temperature", 1500, units="K")
     ivc.add_output("data:propulsion:MTO_thrust", 1, units="N")
-    ivc.add_output("data:propulsion:rubber_engine:maximum_mach", 0.95)
+    ivc.add_output("data:propulsion:rubber_engine:maximum_mach", 0.95, units="unitless")
     ivc.add_output("data:propulsion:rubber_engine:design_altitude", 10000, units="m")
-    ivc.add_output("data:geometry:propulsion:engine:count", 1)
+    ivc.add_output("data:geometry:propulsion:engine:count", 1, units="unitless")
 
-    ivc.add_output("data:propulsion:mach", [machs, machs])
+    ivc.add_output("data:propulsion:mach", [machs, machs], units="unitless")
     ivc.add_output("data:propulsion:altitude", [altitudes, altitudes], units="m")
-    ivc.add_output("data:propulsion:engine_setting", [phases, phases])
-    ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5])
-    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5])
+    ivc.add_output("data:propulsion:engine_setting", [phases, phases], units="unitless")
+    ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5], units="unitless")
+    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless")
     ivc.add_output("data:propulsion:required_thrust", [[0] * 5, thrusts], units="N")
 
-    ivc.add_output("tuning:propulsion:rubber_engine:SFC:k_cr", 0.9)
-    ivc.add_output("tuning:propulsion:rubber_engine:SFC:k_sl", 0.8)
+    ivc.add_output("tuning:propulsion:rubber_engine:SFC:k_cr", 0.9, units="unitless")
+    ivc.add_output("tuning:propulsion:rubber_engine:SFC:k_sl", 0.8, units="unitless")
 
     problem = run_system(engine, ivc)
 

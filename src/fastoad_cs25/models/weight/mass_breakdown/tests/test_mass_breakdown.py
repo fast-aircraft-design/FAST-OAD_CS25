@@ -64,13 +64,13 @@ def get_indep_var_comp(var_names):
 
 def test_compute_payload():
     ivc = om.IndepVarComp()
-    ivc.add_output("data:TLAR:NPAX", val=150)
+    ivc.add_output("data:TLAR:NPAX", val=150, units="unitless")
     problem = run_system(ComputePayload(), ivc)
     assert problem["data:weight:aircraft:payload"] == pytest.approx(13608.0, abs=0.1)
     assert problem["data:weight:aircraft:max_payload"] == pytest.approx(19608.0, abs=0.1)
 
     ivc = om.IndepVarComp()
-    ivc.add_output("data:TLAR:NPAX", val=150)
+    ivc.add_output("data:TLAR:NPAX", val=150, units="unitless")
     ivc.add_output(
         "settings:weight:aircraft:payload:design_mass_per_passenger", val=1.0, units="kg"
     )
@@ -284,7 +284,7 @@ def test_compute_power_systems_weight():
         "settings:weight:systems:power:mass:k_elec",
     ]
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:geometry:cabin:NPAX1", 150)
+    ivc.add_output("data:geometry:cabin:NPAX1", 150, units="unitless")
     ivc.add_output("data:weight:airframe:flight_controls:mass", 700, units="kg")
     problem = run_system(PowerSystemsWeight(), ivc)
 
@@ -325,7 +325,7 @@ def test_compute_life_support_systems_weight():
         "tuning:weight:systems:life_support:safety_equipment:mass:offset",
     ]
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:geometry:cabin:NPAX1", 150)
+    ivc.add_output("data:geometry:cabin:NPAX1", 150, units="unitless")
     ivc.add_output("data:weight:propulsion:engine:mass", 7161.33, units="kg")
     problem = run_system(LifeSupportSystemsWeight(), ivc)
 
@@ -471,7 +471,7 @@ def test_compute_cargo_configuration_weight():
     component = CargoConfigurationWeight()
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:geometry:cabin:NPAX1", 150)
+    ivc.add_output("data:geometry:cabin:NPAX1", 150, units="unitless")
     problem = run_system(component, ivc)
     val = problem["data:weight:furniture:cargo_configuration:mass"]
     assert val == pytest.approx(39.3, abs=0.1)
