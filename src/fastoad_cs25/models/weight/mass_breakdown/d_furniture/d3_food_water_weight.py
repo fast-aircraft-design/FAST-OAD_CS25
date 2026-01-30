@@ -32,7 +32,7 @@ class FoodWaterWeight(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:NPAX", val=np.nan)
+        self.add_input("data:TLAR:NPAX", val=np.nan, units="unitless")
         self.add_input("tuning:weight:furniture:food_water:mass:k", val=1.0)
         self.add_input("tuning:weight:furniture:food_water:mass:offset", val=0.0, units="kg")
 
