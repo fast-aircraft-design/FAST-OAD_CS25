@@ -30,9 +30,9 @@ class UpdateMLG(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
-        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
+        self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan, units="unitless")
         self.add_input("data:weight:airframe:landing_gear:front:CG:x", units="m")
-        self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08)
+        self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08, units="unitless")
 
         self.add_output("data:weight:airframe:landing_gear:main:CG:x", units="m")
 

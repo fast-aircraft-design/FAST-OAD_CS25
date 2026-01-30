@@ -64,10 +64,10 @@ class MaxCGRatiosForLoadCases(om.ExplicitComponent):
 
     def setup(self):
         self.add_input(
-            "data:weight:aircraft:load_cases:CG:MAC_position", val=np.nan, shape_by_conn=True
+            "data:weight:aircraft:load_cases:CG:MAC_position", val=np.nan, shape_by_conn=True, units="unitless"
         )
 
-        self.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum")
+        self.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
