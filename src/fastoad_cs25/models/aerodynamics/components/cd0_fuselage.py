@@ -34,11 +34,13 @@ class Cd0Fuselage(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CL",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output(
                 "data:aerodynamics:fuselage:low_speed:CD0",
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                units="unitless",
             )
         else:
             self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan, units="unitless")
@@ -47,6 +49,7 @@ class Cd0Fuselage(om.ExplicitComponent):
             self.add_output(
                 "data:aerodynamics:fuselage:cruise:CD0",
                 copy_shape="data:aerodynamics:aircraft:cruise:CL",
+                units="unitless",
             )
 
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
