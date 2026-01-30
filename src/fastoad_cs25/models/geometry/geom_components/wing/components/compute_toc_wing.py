@@ -14,8 +14,6 @@ Estimation of wing ToC
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
@@ -52,7 +50,7 @@ class ComputeToCWing(om.ExplicitComponent):
         wing_break = inputs["data:geometry:wing:kink:span_ratio"]
 
         # Relative thickness
-        el_aero = 0.89 - (cruise_mach + 0.02) * math.sqrt(math.cos(sweep_25 / 180.0 * math.pi))
+        el_aero = 0.89 - (cruise_mach + 0.02) * np.sqrt(np.cos(sweep_25 / 180.0 * np.pi))
         el_emp = 1.24 * el_aero
         if wing_break == 0.0:
             el_break = el_emp  # Kink is set on root chord

@@ -14,8 +14,6 @@ Estimation of vertical tail center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
@@ -55,7 +53,7 @@ class ComputeVTcg(om.ExplicitComponent):
         sweep_25_vt = inputs["data:geometry:vertical_tail:sweep_25"]
         b_v = inputs["data:geometry:vertical_tail:span"]
 
-        tmp = root_chord * 0.25 + b_v * math.tan(sweep_25_vt / 180.0 * math.pi) - tip_chord * 0.25
+        tmp = root_chord * 0.25 + b_v * np.tan(sweep_25_vt / 180.0 * np.pi) - tip_chord * 0.25
         l_cg_vt = (1 - 0.55) * (root_chord - tip_chord) + tip_chord
         x_cg_vt = 0.42 * l_cg_vt + 0.55 * tmp
         x_cg_vt_absolute = lp_vt + fa_length - 0.25 * mac_vt + (x_cg_vt - x0_vt)

@@ -13,7 +13,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-import math
 from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np
@@ -26,14 +25,14 @@ from scipy.interpolate import interp1d
 from stdatm import Atmosphere
 
 from .constants import (
+    A_FM,
+    A_MS,
     ALPHA,
     ATM_SEA_LEVEL,
     ATM_TROPOPAUSE,
-    A_FM,
-    A_MS,
-    BETA,
     B_FM,
     B_MS,
+    BETA,
     C_FM,
     C_MS,
     D_FM,
@@ -550,7 +549,7 @@ class RubberEngine(AbstractFuelPropulsion):
 
         :return: nacelle diameter (in m)
         """
-        engine_diameter = 0.15 * (self.f_0 / 1000) ** 0.5 * math.exp(0.04 * self.bypass_ratio)
+        engine_diameter = 0.15 * (self.f_0 / 1000) ** 0.5 * np.exp(0.04 * self.bypass_ratio)
         nacelle_diameter = engine_diameter * 1.1
         return nacelle_diameter
 

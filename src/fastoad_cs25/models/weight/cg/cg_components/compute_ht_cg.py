@@ -14,8 +14,6 @@ Estimation of horizontal tail center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
@@ -57,9 +55,7 @@ class ComputeHTcg(om.ExplicitComponent):
         mac_ht = inputs["data:geometry:horizontal_tail:MAC:length"]
         x0_ht = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:local"]
 
-        tmp = (
-            root_chord * 0.25 + b_h / 2 * math.tan(sweep_25_ht / 180.0 * math.pi) - tip_chord * 0.25
-        )
+        tmp = root_chord * 0.25 + b_h / 2 * np.tan(sweep_25_ht / 180.0 * np.pi) - tip_chord * 0.25
 
         l_cg = 0.62 * (root_chord - tip_chord) + tip_chord
         x_cg_ht = 0.42 * l_cg + 0.38 * tmp

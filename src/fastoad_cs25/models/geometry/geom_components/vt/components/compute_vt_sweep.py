@@ -14,7 +14,6 @@ Estimation of vertical tail sweeps
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import math
 
 import numpy as np
 import openmdao.api as om
@@ -46,32 +45,32 @@ class ComputeVTSweep(om.ExplicitComponent):
 
         sweep_0_vt = (
             (
-                math.pi / 2
-                - math.atan(
+                np.pi / 2
+                - np.atan(
                     b_v
                     / (
                         0.25 * root_chord
                         - 0.25 * tip_chord
-                        + b_v * math.tan(sweep_25_vt / 180.0 * math.pi)
+                        + b_v * np.tan(sweep_25_vt / 180.0 * np.pi)
                     )
                 )
             )
-            / math.pi
+            / np.pi
             * 180.0
         )
         sweep_100_vt = (
             (
-                math.pi / 2
-                - math.atan(
+                np.pi / 2
+                - np.atan(
                     b_v
                     / (
-                        b_v * math.tan(sweep_25_vt / 180.0 * math.pi)
+                        b_v * np.tan(sweep_25_vt / 180.0 * np.pi)
                         - 0.75 * root_chord
                         + 0.75 * tip_chord
                     )
                 )
             )
-            / math.pi
+            / np.pi
             * 180.0
         )
 

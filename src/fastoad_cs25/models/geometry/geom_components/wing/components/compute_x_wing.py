@@ -14,8 +14,6 @@ Estimation of wing Xs
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 
@@ -71,12 +69,12 @@ class ComputeXWing(om.ExplicitComponent):
 
         x3_wing = (
             1.0 / 4.0 * l1_wing
-            + (y3_wing - y2_wing) * math.tan(sweep_25 / 180.0 * math.pi)
+            + (y3_wing - y2_wing) * np.tan(sweep_25 / 180.0 * np.pi)
             - 1.0 / 4.0 * l3_wing
         )
         x4_wing = (
             1.0 / 4.0 * l1_wing
-            + (y4_wing - y2_wing) * math.tan(sweep_25 / 180.0 * math.pi)
+            + (y4_wing - y2_wing) * np.tan(sweep_25 / 180.0 * np.pi)
             - 1.0 / 4.0 * l4_wing
         )
 

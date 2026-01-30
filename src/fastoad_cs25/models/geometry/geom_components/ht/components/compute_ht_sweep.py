@@ -14,7 +14,6 @@ Estimation of horizontal tail sweeps
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import math
 
 import numpy as np
 import openmdao.api as om
@@ -47,11 +46,11 @@ class ComputeHTSweep(om.ExplicitComponent):
 
         # The conversion to degrees is intentionally done here and not in OpenMDAO, so that
         # the outputs will naturally be displayed in degrees.
-        sweep_0_ht = math.degrees(
-            (math.atan(math.tan(sweep_25_ht) + 0.25 * (root_chord - tip_chord) / half_span))
+        sweep_0_ht = np.degrees(
+            (np.atan(np.tan(sweep_25_ht) + 0.25 * (root_chord - tip_chord) / half_span))
         )
-        sweep_100_ht = math.degrees(
-            (math.atan(math.tan(sweep_25_ht) - 0.75 * (root_chord - tip_chord) / half_span))
+        sweep_100_ht = np.degrees(
+            (np.atan(np.tan(sweep_25_ht) - 0.75 * (root_chord - tip_chord) / half_span))
         )
 
         outputs["data:geometry:horizontal_tail:sweep_0"] = sweep_0_ht

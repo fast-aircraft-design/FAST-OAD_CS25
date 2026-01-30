@@ -14,14 +14,13 @@ Estimation of tanks center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.service_registry import RegisterSubmodel
 from scipy import interpolate
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
+
 from ..constants import SERVICE_TANKS_CG
 
 
@@ -101,14 +100,12 @@ class ComputeTanksCG(om.ExplicitComponent):
         s_kink = (height_kink_front + height_kink_rear) * l_kink / 2
         s_tip = (height_tip_front + height_tip_rear) * l_tip / 2
         vol_central = s_root * width_max
-        vol_side_inner = (
-            (s_root + s_kink + math.sqrt(s_root * s_kink)) * (y3_wing - y2_wing) * 2 / 3
-        )
+        vol_side_inner = (s_root + s_kink + np.sqrt(s_root * s_kink)) * (y3_wing - y2_wing) * 2 / 3
         # Assume in the region outward 0.8 of the span, no tank installed
         ratio_1 = y4_wing * self.ratio / (y4_wing - y3_wing)
         s_real_tip = (ratio_1 * (s_kink**0.5 - s_tip**0.5) + s_tip**0.5) ** 2
         vol_side_out = (
-            (s_kink + s_real_tip + math.sqrt(s_kink * s_real_tip))
+            (s_kink + s_real_tip + np.sqrt(s_kink * s_real_tip))
             * (y4_wing - y3_wing)
             * (1 - ratio_1)
             * 2
@@ -133,8 +130,8 @@ class ComputeTanksCG(om.ExplicitComponent):
             y_side_inner_cg = (
                 (y3_wing - y2_wing)
                 / 4
-                * (s_root + 3 * s_kink + 2 * math.sqrt(s_root * s_kink))
-                / (s_root + s_kink + math.sqrt(s_root * s_kink))
+                * (s_root + 3 * s_kink + 2 * np.sqrt(s_root * s_kink))
+                / (s_root + s_kink + np.sqrt(s_root * s_kink))
             )
             height_side_inner_cg_front = (y_side_inner_cg / (y3_wing - y2_wing)) * (
                 height_kink_front - height_root_front
@@ -166,8 +163,8 @@ class ComputeTanksCG(om.ExplicitComponent):
         y_side_out_cg = (
             (y4_tank - y3_wing)
             / 4
-            * (s_kink + 3 * s_real_tip + 2 * math.sqrt(s_kink * s_real_tip))
-            / (s_kink + s_real_tip + math.sqrt(s_kink * s_real_tip))
+            * (s_kink + 3 * s_real_tip + 2 * np.sqrt(s_kink * s_real_tip))
+            / (s_kink + s_real_tip + np.sqrt(s_kink * s_real_tip))
         )
         height_side_out_cg_front = (y_side_out_cg / (y4_tank - y3_wing)) * (
             height_tank_front - height_kink_front
