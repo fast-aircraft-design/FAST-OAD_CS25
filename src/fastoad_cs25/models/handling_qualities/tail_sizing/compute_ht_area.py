@@ -33,7 +33,7 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
-        self.add_input("data:geometry:has_T_tail", val=np.nan)
+        self.add_input("data:geometry:has_T_tail", val=np.nan, units="unitless")
         self.add_input("data:geometry:vertical_tail:tip:chord", val=np.nan, units="m")
         self.add_input("data:geometry:vertical_tail:tip:leading_edge:x", val=np.nan, units="m")
         self.add_input(
@@ -42,22 +42,24 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:weight:airframe:landing_gear:main:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:airframe:landing_gear:front:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("settings:weight:aircraft:CG:range", val=0.3)
-        self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08)
+        self.add_input("settings:weight:aircraft:CG:range", val=0.3, units="unitless")
+        self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08, units="unitless")
         self.add_input(
             "settings:geometry:horizontal_tail:position_ratio_on_fuselage",
             val=0.91,
+            units="unitless",
             desc="(does not apply for T-tails) distance to aircraft nose of 25% MAC of "
             "horizontal tail divided by fuselage length",
         )
         self.add_input(
             "settings:geometry:horizontal_tail:position_ratio_on_VTP",
             val=0.15,
+            units="unitless",
             desc="(applies only for T-tails) distance between HTP root leading"
             "edge and VTP tip leading edge divided by VTP tip chord",
         )
 
-        self.add_input("tuning:geometry:horizontal_tail:area_factor", val=1.0)
+        self.add_input("tuning:geometry:horizontal_tail:area_factor", val=1.0, units="unitless")
 
         self.add_output(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", units="m", ref=30.0

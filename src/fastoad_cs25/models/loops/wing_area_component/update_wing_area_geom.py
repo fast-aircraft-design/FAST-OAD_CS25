@@ -31,9 +31,9 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
     """Computes wing area for being able to load enough fuel to achieve the sizing mission."""
 
     def setup(self):
-        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
-        self.add_input("data:geometry:wing:root:thickness_ratio", val=np.nan)
-        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:root:thickness_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan, units="unitless")
         self.add_input("data:weight:aircraft:sizing_block_fuel", val=np.nan, units="kg")
 
         # Same remark on the naming and connection as in the aero component
