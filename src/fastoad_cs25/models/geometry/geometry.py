@@ -30,6 +30,7 @@ from .constants import (
 )
 from ..constants import CABIN_SIZING_OPTION
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.geometry.legacy", domain=ModelDomain.GEOMETRY)
 class Geometry(om.Group):
     """

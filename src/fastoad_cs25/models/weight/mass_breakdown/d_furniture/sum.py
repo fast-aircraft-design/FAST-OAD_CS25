@@ -23,6 +23,7 @@ from .constants import (
 )
 from ..constants import SERVICE_FURNITURE_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_FURNITURE_MASS, "fastoad.submodel.weight.mass.furniture.cargo_configuration.legacy"
 )
@@ -48,7 +49,9 @@ class FurnitureWeight(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "toilets_weight", oad.RegisterSubmodel.get_submodel(SERVICE_TOILETS_MASS), promotes=["*"]
+            "toilets_weight",
+            oad.RegisterSubmodel.get_submodel(SERVICE_TOILETS_MASS),
+            promotes=["*"],
         )
 
         weight_sum = om.AddSubtractComp()

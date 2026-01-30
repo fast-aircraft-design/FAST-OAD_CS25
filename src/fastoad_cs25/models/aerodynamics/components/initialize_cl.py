@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import POLAR_POINT_COUNT, SERVICE_INITIALIZE_CL
 
+
 @oad.RegisterSubmodel(SERVICE_INITIALIZE_CL, "fastoad.submodel.aerodynamics.initialize_CL.legacy")
 class InitializeClPolar(om.ExplicitComponent):
     """Initialization of CL vector."""

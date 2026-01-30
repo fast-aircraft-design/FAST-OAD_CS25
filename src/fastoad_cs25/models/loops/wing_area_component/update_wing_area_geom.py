@@ -23,6 +23,7 @@ from fastoad_cs25.models.loops.constants import (
     SERVICE_WING_AREA_LOOP_GEOM,
 )
 
+
 @oad.RegisterSubmodel(
     SERVICE_WING_AREA_LOOP_GEOM, "fastoad.submodel.loops.wing.area.update.geom.legacy"
 )
@@ -95,6 +96,7 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
                 * (1.0 / 1.5)
                 * (mfw_mission - 1570.0) ** (-1.0 / 3.0)
             )
+
 
 @oad.RegisterSubmodel(
     SERVICE_WING_AREA_CONSTRAINT_GEOM, "fastoad.submodel.loops.wing.area.constraint.geom.legacy"

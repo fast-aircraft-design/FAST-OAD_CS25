@@ -25,6 +25,7 @@ from ..constants import (
     SERVICE_CD0_WING,
 )
 
+
 @oad.RegisterSubmodel(SERVICE_CD0, "fastoad.submodel.aerodynamics.CD0.legacy")
 class CD0(om.Group):
     """

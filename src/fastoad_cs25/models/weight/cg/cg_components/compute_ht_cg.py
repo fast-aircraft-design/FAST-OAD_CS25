@@ -22,7 +22,10 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_HORIZONTAL_TAIL_CG
 
-@oad.RegisterSubmodel(SERVICE_HORIZONTAL_TAIL_CG, "fastoad.submodel.weight.cg.horizontal_tail.legacy")
+
+@oad.RegisterSubmodel(
+    SERVICE_HORIZONTAL_TAIL_CG, "fastoad.submodel.weight.cg.horizontal_tail.legacy"
+)
 class ComputeHTcg(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Horizontal tail center of gravity estimation"""

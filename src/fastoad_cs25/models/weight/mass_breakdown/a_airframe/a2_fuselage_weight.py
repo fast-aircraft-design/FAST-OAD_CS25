@@ -22,7 +22,10 @@ from scipy.constants import g
 
 from .constants import SERVICE_FUSELAGE_MASS
 
-@oad.RegisterSubmodel(SERVICE_FUSELAGE_MASS, "fastoad.submodel.weight.mass.airframe.fuselage.legacy")
+
+@oad.RegisterSubmodel(
+    SERVICE_FUSELAGE_MASS, "fastoad.submodel.weight.mass.airframe.fuselage.legacy"
+)
 class FuselageWeight(om.ExplicitComponent):
     """
     Fuselage weight estimation

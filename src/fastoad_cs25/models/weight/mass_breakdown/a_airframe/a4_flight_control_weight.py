@@ -22,6 +22,7 @@ from scipy.constants import g
 
 from .constants import SERVICE_FLIGHT_CONTROLS_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_FLIGHT_CONTROLS_MASS, "fastoad.submodel.weight.mass.airframe.flight_control.legacy"
 )

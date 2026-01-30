@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_CARGO_CONFIGURATION_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_CARGO_CONFIGURATION_MASS, "service.mass.furniture.cargo_configuration.legacy"
 )

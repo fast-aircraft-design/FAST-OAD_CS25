@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_SECURITY_KIT_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_SECURITY_KIT_MASS, "service.mass.furniture.security_kit.legacy")
 class SecurityKitWeight(om.ExplicitComponent):
     """

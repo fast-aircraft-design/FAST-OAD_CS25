@@ -20,11 +20,13 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_EMPTY_AIRCRAFT_CG
 
+
 @oad.RegisterSubmodel(SERVICE_EMPTY_AIRCRAFT_CG, "fastoad.submodel.weight.cg.empty_aircraft.legacy")
 class ComputeCGRatioAft(om.Group):
     def setup(self):
         self.add_subsystem("cg_all", ComputeCG(), promotes=["*"])
         self.add_subsystem("cg_ratio", CGRatio(), promotes=["*"])
+
 
 class ComputeCG(om.ExplicitComponent):
     def initialize(self):
@@ -124,6 +126,7 @@ class ComputeCG(om.ExplicitComponent):
         outputs["data:weight:aircraft_empty:CG:x"] = (
             weight_moment / outputs["data:weight:aircraft_empty:mass"]
         )
+
 
 class CGRatio(om.ExplicitComponent):
     def setup(self):

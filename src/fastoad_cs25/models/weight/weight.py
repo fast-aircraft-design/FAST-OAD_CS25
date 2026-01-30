@@ -21,6 +21,7 @@ import fastoad.api as oad
 from .constants import SERVICE_CENTERS_OF_GRAVITY, SERVICE_MASS_BREAKDOWN
 from ..constants import PAYLOAD_FROM_NPAX
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.weight.legacy", domain=ModelDomain.WEIGHT)
 class Weight(om.Group):
     """

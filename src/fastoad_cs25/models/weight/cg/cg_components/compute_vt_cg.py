@@ -22,6 +22,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_VERTICAL_TAIL_CG
 
+
 @oad.RegisterSubmodel(SERVICE_VERTICAL_TAIL_CG, "fastoad.submodel.weight.cg.vertical_tail.legacy")
 class ComputeVTcg(om.ExplicitComponent):
     # TODO: Document equations. Cite sources

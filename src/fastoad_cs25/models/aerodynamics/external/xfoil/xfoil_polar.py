@@ -56,6 +56,7 @@ _LOGGER = logging.getLogger(__name__)
 
 _XFOIL_PATH_LIMIT = 64
 
+
 @oad.RegisterSubmodel(SERVICE_XFOIL, "fastoad.submodel.aerodynamics.xfoil")
 class XfoilPolar(om.ExternalCodeComp):
     """

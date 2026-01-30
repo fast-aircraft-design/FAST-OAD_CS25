@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_WING_CG
 
+
 @oad.RegisterSubmodel(SERVICE_WING_CG, "fastoad.submodel.weight.cg.wing.legacy")
 class ComputeWingCG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources

@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from .constants import PolarType, SERVICE_HIGH_LIFT, SERVICE_POLAR
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.takeoff.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsTakeoff(om.Group):
     """

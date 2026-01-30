@@ -19,6 +19,7 @@ from openmdao.core.explicitcomponent import ExplicitComponent
 
 from ..constants import SERVICE_LANDING_MAX_CL
 
+
 @oad.RegisterSubmodel(SERVICE_LANDING_MAX_CL, "fastoad.submodel.aerodynamics.landing.max_CL.legacy")
 class ComputeMaxClLanding(ExplicitComponent):
     """Computation of max CL in landing conditions."""

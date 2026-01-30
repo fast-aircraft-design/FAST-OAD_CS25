@@ -31,6 +31,7 @@ from .constants import (
 )
 from ..constants import SERVICE_CENTERS_OF_GRAVITY
 
+
 @oad.RegisterSubmodel(SERVICE_CENTERS_OF_GRAVITY, "fastoad.submodel.weight.cg.legacy")
 class CG(
     oad.CycleGroup,
@@ -60,7 +61,9 @@ class CG(
             "compute_cg_tanks", oad.RegisterSubmodel.get_submodel(SERVICE_TANKS_CG), promotes=["*"]
         )
         self.add_subsystem(
-            "compute_cg_others", oad.RegisterSubmodel.get_submodel(SERVICE_OTHERS_CG), promotes=["*"]
+            "compute_cg_others",
+            oad.RegisterSubmodel.get_submodel(SERVICE_OTHERS_CG),
+            promotes=["*"],
         )
         self.add_subsystem(
             "compute_cg", oad.RegisterSubmodel.get_submodel(SERVICE_GLOBAL_CG), promotes=["*"]
@@ -71,6 +74,7 @@ class CG(
         self.add_subsystem(
             "aircraft", oad.RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_CG), promotes=["*"]
         )
+
 
 @oad.RegisterSubmodel(SERVICE_AIRCRAFT_CG, "fastoad.submodel.weight.cg.aircraft.legacy")
 class ComputeAircraftCG(om.ExplicitComponent):

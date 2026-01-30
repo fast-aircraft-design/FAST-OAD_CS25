@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_FOOD_WATER_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_FOOD_WATER_MASS, "service.mass.furniture.food_water.legacy")
 class FoodWaterWeight(om.ExplicitComponent):
     """

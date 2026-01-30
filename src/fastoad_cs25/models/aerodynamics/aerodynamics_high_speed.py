@@ -29,7 +29,10 @@ from .constants import (
     SERVICE_REYNOLDS_COEFFICIENT,
 )
 
-@oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.highspeed.legacy", domain=ModelDomain.AERODYNAMICS)
+
+@oad.RegisterOpenMDAOSystem(
+    "fastoad.aerodynamics.highspeed.legacy", domain=ModelDomain.AERODYNAMICS
+)
 class AerodynamicsHighSpeed(om.Group):
     """
     Computes aerodynamic polar of the aircraft in cruise conditions.
@@ -50,12 +53,18 @@ class AerodynamicsHighSpeed(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "comp_re", oad.RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT), promotes=["*"]
+            "comp_re",
+            oad.RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT),
+            promotes=["*"],
         )
         self.add_subsystem(
-            "initialize_cl", oad.RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL), promotes=["*"]
+            "initialize_cl",
+            oad.RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL),
+            promotes=["*"],
         )
-        self.add_subsystem("cd0_wing", oad.RegisterSubmodel.get_submodel(SERVICE_CD0), promotes=["*"])
+        self.add_subsystem(
+            "cd0_wing", oad.RegisterSubmodel.get_submodel(SERVICE_CD0), promotes=["*"]
+        )
         self.add_subsystem(
             "cd_comp", oad.RegisterSubmodel.get_submodel(SERVICE_CD_COMPRESSIBILITY), promotes=["*"]
         )

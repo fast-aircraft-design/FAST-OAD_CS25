@@ -26,6 +26,7 @@ from fastoad_cs25.models.loops.constants import (
     SERVICE_WING_AREA_LOOP_AERO,
 )
 
+
 @oad.RegisterSubmodel(
     SERVICE_WING_AREA_LOOP_AERO, "fastoad.submodel.loops.wing.area.update.aero.legacy"
 )
@@ -73,6 +74,7 @@ class UpdateWingAreaAero(om.ExplicitComponent):
         partials["wing_area:aero", "data:aerodynamics:aircraft:landing:CL_max"] = -(mlw * g) / (
             0.5 * rho_sl * stall_speed**2.0 * max_cl**2.0
         )
+
 
 @oad.RegisterSubmodel(
     SERVICE_WING_AREA_CONSTRAINT_AERO,

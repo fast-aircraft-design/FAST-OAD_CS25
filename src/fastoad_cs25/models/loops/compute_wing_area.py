@@ -26,6 +26,7 @@ from .constants import (
     SERVICE_WING_AREA_LOOP_GEOM,
 )
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.loop.wing_area", domain=ModelDomain.OTHER)
 class ComputeWingArea(om.Group):
     """
@@ -75,6 +76,7 @@ class ComputeWingArea(om.Group):
             oad.RegisterSubmodel.get_submodel(SERVICE_WING_AREA_CONSTRAINT_AERO),
             promotes=["*"],
         )
+
 
 class _ComputeWingArea(om.ExplicitComponent):
     """

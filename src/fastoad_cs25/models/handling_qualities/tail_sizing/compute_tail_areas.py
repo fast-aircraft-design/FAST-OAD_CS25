@@ -21,6 +21,7 @@ import fastoad.api as oad
 from .compute_ht_area import ComputeHTArea
 from .compute_vt_area import ComputeVTArea
 
+
 @oad.RegisterOpenMDAOSystem(
     "fastoad.handling_qualities.tail_sizing", domain=ModelDomain.HANDLING_QUALITIES
 )

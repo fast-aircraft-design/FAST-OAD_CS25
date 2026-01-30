@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_ENGINE_MASS
 
+
 # TODO:  this is also provided by class RubberEngine
 @oad.RegisterSubmodel(SERVICE_ENGINE_MASS, "fastoad.submodel.weight.mass.propulsion.engine.legacy")
 class EngineWeight(om.ExplicitComponent):

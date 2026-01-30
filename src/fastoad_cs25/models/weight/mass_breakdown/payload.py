@@ -21,6 +21,7 @@ from openmdao import api as om
 
 from .constants import SERVICE_PAYLOAD_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_PAYLOAD_MASS, "fastoad.submodel.weight.mass.payload.legacy")
 class ComputePayload(om.ExplicitComponent):
     """Computes payload from NPAX"""

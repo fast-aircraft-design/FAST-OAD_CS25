@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_INDUCED_DRAG_COEFFICIENT, SERVICE_OSWALD_COEFFICIENT
 
+
 @oad.RegisterSubmodel(
     SERVICE_INDUCED_DRAG_COEFFICIENT,
     "fastoad.submodel.aerodynamics.induced_drag_coefficient.legacy",
@@ -60,6 +61,7 @@ class InducedDragCoefficient(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"] = coef_k
         else:
             outputs["data:aerodynamics:aircraft:cruise:induced_drag_coefficient"] = coef_k
+
 
 @oad.RegisterSubmodel(
     SERVICE_OSWALD_COEFFICIENT,

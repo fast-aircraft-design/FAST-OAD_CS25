@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_FIXED_OPERATIONAL_SYSTEMS_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_FIXED_OPERATIONAL_SYSTEMS_MASS,
     "fastoad.submodel.weight.mass.systems.fixed_operational.legacy",

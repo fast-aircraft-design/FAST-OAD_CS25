@@ -21,6 +21,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_NAVIGATION_SYSTEMS_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_NAVIGATION_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.navigation.legacy"
 )

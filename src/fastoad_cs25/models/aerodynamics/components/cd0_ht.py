@@ -22,6 +22,7 @@ from .utils.cd0_lifting_surface import (
 )
 from ..constants import SERVICE_CD0_HORIZONTAL_TAIL
 
+
 @oad.RegisterSubmodel(
     SERVICE_CD0_HORIZONTAL_TAIL,
     "fastoad.submodel.aerodynamics.CD0.horizontal_tail.legacy",

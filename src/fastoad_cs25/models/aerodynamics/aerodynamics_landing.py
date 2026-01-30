@@ -35,6 +35,7 @@ from .external.xfoil.xfoil_polar import (
     OPTION_XFOIL_EXE_PATH,
 )
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.landing.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsLanding(om.Group):
     """
@@ -137,6 +138,7 @@ class AerodynamicsLanding(om.Group):
                 "xfoil_run.xfoil:CL_max_2D", "data:aerodynamics:aircraft:landing:CL_max_clean_2D"
             )
 
+
 @oad.RegisterSubmodel(
     SERVICE_LANDING_MACH_REYNOLDS, "fastoad.submodel.aerodynamics.landing.mach_reynolds.legacy"
 )
@@ -164,6 +166,7 @@ class ComputeMachReynolds(om.ExplicitComponent):
 
         outputs["data:aerodynamics:aircraft:landing:mach"] = atm.mach
         outputs["data:aerodynamics:wing:landing:reynolds"] = reynolds
+
 
 @oad.RegisterSubmodel(
     SERVICE_LANDING_MAX_CL_CLEAN, "fastoad.submodel.aerodynamics.landing.max_CL_clean.legacy"

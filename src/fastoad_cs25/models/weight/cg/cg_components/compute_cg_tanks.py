@@ -25,6 +25,7 @@ from scipy import interpolate
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
 from ..constants import SERVICE_TANKS_CG
 
+
 @oad.RegisterSubmodel(SERVICE_TANKS_CG, "fastoad.submodel.weight.cg.tanks.legacy")
 class ComputeTanksCG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources

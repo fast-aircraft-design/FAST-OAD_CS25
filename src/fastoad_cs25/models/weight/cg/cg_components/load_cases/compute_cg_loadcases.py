@@ -24,6 +24,7 @@ from ...constants import SERVICE_LOAD_CASES_CG
 
 SERVICE_LOAD_CASE_CG_PREFIX = "service.cg.load_case"
 
+
 @oad.RegisterSubmodel(SERVICE_LOAD_CASES_CG, "fastoad.submodel.weight.cg.load_cases.legacy")
 class CGRatiosForLoadCases(om.Group):
     """Aggregation of CG ratios from load case calculations."""
@@ -57,6 +58,7 @@ class CGRatiosForLoadCases(om.Group):
             )
 
         self.add_subsystem("compute_max", MaxCGRatiosForLoadCases(), promotes=["*"])
+
 
 class MaxCGRatiosForLoadCases(om.ExplicitComponent):
     """Maximum center of gravity ratio from load cases."""

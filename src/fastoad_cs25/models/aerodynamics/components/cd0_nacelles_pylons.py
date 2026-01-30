@@ -19,6 +19,7 @@ import fastoad.api as oad
 from .utils.friction_drag import get_flat_plate_friction_drag_coefficient
 from ..constants import SERVICE_CD0_NACELLES_PYLONS
 
+
 @oad.RegisterSubmodel(
     SERVICE_CD0_NACELLES_PYLONS,
     "fastoad.submodel.aerodynamics.CD0.nacelles_pylons.legacy",

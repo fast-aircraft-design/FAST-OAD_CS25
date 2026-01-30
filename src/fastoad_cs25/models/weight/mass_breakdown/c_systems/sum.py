@@ -25,6 +25,7 @@ from .constants import (
 )
 from ..constants import SERVICE_SYSTEMS_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.legacy")
 class SystemsWeight(om.Group):
     """

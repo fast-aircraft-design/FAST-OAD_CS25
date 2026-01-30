@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_UNCONSUMABLES_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_UNCONSUMABLES_MASS, "fastoad.submodel.weight.mass.propulsion.unconsumables.legacy"
 )

@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_CD_COMPRESSIBILITY
 
+
 @oad.RegisterSubmodel(
     SERVICE_CD_COMPRESSIBILITY,
     "fastoad.submodel.aerodynamics.CD.compressibility.legacy",

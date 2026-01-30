@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_LANDING_GEARS_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_LANDING_GEARS_MASS, "fastoad.submodel.weight.mass.airframe.landing_gears.legacy"
 )

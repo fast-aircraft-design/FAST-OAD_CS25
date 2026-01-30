@@ -20,6 +20,7 @@ import fastoad.api as oad
 from .compute_max_cg_ratio import ComputeMaxCGratio
 from ..constants import SERVICE_EMPTY_AIRCRAFT_CG, SERVICE_GLOBAL_CG, SERVICE_LOAD_CASES_CG
 
+
 @oad.RegisterSubmodel(SERVICE_GLOBAL_CG, "fastoad.submodel.weight.cg.global.legacy")
 class ComputeGlobalCG(om.Group):
     # TODO: Document equations. Cite sources

@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_PYLONS_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_PYLONS_MASS, "fastoad.submodel.weight.mass.airframe.pylons.legacy")
 class PylonsWeight(om.ExplicitComponent):
     """

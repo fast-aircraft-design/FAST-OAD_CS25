@@ -27,6 +27,7 @@ from openmdao.core.component import Component
 from .constants import RUBBER_ENGINE_DESCRIPTION
 from .rubber_engine import RubberEngine
 
+
 @oad.RegisterPropulsion("fastoad.wrapper.propulsion.rubber_engine", desc=RUBBER_ENGINE_DESCRIPTION)
 class OMRubberEngineWrapper(IOMPropulsionWrapper):
     """
@@ -126,6 +127,7 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
         return FuelEngineSet(
             RubberEngine(**engine_params), inputs["data:geometry:propulsion:engine:count"]
         )
+
 
 @ValidityDomainChecker(
     {

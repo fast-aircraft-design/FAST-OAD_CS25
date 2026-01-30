@@ -21,6 +21,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_LIFE_SUPPORT_SYSTEMS_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_LIFE_SUPPORT_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.life_support.legacy"
 )

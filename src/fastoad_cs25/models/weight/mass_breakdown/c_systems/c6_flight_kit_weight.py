@@ -21,7 +21,10 @@ import fastoad.api as oad
 
 from .constants import SERVICE_FLIGHT_KIT_MASS
 
-@oad.RegisterSubmodel(SERVICE_FLIGHT_KIT_MASS, "fastoad.submodel.weight.mass.systems.flight_kit.legacy")
+
+@oad.RegisterSubmodel(
+    SERVICE_FLIGHT_KIT_MASS, "fastoad.submodel.weight.mass.systems.flight_kit.legacy"
+)
 class FlightKitWeight(om.ExplicitComponent):
     """
     Weight estimation for flight kit (tools that are always on board)

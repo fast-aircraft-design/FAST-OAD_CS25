@@ -20,7 +20,10 @@ import fastoad.api as oad
 
 from .constants import SERVICE_EMPENNAGE_MASS
 
-@oad.RegisterSubmodel(SERVICE_EMPENNAGE_MASS, "fastoad.submodel.weight.mass.airframe.empennage.legacy")
+
+@oad.RegisterSubmodel(
+    SERVICE_EMPENNAGE_MASS, "fastoad.submodel.weight.mass.airframe.empennage.legacy"
+)
 class EmpennageWeight(om.ExplicitComponent):
     """
     Weight estimation for tail planes

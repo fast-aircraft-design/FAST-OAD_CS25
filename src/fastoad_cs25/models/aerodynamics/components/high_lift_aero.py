@@ -27,6 +27,7 @@ from ..constants import SERVICE_HIGH_LIFT
 
 LIFT_EFFECTIVENESS_FILENAME = "interpolation of lift effectiveness.txt"
 
+
 @oad.RegisterSubmodel(SERVICE_HIGH_LIFT, "fastoad.submodel.aerodynamics.high_lift.legacy")
 class ComputeDeltaHighLift(om.ExplicitComponent):
     """

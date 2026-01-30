@@ -21,6 +21,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_MLG_CG
 
+
 @oad.RegisterSubmodel(SERVICE_MLG_CG, "fastoad.submodel.weight.cg.main_landing_gear")
 class UpdateMLG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources

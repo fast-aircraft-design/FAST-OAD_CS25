@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_CREW_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_CREW_MASS, "fastoad.submodel.weight.mass.crew.legacy")
 class CrewWeight(om.ExplicitComponent):
     """

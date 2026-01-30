@@ -22,6 +22,7 @@ from scipy.interpolate import interp1d
 
 from ..constants import SERVICE_FLIGHT_CONTROLS_CG
 
+
 @oad.RegisterSubmodel(
     SERVICE_FLIGHT_CONTROLS_CG, "fastoad.submodel.weight.cg.wing.control_surfaces.legacy"
 )

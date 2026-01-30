@@ -29,6 +29,7 @@ from .constants import (
     SERVICE_REYNOLDS_COEFFICIENT,
 )
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.lowspeed.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsLowSpeed(om.Group):
     """
@@ -62,7 +63,9 @@ class AerodynamicsLowSpeed(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "cd0_wing", oad.RegisterSubmodel.get_submodel(SERVICE_CD0, low_speed_option), promotes=["*"]
+            "cd0_wing",
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0, low_speed_option),
+            promotes=["*"],
         )
         self.add_subsystem(
             "cd_trim",

@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_ALPHA
 
+
 @oad.RegisterSubmodel(SERVICE_ALPHA, "fastoad.submodel.aerodynamics.alpha.legacy")
 class ComputeAlpha(om.ExplicitComponent):
     """

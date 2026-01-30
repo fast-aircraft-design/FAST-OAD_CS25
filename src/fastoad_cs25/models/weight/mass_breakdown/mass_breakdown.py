@@ -28,6 +28,7 @@ from .constants import (
     SERVICE_SYSTEMS_MASS,
 )
 
+
 @oad.RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
 class MassBreakdown(
     oad.CycleGroup,
@@ -63,8 +64,11 @@ class MassBreakdown(
             )
         self.add_subsystem("owe", oad.RegisterSubmodel.get_submodel(SERVICE_OWE), promotes=["*"])
         self.add_subsystem(
-            "update_mzfw_and_mlw", oad.RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW), promotes=["*"]
+            "update_mzfw_and_mlw",
+            oad.RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW),
+            promotes=["*"],
         )
+
 
 @oad.RegisterSubmodel(SERVICE_OWE, "fastoad.submodel.weight.mass.owe.legacy")
 class OperatingWeightEmpty(om.Group):

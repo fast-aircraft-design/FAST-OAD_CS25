@@ -19,6 +19,7 @@ from openmdao import api as om
 from .constants import SERVICE_ENGINE_MASS, SERVICE_FUEL_LINES_MASS, SERVICE_UNCONSUMABLES_MASS
 from ..constants import SERVICE_PROPULSION_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_PROPULSION_MASS, "fastoad.submodel.weight.mass.propulsion.legacy")
 class PropulsionWeight(om.Group):
     """

@@ -26,6 +26,7 @@ from .constants import (
     SERVICE_WING_MASS,
 )
 
+
 @oad.RegisterSubmodel(SERVICE_AIRFRAME_MASS, "fastoad.submodel.weight.mass.airframe.legacy")
 class AirframeWeight(om.Group):
     """
@@ -38,7 +39,9 @@ class AirframeWeight(om.Group):
             "wing_weight", oad.RegisterSubmodel.get_submodel(SERVICE_WING_MASS), promotes=["*"]
         )
         self.add_subsystem(
-            "fuselage_weight", oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_MASS), promotes=["*"]
+            "fuselage_weight",
+            oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_MASS),
+            promotes=["*"],
         )
         self.add_subsystem(
             "empennage_weight",

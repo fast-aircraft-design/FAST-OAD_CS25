@@ -19,6 +19,7 @@ import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
 import fastoad.api as oad
 
+
 @oad.RegisterOpenMDAOSystem("fastoad.loop.wing_position", domain=ModelDomain.OTHER)
 class ComputeWingPosition(om.ExplicitComponent):
     """

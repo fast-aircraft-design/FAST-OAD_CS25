@@ -21,6 +21,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_PASSENGER_SEATS_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_PASSENGER_SEATS_MASS, "service.mass.furniture.passenger_seats.legacy")
 class PassengerSeatsWeight(om.ExplicitComponent):
     """

@@ -20,6 +20,7 @@ from stdatm import AtmosphereSI
 
 from ..constants import SERVICE_REYNOLDS_COEFFICIENT
 
+
 @oad.RegisterSubmodel(
     SERVICE_REYNOLDS_COEFFICIENT,
     "fastoad.submodel.aerodynamics.reynolds_coefficient.legacy",

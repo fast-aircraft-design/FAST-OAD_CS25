@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_CD_TRIM
 
+
 @oad.RegisterSubmodel(SERVICE_CD_TRIM, "fastoad.submodel.aerodynamics.CD.trim.legacy")
 class CdTrim(om.ExplicitComponent):
     """Computation of trim drag."""

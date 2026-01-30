@@ -22,6 +22,7 @@ from scipy.constants import g
 
 from .constants import SERVICE_WING_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_WING_MASS, "fastoad.submodel.weight.mass.airframe.wing.legacy")
 class WingWeight(om.ExplicitComponent):
     """

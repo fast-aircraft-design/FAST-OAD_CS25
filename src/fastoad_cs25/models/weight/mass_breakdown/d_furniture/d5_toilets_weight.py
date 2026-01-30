@@ -21,6 +21,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_TOILETS_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_TOILETS_MASS, "service.mass.furniture.toilets.legacy")
 class ToiletsWeight(om.ExplicitComponent):
     """

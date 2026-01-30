@@ -32,6 +32,7 @@ from ...constants import (
     SERVICE_VERTICAL_TAIL_GEOMETRY,
 )
 
+
 @oad.RegisterSubmodel(
     SERVICE_VERTICAL_TAIL_GEOMETRY, "fastoad.submodel.geometry.vertical_tail.legacy"
 )

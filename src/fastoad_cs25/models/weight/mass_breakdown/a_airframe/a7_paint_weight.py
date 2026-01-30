@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_PAINT_MASS
 
+
 @oad.RegisterSubmodel(SERVICE_PAINT_MASS, "fastoad.submodel.weight.mass.airframe.paint.legacy")
 class PaintWeight(om.ExplicitComponent):
     """

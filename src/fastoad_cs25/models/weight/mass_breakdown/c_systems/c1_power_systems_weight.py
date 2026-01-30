@@ -20,7 +20,10 @@ import fastoad.api as oad
 
 from .constants import SERVICE_POWER_SYSTEMS_MASS
 
-@oad.RegisterSubmodel(SERVICE_POWER_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.power.legacy")
+
+@oad.RegisterSubmodel(
+    SERVICE_POWER_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.power.legacy"
+)
 class PowerSystemsWeight(om.ExplicitComponent):
     """
     Weight estimation for power systems (generation and distribution)

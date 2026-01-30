@@ -20,6 +20,7 @@ import fastoad.api as oad
 
 from .constants import SERVICE_FUEL_LINES_MASS
 
+
 @oad.RegisterSubmodel(
     SERVICE_FUEL_LINES_MASS, "fastoad.submodel.weight.mass.propulsion.fuel_lines.legacy"
 )

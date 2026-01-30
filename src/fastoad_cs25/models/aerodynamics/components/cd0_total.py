@@ -18,6 +18,7 @@ import fastoad.api as oad
 
 from ..constants import SERVICE_CD0_SUM
 
+
 @oad.RegisterSubmodel(SERVICE_CD0_SUM, "fastoad.submodel.aerodynamics.CD0.sum.legacy")
 class Cd0Total(om.ExplicitComponent):
     """Computes the sum of form drags from aircraft components."""

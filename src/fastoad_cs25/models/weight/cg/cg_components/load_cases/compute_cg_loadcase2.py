@@ -20,6 +20,7 @@ from .compute_cg_loadcases import SERVICE_LOAD_CASE_CG_PREFIX
 
 CASE_NUMBER = 2
 
+
 @oad.RegisterSubmodel(
     f"{SERVICE_LOAD_CASE_CG_PREFIX}.{CASE_NUMBER}",
     f"fastoad.submodel.weight.cg.load_case.legacy.{CASE_NUMBER}",
