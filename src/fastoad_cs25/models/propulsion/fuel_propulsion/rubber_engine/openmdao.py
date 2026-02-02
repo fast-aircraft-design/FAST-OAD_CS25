@@ -12,6 +12,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 from fastoad.model_base.propulsion import (
     BaseOMPropulsionComponent,
@@ -19,9 +20,7 @@ from fastoad.model_base.propulsion import (
     IOMPropulsionWrapper,
     IPropulsion,
 )
-
 from fastoad.openmdao.validity_checker import ValidityDomainChecker
-import fastoad.api as oad
 from openmdao.core.component import Component
 
 from .constants import RUBBER_ENGINE_DESCRIPTION
@@ -150,14 +149,9 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
         ),  # limitation of max thrust model
     }
 )
-# @oad.RegisterOpenMDAOSystem(
-#     "fastoad.propulsion.rubber_engine",
-#     desc=RUBBER_ENGINE_DESCRIPTION,
-#     domain=ModelDomain.PROPULSION,
-# )
 class OMRubberEngineComponent(BaseOMPropulsionComponent):
     """
-    Parametric engine model as OpenMDAO component
+    Parametric engine model as OpenMDAO component. Used for unit and integration tests.
 
     See
     :class:`~fastoad.models.propulsion.fuel_propulsion.rubber_engine.rubber_engine.RubberEngine`
