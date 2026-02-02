@@ -14,10 +14,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from itertools import count
 
+import fastoad.api as oad
 import numpy as np
 from fastoad.module_management.exceptions import FastNoSubmodelFoundError
-import fastoad.api as oad
-
 from openmdao import api as om
 
 from ...constants import SERVICE_LOAD_CASES_CG

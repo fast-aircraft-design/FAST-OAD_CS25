@@ -14,10 +14,9 @@ Estimation of tanks center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-import fastoad.api as oad
-
 from scipy import interpolate
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile

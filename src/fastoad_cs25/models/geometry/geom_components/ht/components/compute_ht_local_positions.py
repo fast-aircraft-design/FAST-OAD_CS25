@@ -16,7 +16,6 @@ Estimation of horizontal tail chords and span
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-
 import openmdao.api as om
 
 

@@ -25,14 +25,14 @@ from scipy.interpolate import interp1d
 from stdatm import Atmosphere
 
 from .constants import (
-    A_FM,
-    A_MS,
     ALPHA,
     ATM_SEA_LEVEL,
     ATM_TROPOPAUSE,
+    A_FM,
+    A_MS,
+    BETA,
     B_FM,
     B_MS,
-    BETA,
     C_FM,
     C_MS,
     D_FM,

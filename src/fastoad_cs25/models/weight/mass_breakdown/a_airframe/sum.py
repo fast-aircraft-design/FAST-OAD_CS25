@@ -12,10 +12,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import openmdao.api as om
 import fastoad.api as oad
+import openmdao.api as om
 
-from ..constants import SERVICE_AIRFRAME_MASS
 from .constants import (
     SERVICE_EMPENNAGE_MASS,
     SERVICE_FLIGHT_CONTROLS_MASS,
@@ -25,6 +24,7 @@ from .constants import (
     SERVICE_PYLONS_MASS,
     SERVICE_WING_MASS,
 )
+from ..constants import SERVICE_AIRFRAME_MASS
 
 
 @oad.RegisterSubmodel(SERVICE_AIRFRAME_MASS, "fastoad.submodel.weight.mass.airframe.legacy")

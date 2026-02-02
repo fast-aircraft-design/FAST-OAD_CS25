@@ -16,10 +16,9 @@ Computation of lift and drag increment due to high-lift devices
 
 from importlib.resources import open_text
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-import fastoad.api as oad
-
 from scipy import interpolate
 
 from . import resources

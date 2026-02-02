@@ -16,7 +16,6 @@ Submodel for computing wing planform.
 
 import fastoad.api as oad
 
-from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 from .compute_b_50 import ComputeB50
 from .compute_center_chord import ComputeCenterChord
 from .compute_l1_l4 import ComputeL1AndL4Wing
@@ -26,6 +25,7 @@ from .compute_relative_kink import ComputeRelativeKink
 from .compute_sweep_wing import ComputeInnerSweepWing, ComputeSweepWing
 from .compute_x_wing import ComputeXWing
 from .compute_y_wing import ComputeYWing
+from ..constants import SERVICE_WING_GEOMETRY_PLANFORM
 
 
 @oad.RegisterSubmodel(

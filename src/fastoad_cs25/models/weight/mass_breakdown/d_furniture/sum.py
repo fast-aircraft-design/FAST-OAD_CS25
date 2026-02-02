@@ -15,13 +15,13 @@
 import fastoad.api as oad
 from openmdao import api as om
 
-from ..constants import SERVICE_FURNITURE_MASS
 from .constants import (
     SERVICE_FOOD_WATER_MASS,
     SERVICE_PASSENGER_SEATS_MASS,
     SERVICE_SECURITY_KIT_MASS,
     SERVICE_TOILETS_MASS,
 )
+from ..constants import SERVICE_FURNITURE_MASS
 
 
 @oad.RegisterSubmodel(

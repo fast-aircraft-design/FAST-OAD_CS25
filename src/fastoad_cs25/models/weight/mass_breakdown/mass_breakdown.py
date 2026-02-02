@@ -15,8 +15,6 @@
 import fastoad.api as oad
 import openmdao.api as om
 
-from ...constants import PAYLOAD_FROM_NPAX
-from ..constants import SERVICE_MASS_BREAKDOWN
 from .constants import (
     SERVICE_AIRFRAME_MASS,
     SERVICE_CREW_MASS,
@@ -27,6 +25,8 @@ from .constants import (
     SERVICE_PROPULSION_MASS,
     SERVICE_SYSTEMS_MASS,
 )
+from ..constants import SERVICE_MASS_BREAKDOWN
+from ...constants import PAYLOAD_FROM_NPAX
 
 
 @oad.RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")

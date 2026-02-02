@@ -15,6 +15,7 @@ Estimation of center of gravity for load case 4
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import fastoad.api as oad
+
 from .compute_cg_loadcase_base import ComputeCGLoadCase
 from .compute_cg_loadcases import SERVICE_LOAD_CASE_CG_PREFIX
 
