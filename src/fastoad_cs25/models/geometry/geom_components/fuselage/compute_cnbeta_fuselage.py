@@ -14,7 +14,6 @@ Estimation of yawing moment due to sideslip
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import math
 
 import fastoad.api as oad
 import numpy as np
@@ -52,10 +51,10 @@ class ComputeCnBetaFuselage(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         span = inputs["data:geometry:wing:span"]
 
-        l_f = math.sqrt(width_max * height_max)
+        l_f = np.sqrt(width_max * height_max)
         l_cyc = fus_length - lav - lar
         # estimation of fuselage volume
-        volume_fus = math.pi * l_f**2 / 4 * (0.7 * lav + 0.5 * lar + l_cyc)
+        volume_fus = np.pi * l_f**2 / 4 * (0.7 * lav + 0.5 * lar + l_cyc)
         # equation from raymer book eqn. 16.47
         cn_beta_fus = -1.3 * volume_fus / wing_area / span * (l_f / width_max)
 

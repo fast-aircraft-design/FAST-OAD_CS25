@@ -14,8 +14,6 @@ Estimation of wing chords (l1 and l4)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 
@@ -52,7 +50,7 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
 
         l1_wing = (
             wing_area
-            - (y3_wing - y2_wing) * (y3_wing + y2_wing) * (math.tan(sweep_25) - math.tan(sweep_100))
+            - (y3_wing - y2_wing) * (y3_wing + y2_wing) * (np.tan(sweep_25) - np.tan(sweep_100))
         ) / (
             (1.0 + virtual_taper_ratio) / 2.0 * (span - 2 * y2_wing)
             + 2 * y2_wing
