@@ -44,7 +44,9 @@ class Cd0VerticalTail(om.ExplicitComponent):
         self.add_input("data:geometry:vertical_tail:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless"
+            )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:vertical_tail:low_speed:CD0", units="unitless")
         else:

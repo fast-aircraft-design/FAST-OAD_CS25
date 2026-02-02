@@ -54,7 +54,9 @@ class WingWeight(om.ExplicitComponent):
         self.add_input("data:mission:sizing:cs25:sizing_load", val=np.nan, units="N")
         self.add_input("tuning:weight:airframe:wing:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:wing:mass:offset", val=0.0, units="kg")
-        self.add_input("tuning:weight:airframe:wing:bending_sizing:mass:k", val=1.0, units="unitless")
+        self.add_input(
+            "tuning:weight:airframe:wing:bending_sizing:mass:k", val=1.0, units="unitless"
+        )
         self.add_input(
             "tuning:weight:airframe:wing:bending_sizing:mass:offset", val=0.0, units="kg"
         )
@@ -62,11 +64,15 @@ class WingWeight(om.ExplicitComponent):
         self.add_input("tuning:weight:airframe:wing:shear_sizing:mass:offset", val=0.0, units="kg")
         self.add_input("tuning:weight:airframe:wing:ribs:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:wing:ribs:mass:offset", val=0.0, units="kg")
-        self.add_input("tuning:weight:airframe:wing:reinforcements:mass:k", val=1.0, units="unitless")
+        self.add_input(
+            "tuning:weight:airframe:wing:reinforcements:mass:k", val=1.0, units="unitless"
+        )
         self.add_input(
             "tuning:weight:airframe:wing:reinforcements:mass:offset", val=0.0, units="kg"
         )
-        self.add_input("tuning:weight:airframe:wing:secondary_parts:mass:k", val=1.0, units="unitless")
+        self.add_input(
+            "tuning:weight:airframe:wing:secondary_parts:mass:k", val=1.0, units="unitless"
+        )
         self.add_input(
             "tuning:weight:airframe:wing:secondary_parts:mass:offset", val=0.0, units="kg"
         )

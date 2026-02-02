@@ -43,7 +43,9 @@ class ComputeAlpha(om.ExplicitComponent):
             val=np.nan,
             units="1/rad",
         )
-        self.add_input(f"data:aerodynamics:aircraft:{polar_type}:CL0", val=CL0_default, units="unitless")
+        self.add_input(
+            f"data:aerodynamics:aircraft:{polar_type}:CL0", val=CL0_default, units="unitless"
+        )
 
         self.add_output(
             f"data:aerodynamics:aircraft:{polar_type}:AoA",

@@ -474,7 +474,9 @@ def test_compute_max_cg_ratio(input_xml):
     input_vars = input_xml.read(only=input_list).to_ivc()
 
     input_vars.add_output("data:weight:aircraft:empty:CG:MAC_position", 0.387846, units="unitless")
-    input_vars.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", 0.388971, units="unitless")
+    input_vars.add_output(
+        "data:weight:aircraft:load_cases:CG:MAC_position:maximum", 0.388971, units="unitless"
+    )
 
     problem = run_system(ComputeMaxCGratio(), input_vars)
 

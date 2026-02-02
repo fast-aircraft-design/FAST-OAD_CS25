@@ -76,7 +76,9 @@ class OMRubberEngineWrapper(IOMPropulsionWrapper):
 
     def setup(self, component: Component):
         component.add_input("data:propulsion:rubber_engine:bypass_ratio", np.nan, units="unitless")
-        component.add_input("data:propulsion:rubber_engine:overall_pressure_ratio", np.nan, units="unitless")
+        component.add_input(
+            "data:propulsion:rubber_engine:overall_pressure_ratio", np.nan, units="unitless"
+        )
         component.add_input(
             "data:propulsion:rubber_engine:turbine_inlet_temperature", np.nan, units="K"
         )

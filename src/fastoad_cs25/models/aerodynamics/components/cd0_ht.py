@@ -40,13 +40,19 @@ class Cd0HorizontalTail(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:horizontal_tail:MAC:length", val=np.nan, units="m")
-        self.add_input("data:geometry:horizontal_tail:thickness_ratio", val=np.nan, units="unitless")
+        self.add_input(
+            "data:geometry:horizontal_tail:thickness_ratio", val=np.nan, units="unitless"
+        )
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:horizontal_tail:wetted_area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
-        self.add_input("settings:aerodynamics:wing:CD:fuselage_interaction", val=0.04, units="unitless")
+        self.add_input(
+            "settings:aerodynamics:wing:CD:fuselage_interaction", val=0.04, units="unitless"
+        )
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless"
+            )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD0", units="unitless")
         else:
