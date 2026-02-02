@@ -203,11 +203,7 @@ def test_geometry_wing_sweep_inner():
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
     input_vars.add_output("data:geometry:wing:sweep_100_outer", 16.7, units="deg")
-    input_vars.add_output(
-        "data:geometry:wing:sweep_100_ratio",
-        1.0,
-        units="unitless"
-    )
+    input_vars.add_output("data:geometry:wing:sweep_100_ratio", 1.0, units="unitless")
 
     problem = run_system(ComputeInnerSweepWing(), input_vars)
 

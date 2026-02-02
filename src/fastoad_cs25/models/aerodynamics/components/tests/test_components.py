@@ -69,10 +69,14 @@ def test_high_lift_aero():
             ivc.add_output("data:aerodynamics:aircraft:takeoff:mach", mach, units="unitless")
         if multi_slot_flag:
             ivc.add_output(
-                "tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k", 1.1, units="unitless"
+                "tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k",
+                1.1,
+                units="unitless",
             )
             ivc.add_output(
-                "tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k", 1.01, units="unitless"
+                "tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k",
+                1.01,
+                units="unitless",
             )
         component = ComputeDeltaHighLift()
         component.options["landing_flag"] = landing_flag
@@ -150,9 +154,13 @@ def test_induced_drag_coefficient():
     def get_coeff(mach, low_speed_aero=False):
         ivc = get_indep_var_comp(input_list)
         if low_speed_aero:
-            ivc.add_output("data:aerodynamics:aircraft:low_speed:oswald_coefficient", mach, units="unitless")
+            ivc.add_output(
+                "data:aerodynamics:aircraft:low_speed:oswald_coefficient", mach, units="unitless"
+            )
         else:
-            ivc.add_output("data:aerodynamics:aircraft:cruise:oswald_coefficient", mach, units="unitless")
+            ivc.add_output(
+                "data:aerodynamics:aircraft:cruise:oswald_coefficient", mach, units="unitless"
+            )
         problem = run_system(InducedDragCoefficient(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
             return problem["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
@@ -235,7 +243,7 @@ def test_cd_compressibility():
         ivc.add_output(
             "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment",
             delta_charac_mach,
-            units="unitless"
+            units="unitless",
         )
 
         problem = run_system(CdCompressibility(), ivc)
@@ -331,7 +339,9 @@ def test_polar_high_speed():
     group.add_subsystem("polar", ComputePolar(), promotes=["*"])
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:aerodynamics:aircraft:cruise:CL", np.arange(0.0, 1.5, 0.01), units="unitless")
+    ivc.add_output(
+        "data:aerodynamics:aircraft:cruise:CL", np.arange(0.0, 1.5, 0.01), units="unitless"
+    )
 
     problem = run_system(group, ivc)
 
@@ -397,7 +407,9 @@ def test_polar_low_speed():
     group.add_subsystem("polar", ComputePolar(polar_type=PolarType.LOW_SPEED), promotes=["*"])
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:aerodynamics:aircraft:low_speed:CL", np.arange(0.0, 1.5, 0.01), units="unitless")
+    ivc.add_output(
+        "data:aerodynamics:aircraft:low_speed:CL", np.arange(0.0, 1.5, 0.01), units="unitless"
+    )
 
     problem = run_system(group, ivc)
 
@@ -460,7 +472,9 @@ def test_polar_high_lift():
     group.add_subsystem("polar", ComputePolar(polar_type=PolarType.TAKEOFF), promotes=["*"])
 
     ivc = get_indep_var_comp(input_list)
-    ivc.add_output("data:aerodynamics:aircraft:low_speed:CL", np.arange(0.0, 1.5, 0.01), units="unitless")
+    ivc.add_output(
+        "data:aerodynamics:aircraft:low_speed:CL", np.arange(0.0, 1.5, 0.01), units="unitless"
+    )
 
     problem = run_system(group, ivc)
 

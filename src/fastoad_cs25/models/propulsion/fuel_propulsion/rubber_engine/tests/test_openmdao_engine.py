@@ -54,7 +54,9 @@ def test_OMRubberEngineComponent():
     ivc.add_output("data:propulsion:altitude", [altitudes, altitudes], units="m")
     ivc.add_output("data:propulsion:engine_setting", [phases, phases], units="unitless")
     ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5], units="unitless")
-    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless")
+    ivc.add_output(
+        "data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless"
+    )
     ivc.add_output("data:propulsion:required_thrust", [[0] * 5, thrusts], units="N")
 
     problem = run_system(engine, ivc)
@@ -99,7 +101,9 @@ def test_OMRubberEngineComponentWithSFCCorrections():
     ivc.add_output("data:propulsion:altitude", [altitudes, altitudes], units="m")
     ivc.add_output("data:propulsion:engine_setting", [phases, phases], units="unitless")
     ivc.add_output("data:propulsion:use_thrust_rate", [[True] * 5, [False] * 5], units="unitless")
-    ivc.add_output("data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless")
+    ivc.add_output(
+        "data:propulsion:required_thrust_rate", [thrust_rates, [0] * 5], units="unitless"
+    )
     ivc.add_output("data:propulsion:required_thrust", [[0] * 5, thrusts], units="N")
 
     ivc.add_output("tuning:propulsion:rubber_engine:SFC:k_cr", 0.9, units="unitless")

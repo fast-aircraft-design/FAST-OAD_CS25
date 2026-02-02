@@ -26,7 +26,9 @@ class ComputeVTDistance(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
-        self.add_input("settings:geometry:vertical_tail:position_ratio_on_fuselage", val=0.88, units="unitless")
+        self.add_input(
+            "settings:geometry:vertical_tail:position_ratio_on_fuselage", val=0.88, units="unitless"
+        )
 
         self.add_output("data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", units="m")
 

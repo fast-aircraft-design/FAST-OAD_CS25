@@ -234,7 +234,9 @@ def test_compute_ht_global_positions(input_xml):
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15, units="m")
-    input_vars.add_output("data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", 16.98, units="m")
+    input_vars.add_output(
+        "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", 16.98, units="m"
+    )
     input_vars.add_output("data:geometry:horizontal_tail:MAC:leading_edge:x:local", 0.88, units="m")
     input_vars.add_output("data:geometry:horizontal_tail:MAC:length", 3.17, units="m")
     input_vars.add_output("data:geometry:horizontal_tail:tip:leading_edge:x:local", 2.82, units="m")
@@ -399,7 +401,9 @@ def test_compute_vt_global_positions(input_xml):
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 17.15, units="m")
-    input_vars.add_output("data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", 15.86, units="m")
+    input_vars.add_output(
+        "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25", 15.86, units="m"
+    )
     input_vars.add_output("data:geometry:vertical_tail:MAC:leading_edge:x:local", 1.34, units="m")
     input_vars.add_output("data:geometry:vertical_tail:MAC:length", 4.36, units="m")
     input_vars.add_output("data:geometry:vertical_tail:tip:leading_edge:x:local", 4.20, units="m")

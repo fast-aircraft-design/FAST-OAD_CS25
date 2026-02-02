@@ -86,7 +86,9 @@ class WingAreaConstraintsAero(om.ExplicitComponent):
         self.add_input("data:aerodynamics:aircraft:landing:CL_max", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
 
-        self.add_output("data:aerodynamics:aircraft:landing:additional_CL_capacity", units="unitless")
+        self.add_output(
+            "data:aerodynamics:aircraft:landing:additional_CL_capacity", units="unitless"
+        )
 
         self.declare_partials(of="*", wrt="*", method="exact")
 

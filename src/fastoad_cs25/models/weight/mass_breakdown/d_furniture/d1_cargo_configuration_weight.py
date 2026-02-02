@@ -35,8 +35,12 @@ class CargoConfigurationWeight(om.ExplicitComponent):
         self.add_input("data:geometry:cabin:NPAX1", val=np.nan, units="unitless")
         self.add_input("data:geometry:cabin:containers:count", val=np.nan, units="unitless")
         self.add_input("data:geometry:cabin:pallet_count", val=np.nan, units="unitless")
-        self.add_input("data:geometry:cabin:seats:economical:count_by_row", val=np.nan, units="unitless")
-        self.add_input("tuning:weight:furniture:cargo_configuration:mass:k", val=1.0, units="unitless")
+        self.add_input(
+            "data:geometry:cabin:seats:economical:count_by_row", val=np.nan, units="unitless"
+        )
+        self.add_input(
+            "tuning:weight:furniture:cargo_configuration:mass:k", val=1.0, units="unitless"
+        )
         self.add_input(
             "tuning:weight:furniture:cargo_configuration:mass:offset", val=0.0, units="kg"
         )

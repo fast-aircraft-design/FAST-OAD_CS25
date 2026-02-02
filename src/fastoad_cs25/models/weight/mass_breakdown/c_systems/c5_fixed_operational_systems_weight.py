@@ -36,7 +36,9 @@ class FixedOperationalSystemsWeight(om.ExplicitComponent):
         self.add_input("data:geometry:fuselage:front_length", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:rear_length", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
-        self.add_input("data:geometry:cabin:seats:economical:count_by_row", val=np.nan, units="unitless")
+        self.add_input(
+            "data:geometry:cabin:seats:economical:count_by_row", val=np.nan, units="unitless"
+        )
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
         self.add_input("data:geometry:cabin:containers:count_by_row", val=np.nan, units="unitless")
         self.add_input("tuning:weight:systems:operational:mass:k", val=1.0, units="unitless")

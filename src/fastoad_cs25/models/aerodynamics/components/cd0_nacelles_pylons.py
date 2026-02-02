@@ -32,7 +32,9 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
 
     def setup(self):
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless"
+            )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:nacelles:low_speed:CD0", units="unitless")
             self.add_output("data:aerodynamics:pylons:low_speed:CD0", units="unitless")

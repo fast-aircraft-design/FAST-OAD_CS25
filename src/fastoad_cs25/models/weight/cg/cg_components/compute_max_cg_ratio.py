@@ -24,7 +24,9 @@ class ComputeMaxCGratio(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:weight:aircraft:empty:CG:MAC_position", val=np.nan, units="unitless")
-        self.add_input("data:weight:aircraft:load_cases:CG:MAC_position:maximum", val=np.nan, units="unitless")
+        self.add_input(
+            "data:weight:aircraft:load_cases:CG:MAC_position:maximum", val=np.nan, units="unitless"
+        )
         self.add_input(
             "settings:weight:aircraft:CG:aft:MAC_position:margin",
             val=0.05,

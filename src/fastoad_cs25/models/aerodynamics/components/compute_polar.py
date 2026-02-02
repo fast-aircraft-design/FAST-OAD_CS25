@@ -28,9 +28,17 @@ class ComputePolar(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("tuning:aerodynamics:aircraft:cruise:CD:k", val=np.nan, units="unitless")
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:offset", val=np.nan, units="unitless")
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k", val=np.nan, units="unitless")
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset", val=np.nan, units="unitless")
+        self.add_input(
+            "tuning:aerodynamics:aircraft:cruise:CD:offset", val=np.nan, units="unitless"
+        )
+        self.add_input(
+            "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k", val=np.nan, units="unitless"
+        )
+        self.add_input(
+            "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+            val=np.nan,
+            units="unitless",
+        )
 
         if self.options["polar_type"] != PolarType.HIGH_SPEED:
             self.add_input(
@@ -58,8 +66,12 @@ class ComputePolar(om.ExplicitComponent):
             )
 
             if self.options["polar_type"] == PolarType.TAKEOFF:
-                self.add_input("data:aerodynamics:high_lift_devices:takeoff:CL", val=np.nan, units="unitless")
-                self.add_input("data:aerodynamics:high_lift_devices:takeoff:CD", val=np.nan, units="unitless")
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:takeoff:CL", val=np.nan, units="unitless"
+                )
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:takeoff:CD", val=np.nan, units="unitless"
+                )
                 self.add_output(
                     "data:aerodynamics:aircraft:takeoff:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
@@ -72,8 +84,12 @@ class ComputePolar(om.ExplicitComponent):
                 )
 
             elif self.options["polar_type"] == PolarType.LANDING:
-                self.add_input("data:aerodynamics:high_lift_devices:landing:CL", val=np.nan, units="unitless")
-                self.add_input("data:aerodynamics:high_lift_devices:landing:CD", val=np.nan, units="unitless")
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:landing:CL", val=np.nan, units="unitless"
+                )
+                self.add_input(
+                    "data:aerodynamics:high_lift_devices:landing:CD", val=np.nan, units="unitless"
+                )
                 self.add_output(
                     "data:aerodynamics:landing:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
@@ -99,8 +115,18 @@ class ComputePolar(om.ExplicitComponent):
                 raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
-            self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan, units="unitless")
-            self.add_input("data:aerodynamics:aircraft:cruise:CD0", shape_by_conn=True, val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:CL",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:CD0",
+                shape_by_conn=True,
+                val=np.nan,
+                units="unitless",
+            )
             self.add_input(
                 "data:aerodynamics:aircraft:cruise:CD:trim",
                 shape_by_conn=True,
@@ -113,7 +139,11 @@ class ComputePolar(om.ExplicitComponent):
                 val=np.nan,
                 units="unitless",
             )
-            self.add_input("data:aerodynamics:aircraft:cruise:induced_drag_coefficient", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:induced_drag_coefficient",
+                val=np.nan,
+                units="unitless",
+            )
 
             self.add_output(
                 "data:aerodynamics:aircraft:cruise:CD",

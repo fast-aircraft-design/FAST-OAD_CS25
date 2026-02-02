@@ -43,7 +43,9 @@ class ComputeHTArea(om.ExplicitComponent):
         self.add_input("data:weight:airframe:landing_gear:front:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
         self.add_input("settings:weight:aircraft:CG:range", val=0.3, units="unitless")
-        self.add_input("settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08, units="unitless")
+        self.add_input(
+            "settings:weight:airframe:landing_gear:front:weight_ratio", val=0.08, units="unitless"
+        )
         self.add_input(
             "settings:geometry:horizontal_tail:position_ratio_on_fuselage",
             val=0.91,
