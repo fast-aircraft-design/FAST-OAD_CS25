@@ -14,10 +14,10 @@ Computation of wing position
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-import fastoad.api as oad
 
 
 @oad.RegisterOpenMDAOSystem("fastoad.loop.wing_position", domain=ModelDomain.OTHER)

@@ -14,10 +14,10 @@ Estimation of flight kit weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad.constants import RangeCategory
-import fastoad.api as oad
 
 from .constants import SERVICE_FLIGHT_KIT_MASS
 

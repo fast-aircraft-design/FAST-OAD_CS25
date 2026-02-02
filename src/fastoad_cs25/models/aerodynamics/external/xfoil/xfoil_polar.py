@@ -22,17 +22,16 @@ from importlib.resources import path
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad._utils.resource_management.copy import copy_resource
-import fastoad.api as oad
-
 from openmdao.utils.file_wrap import InputFileGenerator
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
 
-from ...constants import SERVICE_XFOIL
 from . import resources, xfoil699
+from ...constants import SERVICE_XFOIL
 
 OPTION_RESULT_POLAR_FILENAME = "result_polar_filename"
 OPTION_RESULT_FOLDER_PATH = "result_folder_path"

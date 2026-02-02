@@ -14,8 +14,8 @@ Estimation of global center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import openmdao.api as om
 import fastoad.api as oad
+import openmdao.api as om
 
 from .compute_max_cg_ratio import ComputeMaxCGratio
 from ..constants import SERVICE_EMPTY_AIRCRAFT_CG, SERVICE_GLOBAL_CG, SERVICE_LOAD_CASES_CG

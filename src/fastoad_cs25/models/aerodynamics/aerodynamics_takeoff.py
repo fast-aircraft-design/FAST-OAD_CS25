@@ -12,11 +12,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-import fastoad.api as oad
 
-from .constants import PolarType, SERVICE_HIGH_LIFT, SERVICE_POLAR
+from .constants import SERVICE_HIGH_LIFT, SERVICE_POLAR, PolarType
 
 
 @oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.takeoff.legacy", domain=ModelDomain.AERODYNAMICS)
