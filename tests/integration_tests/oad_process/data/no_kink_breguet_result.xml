@@ -16,39 +16,39 @@
 <FASTOAD_model>
   <data>
     <TLAR>
-      <NPAX is_input="True">150.0<!--top-level requirement: number of passengers, assuming a classic eco/business class repartition--></NPAX>
+      <NPAX is_input="True" units="unitless">150.0<!--top-level requirement: number of passengers, assuming a classic eco/business class repartition--></NPAX>
       <approach_speed units="knot" is_input="True">132.0<!--top-level requirement: approach speed--></approach_speed>
       <cruise_mach is_input="True">0.78<!--Input defined by the mission.--></cruise_mach>
       <range units="nmi" is_input="True">2750.0<!--Input defined by the mission.--></range>
     </TLAR>
     <geometry>
-      <has_T_tail is_input="True">0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
+      <has_T_tail is_input="True" units="unitless">0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
       <aircraft>
         <wetted_area units="m**2" is_input="False">810.149242366622<!--total wetted area--></wetted_area>
       </aircraft>
       <cabin>
-        <NPAX1 is_input="False">157.0<!--number of passengers if there are only economical class seats--></NPAX1>
+        <NPAX1 is_input="False" units="unitless">157.0<!--number of passengers if there are only economical class seats--></NPAX1>
         <aisle_width units="m" is_input="True">0.48<!--width of aisles--></aisle_width>
         <exit_width units="m" is_input="True">0.51<!--width of exits--></exit_width>
         <length units="m" is_input="False">30.380964840000004<!--cabin length--></length>
         <containers>
-          <count_by_row is_input="True">1.0<!--number of cargo containers along width--></count_by_row>
+          <count_by_row is_input="True" units="unitless">1.0<!--number of cargo containers along width--></count_by_row>
         </containers>
         <crew_count>
-          <commercial is_input="False">4.0<!--number of commercial crew members--></commercial>
-          <technical is_input="True">2.0<!--number of technical crew members--></technical>
+          <commercial is_input="False" units="unitless">4.0<!--number of commercial crew members--></commercial>
+          <technical is_input="True" units="unitless">2.0<!--number of technical crew members--></technical>
         </crew_count>
         <seats>
           <economical>
-            <count_by_row is_input="True">6.0<!--number of economical class seats along width--></count_by_row>
+            <count_by_row is_input="True" units="unitless">6.0<!--number of economical class seats along width--></count_by_row>
             <length units="m" is_input="True">0.86<!--length of economical class seats--></length>
             <width units="m" is_input="True">0.46<!--width of economical class seats--></width>
           </economical>
         </seats>
       </cabin>
       <flap>
-        <chord_ratio is_input="True">0.197<!--mean value of (flap chord)/(section chord)--></chord_ratio>
-        <span_ratio is_input="True">0.8<!--ratio (width of flaps)/(total span)--></span_ratio>
+        <chord_ratio is_input="True" units="unitless">0.197<!--mean value of (flap chord)/(section chord)--></chord_ratio>
+        <span_ratio is_input="True" units="unitless">0.8<!--ratio (width of flaps)/(total span)--></span_ratio>
       </flap>
       <fuselage>
         <PAX_length units="m" is_input="False">22.87<!--length of passenger-dedicated zone--></PAX_length>
@@ -61,13 +61,13 @@
       </fuselage>
       <horizontal_tail>
         <area units="m**2" is_input="False">34.4824294323336<!--horizontal tail area--></area>
-        <aspect_ratio is_input="True">4.28778048454<!--aspect ratio of horizontal tail--></aspect_ratio>
+        <aspect_ratio is_input="True" units="unitless">4.28778048454<!--aspect ratio of horizontal tail--></aspect_ratio>
         <span units="m" is_input="False">12.159485507512253<!--horizontal tail span--></span>
         <sweep_0 units="deg" is_input="False">33.31651496553977<!--sweep angle at leading edge of horizontal tail--></sweep_0>
         <sweep_100 units="deg" is_input="False">8.80894178425667<!--sweep angle at trailing edge of horizontal tail--></sweep_100>
         <sweep_25 units="deg" is_input="True">28.0<!--sweep angle at 25% chord of horizontal tail--></sweep_25>
-        <taper_ratio is_input="True">0.3<!--taper ratio of horizontal tail--></taper_ratio>
-        <thickness_ratio is_input="True">0.1<!--thickness ratio of horizontal tail--></thickness_ratio>
+        <taper_ratio is_input="True" units="unitless">0.3<!--taper ratio of horizontal tail--></taper_ratio>
+        <thickness_ratio is_input="True" units="unitless">0.1<!--thickness ratio of horizontal tail--></thickness_ratio>
         <wetted_area units="m**2" is_input="False">68.9648588646672<!--wetted area of horizontal tail--></wetted_area>
         <MAC>
           <length units="m" is_input="False">3.1099219411822054<!--_inp_data:geometry:horizontal_tail:MAC:length--></length>
@@ -96,9 +96,9 @@
         <height units="m" is_input="False">3.0411414104151127<!--height of landing gear--></height>
       </landing_gear>
       <propulsion>
-        <layout is_input="True">1.0<!--position of engines (1=under the wing / 2=rear fuselage)--></layout>
+        <layout is_input="True" units="unitless">1.0<!--position of engines (1=under the wing / 2=rear fuselage)--></layout>
         <engine>
-          <count is_input="True">2.0<!--number of engines--></count>
+          <count is_input="True" units="unitless">2.0<!--number of engines--></count>
           <y_ratio is_input="True">0.34<!--engine position with respect to total span--></y_ratio>
         </engine>
         <fan>
@@ -116,18 +116,18 @@
         </pylon>
       </propulsion>
       <slat>
-        <chord_ratio is_input="True">0.177<!--mean value of slat chord)/(section chord)--></chord_ratio>
-        <span_ratio is_input="True">0.9<!--ratio (width of slats)/(total span)--></span_ratio>
+        <chord_ratio is_input="True" units="unitless">0.177<!--mean value of slat chord)/(section chord)--></chord_ratio>
+        <span_ratio is_input="True" units="unitless">0.9<!--ratio (width of slats)/(total span)--></span_ratio>
       </slat>
       <vertical_tail>
         <area units="m**2" is_input="False">27.675384276322472<!--vertical tail area--></area>
-        <aspect_ratio is_input="True">1.74462618632<!--aspect ratio of vertical tail--></aspect_ratio>
+        <aspect_ratio is_input="True" units="unitless">1.74462618632<!--aspect ratio of vertical tail--></aspect_ratio>
         <span units="m" is_input="False">6.948611377259697<!--vertical tail span--></span>
         <sweep_0 units="deg" is_input="False">40.51480176597914<!--sweep angle at leading edge of vertical tail--></sweep_0>
         <sweep_100 units="deg" is_input="False">13.346519785400803<!--sweep angle at trailing edge of vertical tail--></sweep_100>
         <sweep_25 units="deg" is_input="True">35.0<!--sweep angle at 25% chord of vertical tail--></sweep_25>
-        <taper_ratio is_input="True">0.3<!--taper ratio of vertical tail--></taper_ratio>
-        <thickness_ratio is_input="True">0.1<!--thickness ratio of vertical tail--></thickness_ratio>
+        <taper_ratio is_input="True" units="unitless">0.3<!--taper ratio of vertical tail--></taper_ratio>
+        <thickness_ratio is_input="True" units="unitless">0.1<!--thickness ratio of vertical tail--></thickness_ratio>
         <wetted_area units="m**2" is_input="False">58.118306980277204<!--wetted area of vertical tail--></wetted_area>
         <MAC>
           <length units="m" is_input="False">4.367797229764228<!--_inp_data:geometry:vertical_tail:MAC:length--></length>
@@ -154,18 +154,18 @@
       </vertical_tail>
       <wing>
         <area units="m**2" is_input="False">131.53889808769554<!--wing reference area--></area>
-        <aspect_ratio is_input="True">9.48<!--wing aspect ratio--></aspect_ratio>
+        <aspect_ratio is_input="True" units="unitless">9.48<!--wing aspect ratio--></aspect_ratio>
         <b_50 units="m" is_input="False">38.24004165494306<!--actual length between root and tip along 50% of chord--></b_50>
         <outer_area units="m**2" is_input="False">111.38261786110664<!--wing area outside of fuselage--></outer_area>
         <span units="m" is_input="False">35.312727921669875<!--wing span--></span>
         <sweep_0 units="deg" is_input="False">27.34279936678936<!--sweep angle at leading edge of wing--></sweep_0>
         <sweep_100_inner units="deg" is_input="False">17.4310428125833<!--sweep angle at trailing edge of wing (inner side of the kink)--></sweep_100_inner>
         <sweep_100_outer units="deg" is_input="False">17.4310428125833<!--sweep angle at trailing edge of wing (outer side of the kink)--></sweep_100_outer>
-        <sweep_100_ratio is_input="True">0.0<!--ratio inner/outer for sweep angles at trailing edge of wing--></sweep_100_ratio>
+        <sweep_100_ratio is_input="True" units="unitless">0.0<!--ratio inner/outer for sweep angles at trailing edge of wing--></sweep_100_ratio>
         <sweep_25 units="deg" is_input="True">25.0<!--sweep angle at 25% chord of wing--></sweep_25>
-        <taper_ratio is_input="False">0.38<!--taper ratio of wing--></taper_ratio>
-        <thickness_ratio is_input="False">0.12839840880979247<!--mean thickness ratio of wing--></thickness_ratio>
-        <virtual_taper_ratio is_input="True">0.38<!--taper ratio of wing computed from virtual root chord--></virtual_taper_ratio>
+        <taper_ratio is_input="False" units="unitless">0.38<!--taper ratio of wing--></taper_ratio>
+        <thickness_ratio is_input="False" units="unitless">0.12839840880979247<!--mean thickness ratio of wing--></thickness_ratio>
+        <virtual_taper_ratio is_input="True" units="unitless">0.38<!--taper ratio of wing computed from virtual root chord--></virtual_taper_ratio>
         <wetted_area units="m**2" is_input="False">222.76523572221328<!--wetted area of wing--></wetted_area>
         <MAC>
           <length units="m" is_input="False">3.9944277942067328<!--_inp_data:geometry:wing:MAC:length--></length>
@@ -179,8 +179,8 @@
         </MAC>
         <kink>
           <chord units="m" is_input="False">5.142065615055217<!--chord length at wing kink--></chord>
-          <span_ratio is_input="True">0.0<!--ratio (Y-position of kink)/(semi-span)--></span_ratio>
-          <thickness_ratio is_input="False">0.15921402692414266<!--thickness ratio at wing kink--></thickness_ratio>
+          <span_ratio is_input="True" units="unitless">0.0<!--ratio (Y-position of kink)/(semi-span)--></span_ratio>
+          <thickness_ratio is_input="False" units="unitless">0.15921402692414266<!--thickness ratio at wing kink--></thickness_ratio>
           <y units="m" is_input="False">1.95994<!--Y-position of wing kink--></y>
           <leading_edge>
             <x units="m" is_input="False">12.686472545528725<local units="m" is_input="False">0.0<!--_inp_data:geometry:wing:kink:leading_edge:x:local--></local></x>
@@ -188,7 +188,7 @@
         </kink>
         <root>
           <chord units="m" is_input="False">5.142065615055217<!--chord length at wing root--></chord>
-          <thickness_ratio is_input="False">0.15921402692414266<!--thickness ratio at wing root--></thickness_ratio>
+          <thickness_ratio is_input="False" units="unitless">0.15921402692414266<!--thickness ratio at wing root--></thickness_ratio>
           <virtual_chord units="m" is_input="False">5.142065615055217<!--virtual chord length at wing root if sweep angle of trailing edge of outer wing part was on the whole wing (no kink)--></virtual_chord>
           <y units="m" is_input="False">1.95994<!--Y-position of wing root--></y>
           <leading_edge>
@@ -197,7 +197,7 @@
         </root>
         <tip>
           <chord units="m" is_input="False">1.9539849337209825<!--chord length at wing tip--></chord>
-          <thickness_ratio is_input="False">0.11042263157642153<!--thickness ratio at wing tip--></thickness_ratio>
+          <thickness_ratio is_input="False" units="unitless">0.11042263157642153<!--thickness ratio at wing tip--></thickness_ratio>
           <y units="m" is_input="False">17.656363960834938<!--Y-position of wing tip--></y>
           <leading_edge>
             <x units="m" is_input="False">20.802855414447233<local units="m" is_input="False">8.116382868918507<!--_inp_data:geometry:wing:tip:leading_edge:x:local--></local></x>
@@ -205,24 +205,24 @@
         </tip>
         <spar_ratio>
           <front>
-            <kink is_input="True">0.15<!--ratio (front spar position)/(chord length) at wing kink--></kink>
-            <root is_input="True">0.11<!--ratio (front spar position)/(chord length) at wing root--></root>
-            <tip is_input="True">0.27<!--ratio (front spar position)/(chord length) at wing tip--></tip>
+            <kink is_input="True" units="unitless">0.15<!--ratio (front spar position)/(chord length) at wing kink--></kink>
+            <root is_input="True" units="unitless">0.11<!--ratio (front spar position)/(chord length) at wing root--></root>
+            <tip is_input="True" units="unitless">0.27<!--ratio (front spar position)/(chord length) at wing tip--></tip>
           </front>
           <rear>
-            <kink is_input="True">0.66<!--ratio (rear spar position)/(chord length) at wing kink--></kink>
-            <root is_input="True">0.57<!--ratio (rear spar position)/(chord length) at wing root--></root>
-            <tip is_input="True">0.56<!--ratio (rear spar position)/(chord length) at wing tip--></tip>
+            <kink is_input="True" units="unitless">0.66<!--ratio (rear spar position)/(chord length) at wing kink--></kink>
+            <root is_input="True" units="unitless">0.57<!--ratio (rear spar position)/(chord length) at wing root--></root>
+            <tip is_input="True" units="unitless">0.56<!--ratio (rear spar position)/(chord length) at wing tip--></tip>
           </rear>
         </spar_ratio>
       </wing>
     </geometry>
     <handling_qualities>
-      <static_margin is_input="False">0.032899870561865885<!--(X-position of neutral point - X-position of center of gravity ) / (mean aerodynamic chord)--></static_margin>
+      <static_margin is_input="False" units="unitless">0.032899870561865885<!--(X-position of neutral point - X-position of center of gravity ) / (mean aerodynamic chord)--></static_margin>
     </handling_qualities>
     <load_case>
-      <gust_intensity is_input="True">0.0<!--a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated--></gust_intensity>
-      <maneuver_load_factor is_input="True">2.5<!--limit positive manoeuvring load factor--></maneuver_load_factor>
+      <gust_intensity is_input="True" units="unitless">0.0<!--a factor for gust load alleviation, 1.0: full gust load is applied, 0.0: gust load is fully alleviated--></gust_intensity>
+      <maneuver_load_factor is_input="True" units="unitless">2.5<!--limit positive manoeuvring load factor--></maneuver_load_factor>
       <lc1>
         <U_gust units="m/s" is_input="True">15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>
         <Vc_EAS units="m/s" is_input="True">375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
@@ -237,12 +237,12 @@
     <propulsion>
       <MTO_thrust units="N" is_input="True">117880.0<!--maximum thrust of one engine at sea level--></MTO_thrust>
       <rubber_engine>
-        <bypass_ratio is_input="True">4.9<!--bypass ratio for rubber engine model--></bypass_ratio>
+        <bypass_ratio is_input="True" units="unitless">4.9<!--bypass ratio for rubber engine model--></bypass_ratio>
         <delta_t4_climb is_input="True">0.0<!--As it is a delta, unit is K or &#176;C, but is not specified to avoid OpenMDAO making unwanted conversion--></delta_t4_climb>
         <delta_t4_cruise is_input="True">0.0<!--As it is a delta, unit is K or &#176;C, but is not specified to avoid OpenMDAO making unwanted conversion--></delta_t4_cruise>
         <design_altitude units="m" is_input="True">10058.4<!--design altitude for rubber engine model--></design_altitude>
-        <maximum_mach is_input="True">0.85<!--maximum Mach number for rubber engine model--></maximum_mach>
-        <overall_pressure_ratio is_input="True">32.6<!--Overall pressure ratio for rubber engine model--></overall_pressure_ratio>
+        <maximum_mach is_input="True" units="unitless">0.85<!--maximum Mach number for rubber engine model--></maximum_mach>
+        <overall_pressure_ratio is_input="True" units="unitless">32.6<!--Overall pressure ratio for rubber engine model--></overall_pressure_ratio>
         <turbine_inlet_temperature units="degK" is_input="True">1633.0<!--design turbine inlet temperature (T4) for rubber engine model--></turbine_inlet_temperature>
       </rubber_engine>
     </propulsion>
@@ -312,7 +312,7 @@
           <distance units="m" is_input="False">0.0<!--covered ground distance during route "taxi_out" in mission "sizing"--></distance>
           <duration units="s" is_input="True">0.0<!--Input defined by the mission.--></duration>
           <fuel units="kg" is_input="False">0.0<!--burned fuel during route "taxi_out" in mission "sizing"--></fuel>
-          <thrust_rate is_input="True">0.0<!--Input defined by the mission.--></thrust_rate>
+          <thrust_rate is_input="True" units="unitless">0.0<!--Input defined by the mission.--></thrust_rate>
           <true_airspeed units="m/s" is_input="True">0.0<!--Input defined by the mission.--></true_airspeed>
         </taxi_out>
       </sizing>
@@ -331,18 +331,18 @@
         <sizing_onboard_fuel_at_input_weight units="kg" is_input="False">20769.703395958124<!--_inp_data:weight:aircraft:sizing_onboard_fuel_at_input_weight--></sizing_onboard_fuel_at_input_weight>
         <CG>
           <aft>
-            <MAC_position is_input="False">0.3853309262304288<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_position>
+            <MAC_position is_input="False" units="unitless">0.3853309262304288<!--most aft X-position of center of gravity as ratio of mean aerodynamic chord--></MAC_position>
             <x units="m" is_input="False">17.147365613150566<!--most aft X-position of aircraft center of gravity--></x>
           </aft>
         </CG>
         <empty>
           <CG>
-            <MAC_position is_input="False">0.3322843083339577<!--X-position of center of gravity as ratio of mean aerodynamic chord for empty aircraft--></MAC_position>
+            <MAC_position is_input="False" units="unitless">0.3322843083339577<!--X-position of center of gravity as ratio of mean aerodynamic chord for empty aircraft--></MAC_position>
           </CG>
         </empty>
         <load_cases>
           <CG>
-            <MAC_position is_input="False">[[0.3149484255105222], [0.2383034517200329], [0.3353309262304288], [0.3323562004880358]]<maximum is_input="False">0.3353309262304288</maximum></MAC_position>
+            <MAC_position is_input="False" units="unitless">[[0.3149484255105222], [0.2383034517200329], [0.3353309262304288], [0.3323562004880358]]<maximum is_input="False" units="unitless">0.3353309262304288</maximum></MAC_position>
           </CG>
         </load_cases>
       </aircraft>
@@ -593,18 +593,18 @@
           <CL is_input="False">[0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35000000000000003, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41000000000000003, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47000000000000003, 0.48, 0.49, 0.5, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.5700000000000001, 0.58, 0.59, 0.6, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.6900000000000001, 0.7000000000000001, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.8, 0.81, 0.8200000000000001, 0.8300000000000001, 0.84, 0.85, 0.86, 0.87, 0.88, 0.89, 0.9, 0.91, 0.92, 0.93, 0.9400000000000001, 0.9500000000000001, 0.96, 0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09, 1.1, 1.11, 1.12, 1.1300000000000001, 1.1400000000000001, 1.1500000000000001, 1.16, 1.17, 1.18, 1.19, 1.2, 1.21, 1.22, 1.23, 1.24, 1.25, 1.26, 1.27, 1.28, 1.29, 1.3, 1.31, 1.32, 1.33, 1.34, 1.35, 1.36, 1.37, 1.3800000000000001, 1.3900000000000001, 1.4000000000000001, 1.41, 1.42, 1.43, 1.44, 1.45, 1.46, 1.47, 1.48, 1.49]<!--Input defined by the mission.--></CL>
           <CL0 is_input="True">0.1</CL0>
           <CL_alpha units="1/rad" is_input="False">6.677144315047382<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
-          <L_D_max is_input="False">16.375148677677767<!--max lift/drag ratio in cruise conditions--></L_D_max>
-          <induced_drag_coefficient is_input="False">0.041908596574680546<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--></induced_drag_coefficient>
-          <optimal_CD is_input="False">0.032366118343858705<!--drag coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CD>
-          <optimal_CL is_input="False">0.53<!--lift coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CL>
-          <oswald_coefficient is_input="False">0.7951098332461126<!--Oswald coefficient for cruise conditions--></oswald_coefficient>
+          <L_D_max units="unitless" is_input="False">16.375148677677767<!--max lift/drag ratio in cruise conditions--></L_D_max>
+          <induced_drag_coefficient units="unitless" is_input="False">0.041908596574680546<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--></induced_drag_coefficient>
+          <optimal_CD units="unitless" is_input="False">0.032366118343858705<!--drag coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CD>
+          <optimal_CL units="unitless" is_input="False">0.53<!--lift coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CL>
+          <oswald_coefficient units="unitless" is_input="False">0.7951098332461126<!--Oswald coefficient for cruise conditions--></oswald_coefficient>
         </cruise>
         <landing>
-          <CL_max is_input="False">2.806181966182601<!--maximum lift coefficient in landing conditions--></CL_max>
-          <CL_max_clean is_input="False">1.5824133961659907<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
-          <CL_max_clean_2D is_input="True">1.94<!--maximum lift coefficient of 2D average profile in landing conditions without high-lift devices--></CL_max_clean_2D>
-          <additional_CL_capacity is_input="False">0.1265355286062495<!--at landing, is equal to (maximum lift coefficient)-(maximum required lift coefficient)--></additional_CL_capacity>
-          <mach is_input="False">0.19455259748464468<!--considered Mach number for landing phase--></mach>
+          <CL_max is_input="False" units="unitless">2.806181966182601<!--maximum lift coefficient in landing conditions--></CL_max>
+          <CL_max_clean is_input="False" units="unitless">1.5824133961659907<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
+          <CL_max_clean_2D is_input="True" units="unitless">1.94<!--maximum lift coefficient of 2D average profile in landing conditions without high-lift devices--></CL_max_clean_2D>
+          <additional_CL_capacity is_input="False" units="unitless">0.1265355286062495<!--at landing, is equal to (maximum lift coefficient)-(maximum required lift coefficient)--></additional_CL_capacity>
+          <mach is_input="False" units="unitless">0.19455259748464468<!--considered Mach number for landing phase--></mach>
         </landing>
       </aircraft>
       <cruise>
@@ -661,27 +661,27 @@
   <settings>
     <geometry>
       <horizontal_tail>
-        <position_ratio_on_VTP is_input="True">0.15<!--(applies only for T-tails) distance between HTP root leadingedge and VTP tip leading edge divided by VTP tip chord--></position_ratio_on_VTP>
-        <position_ratio_on_fuselage is_input="True">0.91<!--(does not apply for T-tails) distance to aircraft nose of 25% MAC of horizontal tail divided by fuselage length--></position_ratio_on_fuselage>
+        <position_ratio_on_VTP units="unitless" is_input="True">0.15<!--(applies only for T-tails) distance between HTP root leadingedge and VTP tip leading edge divided by VTP tip chord--></position_ratio_on_VTP>
+        <position_ratio_on_fuselage units="unitless" is_input="True">0.91<!--(does not apply for T-tails) distance to aircraft nose of 25% MAC of horizontal tail divided by fuselage length--></position_ratio_on_fuselage>
       </horizontal_tail>
       <vertical_tail>
-        <position_ratio_on_fuselage is_input="True">0.88<!--distance to aircraft nose of 25% MAC of vertical tail divided by fuselage length--></position_ratio_on_fuselage>
+        <position_ratio_on_fuselage units="unitless" is_input="True">0.88<!--distance to aircraft nose of 25% MAC of vertical tail divided by fuselage length--></position_ratio_on_fuselage>
       </vertical_tail>
     </geometry>
     <aerodynamics>
       <wing>
         <CD>
-          <fuselage_interaction is_input="True">0.04</fuselage_interaction>
+          <fuselage_interaction units="unitless" is_input="True">0.04</fuselage_interaction>
         </CD>
       </wing>
     </aerodynamics>
     <weight>
       <aircraft>
         <CG>
-          <range is_input="True">0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
+          <range units="unitless" is_input="True">0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
           <aft>
             <MAC_position>
-              <margin is_input="True">0.05<!--Added margin for getting most aft CG position, as ratio of mean aerodynamic chord--></margin>
+              <margin units="unitless" is_input="True">0.05<!--Added margin for getting most aft CG position, as ratio of mean aerodynamic chord--></margin>
             </MAC_position>
           </aft>
         </CG>
@@ -693,33 +693,33 @@
       <airframe>
         <flight_controls>
           <mass>
-            <k_fc is_input="True">0.000135<!--flight controls (A4): 0.85e-4 if electrical, 1.35e-4 if conventional--></k_fc>
+            <k_fc units="unitless" is_input="True">0.000135<!--flight controls (A4): 0.85e-4 if electrical, 1.35e-4 if conventional--></k_fc>
           </mass>
         </flight_controls>
         <fuselage>
           <mass>
-            <k_fus is_input="True">1.0<!--correction coefficient: 1.00 if all engines under wing / 1.02 with 2 engines at rear / 1.03 if 3 engines at rear / 1.05 if 1 engine in vertical tail (with or without 2 engines under wing)--></k_fus>
-            <k_lg is_input="True">1.05<!--correction coefficient: 1.05 if main landing gear under wing / 1.10 if main landing gear under fuselage--></k_lg>
+            <k_fus units="unitless" is_input="True">1.0<!--correction coefficient: 1.00 if all engines under wing / 1.02 with 2 engines at rear / 1.03 if 3 engines at rear / 1.05 if 1 engine in vertical tail (with or without 2 engines under wing)--></k_fus>
+            <k_lg units="unitless" is_input="True">1.05<!--correction coefficient: 1.05 if main landing gear under wing / 1.10 if main landing gear under fuselage--></k_lg>
           </mass>
         </fuselage>
         <landing_gear>
           <front>
-            <weight_ratio is_input="True">0.08<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
+            <weight_ratio units="unitless" is_input="True">0.08<!--part of aircraft weight that is supported by front landing gear--></weight_ratio>
             <CG>
-              <position_ratio_on_front_fuselage is_input="True">0.75<!--x-distance between nose and front landing gear divided by data:geometry:fuselage:front_length--></position_ratio_on_front_fuselage>
+              <position_ratio_on_front_fuselage units="unitless" is_input="True">0.75<!--x-distance between nose and front landing gear divided by data:geometry:fuselage:front_length--></position_ratio_on_front_fuselage>
             </CG>
           </front>
         </landing_gear>
         <wing>
           <mass>
-            <k_mvo is_input="True">1.39<!--1.39 for Airbus type aircrafts--></k_mvo>
+            <k_mvo units="unitless" is_input="True">1.39<!--1.39 for Airbus type aircrafts--></k_mvo>
           </mass>
         </wing>
       </airframe>
       <systems>
         <power>
           <mass>
-            <k_elec is_input="True">1.0<!--electricity coefficient: 1.00 if 2 engines (A300, A310 type) / (1.02 if 2 engines (DC9, Caravelle type) / 1.03 if 3 engines (B727 type) / 1.05 if 3 engines (DC10, L1011 type) / 1.08 if 4 engines (B747 type)--></k_elec>
+            <k_elec units="unitless" is_input="True">1.0<!--electricity coefficient: 1.00 if 2 engines (A300, A310 type) / (1.02 if 2 engines (DC9, Caravelle type) / 1.03 if 3 engines (B727 type) / 1.05 if 3 engines (DC10, L1011 type) / 1.08 if 4 engines (B747 type)--></k_elec>
           </mass>
         </power>
       </systems>
@@ -753,23 +753,23 @@
       <aircraft>
         <cruise>
           <CD>
-            <k is_input="True">1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
-            <offset is_input="True">0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
+            <k units="unitless" is_input="True">1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
+            <offset units="unitless" is_input="True">0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
             <compressibility>
-              <characteristic_mach_increment is_input="True">0.0<!--Increment to apply to the computed characteristic Mach (where compressibility drag is 20 d.c.)--></characteristic_mach_increment>
-              <max_value is_input="True">0.5<!--maximum authorized value for compressibility drag. Allows to prevent the model from overestimating the compressibility effect, especially for aircraft models after year 2000.--></max_value>
+              <characteristic_mach_increment units="unitless" is_input="True">0.0<!--Increment to apply to the computed characteristic Mach (where compressibility drag is 20 d.c.)--></characteristic_mach_increment>
+              <max_value units="unitless" is_input="True">0.5<!--maximum authorized value for compressibility drag. Allows to prevent the model from overestimating the compressibility effect, especially for aircraft models after year 2000.--></max_value>
             </compressibility>
             <winglet_effect>
-              <k is_input="True">0.87<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
-              <offset is_input="True">0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
+              <k units="unitless" is_input="True">0.87<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
+              <offset units="unitless" is_input="True">0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
             </winglet_effect>
           </CD>
           <CL>
-            <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-            <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+            <k units="unitless" is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+            <offset units="unitless" is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
             <winglet_effect>
-              <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-              <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+              <k units="unitless" is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+              <offset units="unitless" is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
             </winglet_effect>
           </CL>
         </cruise>

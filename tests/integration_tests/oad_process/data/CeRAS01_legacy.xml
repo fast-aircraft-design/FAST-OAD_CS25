@@ -16,46 +16,46 @@
 <FASTOAD_model>
   <data>
     <TLAR>
-      <NPAX>150.0<!--top-level requirement: number of passengers, assuming a classic eco/business class repartition--></NPAX>
+      <NPAX units="unitless">150.0<!--top-level requirement: number of passengers, assuming a classic eco/business class repartition--></NPAX>
       <approach_speed units="kn">132.0<!--top-level requirement: approach speed--></approach_speed>
-      <cruise_mach>0.78<!--top-level requirement: cruise Mach number--></cruise_mach>
+      <cruise_mach units="unitless">0.78<!--top-level requirement: cruise Mach number--></cruise_mach>
       <max_TOFL units="m">0.0<!--top-level requirement: maximum takeoff field length--></max_TOFL>
       <range units="NM">2750.0<!--top-level requirement: design range--></range>
     </TLAR>
     <geometry>
-      <has_T_tail>0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
+      <has_T_tail units="unitless">0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
       <aircraft>
         <wetted_area units="m**2">786.886162517<!--total wetted area--></wetted_area>
       </aircraft>
       <cabin>
-        <NPAX1>157.0<!--number of passengers if there are only economical class seats--></NPAX1>
+        <NPAX1 units="unitless">157.0<!--number of passengers if there are only economical class seats--></NPAX1>
         <aisle_width units="m">0.48<!--width of aisles--></aisle_width>
         <exit_width units="m">0.51<!--width of exits--></exit_width>
-        <pallet_count>10.0<!--number of pallet in cargo hold--></pallet_count>
+        <pallet_count units="unitless">10.0<!--number of pallet in cargo hold--></pallet_count>
         <containers>
-          <count>5.0<!--total number of cargo containers--></count>
-          <count_by_row>1.0<!--number of cargo containers along width--></count_by_row>
+          <count units="unitless">5.0<!--total number of cargo containers--></count>
+          <count_by_row units="unitless">1.0<!--number of cargo containers along width--></count_by_row>
         </containers>
         <crew_count>
-          <commercial>4.0<!--number of commercial crew members--></commercial>
-          <technical>2.0<!--number of technical crew members--></technical>
+          <commercial units="unitless">4.0<!--number of commercial crew members--></commercial>
+          <technical units="unitless">2.0<!--number of technical crew members--></technical>
         </crew_count>
         <seats>
           <business>
-            <count_by_row>4.0<!--number of business class seats along width--></count_by_row>
+            <count_by_row units="unitless">4.0<!--number of business class seats along width--></count_by_row>
             <length units="m">0.92<!--length of business class seats--></length>
             <width units="m">0.53<!--width of business class seats--></width>
           </business>
           <economical>
-            <count_by_row>6.0<!--number of economical class seats along width--></count_by_row>
+            <count_by_row units="unitless">6.0<!--number of economical class seats along width--></count_by_row>
             <length units="m">0.86<!--length of economical class seats--></length>
             <width units="m">0.46<!--width of economical class seats--></width>
           </economical>
         </seats>
       </cabin>
       <flap>
-        <chord_ratio>0.197<!--mean value of (flap chord)/(section chord)--></chord_ratio>
-        <span_ratio>0.8<!--ratio (width of flaps)/(total span)--></span_ratio>
+        <chord_ratio units="unitless">0.197<!--mean value of (flap chord)/(section chord)--></chord_ratio>
+        <span_ratio units="unitless">0.8<!--ratio (width of flaps)/(total span)--></span_ratio>
       </flap>
       <fuselage>
         <PAX_length units="m">22.87<!--length of passenger-dedicated zone--></PAX_length>
@@ -68,14 +68,14 @@
       </fuselage>
       <horizontal_tail>
         <area units="m**2">33.2967571883<!--horizontal tail area--></area>
-        <aspect_ratio>4.28778048454<!--aspect ratio of horizontal tail--></aspect_ratio>
+        <aspect_ratio units="unitless">4.28778048454<!--aspect ratio of horizontal tail--></aspect_ratio>
         <span units="m">11.9486060137<!--horizontal tail span--></span>
         <sweep_0 units="deg">33.3165149655<!--sweep angle at leading edge of horizontal tail--></sweep_0>
         <sweep_100 units="deg">8.80894178428<!--sweep angle at trailing edge of horizontal tail--></sweep_100>
         <sweep_25 units="deg">28.0<!--sweep angle at 25% chord of horizontal tail--></sweep_25>
-        <taper_ratio>0.3<!--taper ratio of horizontal tail--></taper_ratio>
-        <thickness_ratio>0.1<!--thickness ratio of horizontal tail--></thickness_ratio>
-        <volume_coefficient>1.117<!--volume coefficient of horizontal tail--></volume_coefficient>
+        <taper_ratio units="unitless">0.3<!--taper ratio of horizontal tail--></taper_ratio>
+        <thickness_ratio units="unitless">0.1<!--thickness ratio of horizontal tail--></thickness_ratio>
+        <volume_coefficient units="unitless">1.117<!--volume coefficient of horizontal tail--></volume_coefficient>
         <wetted_area units="m**2">66.5935143766<!--wetted area of horizontal tail--></wetted_area>
         <MAC>
           <length units="m">3.05598719498<!--mean aerodynamic chord length of horizontal tail--></length>
@@ -97,10 +97,10 @@
         <height units="m">3.04114141042<!--height of landing gear--></height>
       </landing_gear>
       <propulsion>
-        <layout>1.0<!--position of engines (1=under the wing / 2=rear fuselage)--></layout>
+        <layout units="unitless">1.0<!--position of engines (1=under the wing / 2=rear fuselage)--></layout>
         <engine>
-          <count>2.0<!--number of engines--></count>
-          <y_ratio>0.34<!--engine position with respect to total span--></y_ratio>
+          <count units="unitless">2.0<!--number of engines--></count>
+          <y_ratio units="unitless">0.34<!--engine position with respect to total span--></y_ratio>
         </engine>
         <fan>
           <length units="m">3.12688962389<!--engine length--></length>
@@ -117,19 +117,19 @@
         </pylon>
       </propulsion>
       <slat>
-        <chord_ratio>0.177<!--mean value of slat chord)/(section chord)--></chord_ratio>
-        <span_ratio>0.9<!--ratio (width of slats)/(total span)--></span_ratio>
+        <chord_ratio units="unitless">0.177<!--mean value of slat chord)/(section chord)--></chord_ratio>
+        <span_ratio units="unitless">0.9<!--ratio (width of slats)/(total span)--></span_ratio>
       </slat>
       <vertical_tail>
         <area units="m**2">27.5149782236<!--vertical tail area--></area>
-        <aspect_ratio>1.74462618632<!--aspect ratio of vertical tail--></aspect_ratio>
+        <aspect_ratio units="unitless">1.74462618632<!--aspect ratio of vertical tail--></aspect_ratio>
         <span units="m">6.92844510153<!--vertical tail span--></span>
         <sweep_0 units="deg">40.514801766<!--sweep angle at leading edge of vertical tail--></sweep_0>
         <sweep_100 units="deg">13.3465197854<!--sweep angle at trailing edge of vertical tail--></sweep_100>
         <sweep_25 units="deg">35.0<!--sweep angle at 25% chord of vertical tail--></sweep_25>
-        <taper_ratio>0.3<!--taper ratio of vertical tail--></taper_ratio>
-        <thickness_ratio>0.1<!--thickness ratio of vertical tail--></thickness_ratio>
-        <volume_coefficient>0.105<!--volume coefficient of vertical tail--></volume_coefficient>
+        <taper_ratio units="unitless">0.3<!--taper ratio of vertical tail--></taper_ratio>
+        <thickness_ratio units="unitless">0.1<!--thickness ratio of vertical tail--></thickness_ratio>
+        <volume_coefficient units="unitless">0.105<!--volume coefficient of vertical tail--></volume_coefficient>
         <wetted_area units="m**2">57.7814542695<!--wetted area of vertical tail--></wetted_area>
         <MAC>
           <length units="m">4.35512099871<!--mean aerodynamic chord length of vertical tail--></length>
@@ -149,7 +149,7 @@
       </vertical_tail>
       <wing>
         <area units="m**2">124.843<!--wing reference area--></area>
-        <aspect_ratio>9.48<!--wing aspect ratio--></aspect_ratio>
+        <aspect_ratio units="unitless">9.48<!--wing aspect ratio--></aspect_ratio>
         <b_50 units="m">37.3306412692<!--actual length between root and tip along 50% of chord--></b_50>
         <outer_area units="m**2">101.105176464<!--wing area outside of fuselage--></outer_area>
         <span units="m">34.4022039992<!--wing span--></span>
@@ -157,8 +157,8 @@
         <sweep_100_inner units="deg">0.0<!--sweep angle at trailing edge of wing (inner side of the kink)--></sweep_100_inner>
         <sweep_100_outer units="deg">18.3291325299<!--sweep angle at trailing edge of wing (outer side of the kink)--></sweep_100_outer>
         <sweep_25 units="deg">25.0<!--sweep angle at 25% chord of wing--></sweep_25>
-        <virtual_taper_ratio>0.38<!--taper ratio of wing computed from virtual chord--></virtual_taper_ratio>
-        <thickness_ratio>0.12839840881<!--mean thickness ratio of wing--></thickness_ratio>
+        <virtual_taper_ratio units="unitless">0.38<!--taper ratio of wing computed from virtual chord--></virtual_taper_ratio>
+        <thickness_ratio units="unitless">0.12839840881<!--mean thickness ratio of wing--></thickness_ratio>
         <wetted_area units="m**2">202.210352928<!--wetted area of wing--></wetted_area>
         <MAC>
           <length units="m">4.18208024482<!--length of mean aerodynamic chord of wing--></length>
@@ -174,7 +174,7 @@
         </MAC>
         <kink>
           <chord units="m">3.53982167977<!--chord length at wing kink--></chord>
-          <span_ratio>0.4<!--ratio (Y-position of kink)/(semi-span)--></span_ratio>
+          <span_ratio units="unitless">0.4<!--ratio (Y-position of kink)/(semi-span)--></span_ratio>
           <thickness_ratio>0.120694504281<!--thickness ratio at wing kink--></thickness_ratio>
           <y units="m">6.88044079983<!--Y-position of wing kink--></y>
           <leading_edge>
@@ -185,13 +185,13 @@
         </kink>
         <root>
           <chord units="m">6.05575260876<!--chord length at wing root--></chord>
-          <thickness_ratio>0.159214026924<!--thickness ratio at wing root--></thickness_ratio>
+          <thickness_ratio units="unitless">0.159214026924<!--thickness ratio at wing root--></thickness_ratio>
           <virtual_chord units="m">4.42567657603<!--virtual chord length at wing root if sweep angle of trailing edge of outer wing part was on the whole wing (no kink)--></virtual_chord>
           <y units="m">1.95994<!--Y-position of wing root--></y>
         </root>
         <tip>
           <chord units="m">1.68175709889<!--chord length at wing tip--></chord>
-          <thickness_ratio>0.110422631576<!--thickness ratio at wing tip--></thickness_ratio>
+          <thickness_ratio units="unitless">0.110422631576<!--thickness ratio at wing tip--></thickness_ratio>
           <y units="m">17.2011019996<!--Y-position of wing tip--></y>
           <leading_edge>
             <x>
@@ -201,13 +201,13 @@
         </tip>
         <spar_ratio>
           <front>
-            <kink>0.15<!--ratio (front spar position)/(chord length) at wing kink--></kink>
-            <root>0.11<!--ratio (front spar position)/(chord length) at wing root--></root>
+            <kink units="unitless">0.15<!--ratio (front spar position)/(chord length) at wing kink--></kink>
+            <root units="unitless">0.11<!--ratio (front spar position)/(chord length) at wing root--></root>
             <tip>0.27<!--ratio (front spar position)/(chord length) at wing tip--></tip>
           </front>
           <rear>
-            <kink>0.66<!--ratio (rear spar position)/(chord length) at wing kink--></kink>
-            <root>0.57<!--ratio (rear spar position)/(chord length) at wing root--></root>
+            <kink units="unitless">0.66<!--ratio (rear spar position)/(chord length) at wing kink--></kink>
+            <root units="unitless">0.57<!--ratio (rear spar position)/(chord length) at wing root--></root>
             <tip>0.56<!--ratio (rear spar position)/(chord length) at wing tip--></tip>
           </rear>
         </spar_ratio>
@@ -216,17 +216,17 @@
     <propulsion>
       <MTO_thrust units="N">117880.0<!--maximum thrust of one engine at sea level--></MTO_thrust>
       <rubber_engine>
-        <bypass_ratio>4.9<!--bypass ratio for rubber engine model--></bypass_ratio>
+        <bypass_ratio units="unitless">4.9<!--bypass ratio for rubber engine model--></bypass_ratio>
         <delta_t4_climb>0.0<!--As it is a delta, unit is K or &#176;C, but is not specified to avoid OpenMDAO making unwanted conversion--></delta_t4_climb>
         <delta_t4_cruise>0.0<!--As it is a delta, unit is K or &#176;C, but is not specified to avoid OpenMDAO making unwanted conversion--></delta_t4_cruise>
         <design_altitude units="m">10058.4<!--design altitude for rubber engine model--></design_altitude>
-        <maximum_mach>0.85<!--maximum Mach number for rubber engine model--></maximum_mach>
+        <maximum_mach units="unitless">0.85<!--maximum Mach number for rubber engine model--></maximum_mach>
         <overall_pressure_ratio>32.6<!--Overall pressure ratio for rubber engine model--></overall_pressure_ratio>
         <turbine_inlet_temperature units="K">1633.0<!--design turbine inlet temperature (T4) for rubber engine model--></turbine_inlet_temperature>
       </rubber_engine>
     </propulsion>
     <load_case>
-      <gust_intensity>0.5</gust_intensity>
+      <gust_intensity units="unitless">0.5</gust_intensity>
       <lc1>
         <U_gust units="m/s">15.25<!--gust vertical speed for sizing load case 1 (gust with minimum aircraft mass)--></U_gust>
         <Vc_EAS units="m/s">375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
@@ -245,10 +245,10 @@
         <fuel units="kg">19232.2393453<!--consumed fuel mass during whole mission--></fuel>
         <fuel_reserve units="kg">3390.12189624<!--mass of fuel reserve--></fuel_reserve>
         <climb>
-          <thrust_rate>0.93<!--thrust rate (between 0.0 and 1.0) during climb phase in sizing mission--></thrust_rate>
+          <thrust_rate units="unitless">0.93<!--thrust rate (between 0.0 and 1.0) during climb phase in sizing mission--></thrust_rate>
         </climb>
         <descent>
-          <thrust_rate>0.12<!--thrust rate (between 0.0 and 1.0) during descent phase in sizing mission--></thrust_rate>
+          <thrust_rate units="unitless">0.12<!--thrust rate (between 0.0 and 1.0) during descent phase in sizing mission--></thrust_rate>
         </descent>
         <diversion>
           <distance units="NM">200.0<!--distance to travel during diversion in sizing mission--></distance>
@@ -680,27 +680,27 @@
     <aerodynamics>
       <aircraft>
         <cruise>
-          <CL_alpha>6.41835816021<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
+          <CL_alpha units="1/rad">6.41835816021<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
           <L_D_max>16.2355215128<!--max lift/drag ratio in cruise conditions--></L_D_max>
         </cruise>
         <landing>
-          <CL_max>2.8022927874308396<!--maximum lift coefficient in landing conditions--></CL_max>
-          <CL_max_clean>1.586002<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
+          <CL_max units="unitless">2.8022927874308396<!--maximum lift coefficient in landing conditions--></CL_max>
+          <CL_max_clean units="unitless">1.586002<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
           <CL_max_clean_2D>1.94</CL_max_clean_2D>
         </landing>
         <takeoff>
-          <CL0_clean>0.02228<!--value of lift coefficient at angle of attack 0 in clean configuration at takeoff--></CL0_clean>
+          <CL0_clean units="unitless">0.02228<!--value of lift coefficient at angle of attack 0 in clean configuration at takeoff--></CL0_clean>
           <CL_alpha>4.58079757207<!--derivative of lift coefficient with respect to angle of attack in takeoff conditions--></CL_alpha>
         </takeoff>
       </aircraft>
       <horizontal_tail>
         <cruise>
-          <CL_alpha>3.46981756498<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions--></CL_alpha>
+          <CL_alpha units="1/rad">3.46981756498<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions--></CL_alpha>
         </cruise>
       </horizontal_tail>
       <vertical_tail>
         <cruise>
-          <CL_alpha>2.54615644328<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
+          <CL_alpha units="1/rad">2.54615644328<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
         </cruise>
       </vertical_tail>
     </aerodynamics>
@@ -710,13 +710,13 @@
       <sizing>
         <breguet>
           <climb>
-            <mass_ratio is_input="True">0.97<!--For Breguet performance computation: assumption of (mass at end of climb) / (mass at start of climb)--></mass_ratio>
+            <mass_ratio is_input="True" units="unitless">0.97<!--For Breguet performance computation: assumption of (mass at end of climb) / (mass at start of climb)--></mass_ratio>
           </climb>
           <descent>
-            <mass_ratio is_input="True">0.98<!--For Breguet performance computation: assumption of (mass at end of descent) / (mass at start of descent)--></mass_ratio>
+            <mass_ratio is_input="True" units="unitless">0.98<!--For Breguet performance computation: assumption of (mass at end of descent) / (mass at start of descent)--></mass_ratio>
           </descent>
           <reserve>
-            <mass_ratio is_input="True">0.06<!--For Breguet performance computation: (weight of fuel reserve)/ZFW--></mass_ratio>
+            <mass_ratio is_input="True" units="unitless">0.06<!--For Breguet performance computation: (weight of fuel reserve)/ZFW--></mass_ratio>
           </reserve>
         </breguet>
       </sizing>
@@ -724,24 +724,24 @@
     <weight>
       <aircraft>
         <CG>
-          <range>0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
+          <range units="unitless">0.3<!--distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)--></range>
         </CG>
       </aircraft>
       <airframe>
         <flight_controls>
           <mass>
-            <k_fc>0.000135<!--flight controls (A4): 0.85e-4 if electrical, 1.35e-4 if conventional--></k_fc>
+            <k_fc units="unitless">0.000135<!--flight controls (A4): 0.85e-4 if electrical, 1.35e-4 if conventional--></k_fc>
           </mass>
         </flight_controls>
         <fuselage>
           <mass>
-            <k_fus>1.0<!--correction coefficient: 1.00 if all engines under wing / 1.02 with 2 engines at rear / 1.03 if 3 engines at rear / 1.05 if 1 engine in vertical tail (with or without 2 engines under wing)--></k_fus>
+            <k_fus units="unitless">1.0<!--correction coefficient: 1.00 if all engines under wing / 1.02 with 2 engines at rear / 1.03 if 3 engines at rear / 1.05 if 1 engine in vertical tail (with or without 2 engines under wing)--></k_fus>
             <k_lg>1.05<!--correction coefficient: 1.05 if main landing gear under wing / 1.10 if main landing gear under fuselage--></k_lg>
           </mass>
         </fuselage>
         <wing>
           <mass>
-            <k_mvo>1.39<!--1.39 for Airbus type aircrafts--></k_mvo>
+            <k_mvo units="unitless">1.39<!--1.39 for Airbus type aircrafts--></k_mvo>
             <k_voil>1.05<!--1.00 if 4 engines / 1.05 if 2 or 3 engines / 1.10 if engines on fuselage--></k_voil>
           </mass>
         </wing>
@@ -749,7 +749,7 @@
       <systems>
         <power>
           <mass>
-            <k_elec>1.0<!--electricity coefficient: 1.00 if 2 engines (A300, A310 type) / (1.02 if 2 engines (DC9, Caravelle type) / 1.03 if 3 engines (B727 type) / 1.05 if 3 engines (DC10, L1011 type) / 1.08 if 4 engines (B747 type)--></k_elec>
+            <k_elec units="unitless">1.0<!--electricity coefficient: 1.00 if 2 engines (A300, A310 type) / (1.02 if 2 engines (DC9, Caravelle type) / 1.03 if 3 engines (B727 type) / 1.05 if 3 engines (DC10, L1011 type) / 1.08 if 4 engines (B747 type)--></k_elec>
           </mass>
         </power>
       </systems>
@@ -760,18 +760,18 @@
       <aircraft>
         <cruise>
           <CD>
-            <k>1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
+            <k units="unitless">1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
             <offset>0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
             <winglet_effect>
-              <k>1.0<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
+              <k units="unitless">1.0<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
               <offset>0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
             </winglet_effect>
           </CD>
           <CL>
-            <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+            <k units="unitless">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
             <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
             <winglet_effect>
-              <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+              <k units="unitless">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
               <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
             </winglet_effect>
           </CL>
@@ -779,7 +779,7 @@
         <landing>
           <CL_max>
             <landing_gear_effect>
-              <k>1.0<!--correction ratio to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear--></k>
+              <k units="unitless">1.0<!--correction ratio to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear--></k>
               <offset>0.0<!--correction offset to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear--></offset>
             </landing_gear_effect>
           </CL_max>
@@ -790,78 +790,78 @@
       <airframe>
         <flight_controls>
           <mass>
-            <k>1.0<!--flight controls (A4): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--flight controls (A4): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--flight controls (A4): correction offset to be applied on computed mass--></offset>
           </mass>
         </flight_controls>
         <fuselage>
           <mass>
-            <k>1.1<!--fuselage (A2): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.1<!--fuselage (A2): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--fuselage (A2): correction offset to be applied on computed mass--></offset>
           </mass>
         </fuselage>
         <horizontal_tail>
           <mass>
-            <k>1.08<!--horizontal tail (A31): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.08<!--horizontal tail (A31): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--horizontal tail (A31): correction offset to be applied on computed mass--></offset>
           </mass>
         </horizontal_tail>
         <landing_gear>
           <mass>
-            <k>0.85<!--landing gears (A5): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">0.85<!--landing gears (A5): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--landing gears (A5): correction offset to be applied on computed mass--></offset>
           </mass>
         </landing_gear>
         <paint>
           <mass>
-            <k>1.0<!--paint (A7): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--paint (A7): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--paint (A7): correction offset to be applied on computed mass--></offset>
           </mass>
         </paint>
         <pylon>
           <mass>
-            <k>0.85<!--pylon (A6): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">0.85<!--pylon (A6): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--pylon (A6): correction offset to be applied on computed mass--></offset>
           </mass>
         </pylon>
         <vertical_tail>
           <mass>
-            <k>1.0<!--vertical tail (A32): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--vertical tail (A32): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--vertical tail (A32): correction offset to be applied on computed mass--></offset>
           </mass>
         </vertical_tail>
         <wing>
           <mass>
-            <k>1.05<!--wing (A1): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.05<!--wing (A1): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--wing (A1): correction offset to be applied on computed mass--></offset>
           </mass>
           <bending_sizing>
             <mass>
-              <k>1.0<!--wing bending sizing (A11): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--wing bending sizing (A11): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--wing bending sizing (A11): correction offset to be applied on computed mass--></offset>
             </mass>
           </bending_sizing>
           <reinforcements>
             <mass>
-              <k>1.0<!--wing reinforcements (A14): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--wing reinforcements (A14): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--wing reinforcements (A14): correction offset to be applied on computed mass--></offset>
             </mass>
           </reinforcements>
           <ribs>
             <mass>
-              <k>1.0<!--wing ribs (A13): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--wing ribs (A13): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--wing ribs (A13): correction offset to be applied on computed mass--></offset>
             </mass>
           </ribs>
           <secondary_parts>
             <mass>
-              <k>1.0<!--wing secondary parts (A15): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--wing secondary parts (A15): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--wing secondary parts (A15): correction offset to be applied on computed mass--></offset>
             </mass>
           </secondary_parts>
           <shear_sizing>
             <mass>
-              <k>1.0<!--wing shear sizing (A12): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--wing shear sizing (A12): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--wing shear sizing (A12): correction offset to be applied on computed mass--></offset>
             </mass>
           </shear_sizing>
@@ -870,31 +870,31 @@
       <furniture>
         <cargo_configuration>
           <mass>
-            <k>1.0<!--cargo configuration (D1): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--cargo configuration (D1): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--cargo configuration (D1): correction offset to be applied on computed mass--></offset>
           </mass>
         </cargo_configuration>
         <food_water>
           <mass>
-            <k>1.0<!--food water (D3): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--food water (D3): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--food water (D3): correction offset to be applied on computed mass--></offset>
           </mass>
         </food_water>
         <passenger_seats>
           <mass>
-            <k>1.0<!--passenger seats (D2): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--passenger seats (D2): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--passenger seats (D2): correction offset to be applied on computed mass--></offset>
           </mass>
         </passenger_seats>
         <security_kit>
           <mass>
-            <k>1.0<!--security kit (D4): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--security kit (D4): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--security kit (D4): correction offset to be applied on computed mass--></offset>
           </mass>
         </security_kit>
         <toilets>
           <mass>
-            <k>1.0<!--toilets (D5): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--toilets (D5): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--toilets (D5): correction offset to be applied on computed mass--></offset>
           </mass>
         </toilets>
@@ -902,19 +902,19 @@
       <propulsion>
         <engine>
           <mass>
-            <k>1.0<!--engine (B1): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--engine (B1): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--engine (B1): correction offset to be applied on computed mass--></offset>
           </mass>
         </engine>
         <fuel_lines>
           <mass>
-            <k>1.0<!--fuel lines (B2): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--fuel lines (B2): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--fuel lines (B2): correction offset to be applied on computed mass--></offset>
           </mass>
         </fuel_lines>
         <unconsumables>
           <mass>
-            <k>1.0<!--unconsumables (B3): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--unconsumables (B3): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--unconsumables (B3): correction offset to be applied on computed mass--></offset>
           </mass>
         </unconsumables>
@@ -922,68 +922,68 @@
       <systems>
         <flight_kit>
           <mass>
-            <k>1.0<!--flight kit (C6): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--flight kit (C6): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--flight kit (C6): correction offset to be applied on computed mass--></offset>
           </mass>
         </flight_kit>
         <navigation>
           <mass>
-            <k>1.0<!--navigation (C3): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--navigation (C3): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--navigation (C3): correction offset to be applied on computed mass--></offset>
           </mass>
         </navigation>
         <operational>
           <mass>
-            <k>1.0<!--operational (C5): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--operational (C5): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--operational (C5): correction offset to be applied on computed mass--></offset>
           </mass>
         </operational>
         <transmission>
           <mass>
-            <k>1.0<!--transmission (C4): correction ratio to be applied on computed mass--></k>
+            <k units="unitless">1.0<!--transmission (C4): correction ratio to be applied on computed mass--></k>
             <offset units="kg">0.0<!--transmission (C4): correction offset to be applied on computed mass--></offset>
           </mass>
         </transmission>
         <life_support>
           <air_conditioning>
             <mass>
-              <k>1.0<!--air conditioning (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--air conditioning (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--air conditioning (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </air_conditioning>
           <cabin_lighting>
             <mass>
-              <k>1.0<!--cabin lighting (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--cabin lighting (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--cabin lighting (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </cabin_lighting>
           <de-icing>
             <mass>
-              <k>1.0<!--de-icing (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--de-icing (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--de-icing (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </de-icing>
           <insulation>
             <mass>
-              <k>2.0<!--insulation (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">2.0<!--insulation (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--insulation (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </insulation>
           <oxygen>
             <mass>
-              <k>1.0<!--oxygen (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--oxygen (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--oxygen (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </oxygen>
           <safety_equipment>
             <mass>
-              <k>1.0<!--safety equipment (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--safety equipment (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--safety equipment (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </safety_equipment>
           <seats_crew_accommodation>
             <mass>
-              <k>1.0<!--seats crew accommodation (C21): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--seats crew accommodation (C21): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--seats crew accommodation (C21): correction offset to be applied on computed mass--></offset>
             </mass>
           </seats_crew_accommodation>
@@ -991,19 +991,19 @@
         <power>
           <auxiliary_power_unit>
             <mass>
-              <k>1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--power (C1): correction offset to be applied on computed mass--></offset>
             </mass>
           </auxiliary_power_unit>
           <electric_systems>
             <mass>
-              <k>1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--power (C1): correction offset to be applied on computed mass--></offset>
             </mass>
           </electric_systems>
           <hydraulic_systems>
             <mass>
-              <k>1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
+              <k units="unitless">1.0<!--power (C1): correction ratio to be applied on computed mass--></k>
               <offset units="kg">0.0<!--power (C1): correction offset to be applied on computed mass--></offset>
             </mass>
           </hydraulic_systems>

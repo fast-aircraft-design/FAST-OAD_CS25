@@ -48,7 +48,7 @@ class CGRatiosForLoadCases(om.Group):
 
         # This part aggregates all CG ratios values in one vector variable.
         cg_ratio_aggregator.add_var(
-            "data:weight:aircraft:load_cases:CG:MAC_position", shape=(1,), axis=0
+            "data:weight:aircraft:load_cases:CG:MAC_position", shape=(1,), axis=0, units="unitless"
         )
         for i in range(load_case_count):
             self.connect(
