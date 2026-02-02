@@ -39,8 +39,7 @@ cs25 = "fastoad_cs25"
 
 # Poetry settings ==============================================================
 [tool.poetry]
-requires-poetry = ">=2.0"                                      # You should upgrade poetry to v2 using 'pipx upgrade poetry'
-version         = "0.8.0"                                      # This version number is overwritten by GitHub packaging workflow
+requires-poetry = ">=2.0" # This is the minimum required Poetry version
 packages        = [{ include = "fastoad_cs25", from = "src" }]
 exclude         = ["**/tests/**"]
 
@@ -64,6 +63,8 @@ classifiers = [
 
 # Development dependencies -----------------------------------------------------
 # Development dependencies using Poetry groups instead of [project.optional-dependencies]
+version = "0.8.0"                                      # This version number is overwritten by GitHub packaging workflow
+
 [tool.poetry.group.test.dependencies]
 pytest     = "^9.0"
 pytest-cov = "^7.0"
@@ -149,7 +150,12 @@ extend-include = ["*.ipynb"]
 # Enable Pyflakes `F`) and a subset of the pycodestyle `E`)  codes by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings `W`) or
 # McCabe complexity `C901`) by default.
-select = ["E4", "E7", "E9", "F"]
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",
+]
 ignore = []
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable   = ["ALL"]

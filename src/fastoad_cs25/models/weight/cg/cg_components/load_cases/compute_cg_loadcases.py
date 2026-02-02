@@ -16,7 +16,8 @@ from itertools import count
 
 import numpy as np
 from fastoad.module_management.exceptions import FastNoSubmodelFoundError
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
+
 from openmdao import api as om
 
 from ...constants import SERVICE_LOAD_CASES_CG
@@ -24,7 +25,7 @@ from ...constants import SERVICE_LOAD_CASES_CG
 SERVICE_LOAD_CASE_CG_PREFIX = "service.cg.load_case"
 
 
-@RegisterSubmodel(SERVICE_LOAD_CASES_CG, "fastoad.submodel.weight.cg.load_cases.legacy")
+@oad.RegisterSubmodel(SERVICE_LOAD_CASES_CG, "fastoad.submodel.weight.cg.load_cases.legacy")
 class CGRatiosForLoadCases(om.Group):
     """Aggregation of CG ratios from load case calculations."""
 
@@ -33,7 +34,7 @@ class CGRatiosForLoadCases(om.Group):
         # for specific load_cases
         for load_case_count in count():
             try:
-                system = RegisterSubmodel.get_submodel(
+                system = oad.RegisterSubmodel.get_submodel(
                     f"{SERVICE_LOAD_CASE_CG_PREFIX}.{load_case_count + 1}"
                 )
             except FastNoSubmodelFoundError:

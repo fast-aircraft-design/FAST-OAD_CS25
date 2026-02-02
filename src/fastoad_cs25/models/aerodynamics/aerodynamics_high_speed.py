@@ -14,7 +14,7 @@
 
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
+import fastoad.api as oad
 
 from .constants import (
     SERVICE_ALPHA,
@@ -30,7 +30,9 @@ from .constants import (
 )
 
 
-@RegisterOpenMDAOSystem("fastoad.aerodynamics.highspeed.legacy", domain=ModelDomain.AERODYNAMICS)
+@oad.RegisterOpenMDAOSystem(
+    "fastoad.aerodynamics.highspeed.legacy", domain=ModelDomain.AERODYNAMICS
+)
 class AerodynamicsHighSpeed(om.Group):
     """
     Computes aerodynamic polar of the aircraft in cruise conditions.
@@ -42,35 +44,41 @@ class AerodynamicsHighSpeed(om.Group):
     def setup(self):
         self.add_subsystem(
             "compute_oswald_coeff",
-            RegisterSubmodel.get_submodel(SERVICE_OSWALD_COEFFICIENT),
+            oad.RegisterSubmodel.get_submodel(SERVICE_OSWALD_COEFFICIENT),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_induced_drag_coeff",
-            RegisterSubmodel.get_submodel(SERVICE_INDUCED_DRAG_COEFFICIENT),
+            oad.RegisterSubmodel.get_submodel(SERVICE_INDUCED_DRAG_COEFFICIENT),
             promotes=["*"],
         )
         self.add_subsystem(
-            "comp_re", RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT), promotes=["*"]
+            "comp_re",
+            oad.RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT),
+            promotes=["*"],
         )
         self.add_subsystem(
-            "initialize_cl", RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL), promotes=["*"]
-        )
-        self.add_subsystem("cd0_wing", RegisterSubmodel.get_submodel(SERVICE_CD0), promotes=["*"])
-        self.add_subsystem(
-            "cd_comp", RegisterSubmodel.get_submodel(SERVICE_CD_COMPRESSIBILITY), promotes=["*"]
+            "initialize_cl",
+            oad.RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL),
+            promotes=["*"],
         )
         self.add_subsystem(
-            "cd_trim", RegisterSubmodel.get_submodel(SERVICE_CD_TRIM), promotes=["*"]
+            "cd0_wing", oad.RegisterSubmodel.get_submodel(SERVICE_CD0), promotes=["*"]
         )
         self.add_subsystem(
-            "get_polar", RegisterSubmodel.get_submodel(SERVICE_POLAR), promotes=["*"]
+            "cd_comp", oad.RegisterSubmodel.get_submodel(SERVICE_CD_COMPRESSIBILITY), promotes=["*"]
         )
         self.add_subsystem(
-            "compute_AoA", RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA), promotes=["*"]
+            "cd_trim", oad.RegisterSubmodel.get_submodel(SERVICE_CD_TRIM), promotes=["*"]
+        )
+        self.add_subsystem(
+            "get_polar", oad.RegisterSubmodel.get_submodel(SERVICE_POLAR), promotes=["*"]
+        )
+        self.add_subsystem(
+            "compute_AoA", oad.RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA), promotes=["*"]
         )
         self.add_subsystem(
             "compute_alpha",
-            RegisterSubmodel.get_submodel(SERVICE_ALPHA),
+            oad.RegisterSubmodel.get_submodel(SERVICE_ALPHA),
             promotes=["*"],
         )

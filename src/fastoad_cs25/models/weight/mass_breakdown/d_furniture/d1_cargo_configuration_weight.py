@@ -16,12 +16,12 @@ Estimation of cargo configuration weight
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from .constants import SERVICE_CARGO_CONFIGURATION_MASS
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CARGO_CONFIGURATION_MASS, "service.mass.furniture.cargo_configuration.legacy"
 )
 class CargoConfigurationWeight(om.ExplicitComponent):

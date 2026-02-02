@@ -16,13 +16,14 @@ Estimation of control surfaces center of gravity
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
+
 from scipy.interpolate import interp1d
 
 from ..constants import SERVICE_FLIGHT_CONTROLS_CG
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_FLIGHT_CONTROLS_CG, "fastoad.submodel.weight.cg.wing.control_surfaces.legacy"
 )
 class ComputeControlSurfacesCG(om.ExplicitComponent):

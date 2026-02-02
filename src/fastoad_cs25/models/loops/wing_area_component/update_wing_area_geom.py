@@ -16,7 +16,7 @@ Computation of wing area following geometric constraints
 
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from fastoad_cs25.models.loops.constants import (
     SERVICE_WING_AREA_CONSTRAINT_GEOM,
@@ -24,7 +24,7 @@ from fastoad_cs25.models.loops.constants import (
 )
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_WING_AREA_LOOP_GEOM, "fastoad.submodel.loops.wing.area.update.geom.legacy"
 )
 class UpdateWingAreaGeom(om.ExplicitComponent):
@@ -98,7 +98,7 @@ class UpdateWingAreaGeom(om.ExplicitComponent):
             )
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_WING_AREA_CONSTRAINT_GEOM, "fastoad.submodel.loops.wing.area.constraint.geom.legacy"
 )
 class WingAreaConstraintsGeom(om.ExplicitComponent):

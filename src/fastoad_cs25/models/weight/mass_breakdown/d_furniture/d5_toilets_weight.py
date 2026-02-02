@@ -17,12 +17,12 @@ Estimation of toilets weight
 import numpy as np
 import openmdao.api as om
 from fastoad.constants import RangeCategory
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from .constants import SERVICE_TOILETS_MASS
 
 
-@RegisterSubmodel(SERVICE_TOILETS_MASS, "service.mass.furniture.toilets.legacy")
+@oad.RegisterSubmodel(SERVICE_TOILETS_MASS, "service.mass.furniture.toilets.legacy")
 class ToiletsWeight(om.ExplicitComponent):
     """
     Weight estimation for toilets

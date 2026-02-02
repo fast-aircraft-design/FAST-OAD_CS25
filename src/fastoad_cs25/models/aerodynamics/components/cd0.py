@@ -13,7 +13,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from ..constants import (
     SERVICE_CD0,
@@ -26,7 +26,7 @@ from ..constants import (
 )
 
 
-@RegisterSubmodel(SERVICE_CD0, "fastoad.submodel.aerodynamics.CD0.legacy")
+@oad.RegisterSubmodel(SERVICE_CD0, "fastoad.submodel.aerodynamics.CD0.legacy")
 class CD0(om.Group):
     """
     Computation of form drag for whole aircraft.
@@ -42,31 +42,31 @@ class CD0(om.Group):
         low_speed_option = {"low_speed_aero": self.options["low_speed_aero"]}
         self.add_subsystem(
             "cd0_wing",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_WING, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_WING, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "cd0_fuselage",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_FUSELAGE, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_FUSELAGE, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "cd0_ht",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_HORIZONTAL_TAIL, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_HORIZONTAL_TAIL, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "cd0_vt",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_VERTICAL_TAIL, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_VERTICAL_TAIL, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "cd0_nac_pylons",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_NACELLES_PYLONS, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_NACELLES_PYLONS, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "cd0_total",
-            RegisterSubmodel.get_submodel(SERVICE_CD0_SUM, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0_SUM, low_speed_option),
             promotes=["*"],
         )

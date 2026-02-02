@@ -13,14 +13,14 @@
 
 """Computation of propulsion mass."""
 
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 from openmdao import api as om
 
 from .constants import SERVICE_ENGINE_MASS, SERVICE_FUEL_LINES_MASS, SERVICE_UNCONSUMABLES_MASS
 from ..constants import SERVICE_PROPULSION_MASS
 
 
-@RegisterSubmodel(SERVICE_PROPULSION_MASS, "fastoad.submodel.weight.mass.propulsion.legacy")
+@oad.RegisterSubmodel(SERVICE_PROPULSION_MASS, "fastoad.submodel.weight.mass.propulsion.legacy")
 class PropulsionWeight(om.Group):
     """
     Computes mass of propulsion.
@@ -29,16 +29,16 @@ class PropulsionWeight(om.Group):
     def setup(self):
         # Engine have to be computed before pylons
         self.add_subsystem(
-            "engines_weight", RegisterSubmodel.get_submodel(SERVICE_ENGINE_MASS), promotes=["*"]
+            "engines_weight", oad.RegisterSubmodel.get_submodel(SERVICE_ENGINE_MASS), promotes=["*"]
         )
         self.add_subsystem(
             "fuel_lines_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FUEL_LINES_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FUEL_LINES_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "unconsumables_weight",
-            RegisterSubmodel.get_submodel(SERVICE_UNCONSUMABLES_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_UNCONSUMABLES_MASS),
             promotes=["*"],
         )
 
