@@ -42,6 +42,18 @@ def test_compute_flight_points():
     engine.compute_flight_points(flight_point)
     np.testing.assert_allclose(flight_point.thrust_rate, 0.5, rtol=1e-4)
     np.testing.assert_allclose(flight_point.sfc, 1.3496e-5, rtol=1e-4)
+      
+    flight_point = FlightPoint(
+        mach=0, altitude=-3000, engine_setting=EngineSetting.TAKEOFF, thrust_rate=0.8
+    )  # with altitude bellow boundaries of k_sfc interpolation
+    engine.compute_flight_points(flight_point)
+    np.testing.assert_allclose(flight_point.sfc, 1.02479e-05, rtol=1e-4)
+    
+    flight_point = FlightPoint(
+        mach=0.8, altitude=30000, engine_setting=EngineSetting.CRUISE.value, thrust_rate=0.7
+    )  # with altitude above boundaries of k_sfc interpolation
+    engine.compute_flight_points(flight_point)
+    np.testing.assert_allclose(flight_point.sfc, 1.42638e-05, rtol=1e-4)
 
     # Test full arrays
     # 2D arrays are used, where first line is for thrust rates, and second line
