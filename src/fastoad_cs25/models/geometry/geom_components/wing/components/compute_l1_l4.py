@@ -18,6 +18,7 @@ import math
 
 import numpy as np
 import openmdao.api as om
+import logging
 
 
 class ComputeL1AndL4Wing(om.ExplicitComponent):
@@ -50,10 +51,21 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         sweep_100 = inputs["data:geometry:wing:sweep_100_inner"]
         virtual_taper_ratio = inputs["data:geometry:wing:virtual_taper_ratio"]
 
-        l1_wing = (
-            wing_area
-            - (y3_wing - y2_wing) * (y3_wing + y2_wing) * (math.tan(sweep_25) - math.tan(sweep_100))
-        ) / (
+        term = (
+            (y3_wing - y2_wing) * (y3_wing + y2_wing) * (math.tan(sweep_25) - math.tan(sweep_100))
+        )
+        adjusted_wing_area = wing_area
+        if adjusted_wing_area < term:
+            logging.warning(
+                "Wing area is inferior to the required term when computing wing chord, increasing wing_area by 10%: "
+                + str(wing_area[0])
+                + " m2 increased to "
+                + str(term[0] * 1.1)
+                + "m2"
+            )
+            adjusted_wing_area = term * 1.1
+
+        l1_wing = (adjusted_wing_area - term) / (
             (1.0 + virtual_taper_ratio) / 2.0 * (span - 2 * y2_wing)
             + 2 * y2_wing
             - (3.0 * (1.0 - virtual_taper_ratio) * (y3_wing - y2_wing) * (y3_wing + y2_wing))
