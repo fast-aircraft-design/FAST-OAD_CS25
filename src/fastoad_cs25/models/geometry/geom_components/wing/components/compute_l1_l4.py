@@ -20,6 +20,8 @@ import numpy as np
 import openmdao.api as om
 import logging
 
+WING_AREA_INCREASE_RATIO = 1.1
+
 
 class ComputeL1AndL4Wing(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
@@ -56,14 +58,12 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         )
         adjusted_wing_area = wing_area
         if adjusted_wing_area < term:
+            adjusted_wing_area = term * WING_AREA_INCREASE_RATIO
             logging.warning(
-                "Wing area is inferior to the required term when computing wing chord, increasing wing_area by 10%: "
-                + str(wing_area[0])
-                + " m2 increased to "
-                + str(term[0] * 1.1)
-                + "m2"
+                "Wing area too small for wing chord calc; bumping by 10%%: %s m**2 -> %s m**2",
+                wing_area[0],
+                adjusted_wing_area,
             )
-            adjusted_wing_area = term * 1.1
 
         l1_wing = (adjusted_wing_area - term) / (
             (1.0 + virtual_taper_ratio) / 2.0 * (span - 2 * y2_wing)
