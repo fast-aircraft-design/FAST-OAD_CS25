@@ -59,7 +59,7 @@ def test_compute_wing_with_kink():
 
 
 def test_compute_wing_with_initial_wing_area_to_small():
-    # test to make sure the the fix around the too small initial wing area giving negative chord is working
+    # test to make sure the fix around the too small initial wing area giving negative chord is working
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
     input_vars.add_output("data:geometry:fuselage:maximum_height", 4.912, units="m")

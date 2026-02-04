@@ -45,7 +45,7 @@ def test_compute_flight_points():
 
     flight_point = FlightPoint(
         mach=0, altitude=-3000, engine_setting=EngineSetting.TAKEOFF, thrust_rate=0.8
-    )  # with altitude bellow boundaries of k_sfc interpolation
+    )  # with altitude below boundaries of k_sfc interpolation
     engine.compute_flight_points(flight_point)
     np.testing.assert_allclose(flight_point.sfc, 1.02479e-05, rtol=1e-4)
 

@@ -57,9 +57,10 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         if adjusted_wing_area < term:
             adjusted_wing_area = term * WING_AREA_INCREASE_RATIO
             logging.warning(
-                "Wing area too small for wing chord calc; bumping by 10%%: %s m**2 -> %s m**2",
-                wing_area[0],
-                adjusted_wing_area,
+                "Wing area too small for wing chord calc (negative chord value); "
+                "bumping by 10%%: %.2f m² -> %.2f m²",
+                float(wing_area.item()),
+                float(adjusted_wing_area.item()),
             )
 
         l1_wing = (adjusted_wing_area - term) / (
