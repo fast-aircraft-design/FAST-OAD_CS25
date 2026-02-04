@@ -12,17 +12,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import (
-    RegisterOpenMDAOSystem,
-    RegisterSubmodel,
-)
 
-from .constants import PolarType, SERVICE_HIGH_LIFT, SERVICE_POLAR
+from .constants import SERVICE_HIGH_LIFT, SERVICE_POLAR, PolarType
 
 
-@RegisterOpenMDAOSystem("fastoad.aerodynamics.takeoff.legacy", domain=ModelDomain.AERODYNAMICS)
+@oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.takeoff.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsTakeoff(om.Group):
     """
     Computes aerodynamic characteristics at takeoff.
@@ -34,13 +31,13 @@ class AerodynamicsTakeoff(om.Group):
         landing_flag_option = {"landing_flag": False}
         self.add_subsystem(
             "delta_cl_cd",
-            RegisterSubmodel.get_submodel(SERVICE_HIGH_LIFT, landing_flag_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_HIGH_LIFT, landing_flag_option),
             promotes=["*"],
         )
 
         polar_type_option = {"polar_type": PolarType.TAKEOFF}
         self.add_subsystem(
             "polar",
-            RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
             promotes=["*"],
         )

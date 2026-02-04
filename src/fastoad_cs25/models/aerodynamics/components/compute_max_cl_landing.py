@@ -12,14 +12,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
-from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao.core.explicitcomponent import ExplicitComponent
 
 from ..constants import SERVICE_LANDING_MAX_CL
 
 
-@RegisterSubmodel(SERVICE_LANDING_MAX_CL, "fastoad.submodel.aerodynamics.landing.max_CL.legacy")
+@oad.RegisterSubmodel(SERVICE_LANDING_MAX_CL, "fastoad.submodel.aerodynamics.landing.max_CL.legacy")
 class ComputeMaxClLanding(ExplicitComponent):
     """Computation of max CL in landing conditions."""
 

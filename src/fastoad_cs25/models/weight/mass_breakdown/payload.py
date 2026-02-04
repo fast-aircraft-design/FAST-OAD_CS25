@@ -14,14 +14,14 @@ Payload mass computation
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
-from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao import api as om
 
 from .constants import SERVICE_PAYLOAD_MASS
 
 
-@RegisterSubmodel(SERVICE_PAYLOAD_MASS, "fastoad.submodel.weight.mass.payload.legacy")
+@oad.RegisterSubmodel(SERVICE_PAYLOAD_MASS, "fastoad.submodel.weight.mass.payload.legacy")
 class ComputePayload(om.ExplicitComponent):
     """Computes payload from NPAX"""
 

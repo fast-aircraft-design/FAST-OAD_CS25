@@ -14,14 +14,14 @@ Estimation of paint weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_PAINT_MASS
 
 
-@RegisterSubmodel(SERVICE_PAINT_MASS, "fastoad.submodel.weight.mass.airframe.paint.legacy")
+@oad.RegisterSubmodel(SERVICE_PAINT_MASS, "fastoad.submodel.weight.mass.airframe.paint.legacy")
 class PaintWeight(om.ExplicitComponent):
     """
     Weight estimation for paint

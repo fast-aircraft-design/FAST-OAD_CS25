@@ -14,10 +14,7 @@
 
 import fastoad.api as oad
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
-from ...constants import PAYLOAD_FROM_NPAX
-from ..constants import SERVICE_MASS_BREAKDOWN
 from .constants import (
     SERVICE_AIRFRAME_MASS,
     SERVICE_CREW_MASS,
@@ -28,9 +25,11 @@ from .constants import (
     SERVICE_PROPULSION_MASS,
     SERVICE_SYSTEMS_MASS,
 )
+from ..constants import SERVICE_MASS_BREAKDOWN
+from ...constants import PAYLOAD_FROM_NPAX
 
 
-@RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
+@oad.RegisterSubmodel(SERVICE_MASS_BREAKDOWN, "fastoad.submodel.weight.mass.legacy")
 class MassBreakdown(
     oad.CycleGroup,
     default_linear_solver="om.LinearBlockGS",
@@ -60,16 +59,18 @@ class MassBreakdown(
         if self.options[PAYLOAD_FROM_NPAX]:
             self.add_subsystem(
                 "payload",
-                RegisterSubmodel.get_submodel(SERVICE_PAYLOAD_MASS),
+                oad.RegisterSubmodel.get_submodel(SERVICE_PAYLOAD_MASS),
                 promotes=["*"],
             )
-        self.add_subsystem("owe", RegisterSubmodel.get_submodel(SERVICE_OWE), promotes=["*"])
+        self.add_subsystem("owe", oad.RegisterSubmodel.get_submodel(SERVICE_OWE), promotes=["*"])
         self.add_subsystem(
-            "update_mzfw_and_mlw", RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW), promotes=["*"]
+            "update_mzfw_and_mlw",
+            oad.RegisterSubmodel.get_submodel(SERVICE_MLW_MZFW),
+            promotes=["*"],
         )
 
 
-@RegisterSubmodel(SERVICE_OWE, "fastoad.submodel.weight.mass.owe.legacy")
+@oad.RegisterSubmodel(SERVICE_OWE, "fastoad.submodel.weight.mass.owe.legacy")
 class OperatingWeightEmpty(om.Group):
     """Operating Empty Weight (OEW) estimation.
 
@@ -80,27 +81,27 @@ class OperatingWeightEmpty(om.Group):
         # Propulsion should be done before airframe, because it drives pylon mass.
         self.add_subsystem(
             "propulsion_weight",
-            RegisterSubmodel.get_submodel(SERVICE_PROPULSION_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_PROPULSION_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "airframe_weight",
-            RegisterSubmodel.get_submodel(SERVICE_AIRFRAME_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_AIRFRAME_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "systems_weight",
-            RegisterSubmodel.get_submodel(SERVICE_SYSTEMS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_SYSTEMS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "furniture_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FURNITURE_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FURNITURE_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "crew_weight",
-            RegisterSubmodel.get_submodel(SERVICE_CREW_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CREW_MASS),
             promotes=["*"],
         )
 

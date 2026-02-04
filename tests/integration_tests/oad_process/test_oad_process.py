@@ -270,7 +270,7 @@ class MissionConfigurator(_IConfigurationModifier):
         problem.model.subgroup.nonlinear_solver = om.NonlinearBlockGS(
             maxiter=100, atol=1e-2, iprint=0
         )
-        problem.model.subgroup.linear_solver: om.DirectSolver()
+        problem.model.subgroup.linear_solver = om.DirectSolver()
         problem.model.performance._OPTIONS["mission_file_path"] = "::sizing_mission"
 
 

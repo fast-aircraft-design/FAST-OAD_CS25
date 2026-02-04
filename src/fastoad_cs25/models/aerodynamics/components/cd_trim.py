@@ -12,14 +12,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_CD_TRIM
 
 
-@RegisterSubmodel(SERVICE_CD_TRIM, "fastoad.submodel.aerodynamics.CD.trim.legacy")
+@oad.RegisterSubmodel(SERVICE_CD_TRIM, "fastoad.submodel.aerodynamics.CD.trim.legacy")
 class CdTrim(om.ExplicitComponent):
     """Computation of trim drag."""
 

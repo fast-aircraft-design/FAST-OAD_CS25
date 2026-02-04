@@ -14,15 +14,15 @@ Weight computation (mass and CG)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
 from .constants import SERVICE_CENTERS_OF_GRAVITY, SERVICE_MASS_BREAKDOWN
 from ..constants import PAYLOAD_FROM_NPAX
 
 
-@RegisterOpenMDAOSystem("fastoad.weight.legacy", domain=ModelDomain.WEIGHT)
+@oad.RegisterOpenMDAOSystem("fastoad.weight.legacy", domain=ModelDomain.WEIGHT)
 class Weight(om.Group):
     """
     Computes masses and Centers of Gravity for each part of the empty operating aircraft, among
@@ -47,11 +47,11 @@ class Weight(om.Group):
 
     def setup(self):
         self.add_subsystem(
-            "cg", RegisterSubmodel.get_submodel(SERVICE_CENTERS_OF_GRAVITY), promotes=["*"]
+            "cg", oad.RegisterSubmodel.get_submodel(SERVICE_CENTERS_OF_GRAVITY), promotes=["*"]
         )
         self.add_subsystem(
             "mass_breakdown",
-            RegisterSubmodel.get_submodel(
+            oad.RegisterSubmodel.get_submodel(
                 SERVICE_MASS_BREAKDOWN, {PAYLOAD_FROM_NPAX: self.options[PAYLOAD_FROM_NPAX]}
             ),
             promotes=["*"],

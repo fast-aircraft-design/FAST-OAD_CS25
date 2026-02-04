@@ -14,15 +14,15 @@ Estimation of navigation systems weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad.constants import RangeCategory
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_NAVIGATION_SYSTEMS_MASS
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_NAVIGATION_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.navigation.legacy"
 )
 class NavigationSystemsWeight(om.ExplicitComponent):

@@ -14,7 +14,6 @@ Estimation of vertical tail mean aerodynamic chords
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import math
 
 import numpy as np
 import openmdao.api as om
@@ -67,7 +66,7 @@ class ComputeVTMAC(om.ExplicitComponent):
             / 3.0
         )
 
-        x0_vt = (root_chord / 4) + (b_v / 3) * math.tan(sweep_25_vt) * (
+        x0_vt = (root_chord / 4) + (b_v / 3) * np.tan(sweep_25_vt) * (
             (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
         )
 

@@ -14,14 +14,14 @@ Estimation of fuel lines weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_UNCONSUMABLES_MASS
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_UNCONSUMABLES_MASS, "fastoad.submodel.weight.mass.propulsion.unconsumables.legacy"
 )
 class UnconsumablesWeight(om.ExplicitComponent):

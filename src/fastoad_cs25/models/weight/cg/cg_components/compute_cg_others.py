@@ -14,14 +14,14 @@ Estimation centers of gravity of other components
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_OTHERS_CG
 
 
-@RegisterSubmodel(SERVICE_OTHERS_CG, "fastoad.submodel.weight.cg.others.legacy")
+@oad.RegisterSubmodel(SERVICE_OTHERS_CG, "fastoad.submodel.weight.cg.others.legacy")
 class ComputeOthersCG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Other components center of gravities estimation"""

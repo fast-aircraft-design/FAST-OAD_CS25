@@ -12,10 +12,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
-from ..constants import SERVICE_AIRFRAME_MASS
 from .constants import (
     SERVICE_EMPENNAGE_MASS,
     SERVICE_FLIGHT_CONTROLS_MASS,
@@ -25,9 +24,10 @@ from .constants import (
     SERVICE_PYLONS_MASS,
     SERVICE_WING_MASS,
 )
+from ..constants import SERVICE_AIRFRAME_MASS
 
 
-@RegisterSubmodel(SERVICE_AIRFRAME_MASS, "fastoad.submodel.weight.mass.airframe.legacy")
+@oad.RegisterSubmodel(SERVICE_AIRFRAME_MASS, "fastoad.submodel.weight.mass.airframe.legacy")
 class AirframeWeight(om.Group):
     """
     Computes mass of airframe.
@@ -36,31 +36,33 @@ class AirframeWeight(om.Group):
     def setup(self):
         # Airframe
         self.add_subsystem(
-            "wing_weight", RegisterSubmodel.get_submodel(SERVICE_WING_MASS), promotes=["*"]
+            "wing_weight", oad.RegisterSubmodel.get_submodel(SERVICE_WING_MASS), promotes=["*"]
         )
         self.add_subsystem(
-            "fuselage_weight", RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_MASS), promotes=["*"]
+            "fuselage_weight",
+            oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_MASS),
+            promotes=["*"],
         )
         self.add_subsystem(
             "empennage_weight",
-            RegisterSubmodel.get_submodel(SERVICE_EMPENNAGE_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_EMPENNAGE_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "flight_controls_weight",
-            RegisterSubmodel.get_submodel(SERVICE_FLIGHT_CONTROLS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_FLIGHT_CONTROLS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
             "landing_gear_weight",
-            RegisterSubmodel.get_submodel(SERVICE_LANDING_GEARS_MASS),
+            oad.RegisterSubmodel.get_submodel(SERVICE_LANDING_GEARS_MASS),
             promotes=["*"],
         )
         self.add_subsystem(
-            "pylons_weight", RegisterSubmodel.get_submodel(SERVICE_PYLONS_MASS), promotes=["*"]
+            "pylons_weight", oad.RegisterSubmodel.get_submodel(SERVICE_PYLONS_MASS), promotes=["*"]
         )
         self.add_subsystem(
-            "paint_weight", RegisterSubmodel.get_submodel(SERVICE_PAINT_MASS), promotes=["*"]
+            "paint_weight", oad.RegisterSubmodel.get_submodel(SERVICE_PAINT_MASS), promotes=["*"]
         )
 
         weight_sum = om.AddSubtractComp()

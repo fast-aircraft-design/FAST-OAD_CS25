@@ -14,8 +14,6 @@ Estimation of wing sweeps
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 
@@ -64,10 +62,10 @@ class ComputeSweepWing(om.ExplicitComponent):
         l1_wing = inputs["data:geometry:wing:root:virtual_chord"]
         l4_wing = inputs["data:geometry:wing:tip:chord"]
         outputs["data:geometry:wing:sweep_100_outer"] = (
-            math.atan((x4_wing + l4_wing - l1_wing) / (y4_wing - y2_wing)) / math.pi * 180.0
+            np.atan((x4_wing + l4_wing - l1_wing) / (y4_wing - y2_wing)) / np.pi * 180.0
         )
         outputs["data:geometry:wing:sweep_0"] = (
-            math.atan(x4_wing / (y4_wing - y2_wing)) / math.pi * 180.0
+            np.atan(x4_wing / (y4_wing - y2_wing)) / np.pi * 180.0
         )
 
 

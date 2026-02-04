@@ -12,15 +12,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .utils.friction_drag import get_flat_plate_friction_drag_coefficient
 from ..constants import SERVICE_CD0_NACELLES_PYLONS
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CD0_NACELLES_PYLONS,
     "fastoad.submodel.aerodynamics.CD0.nacelles_pylons.legacy",
 )
