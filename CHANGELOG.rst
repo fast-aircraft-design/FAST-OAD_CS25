@@ -2,6 +2,25 @@
 Changelog
 =========
 
+Version 0.8.1
+=============
+Added:
+
+- Add sizing_load_factor in the load module. (#73)
+- Add isort linting rules to be consistent with FAST-OAD-core repo. (#84)
+- Add compatibility with Python versions 3.13 and 3.14. (#88)
+
+Modified:
+
+- Update poetry to 2.0 and deprecate Python 3.9. (#75)
+- Replace service_registry imports with oad. prefix pattern. (#80)
+- Use numpy instead of math library as default in the cs25 repo. (#83)
+- Increase MDA robustness by allowing k_sfc extrapolation and addition of a warning for negative chords due to unfeasible wing geometry. (#87)
+
+Fixed:
+
+- Corrected ft-m conversion in test files. (#74)
+
 Version 0.8.0
 =============
 Added:
