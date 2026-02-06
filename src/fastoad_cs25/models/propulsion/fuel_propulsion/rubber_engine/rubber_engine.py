@@ -129,6 +129,8 @@ class RubberEngine(AbstractFuelPropulsion):
         k_sfc_alt = interp1d(
             [-1000.0, 0.0, 13106.4, 20000.0],
             np.hstack((self.k_sfc_sl, self.k_sfc_sl, self.k_sfc_cr, self.k_sfc_cr)),
+            bounds_error=False,
+            fill_value=(self.k_sfc_sl, self.k_sfc_cr),
         )
         k_sfc = k_sfc_alt(flight_points.altitude)
 

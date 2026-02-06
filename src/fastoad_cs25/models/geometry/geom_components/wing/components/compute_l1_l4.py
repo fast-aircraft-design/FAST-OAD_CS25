@@ -16,8 +16,12 @@ Estimation of wing chords (l1 and l4)
 
 import numpy as np
 import openmdao.api as om
+from fastoad.api import ValidityDomainChecker
 
 
+@ValidityDomainChecker(
+    {"data:geometry:wing:root:virtual_chord": (0.0, None)},
+)
 class ComputeL1AndL4Wing(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Wing chords (l1 and l4) estimation"""
