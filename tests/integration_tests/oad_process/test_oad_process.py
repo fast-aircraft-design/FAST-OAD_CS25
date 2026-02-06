@@ -336,26 +336,6 @@ def test_api_optim(cleanup):
     assert_allclose(problem["data:mission:sizing:needed_block_fuel"], 18885.0, atol=1, rtol=1e-4)
 
 
-def test_warning_to_infeasible_geometry(cleanup, caplog):
-    """
-    Test if a warning is generated when an unfeasible wing geometry is inputed
-    and results in negative chord value.
-    """
-
-    configurator = FASTOADProblemConfigurator(
-        DATA_FOLDER_PATH / "oad_process_infeasible_wing_geometry.yml"
-    )
-
-    # Create problem with standart inputs
-    problem = configurator.get_problem(read_inputs=True)
-    problem.setup()
-    problem.run_model()
-
-    assert (
-        'data:geometry:wing:root:virtual_chord" out of bound: value [-0.01204577] m' in caplog.text
-    )
-
-
 def _check_weight_performance_loop(problem):
     assert_allclose(
         problem["data:weight:aircraft:OWE"],

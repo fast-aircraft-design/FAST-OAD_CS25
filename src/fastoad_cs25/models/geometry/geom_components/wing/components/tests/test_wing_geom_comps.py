@@ -84,6 +84,30 @@ def test_geometry_wing_l1_l4():
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
 
 
+def test_activation_warning_for_negative_l1(caplog):
+    """Test if a warning is generated when an unfeasible wing geometry is inputed
+    and results in negative chord value. Unfeasible geometries concerned especially
+    wing with high aspect ratio, far lateral kink, and high sweep,
+    low inner kink trailing sweep"""
+
+    input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:area", 50, units="m**2")
+    input_vars.add_output("data:geometry:wing:sweep_25", 27.0, units="deg")
+    input_vars.add_output("data:geometry:wing:virtual_taper_ratio", 0.9, units=None)
+    input_vars.add_output("data:geometry:wing:kink:y", 12, units="m")
+    input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
+
+    problem = run_system(ComputeL1AndL4Wing(), input_vars)
+    wing_l1 = problem["data:geometry:wing:root:virtual_chord"]
+
+    # Check for the core part of the warning message
+    expected_core = (
+        f'"data:geometry:wing:root:virtual_chord" out of bound: value [{wing_l1[0]:.8f}] m'
+    )
+    assert expected_core in caplog.text, f"Expected warning not found in logs. Logs: {caplog.text}"
+
+
 def test_geometry_wing_l2_l3():
     """Tests computation of the wing chords (l2 and l3)"""
 
