@@ -85,10 +85,9 @@ def test_geometry_wing_l1_l4():
 
 
 def test_activation_warning_for_negative_l1(caplog):
-    """Test if a warning is generated when an unfeasible wing geometry is inputed
-    and results in negative chord value. Unfeasible geometries concerned especially
-    wing with high aspect ratio, far lateral kink, and high sweep,
-    low inner kink trailing sweep"""
+    """Test if a warning is generated when an unfeasible wing geometry is input and results
+    in a negative chord value. Unfeasible geometries concerned especially wings with high aspect
+    ratio, far lateral kink, and high sweep, low inner-kink trailing sweep."""
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:area", 50, units="m**2")
