@@ -14,14 +14,14 @@ Estimation of wing chords (l1 and l4)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
-
 import numpy as np
 import openmdao.api as om
+from fastoad.api import ValidityDomainChecker
 
-WING_AREA_INCREASE_RATIO = 1.1
 
-
+@ValidityDomainChecker(
+    {"data:geometry:wing:root:virtual_chord": (0.0, None)},
+)
 class ComputeL1AndL4Wing(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Wing chords (l1 and l4) estimation"""
@@ -52,18 +52,10 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         sweep_100 = inputs["data:geometry:wing:sweep_100_inner"]
         virtual_taper_ratio = inputs["data:geometry:wing:virtual_taper_ratio"]
 
-        term = (y3_wing - y2_wing) * (y3_wing + y2_wing) * (np.tan(sweep_25) - np.tan(sweep_100))
-        adjusted_wing_area = wing_area
-        if adjusted_wing_area < term:
-            adjusted_wing_area = term * WING_AREA_INCREASE_RATIO
-            logging.warning(
-                "Wing area too small for wing chord calc (negative chord value); "
-                "bumping by 10%%: %.2f m² -> %.2f m²",
-                float(wing_area.item()),
-                float(adjusted_wing_area.item()),
-            )
-
-        l1_wing = (adjusted_wing_area - term) / (
+        l1_wing = (
+            wing_area
+            - (y3_wing - y2_wing) * (y3_wing + y2_wing) * (np.tan(sweep_25) - np.tan(sweep_100))
+        ) / (
             (1.0 + virtual_taper_ratio) / 2.0 * (span - 2 * y2_wing)
             + 2 * y2_wing
             - (3.0 * (1.0 - virtual_taper_ratio) * (y3_wing - y2_wing) * (y3_wing + y2_wing))
