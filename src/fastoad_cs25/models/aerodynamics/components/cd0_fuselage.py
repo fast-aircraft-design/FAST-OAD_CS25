@@ -29,7 +29,7 @@ class Cd0Fuselage(om.ExplicitComponent):
 
     def setup(self):
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:low_speed:unit_reynolds", val=np.nan)
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:CL",
                 shape_by_conn=True,
@@ -41,7 +41,7 @@ class Cd0Fuselage(om.ExplicitComponent):
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
             )
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:cruise:unit_reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
             self.add_output(
@@ -67,11 +67,11 @@ class Cd0Fuselage(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             cl = inputs["data:aerodynamics:aircraft:low_speed:CL"]
             mach = inputs["data:aerodynamics:aircraft:takeoff:mach"]
-            reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
+            reynolds = inputs["data:aerodynamics:low_speed:unit_reynolds"]
         else:
             cl = inputs["data:aerodynamics:aircraft:cruise:CL"]
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:cruise:reynolds"]
+            reynolds = inputs["data:aerodynamics:cruise:unit_reynolds"]
 
         cf_fus = get_flat_plate_friction_drag_coefficient(fus_length, mach, reynolds)
 

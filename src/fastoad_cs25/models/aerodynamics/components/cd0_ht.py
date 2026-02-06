@@ -46,11 +46,11 @@ class Cd0HorizontalTail(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("settings:aerodynamics:wing:CD:fuselage_interaction", val=0.04)
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:low_speed:unit_reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD0")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:cruise:unit_reynolds", val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
             self.add_output("data:aerodynamics:horizontal_tail:cruise:CD0")
 
@@ -69,10 +69,10 @@ class Cd0HorizontalTail(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         if self.options["low_speed_aero"]:
             mach = inputs["data:aerodynamics:aircraft:takeoff:mach"]
-            reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
+            reynolds = inputs["data:aerodynamics:low_speed:unit_reynolds"]
         else:
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:cruise:reynolds"]
+            reynolds = inputs["data:aerodynamics:cruise:unit_reynolds"]
 
         cd0_ht = compute_cd0_lifting_surface(ht_geometry, mach, reynolds, wing_area)
 

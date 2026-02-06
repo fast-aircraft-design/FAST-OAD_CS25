@@ -60,10 +60,10 @@ data:aerodynamics:vertical_tail:cruise:CL_alpha || derivative of lift coefficien
 data:aerodynamics:vertical_tail:cruise:CnBeta || derivative of yawing moment against sideslip angle for vertical tail in cruise conditions
 data:aerodynamics:vertical_tail:low_speed:CD0 || profile drag coefficient for vertical tail in low speed conditions
 data:aerodynamics:wing:cruise:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:cruise:CL
-data:aerodynamics:wing:cruise:reynolds || Reynolds number based on wing mean aerodynamic chord in cruise conditions
+data:aerodynamics:cruise:unit_reynolds || Unitary Reynolds number in cruise conditions (Reynolds number per meter)
+data:aerodynamics:low_speed:unit_reynolds || Unitary Reynolds number in low speed conditions (Reynolds number per meter)
 data:aerodynamics:wing:landing:reynolds || Reynolds number based on wing mean aerodynamic chord in landing conditions
 data:aerodynamics:wing:low_speed:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:low_speed:CL
-data:aerodynamics:wing:low_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in low speed conditions
 data:geometry:aircraft:wetted_area || total wetted area
 data:geometry:cabin:NPAX1 || number of passengers if there are only economical class seats
 data:geometry:cabin:aisle_width || width of aisles

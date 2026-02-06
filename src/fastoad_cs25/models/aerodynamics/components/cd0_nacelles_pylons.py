@@ -32,12 +32,12 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
 
     def setup(self):
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:low_speed:unit_reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output("data:aerodynamics:nacelles:low_speed:CD0")
             self.add_output("data:aerodynamics:pylons:low_speed:CD0")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:cruise:unit_reynolds", val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
             self.add_output("data:aerodynamics:nacelles:cruise:CD0")
             self.add_output("data:aerodynamics:pylons:cruise:CD0")
@@ -58,10 +58,10 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         if self.options["low_speed_aero"]:
             mach = inputs["data:aerodynamics:aircraft:takeoff:mach"]
-            reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
+            reynolds = inputs["data:aerodynamics:low_speed:unit_reynolds"]
         else:
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:cruise:reynolds"]
+            reynolds = inputs["data:aerodynamics:cruise:unit_reynolds"]
 
         cd0_pylon = self._compute_cd0_for_pylons(inputs, n_engines, wing_area, mach, reynolds)
         cd0_nac = self._compute_cd0_for_nacelles(inputs, n_engines, wing_area, mach, reynolds)

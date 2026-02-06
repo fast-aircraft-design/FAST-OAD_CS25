@@ -201,13 +201,13 @@ def test_cd0():
         ivc = get_indep_var_comp(input_list)
         if low_speed_aero:
             ivc.add_output("data:aerodynamics:aircraft:takeoff:mach", mach)
-            ivc.add_output("data:aerodynamics:wing:low_speed:reynolds", reynolds)
+            ivc.add_output("data:aerodynamics:low_speed:unit_reynolds", reynolds)
             ivc.add_output(
                 "data:aerodynamics:aircraft:low_speed:CL", 150 * [cl]
             )  # needed because size of input array is fixed
         else:
             ivc.add_output("data:TLAR:cruise_mach", mach)
-            ivc.add_output("data:aerodynamics:wing:cruise:reynolds", reynolds)
+            ivc.add_output("data:aerodynamics:cruise:unit_reynolds", reynolds)
             ivc.add_output(
                 "data:aerodynamics:aircraft:cruise:CL", 150 * [cl]
             )  # needed because size of input array is fixed
