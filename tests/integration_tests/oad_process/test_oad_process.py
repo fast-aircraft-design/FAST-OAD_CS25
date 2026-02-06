@@ -203,14 +203,21 @@ def run_non_regression_test(
     row_list = []
     for ref_var in ref_data:
         try:
-            value = problem.get_val(ref_var.name, units=ref_var.units)[0]
+            val_array = problem.get_val(ref_var.name, units=ref_var.units)
+            # Handle arrays of different sizes
+            if val_array.size == 1:
+                value = val_array.item()
+            else:
+                value = val_array.flatten()[0]
         except KeyError:
             continue
+        # Handle ref_var.value being either a list or numpy array
+        ref_value = ref_var.value[0] if isinstance(ref_var.value, list) else ref_var.value.item()
         row_list.append(
             {
                 "name": ref_var.name,
                 "units": ref_var.units,
-                "ref_value": ref_var.value[0],
+                "ref_value": ref_value,
                 "value": value,
             }
         )
@@ -232,8 +239,7 @@ def run_non_regression_test(
             row = df.loc[df.name == name]
             assert_allclose(row.value, row.ref_value, rtol=specific_tolerance, atol=1.0e-5)
     else:
-        df.name = df.units = 0.0
-        df = df.applymap(float)
+        df = df.drop(columns=["name", "units"]).astype(float)
         assert_allclose(df.value, df.ref_value, rtol=specific_tolerance, atol=1.0e-5)
 
 
