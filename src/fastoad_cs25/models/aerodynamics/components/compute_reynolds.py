@@ -33,11 +33,11 @@ class ComputeReynolds(ExplicitComponent):
     def setup(self):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:wing:low_speed:reynolds")
+            self.add_output("data:aerodynamics:low_speed:unit_reynolds")
         else:
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
             self.add_input("data:mission:sizing:main_route:cruise:altitude", val=np.nan, units="m")
-            self.add_output("data:aerodynamics:wing:cruise:reynolds")
+            self.add_output("data:aerodynamics:cruise:unit_reynolds")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -55,6 +55,6 @@ class ComputeReynolds(ExplicitComponent):
         reynolds = atm.unitary_reynolds
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:wing:low_speed:reynolds"] = reynolds
+            outputs["data:aerodynamics:low_speed:unit_reynolds"] = reynolds
         else:
-            outputs["data:aerodynamics:wing:cruise:reynolds"] = reynolds
+            outputs["data:aerodynamics:cruise:unit_reynolds"] = reynolds
