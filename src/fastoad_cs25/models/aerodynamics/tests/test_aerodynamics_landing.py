@@ -50,6 +50,14 @@ def test_aerodynamics_landing_with_xfoil(xfoil_path):
         "data:geometry:slat:span_ratio",
         "xfoil:mach",
         "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k",
+        "tuning:aerodynamics:aircraft:cruise:CD:k",
+        "tuning:aerodynamics:aircraft:cruise:CD:offset",
+        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k",
+        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+        "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
+        "data:aerodynamics:aircraft:low_speed:CL",
+        "data:aerodynamics:aircraft:low_speed:CD0",
+        "data:aerodynamics:aircraft:low_speed:CD:trim",
     ]
 
     ivc = get_indep_var_comp(input_list)
@@ -58,6 +66,12 @@ def test_aerodynamics_landing_with_xfoil(xfoil_path):
     # platforms, tolerance is extended to 1e-2
     assert problem["data:aerodynamics:aircraft:landing:CL_max_clean"] == approx(1.59359, abs=1e-2)
     assert problem["data:aerodynamics:aircraft:landing:CL_max"] == approx(2.82178, abs=1e-2)
+
+    CD = problem.get_val("data:aerodynamics:aircraft:landing:CD")
+
+    assert CD[0] == approx(0.11483, abs=1e-4)
+    assert CD[50] == approx(0.17367, abs=1e-4)
+    assert CD[100] == approx(0.2615, abs=1e-4)
 
 
 def test_aerodynamics_landing_without_xfoil():
@@ -75,12 +89,28 @@ def test_aerodynamics_landing_without_xfoil():
         "data:geometry:flap:span_ratio",
         "data:geometry:slat:chord_ratio",
         "data:geometry:slat:span_ratio",
-        "xfoil:mach",
         "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k",
         "data:aerodynamics:aircraft:landing:CL_max_clean_2D",
+        "tuning:aerodynamics:aircraft:cruise:CD:k",
+        "tuning:aerodynamics:aircraft:cruise:CD:offset",
+        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k",
+        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+        "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
+        "data:aerodynamics:aircraft:low_speed:CL",
+        "data:aerodynamics:aircraft:low_speed:CD0",
+        "data:aerodynamics:aircraft:low_speed:CD:trim",
     ]
 
     ivc = get_indep_var_comp(input_list)
     problem = run_system(AerodynamicsLanding(use_xfoil=False), ivc)
     assert problem["data:aerodynamics:aircraft:landing:CL_max_clean"] == approx(1.54978, abs=1e-5)
     assert problem["data:aerodynamics:aircraft:landing:CL_max"] == approx(2.77798, abs=1e-5)
+
+    CL = problem.get_val("data:aerodynamics:aircraft:landing:CL")
+    CD = problem.get_val("data:aerodynamics:aircraft:landing:CD")
+    CL0 = problem.get_val("data:aerodynamics:high_lift_devices:landing:CL")
+
+    assert CL[0] == approx(CL0, abs=1e-3)
+    assert CD[0] == approx(0.11483, abs=1e-4)
+    assert CD[50] == approx(0.17367, abs=1e-4)
+    assert CD[100] == approx(0.2615, abs=1e-4)
