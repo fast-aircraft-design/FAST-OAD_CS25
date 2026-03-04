@@ -109,6 +109,47 @@ def test_high_lift_aero():
     assert cd == approx(0.02230, abs=1e-5)
 
 
+def test_compute_reynolds():
+    """Tests ComputeReynolds"""
+    from stdatm import AtmosphereSI
+
+    altitude_m = 10668.0  # 35000 ft in meters
+    mach = 0.78
+
+    def get_cruise_reynolds(altitude, mach, cruise_altitude_var=None):
+        ivc = IndepVarComp()
+        ivc.add_output("data:TLAR:cruise_mach", mach)
+        var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude"
+        ivc.add_output(var_name, altitude, units="m")
+        kwargs = {}
+        if cruise_altitude_var is not None:
+            kwargs["cruise_altitude_var"] = cruise_altitude_var
+        problem = run_system(ComputeReynolds(**kwargs), ivc)
+        return problem["data:aerodynamics:wing:cruise:reynolds"]
+
+    atm = AtmosphereSI(altitude_m)
+    atm.mach = mach
+    expected_reynolds = atm.unitary_reynolds
+
+    # Test default variable name (backward compatibility)
+    assert get_cruise_reynolds(altitude_m, mach) == approx(expected_reynolds, rel=1e-6)
+
+    # Test custom variable name produces the same result
+    assert get_cruise_reynolds(
+        altitude_m, mach, cruise_altitude_var="data:mission:sizing:custom_route:cruise:altitude"
+    ) == approx(expected_reynolds, rel=1e-6)
+
+    # Test low_speed_aero (altitude = 0, uses takeoff mach)
+    ivc = IndepVarComp()
+    ivc.add_output("data:aerodynamics:aircraft:takeoff:mach", 0.2)
+    problem = run_system(ComputeReynolds(low_speed_aero=True), ivc)
+    atm_ls = AtmosphereSI(0.0)
+    atm_ls.mach = 0.2
+    assert problem["data:aerodynamics:wing:low_speed:reynolds"] == approx(
+        atm_ls.unitary_reynolds, rel=1e-6
+    )
+
+
 def test_oswald_coefficient():
     """Tests OswaldCoefficient"""
     input_list = [
