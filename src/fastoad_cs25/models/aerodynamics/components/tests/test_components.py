@@ -131,7 +131,7 @@ def test_compute_reynolds():
     atm.mach = mach
     expected_reynolds = atm.unitary_reynolds
 
-    # Test default variable name (backward compatibility)
+    # Test default variable name (backward compatibility when no altitude option is specified)
     assert get_cruise_reynolds(altitude_m, mach) == approx(expected_reynolds, rel=1e-6)
 
     # Test custom variable name produces the same result

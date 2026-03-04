@@ -33,7 +33,8 @@ class ComputeReynolds(ExplicitComponent):
             "cruise_altitude_var",
             default="data:mission:sizing:main_route:cruise:altitude",
             types=str,
-            desc="Name of the OpenMDAO variable for cruise altitude used in Reynolds computation.",
+            desc="Name of the variable to use for cruise altitude evaluation in Reynolds number "
+            "computation.",
         )
 
     def setup(self):
