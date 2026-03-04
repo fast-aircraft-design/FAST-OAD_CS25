@@ -341,7 +341,7 @@
                 <Vc_EAS units="m/s">
                     375.0<!--equivalent air speed for sizing load case 1 (gust with minimum aircraft mass)--></Vc_EAS>
                 <altitude units="ft">
-                    65616.79790026246<!--altitude for sizing load case 1 (gust with minimum aircraft mass)--></altitude>
+                    20000.0<!--altitude for sizing load case 1 (gust with minimum aircraft mass)--></altitude>
             </lc1>
             <lc2>
                 <U_gust units="m/s">
@@ -349,7 +349,7 @@
                 <Vc_EAS units="kn">
                     728.9416846652267<!--equivalent air speed for sizing load case 2 (gust with maximum aircraft mass)--></Vc_EAS>
                 <altitude units="ft">
-                    65616.79790026246<!--altitude for sizing load case 2 (gust with maximum aircraft mass)--></altitude>
+                    20000.0<!--altitude for sizing load case 2 (gust with maximum aircraft mass)--></altitude>
             </lc2>
         </load_case>
         <mission>

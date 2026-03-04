@@ -14,7 +14,6 @@ Estimation of horizontal tail mean aerodynamic chords
 #  GNU General Public License for more details.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import math
 
 import numpy as np
 import openmdao.api as om
@@ -77,7 +76,7 @@ class ComputeHTMAC(om.ExplicitComponent):
             / 3
         )
 
-        x0_ht = (root_chord / 4) + (b_h / 6) * math.tan(sweep_25_ht) * (
+        x0_ht = (root_chord / 4) + (b_h / 6) * np.tan(sweep_25_ht) * (
             (root_chord + 2 * tip_chord) / (root_chord + tip_chord)
         )
 

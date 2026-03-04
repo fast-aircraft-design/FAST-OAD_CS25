@@ -14,9 +14,9 @@ Computation of wing area following aerodynamic constraints
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 from scipy.constants import g
 from stdatm import Atmosphere
 
@@ -26,7 +26,7 @@ from fastoad_cs25.models.loops.constants import (
 )
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_WING_AREA_LOOP_AERO, "fastoad.submodel.loops.wing.area.update.aero.legacy"
 )
 class UpdateWingAreaAero(om.ExplicitComponent):
@@ -75,7 +75,7 @@ class UpdateWingAreaAero(om.ExplicitComponent):
         )
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_WING_AREA_CONSTRAINT_AERO,
     "fastoad.submodel.loops.wing.area.constraint.aero.legacy",
 )

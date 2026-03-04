@@ -12,9 +12,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .utils.cd0_lifting_surface import (
     LiftingSurfaceGeometry,
@@ -23,7 +23,7 @@ from .utils.cd0_lifting_surface import (
 from ..constants import SERVICE_CD0_VERTICAL_TAIL
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CD0_VERTICAL_TAIL, "fastoad.submodel.aerodynamics.CD0.vertical_tail.legacy"
 )
 class Cd0VerticalTail(om.ExplicitComponent):

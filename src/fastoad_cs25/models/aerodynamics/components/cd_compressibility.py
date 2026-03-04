@@ -12,14 +12,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_CD_COMPRESSIBILITY
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_CD_COMPRESSIBILITY,
     "fastoad.submodel.aerodynamics.CD.compressibility.legacy",
 )

@@ -14,11 +14,8 @@ Estimation of vertical tail lift coefficient
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
-
 
 # TODO: This belongs more to aerodynamics than geometry
 
@@ -45,20 +42,20 @@ class ComputeVTClalpha(om.ExplicitComponent):
         k_ar_effective = 2.9 if tail_type == 1 else 1.55
         lambda_vt = inputs["data:geometry:vertical_tail:aspect_ratio"] * k_ar_effective
 
-        beta = math.sqrt(1 - cruise_mach**2)
+        beta = np.sqrt(1 - cruise_mach**2)
         cl_alpha_vt = (
             0.8
             * 2
-            * math.pi
+            * np.pi
             * lambda_vt
             / (
                 2
-                + math.sqrt(
+                + np.sqrt(
                     4
                     + lambda_vt**2
                     * beta**2
                     / 0.95**2
-                    * (1 + (math.tan(sweep_25_vt / 180.0 * math.pi)) ** 2 / beta**2)
+                    * (1 + (np.tan(sweep_25_vt / 180.0 * np.pi)) ** 2 / beta**2)
                 )
             )
         )

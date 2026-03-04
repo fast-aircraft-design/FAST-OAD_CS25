@@ -15,7 +15,7 @@ Estimation of center of gravity for load case 3
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from fastoad.module_management.service_registry import RegisterSubmodel
+import fastoad.api as oad
 
 from .compute_cg_loadcase_base import ComputeCGLoadCase
 from .compute_cg_loadcases import SERVICE_LOAD_CASE_CG_PREFIX
@@ -23,7 +23,7 @@ from .compute_cg_loadcases import SERVICE_LOAD_CASE_CG_PREFIX
 CASE_NUMBER = 3
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     f"{SERVICE_LOAD_CASE_CG_PREFIX}.{CASE_NUMBER}",
     f"fastoad.submodel.weight.cg.load_case.legacy.{CASE_NUMBER}",
 )

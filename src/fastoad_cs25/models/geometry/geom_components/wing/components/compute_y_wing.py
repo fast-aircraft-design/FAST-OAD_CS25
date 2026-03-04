@@ -15,8 +15,6 @@ Estimation of wing Ys (sections span)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import math
-
 import numpy as np
 import openmdao.api as om
 
@@ -73,7 +71,7 @@ class ComputeYWing(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         width_max = inputs["data:geometry:fuselage:maximum_width"]
 
-        span = math.sqrt(lambda_wing * wing_area)
+        span = np.sqrt(lambda_wing * wing_area)
 
         # Wing geometry
         y4_wing = span / 2.0

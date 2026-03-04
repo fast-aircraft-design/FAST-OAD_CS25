@@ -17,7 +17,6 @@ Estimation of wing geometry
 import fastoad.api as oad
 import openmdao.api as om
 
-from ...constants import SERVICE_WING_GEOMETRY
 from .constants import (
     SERVICE_WING_GEOMETRY_GLOBAL_POSITIONS,
     SERVICE_WING_GEOMETRY_MFW,
@@ -25,6 +24,7 @@ from .constants import (
     SERVICE_WING_GEOMETRY_THICKNESS,
     SERVICE_WING_GEOMETRY_WET_AREA,
 )
+from ...constants import SERVICE_WING_GEOMETRY
 
 
 @oad.RegisterSubmodel(SERVICE_WING_GEOMETRY, "fastoad.submodel.geometry.wing.legacy")

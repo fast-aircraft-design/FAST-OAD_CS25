@@ -14,15 +14,15 @@ Computation of tail areas w.r.t. HQ criteria
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem
 
 from .compute_ht_area import ComputeHTArea
 from .compute_vt_area import ComputeVTArea
 
 
-@RegisterOpenMDAOSystem(
+@oad.RegisterOpenMDAOSystem(
     "fastoad.handling_qualities.tail_sizing", domain=ModelDomain.HANDLING_QUALITIES
 )
 class ComputeTailAreas(om.Group):

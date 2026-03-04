@@ -12,12 +12,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
 from .constants import (
-    PolarType,
     SERVICE_ALPHA,
     SERVICE_CD0,
     SERVICE_CD_TRIM,
@@ -27,10 +26,11 @@ from .constants import (
     SERVICE_OSWALD_COEFFICIENT,
     SERVICE_POLAR,
     SERVICE_REYNOLDS_COEFFICIENT,
+    PolarType,
 )
 
 
-@RegisterOpenMDAOSystem("fastoad.aerodynamics.lowspeed.legacy", domain=ModelDomain.AERODYNAMICS)
+@oad.RegisterOpenMDAOSystem("fastoad.aerodynamics.lowspeed.legacy", domain=ModelDomain.AERODYNAMICS)
 class AerodynamicsLowSpeed(om.Group):
     """
     Models for low speed aerodynamics
@@ -44,45 +44,47 @@ class AerodynamicsLowSpeed(om.Group):
 
         self.add_subsystem(
             "compute_oswald_coeff",
-            RegisterSubmodel.get_submodel(SERVICE_OSWALD_COEFFICIENT, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_OSWALD_COEFFICIENT, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_induced_drag_coeff",
-            RegisterSubmodel.get_submodel(SERVICE_INDUCED_DRAG_COEFFICIENT, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_INDUCED_DRAG_COEFFICIENT, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "comp_re",
-            RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_REYNOLDS_COEFFICIENT, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "initialize_cl",
-            RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_INITIALIZE_CL, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
-            "cd0_wing", RegisterSubmodel.get_submodel(SERVICE_CD0, low_speed_option), promotes=["*"]
+            "cd0_wing",
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD0, low_speed_option),
+            promotes=["*"],
         )
         self.add_subsystem(
             "cd_trim",
-            RegisterSubmodel.get_submodel(SERVICE_CD_TRIM, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CD_TRIM, low_speed_option),
             promotes=["*"],
         )
         polar_type_option = {"polar_type": PolarType.LOW_SPEED}
         self.add_subsystem(
             "get_polar",
-            RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_CLalpha",
-            RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_CL_ALPHA, low_speed_option),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_alpha",
-            RegisterSubmodel.get_submodel(SERVICE_ALPHA, low_speed_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_ALPHA, low_speed_option),
             promotes=["*"],
         )

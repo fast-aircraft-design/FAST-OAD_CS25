@@ -14,14 +14,14 @@ Estimation of center of gravity ratio with aft
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_EMPTY_AIRCRAFT_CG
 
 
-@RegisterSubmodel(SERVICE_EMPTY_AIRCRAFT_CG, "fastoad.submodel.weight.cg.empty_aircraft.legacy")
+@oad.RegisterSubmodel(SERVICE_EMPTY_AIRCRAFT_CG, "fastoad.submodel.weight.cg.empty_aircraft.legacy")
 class ComputeCGRatioAft(om.Group):
     def setup(self):
         self.add_subsystem("cg_all", ComputeCG(), promotes=["*"])

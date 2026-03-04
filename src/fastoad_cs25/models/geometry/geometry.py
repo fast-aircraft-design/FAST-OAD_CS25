@@ -14,9 +14,9 @@ FAST - Copyright (c) 2016 ONERA ISAE
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import openmdao.api as om
 from fastoad.module_management.constants import ModelDomain
-from fastoad.module_management.service_registry import RegisterOpenMDAOSystem, RegisterSubmodel
 
 from .constants import (
     SERVICE_AIRCRAFT_AERODYNAMIC_CENTER,
@@ -31,7 +31,7 @@ from .constants import (
 from ..constants import CABIN_SIZING_OPTION
 
 
-@RegisterOpenMDAOSystem("fastoad.geometry.legacy", domain=ModelDomain.GEOMETRY)
+@oad.RegisterOpenMDAOSystem("fastoad.geometry.legacy", domain=ModelDomain.GEOMETRY)
 class Geometry(om.Group):
     """
     Computes geometric characteristics of the (tube-wing) aircraft:
@@ -53,41 +53,41 @@ class Geometry(om.Group):
         if self.options[CABIN_SIZING_OPTION]:
             self.add_subsystem(
                 "compute_fuselage",
-                RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_GEOMETRY_WITH_CABIN_SIZING),
+                oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_GEOMETRY_WITH_CABIN_SIZING),
                 promotes=["*"],
             )
         else:
             self.add_subsystem(
                 "compute_fuselage",
-                RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_GEOMETRY_BASIC),
+                oad.RegisterSubmodel.get_submodel(SERVICE_FUSELAGE_GEOMETRY_BASIC),
                 promotes=["*"],
             )
 
         self.add_subsystem(
-            "compute_wing", RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY), promotes=["*"]
+            "compute_wing", oad.RegisterSubmodel.get_submodel(SERVICE_WING_GEOMETRY), promotes=["*"]
         )
         self.add_subsystem(
             "compute_engine_nacelle",
-            RegisterSubmodel.get_submodel(SERVICE_NACELLE_PYLON_GEOMETRY),
+            oad.RegisterSubmodel.get_submodel(SERVICE_NACELLE_PYLON_GEOMETRY),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_vt",
-            RegisterSubmodel.get_submodel(SERVICE_VERTICAL_TAIL_GEOMETRY),
+            oad.RegisterSubmodel.get_submodel(SERVICE_VERTICAL_TAIL_GEOMETRY),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_ht",
-            RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_GEOMETRY),
+            oad.RegisterSubmodel.get_submodel(SERVICE_HORIZONTAL_TAIL_GEOMETRY),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_total_area",
-            RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_WETTED_AREA),
+            oad.RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_WETTED_AREA),
             promotes=["*"],
         )
         self.add_subsystem(
             "compute_aero_center",
-            RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_AERODYNAMIC_CENTER),
+            oad.RegisterSubmodel.get_submodel(SERVICE_AIRCRAFT_AERODYNAMIC_CENTER),
             promotes=["*"],
         )

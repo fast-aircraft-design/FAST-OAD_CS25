@@ -347,7 +347,7 @@
             <max_climb_rate>2.4</max_climb_rate>
           </climb>
           <cruise>
-            <altitude units="m" is_input="True">35000.0</altitude>
+            <altitude units="ft" is_input="True">35000.0</altitude>
             <duration units="s" is_input="True">5.44<!--duration of phase "cruise" of route "main_route" in mission "sizing"--></duration>
             <fuel units="kg" is_input="True">13675.36<!--burned fuel during phase "cruise" of route "main_route" in mission "sizing"--></fuel>
           </cruise>

@@ -23,7 +23,6 @@ from fastoad.testing import run_system
 from openmdao.core.group import Group
 from scipy.constants import g
 
-from ....loads.loads import ComputeLoads
 from ..a_airframe import (
     EmpennageWeight,
     FlightControlsWeight,
@@ -52,6 +51,7 @@ from ..d_furniture import (
 from ..e_crew import CrewWeight
 from ..mass_breakdown import MassBreakdown, OperatingWeightEmpty
 from ..payload import ComputePayload
+from ....loads.loads import ComputeLoads
 
 
 def get_indep_var_comp(var_names):

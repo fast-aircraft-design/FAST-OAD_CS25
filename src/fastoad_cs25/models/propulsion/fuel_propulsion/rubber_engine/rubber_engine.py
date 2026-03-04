@@ -13,7 +13,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-import math
 from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np
@@ -130,6 +129,8 @@ class RubberEngine(AbstractFuelPropulsion):
         k_sfc_alt = interp1d(
             [-1000.0, 0.0, 13106.4, 20000.0],
             np.hstack((self.k_sfc_sl, self.k_sfc_sl, self.k_sfc_cr, self.k_sfc_cr)),
+            bounds_error=False,
+            fill_value=(self.k_sfc_sl, self.k_sfc_cr),
         )
         k_sfc = k_sfc_alt(flight_points.altitude)
 
@@ -550,7 +551,7 @@ class RubberEngine(AbstractFuelPropulsion):
 
         :return: nacelle diameter (in m)
         """
-        engine_diameter = 0.15 * (self.f_0 / 1000) ** 0.5 * math.exp(0.04 * self.bypass_ratio)
+        engine_diameter = 0.15 * (self.f_0 / 1000) ** 0.5 * np.exp(0.04 * self.bypass_ratio)
         nacelle_diameter = engine_diameter * 1.1
         return nacelle_diameter
 

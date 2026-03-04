@@ -14,14 +14,16 @@ Estimation of power systems weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_POWER_SYSTEMS_MASS
 
 
-@RegisterSubmodel(SERVICE_POWER_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.power.legacy")
+@oad.RegisterSubmodel(
+    SERVICE_POWER_SYSTEMS_MASS, "fastoad.submodel.weight.mass.systems.power.legacy"
+)
 class PowerSystemsWeight(om.ExplicitComponent):
     """
     Weight estimation for power systems (generation and distribution)

@@ -14,15 +14,15 @@ Estimation of passenger seats weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad.constants import RangeCategory
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_PASSENGER_SEATS_MASS
 
 
-@RegisterSubmodel(SERVICE_PASSENGER_SEATS_MASS, "service.mass.furniture.passenger_seats.legacy")
+@oad.RegisterSubmodel(SERVICE_PASSENGER_SEATS_MASS, "service.mass.furniture.passenger_seats.legacy")
 class PassengerSeatsWeight(om.ExplicitComponent):
     """
     Weight estimation for passenger seats

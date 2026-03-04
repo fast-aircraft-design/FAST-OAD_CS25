@@ -14,14 +14,14 @@ Estimation of security kit weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_SECURITY_KIT_MASS
 
 
-@RegisterSubmodel(SERVICE_SECURITY_KIT_MASS, "service.mass.furniture.security_kit.legacy")
+@oad.RegisterSubmodel(SERVICE_SECURITY_KIT_MASS, "service.mass.furniture.security_kit.legacy")
 class SecurityKitWeight(om.ExplicitComponent):
     """
     Weight estimation for security kit

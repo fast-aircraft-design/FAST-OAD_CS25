@@ -22,13 +22,14 @@ from importlib.resources import path
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 from fastoad._utils.resource_management.copy import copy_resource
-from fastoad.module_management.service_registry import RegisterSubmodel
 from openmdao.utils.file_wrap import InputFileGenerator
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
+
 from . import resources, xfoil699
 from ...constants import SERVICE_XFOIL
 
@@ -56,7 +57,7 @@ _LOGGER = logging.getLogger(__name__)
 _XFOIL_PATH_LIMIT = 64
 
 
-@RegisterSubmodel(SERVICE_XFOIL, "fastoad.submodel.aerodynamics.xfoil")
+@oad.RegisterSubmodel(SERVICE_XFOIL, "fastoad.submodel.aerodynamics.xfoil")
 class XfoilPolar(om.ExternalCodeComp):
     """
     Runs a polar computation with XFOIL and returns the 2D max lift coefficient
@@ -133,9 +134,9 @@ class XfoilPolar(om.ExternalCodeComp):
 
             # Fills numeric values
             parser.mark_anchor("RE")
-            parser.transfer_var(float(reynolds), 1, 1)
+            parser.transfer_var(float(reynolds.item()), 1, 1)
             parser.mark_anchor("M")
-            parser.transfer_var(float(mach), 1, 1)
+            parser.transfer_var(float(mach.item()), 1, 1)
             parser.mark_anchor("ITER")
             parser.transfer_var(self.options[OPTION_ITER_LIMIT], 1, 1)
             parser.mark_anchor("ASEQ")

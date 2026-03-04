@@ -17,7 +17,6 @@ Estimation of horizontal tail area
 import numpy as np
 import openmdao.api as om
 from scipy.constants import g
-
 from stdatm import Atmosphere
 
 

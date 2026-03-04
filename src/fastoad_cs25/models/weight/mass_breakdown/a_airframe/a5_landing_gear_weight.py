@@ -14,14 +14,14 @@ Estimation of landing gear weight
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from .constants import SERVICE_LANDING_GEARS_MASS
 
 
-@RegisterSubmodel(
+@oad.RegisterSubmodel(
     SERVICE_LANDING_GEARS_MASS, "fastoad.submodel.weight.mass.airframe.landing_gears.legacy"
 )
 class LandingGearWeight(om.ExplicitComponent):

@@ -15,14 +15,14 @@ Estimation of main landing gear center of gravity
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_MLG_CG
 
 
-@RegisterSubmodel(SERVICE_MLG_CG, "fastoad.submodel.weight.cg.main_landing_gear")
+@oad.RegisterSubmodel(SERVICE_MLG_CG, "fastoad.submodel.weight.cg.main_landing_gear")
 class UpdateMLG(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Main landing gear center of gravity estimation"""

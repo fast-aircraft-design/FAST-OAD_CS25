@@ -12,14 +12,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from fastoad.module_management.service_registry import RegisterSubmodel
 
 from ..constants import SERVICE_ALPHA
 
 
-@RegisterSubmodel(SERVICE_ALPHA, "fastoad.submodel.aerodynamics.alpha.legacy")
+@oad.RegisterSubmodel(SERVICE_ALPHA, "fastoad.submodel.aerodynamics.alpha.legacy")
 class ComputeAlpha(om.ExplicitComponent):
     """
     Computes a linear evolution of angle of attack from CL scale and CL gradient.
