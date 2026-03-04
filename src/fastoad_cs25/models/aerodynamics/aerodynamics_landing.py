@@ -44,7 +44,7 @@ class AerodynamicsLanding(om.Group):
 
     - Computes CL and CD increments due to high-lift devices at landing.
     - Computes maximum CL of the aircraft in landing conditions.
-    - Optionally, it can compute the polar in landing configuration.
+    - Computes the polar in landing configuration.
 
     Maximum 2D CL without high-lift is computed using XFoil (or provided as input if option
     use_xfoil is set to False). 3D CL is deduced using sweep angle.
