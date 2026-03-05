@@ -25,8 +25,8 @@ from .constants import (
     SERVICE_LANDING_MACH_REYNOLDS,
     SERVICE_LANDING_MAX_CL,
     SERVICE_LANDING_MAX_CL_CLEAN,
-    SERVICE_XFOIL,
     SERVICE_POLAR,
+    SERVICE_XFOIL,
     PolarType,
 )
 from .external.xfoil.xfoil_polar import (
@@ -143,7 +143,7 @@ class AerodynamicsLanding(om.Group):
         polar_type_option = {"polar_type": PolarType.LANDING}
         self.add_subsystem(
             "compute_landing_polar",
-            RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
+            oad.RegisterSubmodel.get_submodel(SERVICE_POLAR, polar_type_option),
             promotes=["*"],
         )
 
