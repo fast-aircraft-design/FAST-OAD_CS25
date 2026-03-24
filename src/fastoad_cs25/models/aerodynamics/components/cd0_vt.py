@@ -46,11 +46,11 @@ class Cd0VerticalTail(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:vertical_tail:low_speed:CD0")
+            self.add_output("data:aerodynamics:vertical_tail:low_speed:CD:cd0")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:wing:high_speed:reynolds", val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:vertical_tail:cruise:CD0")
+            self.add_output("data:aerodynamics:vertical_tail:high_speed:CD:cd0")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -70,11 +70,11 @@ class Cd0VerticalTail(om.ExplicitComponent):
             reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
         else:
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:cruise:reynolds"]
+            reynolds = inputs["data:aerodynamics:wing:high_speed:reynolds"]
 
         cd0_vt = compute_cd0_lifting_surface(vt_geometry, mach, reynolds, wing_area)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:vertical_tail:low_speed:CD0"] = cd0_vt
+            outputs["data:aerodynamics:vertical_tail:low_speed:CD:cd0"] = cd0_vt
         else:
-            outputs["data:aerodynamics:vertical_tail:cruise:CD0"] = cd0_vt
+            outputs["data:aerodynamics:vertical_tail:high_speed:CD:cd0"] = cd0_vt

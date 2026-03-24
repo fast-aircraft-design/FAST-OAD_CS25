@@ -29,8 +29,10 @@ class ComputeVTArea(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
-        self.add_input("data:aerodynamics:fuselage:cruise:CnBeta", val=np.nan)
-        self.add_input("data:aerodynamics:vertical_tail:cruise:CL_alpha", val=np.nan, units="1/rad")
+        self.add_input("data:aerodynamics:fuselage:high_speed:CnBeta", val=np.nan)
+        self.add_input(
+            "data:aerodynamics:vertical_tail:high_speed:CL_alpha", val=np.nan, units="1/rad"
+        )
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
@@ -41,12 +43,12 @@ class ComputeVTArea(om.ExplicitComponent):
 
         self.add_output("data:geometry:vertical_tail:wetted_area", units="m**2", ref=100.0)
         self.add_output("data:geometry:vertical_tail:area", units="m**2", ref=50.0)
-        self.add_output("data:aerodynamics:vertical_tail:cruise:CnBeta", units="m**2")
+        self.add_output("data:aerodynamics:vertical_tail:high_speed:CnBeta", units="m**2")
 
     def setup_partials(self):
         self.declare_partials("data:geometry:vertical_tail:wetted_area", "*", method="fd")
         self.declare_partials("data:geometry:vertical_tail:area", "*", method="fd")
-        self.declare_partials("data:aerodynamics:vertical_tail:cruise:CnBeta", "*", method="fd")
+        self.declare_partials("data:aerodynamics:vertical_tail:high_speed:CnBeta", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         # pylint: disable=too-many-locals  # needed for clarity
@@ -55,8 +57,8 @@ class ComputeVTArea(om.ExplicitComponent):
         span = inputs["data:geometry:wing:span"]
         l0_wing = inputs["data:geometry:wing:MAC:length"]
         cg_mac_position = inputs["data:weight:aircraft:CG:aft:MAC_position"]
-        cn_beta_fuselage = inputs["data:aerodynamics:fuselage:cruise:CnBeta"]
-        cl_alpha_vt = inputs["data:aerodynamics:vertical_tail:cruise:CL_alpha"]
+        cn_beta_fuselage = inputs["data:aerodynamics:fuselage:high_speed:CnBeta"]
+        cl_alpha_vt = inputs["data:aerodynamics:vertical_tail:high_speed:CL_alpha"]
         cruise_mach = inputs["data:TLAR:cruise_mach"]
         # This one is the distance between the 25% MAC points
         wing_htp_distance = inputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"]
@@ -76,4 +78,4 @@ class ComputeVTArea(om.ExplicitComponent):
 
         outputs["data:geometry:vertical_tail:wetted_area"] = wet_vt_area
         outputs["data:geometry:vertical_tail:area"] = vt_area
-        outputs["data:aerodynamics:vertical_tail:cruise:CnBeta"] = required_cnbeta_vtp
+        outputs["data:aerodynamics:vertical_tail:high_speed:CnBeta"] = required_cnbeta_vtp

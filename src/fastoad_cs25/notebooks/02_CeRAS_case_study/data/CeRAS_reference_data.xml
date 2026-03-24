@@ -880,7 +880,7 @@
         </weight>
         <aerodynamics>
             <aircraft>
-                <cruise>
+                <high_speed>
                     <CD is_input="False">[0.021359451715359804, 0.02136010325723715,
                         0.021366721038068217, 0.02137940415640198, 0.021398251710787408,
                         0.021423362799773464, 0.02145483652190911, 0.021492771975743313,
@@ -931,7 +931,7 @@
                         0.13283117265371455, 0.1346313265305501, 0.13645132044319455,
                         0.1382912534901969, 0.14015122477010616, 0.1420313333814712,
                         0.143931678422841, 0.1458523589927646, 0.14779347418979089,
-                        0.14975512311246889]<!--drag coefficient in cruise conditions w.r.t. data:aerodynamics:aircraft:cruise:CL-->
+                        0.14975512311246889]<!--drag coefficient in high_speed conditions w.r.t. data:aerodynamics:aircraft:high_speed:CL-->
                         <compressibility is_input="False">[0.001025528490322346,
                             0.001025528490322346, 0.001025528490322346, 0.001025528490322346,
                             0.001025528490322346, 0.001025528490322346, 0.001025528490322346,
@@ -963,7 +963,7 @@
                             0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
                             0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
                             0.01, 0.01, 0.01, 0.01,
-                            0.01]<!--increment of drag coefficient due to compressibility effects (shock waves) w.r.t. data:aerodynamics:aircraft:cruise:CL--></compressibility>
+                            0.01]<!--increment of drag coefficient due to compressibility effects (shock waves) w.r.t. data:aerodynamics:aircraft:high_speed:CL--></compressibility>
                         <trim is_input="False">[0.0, 5.89e-06, 1.178e-05, 1.767e-05, 2.356e-05,
                             2.945e-05, 3.534e-05, 4.123e-05, 4.712e-05, 5.3009999999999996e-05,
                             5.89e-05, 6.479e-05, 7.068e-05, 7.657000000000001e-05, 8.246e-05,
@@ -997,7 +997,7 @@
                             0.0008246000000000001, 0.0008304899999999999, 0.00083638, 0.00084227,
                             0.0008481599999999999, 0.00085405, 0.00085994, 0.0008658299999999999,
                             0.00087172,
-                            0.00087761]<!--increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:cruise:CL--></trim>
+                            0.00087761]<!--increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:high_speed:CL--></trim>
                     </CD>
                     <CD0 is_input="False">[0.020333923225037458, 0.020324975213394946,
                         0.020314574333666447, 0.020302819684400928, 0.020289810364147363,
@@ -1049,7 +1049,7 @@
                         0.04929932366453376, 0.050051203002289726, 0.0508155032688149,
                         0.05159232356265827, 0.052381762982368775, 0.05318392062649539,
                         0.05399889559358705, 0.0548267869821928, 0.05566769389086153,
-                        0.056521715418142236]<!--profile drag coefficient for whole aircraft w.r.t. data:aerodynamics:aircraft:cruise:CL--></CD0>
+                        0.056521715418142236]<!--profile drag coefficient for whole aircraft w.r.t. data:aerodynamics:aircraft:high_speed:CL--></CD0>
                     <CL is_input="False">[0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,
                         0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22,
                         0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34,
@@ -1066,18 +1066,18 @@
                         1.29, 1.3, 1.31, 1.32, 1.33, 1.34, 1.35, 1.36, 1.37, 1.3800000000000001,
                         1.3900000000000001, 1.4000000000000001, 1.41, 1.42, 1.43, 1.44, 1.45, 1.46,
                         1.47, 1.48,
-                        1.49]<!--scale of lift coefficient values for drag computations in cruise conditions--></CL>
+                        1.49]<!--scale of lift coefficient values for drag computations in high_speed conditions--></CL>
                     <CL_alpha is_input="False">
-                        6.4187174171460235<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
+                        6.4187174171460235<!--derivative of lift coefficient with respect to angle of attack in high_speed conditions--></CL_alpha>
                     <L_D_max is_input="False">
-                        17.43<!--max lift/drag ratio in cruise conditions--></L_D_max>
+                        17.43<!--max lift/drag ratio in high_speed conditions--></L_D_max>
                     <induced_drag_coefficient is_input="False">
                         0.042638546205243245<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--></induced_drag_coefficient>
                     <optimal_CD is_input="False">
-                        0.03353318616106758<!--drag coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CD>
+                        0.03353318616106758<!--drag coefficient at maximum lift/drag ratio in high_speed conditions--></optimal_CD>
                     <optimal_CL is_input="False">
-                        0.54<!--lift coefficient at maximum lift/drag ratio in cruise conditions--></optimal_CL>
-                </cruise>
+                        0.54<!--lift coefficient at maximum lift/drag ratio in high_speed conditions--></optimal_CL>
+                </high_speed>
                 <landing>
                     <CL_max is_input="False">
                         2.8005811540123817<!--maximum lift coefficient in landing conditions--></CL_max>
@@ -1358,14 +1358,14 @@
                     <mach is_input="True">0.2<!--considered Mach number for takeoff phase--></mach>
                 </takeoff>
             </aircraft>
-            <cruise>
+            <high_speed>
                 <neutral_point>
                     <x is_input="False">
                         0.4270612471745965<!--X-position of neutral point - X-position of aircraft nose--></x>
                 </neutral_point>
-            </cruise>
+            </high_speed>
             <fuselage>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">[0.007648585052359046, 0.0076278563650219655,
                         0.007607310642814325, 0.007586947885736124, 0.007566768093787364,
                         0.007546771266968044, 0.007526957405278163, 0.007507326508717723,
@@ -1416,10 +1416,10 @@
                         0.006526819534619605, 0.006531705965404134, 0.006536775361318103,
                         0.0065420277223615115, 0.0065474630485343605, 0.00655308133983665,
                         0.006558882596268378, 0.006564866817829547, 0.006571034004520157,
-                        0.006577384156340206]<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:cruise:CL--></CD0>
+                        0.006577384156340206]<!--profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:high_speed:CL--></CD0>
                     <CnBeta is_input="False">
-                        -0.11255266105951404<!--derivative of yawing moment against sideslip angle for fuselage in cruise conditions--></CnBeta>
-                </cruise>
+                        -0.11255266105951404<!--derivative of yawing moment against sideslip angle for fuselage in high_speed conditions--></CnBeta>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">[0.00822583446712571, 0.008205105779788628,
                         0.008184560057580987, 0.008164197300502787, 0.008144017508554027,
@@ -1490,49 +1490,49 @@
                 </takeoff>
             </high_lift_devices>
             <horizontal_tail>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">
                         0.0017006218864577792<!--profile drag coefficient for horizontal tail--></CD0>
                     <CL_alpha is_input="False">
-                        3.4698175649817595<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions--></CL_alpha>
-                </cruise>
+                        3.4698175649817595<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in high_speed conditions--></CL_alpha>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">0.0018671223380052398</CD0>
                 </low_speed>
             </horizontal_tail>
             <nacelles>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">
                         0.0016310153682137362<!--profile drag coefficient for nacelles--></CD0>
-                </cruise>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">0.00174967592424804</CD0>
                 </low_speed>
             </nacelles>
             <pylons>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">
                         0.00035124087749634783<!--profile drag coefficient for pylons--></CD0>
-                </cruise>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">0.0003850101794884491</CD0>
                 </low_speed>
             </pylons>
             <vertical_tail>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">
                         0.001313982153381285<!--profile drag coefficient for vertical tail--></CD0>
                     <CL_alpha is_input="False">
-                        2.546156443275808<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
+                        2.546156443275808<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in high_speed conditions--></CL_alpha>
                     <CnBeta units="m**2" is_input="False">
-                        0.2529993970595141<!--derivative of yawing moment against sideslip angle for vertical tail in cruise conditions--></CnBeta>
-                </cruise>
+                        0.2529993970595141<!--derivative of yawing moment against sideslip angle for vertical tail in high_speed conditions--></CnBeta>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">0.001441386399436114</CD0>
                 </low_speed>
             </vertical_tail>
             <wing>
-                <cruise>
+                <high_speed>
                     <CD0 is_input="False">[0.005699405703543385, 0.005712061677175272,
                         0.0057232239377061995, 0.005732981889826994, 0.005741424938228481,
                         0.005748642487601488, 0.005754723942636835, 0.005759758708025351,
@@ -1583,10 +1583,10 @@
                         0.03295316505925883, 0.03362660884048645, 0.03431107556532864,
                         0.03500665463847626, 0.0357134354646201, 0.03643150744845101,
                         0.03716095999465976, 0.03790188250793726, 0.03865436439297427,
-                        0.03941849505446165]<!--profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:cruise:CL--></CD0>
+                        0.03941849505446165]<!--profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL--></CD0>
                     <reynolds is_input="False">
-                        6124998.624249204<!--Reynolds number based on wing mean aerodynamic chord in cruise conditions--></reynolds>
-                </cruise>
+                        6124998.624249204<!--Reynolds number based on wing mean aerodynamic chord in high_speed conditions--></reynolds>
+                </high_speed>
                 <low_speed>
                     <CD0 is_input="False">[0.006252334439105561, 0.006266218233998396,
                         0.006278463402980208, 0.006289168024351881, 0.006298430176414303,
@@ -1730,12 +1730,12 @@
     <tuning>
         <aerodynamics>
             <aircraft>
-                <cruise>
+                <high_speed>
                     <CD>
                         <k is_input="True">
-                            1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
+                            1.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></k>
                         <offset is_input="True">
-                            0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
+                            0.0<!--correction offset to apply to computed drag coefficient in high_speed conditions--></offset>
                         <compressibility>
                             <max_value is_input="True">0.5</max_value>
                             <characteristic_mach_increment is_input="True">0.018
@@ -1743,24 +1743,24 @@
                         </compressibility>
                         <winglet_effect>
                             <k is_input="True">
-                                0.9<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
+                                0.9<!--correction ratio to apply to computed induced drag coefficient in high_speed conditions--></k>
                             <offset is_input="True">
-                                0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
+                                0.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></offset>
                         </winglet_effect>
                     </CD>
                     <CL>
                         <k is_input="True">
-                            1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+                            1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
                         <offset is_input="True">
-                            0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+                            0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
                         <winglet_effect>
                             <k is_input="True">
-                                1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+                                1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
                             <offset is_input="True">
-                                0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+                                0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
                         </winglet_effect>
                     </CL>
-                </cruise>
+                </high_speed>
                 <landing>
                     <CL_max>
                         <landing_gear_effect>

@@ -37,10 +37,10 @@ class ComputeCnBetaFuselage(om.ExplicitComponent):
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
-        self.add_output("data:aerodynamics:fuselage:cruise:CnBeta")
+        self.add_output("data:aerodynamics:fuselage:high_speed:CnBeta")
 
     def setup_partials(self):
-        self.declare_partials("data:aerodynamics:fuselage:cruise:CnBeta", "*", method="fd")
+        self.declare_partials("data:aerodynamics:fuselage:high_speed:CnBeta", "*", method="fd")
 
     def compute(self, inputs, outputs):
         fus_length = inputs["data:geometry:fuselage:length"]
@@ -58,4 +58,4 @@ class ComputeCnBetaFuselage(om.ExplicitComponent):
         # equation from raymer book eqn. 16.47
         cn_beta_fus = -1.3 * volume_fus / wing_area / span * (l_f / width_max)
 
-        outputs["data:aerodynamics:fuselage:cruise:CnBeta"] = cn_beta_fus
+        outputs["data:aerodynamics:fuselage:high_speed:CnBeta"] = cn_beta_fus

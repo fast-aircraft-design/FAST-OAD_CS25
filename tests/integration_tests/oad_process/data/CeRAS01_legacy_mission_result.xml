@@ -590,10 +590,10 @@
     </weight>
     <aerodynamics>
       <aircraft>
-        <cruise>
-          <CL_alpha>6.41798064378<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
-          <L_D_max>16.306202106<!--max lift/drag ratio in cruise conditions--></L_D_max>
-        </cruise>
+        <high_speed>
+          <CL_alpha>6.41798064378<!--derivative of lift coefficient with respect to angle of attack in high_speed conditions--></CL_alpha>
+          <L_D_max>16.306202106<!--max lift/drag ratio in high_speed conditions--></L_D_max>
+        </high_speed>
         <landing>
           <CL_max>2.80229278743<!--maximum lift coefficient in landing conditions--></CL_max>
           <CL_max_clean>1.58494199489<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
@@ -605,14 +605,14 @@
         </takeoff>
       </aircraft>
       <horizontal_tail>
-        <cruise>
-          <CL_alpha>3.46981756498<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha>3.46981756498<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in high_speed conditions--></CL_alpha>
+        </high_speed>
       </horizontal_tail>
       <vertical_tail>
-        <cruise>
-          <CL_alpha>2.54615644328<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha>2.54615644328<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in high_speed conditions--></CL_alpha>
+        </high_speed>
       </vertical_tail>
     </aerodynamics>
   </data>
@@ -654,24 +654,24 @@
   <tuning>
     <aerodynamics>
       <aircraft>
-        <cruise>
+        <high_speed>
           <CD>
-            <k>1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
-            <offset>0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
+            <k>1.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></k>
+            <offset>0.0<!--correction offset to apply to computed drag coefficient in high_speed conditions--></offset>
             <winglet_effect>
-              <k>0.91<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
-              <offset>0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
+              <k>0.91<!--correction ratio to apply to computed induced drag coefficient in high_speed conditions--></k>
+              <offset>0.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></offset>
             </winglet_effect>
           </CD>
           <CL>
-            <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-            <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+            <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
+            <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
             <winglet_effect>
-              <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-              <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+              <k>1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
+              <offset>0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
             </winglet_effect>
           </CL>
-        </cruise>
+        </high_speed>
         <landing>
           <CL_max>
             <landing_gear_effect>

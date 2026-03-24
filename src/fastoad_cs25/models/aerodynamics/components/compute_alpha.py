@@ -30,7 +30,7 @@ class ComputeAlpha(om.ExplicitComponent):
         self.options.declare("low_speed_aero", default=False, types=bool)
 
     def setup(self):
-        polar_type = "low_speed" if self.options["low_speed_aero"] else "cruise"
+        polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
         CL0_default = 0.2 if self.options["low_speed_aero"] else 0.1  # pylint: disable=invalid-name
         self.add_input(
             f"data:aerodynamics:aircraft:{polar_type}:CL",
@@ -51,11 +51,11 @@ class ComputeAlpha(om.ExplicitComponent):
         )
 
     def setup_partials(self):
-        polar_type = "low_speed" if self.options["low_speed_aero"] else "cruise"
+        polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
         self.declare_partials(f"data:aerodynamics:aircraft:{polar_type}:AoA", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        polar_type = "low_speed" if self.options["low_speed_aero"] else "cruise"
+        polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
         CL = inputs[f"data:aerodynamics:aircraft:{polar_type}:CL"]  # pylint: disable=invalid-name
         CLalpha = inputs[  # pylint: disable=invalid-name
             f"data:aerodynamics:aircraft:{polar_type}:CL_alpha"

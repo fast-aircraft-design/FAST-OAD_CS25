@@ -32,35 +32,37 @@ class CdCompressibility(om.ExplicitComponent):
 
     Earlier aircraft have more optimized wing profiles that are expected to limit the
     compressibility drag below 2 drag counts. Until a better model can be provided, the
-    variable `tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment`
+    variable `tuning:aerodynamics:aircraft:high_speed:CD:compressibility:characteristic_mach_increment`
     allows to move the characteristic Mach number, thus moving the CD divergence to higher
     Mach numbers.
     """
 
     def setup(self):
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
-        self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
+        self.add_input("data:aerodynamics:aircraft:high_speed:CL", shape_by_conn=True, val=np.nan)
         self.add_input("data:geometry:wing:sweep_25", units="deg", val=np.nan)
         self.add_input("data:geometry:wing:thickness_ratio", val=np.nan)
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value", val=0.5)
         self.add_input(
-            "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment",
+            "tuning:aerodynamics:aircraft:high_speed:CD:compressibility:max_value", val=0.5
+        )
+        self.add_input(
+            "tuning:aerodynamics:aircraft:high_speed:CD:compressibility:characteristic_mach_increment",
             val=0.0,
         )
         self.add_output(
-            "data:aerodynamics:aircraft:cruise:CD:compressibility",
-            copy_shape="data:aerodynamics:aircraft:cruise:CL",
+            "data:aerodynamics:aircraft:high_speed:CD:wave",
+            copy_shape="data:aerodynamics:aircraft:high_speed:CL",
         )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        cl = inputs["data:aerodynamics:aircraft:cruise:CL"]
+        cl = inputs["data:aerodynamics:aircraft:high_speed:CL"]
         m = inputs["data:TLAR:cruise_mach"]
-        max_cd_comp = inputs["tuning:aerodynamics:aircraft:cruise:CD:compressibility:max_value"]
+        max_cd_comp = inputs["tuning:aerodynamics:aircraft:high_speed:CD:compressibility:max_value"]
         delta_m_charac_0 = inputs[
-            "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment"
+            "tuning:aerodynamics:aircraft:high_speed:CD:compressibility:characteristic_mach_increment"
         ]
         sweep_angle = inputs["data:geometry:wing:sweep_25"]
         thickness_ratio = inputs["data:geometry:wing:thickness_ratio"]
@@ -80,4 +82,4 @@ class CdCompressibility(om.ExplicitComponent):
 
         cd_comp = np.minimum(max_cd_comp, 0.002 * np.exp(42.58 * (m - m_charac_comp)))
 
-        outputs["data:aerodynamics:aircraft:cruise:CD:compressibility"] = cd_comp
+        outputs["data:aerodynamics:aircraft:high_speed:CD:wave"] = cd_comp

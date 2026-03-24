@@ -29,10 +29,12 @@ class ComputeHTClalpha(om.ExplicitComponent):
         self.add_input("data:TLAR:cruise_mach", val=np.nan)
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
 
-        self.add_output("data:aerodynamics:horizontal_tail:cruise:CL_alpha", units="1/rad")
+        self.add_output("data:aerodynamics:horizontal_tail:high_speed:CL_alpha", units="1/rad")
 
     def setup_partials(self):
-        self.declare_partials("data:aerodynamics:horizontal_tail:cruise:CL_alpha", "*", method="fd")
+        self.declare_partials(
+            "data:aerodynamics:horizontal_tail:high_speed:CL_alpha", "*", method="fd"
+        )
 
     def compute(self, inputs, outputs):
         cruise_mach = inputs["data:TLAR:cruise_mach"]
@@ -57,4 +59,4 @@ class ComputeHTClalpha(om.ExplicitComponent):
             )
         )
 
-        outputs["data:aerodynamics:horizontal_tail:cruise:CL_alpha"] = cl_alpha_ht
+        outputs["data:aerodynamics:horizontal_tail:high_speed:CL_alpha"] = cl_alpha_ht
