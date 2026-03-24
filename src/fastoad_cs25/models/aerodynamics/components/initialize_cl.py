@@ -27,15 +27,15 @@ class InitializeClPolar(om.ExplicitComponent):
         self.options.declare("low_speed_aero", default=False, types=bool)
 
     def setup(self):
-        self.add_input("tuning:aerodynamics:aircraft:cruise:CL:k", val=np.nan, units="unitless")
+        self.add_input("tuning:aerodynamics:aircraft:high_speed:CL:k", val=np.nan, units="unitless")
         self.add_input(
-            "tuning:aerodynamics:aircraft:cruise:CL:offset", val=np.nan, units="unitless"
+            "tuning:aerodynamics:aircraft:high_speed:CL:offset", val=np.nan, units="unitless"
         )
         self.add_input(
-            "tuning:aerodynamics:aircraft:cruise:CL:winglet_effect:k", val=np.nan, units="unitless"
+            "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k", val=np.nan, units="unitless"
         )
         self.add_input(
-            "tuning:aerodynamics:aircraft:cruise:CL:winglet_effect:offset",
+            "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:offset",
             val=np.nan,
             units="unitless",
         )
@@ -46,17 +46,19 @@ class InitializeClPolar(om.ExplicitComponent):
             )
         else:
             self.add_output(
-                "data:aerodynamics:aircraft:cruise:CL", shape=POLAR_POINT_COUNT, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:CL", shape=POLAR_POINT_COUNT, units="unitless"
             )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        k_cl = inputs["tuning:aerodynamics:aircraft:cruise:CL:k"]
-        offset_cl = inputs["tuning:aerodynamics:aircraft:cruise:CL:offset"]
-        k_winglet_cl = inputs["tuning:aerodynamics:aircraft:cruise:CL:winglet_effect:k"]
-        offset_winglet_cl = inputs["tuning:aerodynamics:aircraft:cruise:CL:winglet_effect:offset"]
+        k_cl = inputs["tuning:aerodynamics:aircraft:high_speed:CL:k"]
+        offset_cl = inputs["tuning:aerodynamics:aircraft:high_speed:CL:offset"]
+        k_winglet_cl = inputs["tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k"]
+        offset_winglet_cl = inputs[
+            "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:offset"
+        ]
 
         # FIXME: initialization of CL range should be done more directly, without these coefficients
         cl = np.arange(0.0, 1.5, 0.01) * k_cl * k_winglet_cl + offset_cl + offset_winglet_cl
@@ -64,4 +66,4 @@ class InitializeClPolar(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:CL"] = cl
         else:
-            outputs["data:aerodynamics:aircraft:cruise:CL"] = cl
+            outputs["data:aerodynamics:aircraft:high_speed:CL"] = cl

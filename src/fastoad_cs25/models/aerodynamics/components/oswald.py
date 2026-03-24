@@ -46,10 +46,10 @@ class InducedDragCoefficient(om.ExplicitComponent):
             )
         else:
             self.add_input(
-                "data:aerodynamics:aircraft:cruise:oswald_coefficient", val=np.nan, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:oswald_coefficient", val=np.nan, units="unitless"
             )
             self.add_output(
-                "data:aerodynamics:aircraft:cruise:induced_drag_coefficient", units="unitless"
+                "data:aerodynamics:aircraft:high_speed:induced_drag_coefficient", units="unitless"
             )
 
     def setup_partials(self):
@@ -63,14 +63,14 @@ class InducedDragCoefficient(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             coef_e = inputs["data:aerodynamics:aircraft:low_speed:oswald_coefficient"]
         else:
-            coef_e = inputs["data:aerodynamics:aircraft:cruise:oswald_coefficient"]
+            coef_e = inputs["data:aerodynamics:aircraft:high_speed:oswald_coefficient"]
 
         coef_k = 1.0 / (np.pi * aspect_ratio * coef_e)
 
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"] = coef_k
         else:
-            outputs["data:aerodynamics:aircraft:cruise:induced_drag_coefficient"] = coef_k
+            outputs["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"] = coef_k
 
 
 @oad.RegisterSubmodel(
@@ -102,7 +102,7 @@ class OswaldCoefficient(om.ExplicitComponent):
         else:
             self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output(
-                "data:aerodynamics:aircraft:cruise:oswald_coefficient", units="unitless"
+                "data:aerodynamics:aircraft:high_speed:oswald_coefficient", units="unitless"
             )
 
     def setup_partials(self):
@@ -140,4 +140,4 @@ class OswaldCoefficient(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:oswald_coefficient"] = coef_e
         else:
-            outputs["data:aerodynamics:aircraft:cruise:oswald_coefficient"] = coef_e
+            outputs["data:aerodynamics:aircraft:high_speed:oswald_coefficient"] = coef_e

@@ -59,7 +59,7 @@ phases:
           equivalent_airspeed: constant
   climb:
     engine_setting: climb
-    polar: data:aerodynamics:aircraft:cruise
+    polar: data:aerodynamics:aircraft:high_speed
     thrust_rate: data:propulsion:climb:thrust_rate
     time_step: 5.0
     parts:
@@ -85,7 +85,7 @@ phases:
             value: optimal_flight_level
   diversion_climb:
     engine_setting: climb
-    polar: data:aerodynamics:aircraft:cruise
+    polar: data:aerodynamics:aircraft:high_speed
     thrust_rate: data:propulsion:climb:thrust_rate
     time_step: 5.0
     parts:
@@ -108,7 +108,7 @@ phases:
           equivalent_airspeed: constant
   descent:
     engine_setting: idle
-    polar: data:aerodynamics:aircraft:cruise
+    polar: data:aerodynamics:aircraft:high_speed
     thrust_rate: data:propulsion:descent:thrust_rate
     time_step: 5.0
     parts:
@@ -138,7 +138,7 @@ phases:
   holding:
     parts:
       - segment: holding
-        polar: data:aerodynamics:aircraft:cruise
+        polar: data:aerodynamics:aircraft:high_speed
         target:
           time: ~duration
   taxi_in:
@@ -157,7 +157,7 @@ routes:
     cruise_part:
       segment: cruise
       engine_setting: cruise
-      polar: data:aerodynamics:aircraft:cruise
+      polar: data:aerodynamics:aircraft:high_speed
       target:
         altitude: optimal_flight_level
       maximum_flight_level: 360
@@ -170,7 +170,7 @@ routes:
     cruise_part:
       segment: cruise
       engine_setting: cruise
-      polar: data:aerodynamics:aircraft:cruise
+      polar: data:aerodynamics:aircraft:high_speed
     descent_parts:
       - phase: descent
 

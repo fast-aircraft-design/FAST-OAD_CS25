@@ -40,7 +40,7 @@ class GustLoads(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:weight:aircraft:MZFW", val=np.nan, units="kg")
         self.add_input("data:weight:aircraft:MTOW", val=np.nan, units="kg")
-        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan, units="1/rad")
+        self.add_input("data:aerodynamics:aircraft:high_speed:CL_alpha", val=np.nan, units="1/rad")
         self.add_input("data:load_case:lc1:U_gust", val=np.nan, units="m/s")
         self.add_input("data:load_case:lc1:altitude", val=np.nan, units="ft")
         self.add_input("data:load_case:lc1:Vc_EAS", val=np.nan, units="m/s")
@@ -60,7 +60,7 @@ class GustLoads(om.ExplicitComponent):
                 "data:geometry:wing:area",
                 "data:geometry:wing:span",
                 "data:weight:aircraft:MZFW",
-                "data:aerodynamics:aircraft:cruise:CL_alpha",
+                "data:aerodynamics:aircraft:high_speed:CL_alpha",
                 "data:load_case:lc1:U_gust",
                 "data:load_case:lc1:altitude",
                 "data:load_case:lc1:Vc_EAS",
@@ -75,7 +75,7 @@ class GustLoads(om.ExplicitComponent):
                 "data:geometry:wing:area",
                 "data:geometry:wing:span",
                 "data:weight:aircraft:MTOW",
-                "data:aerodynamics:aircraft:cruise:CL_alpha",
+                "data:aerodynamics:aircraft:high_speed:CL_alpha",
                 "data:load_case:lc2:U_gust",
                 "data:load_case:lc2:altitude",
                 "data:load_case:lc2:Vc_EAS",
@@ -91,7 +91,7 @@ class GustLoads(om.ExplicitComponent):
         span = inputs["data:geometry:wing:span"]
         mzfw = inputs["data:weight:aircraft:MZFW"]
         mtow = inputs["data:weight:aircraft:MTOW"]
-        cl_alpha = inputs["data:aerodynamics:aircraft:cruise:CL_alpha"]
+        cl_alpha = inputs["data:aerodynamics:aircraft:high_speed:CL_alpha"]
         u_gust1 = inputs["data:load_case:lc1:U_gust"]
         alt_1 = inputs["data:load_case:lc1:altitude"]
         vc_eas1 = inputs["data:load_case:lc1:Vc_EAS"]
