@@ -46,13 +46,15 @@ class ComputeCLAlpha(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha", units="1/rad")
         else:
-            self.add_output("data:aerodynamics:aircraft:cruise:CL_alpha", units="1/rad")
+            self.add_output("data:aerodynamics:aircraft:high_speed:CL_alpha", units="1/rad")
 
     def setup_partials(self):
         if self.options["low_speed_aero"]:
             self.declare_partials("data:aerodynamics:aircraft:low_speed:CL_alpha", "*", method="fd")
         else:
-            self.declare_partials("data:aerodynamics:aircraft:cruise:CL_alpha", "*", method="fd")
+            self.declare_partials(
+                "data:aerodynamics:aircraft:high_speed:CL_alpha", "*", method="fd"
+            )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         width_max = inputs["data:geometry:fuselage:maximum_width"]
@@ -96,4 +98,4 @@ class ComputeCLAlpha(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:CL_alpha"] = cl_alpha_wing
         else:
-            outputs["data:aerodynamics:aircraft:cruise:CL_alpha"] = cl_alpha_wing
+            outputs["data:aerodynamics:aircraft:high_speed:CL_alpha"] = cl_alpha_wing
