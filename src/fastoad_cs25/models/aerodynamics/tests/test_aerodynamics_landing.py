@@ -56,7 +56,7 @@ def test_aerodynamics_landing_with_xfoil(xfoil_path):
         "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
         "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
         "data:aerodynamics:aircraft:low_speed:CL",
-        "data:aerodynamics:aircraft:low_speed:CD:cd0",
+        "data:aerodynamics:aircraft:low_speed:CD:CD0",
         "data:aerodynamics:aircraft:low_speed:CD:trim",
     ]
 
@@ -97,7 +97,7 @@ def test_aerodynamics_landing_without_xfoil():
         "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
         "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
         "data:aerodynamics:aircraft:low_speed:CL",
-        "data:aerodynamics:aircraft:low_speed:CD:cd0",
+        "data:aerodynamics:aircraft:low_speed:CD:CD0",
         "data:aerodynamics:aircraft:low_speed:CD:trim",
     ]
 

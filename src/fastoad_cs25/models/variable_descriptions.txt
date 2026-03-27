@@ -8,9 +8,9 @@ data:TLAR:cruise_mach || top-level requirement: cruise Mach number
 data:TLAR:max_TOFL || top-level requirement: maximum takeoff field length
 data:TLAR:range || top-level requirement: design range
 data:aerodynamics:aircraft:high_speed:CD || drag coefficient in high-speed conditions w.r.t. data:aerodynamics:aircraft:high_speed:CL
-data:aerodynamics:aircraft:high_speed:CD:cd0 || profile drag coefficient for whole aircraft in high-speed conditions w.r.t. data:aerodynamics:aircraft:high_speed:CL
-data:aerodynamics:aircraft:high_speed:CD:cd0:clean || like data:aerodynamics:aircraft:high_speed:CD:cd0 but without parasitic drag
-data:aerodynamics:aircraft:high_speed:CD:cd0:parasitic || estimated parasitic drag for whole aircraft in high-speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:aircraft:high_speed:CD:CD0 || profile drag coefficient for whole aircraft in high-speed conditions w.r.t. data:aerodynamics:aircraft:high_speed:CL
+data:aerodynamics:aircraft:high_speed:CD:CD0:clean || like data:aerodynamics:aircraft:high_speed:CD:CD0 but without parasitic drag
+data:aerodynamics:aircraft:high_speed:CD:CD0:parasitic || estimated parasitic drag for whole aircraft in high-speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:aircraft:high_speed:CD:wave || increment of drag coefficient due to compressibility effects (shock waves) w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CD:trim || increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CL || scale of lift coefficient values for drag computations in high-speed conditions
@@ -27,9 +27,9 @@ data:aerodynamics:aircraft:landing:CL_max_clean_2D || maximum lift coefficient o
 data:aerodynamics:aircraft:landing:additional_CL_capacity || at landing, is equal to (maximum lift coefficient)-(maximum required lift coefficient)
 data:aerodynamics:aircraft:landing:mach || considered Mach number for landing phase
 data:aerodynamics:aircraft:low_speed:CD || drag coefficient in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
-data:aerodynamics:aircraft:low_speed:CD:cd0 || profile drag coefficient for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
-data:aerodynamics:aircraft:low_speed:CD:cd0:clean || like data:aerodynamics:aircraft:low_speed:CD:cd0 but without parasitic drag
-data:aerodynamics:aircraft:low_speed:CD:cd0:parasitic || estimated parasitic drag for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:aircraft:low_speed:CD:CD0 || profile drag coefficient for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:aircraft:low_speed:CD:CD0:clean || like data:aerodynamics:aircraft:low_speed:CD:CD0 but without parasitic drag
+data:aerodynamics:aircraft:low_speed:CD:CD0:parasitic || estimated parasitic drag for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:aircraft:low_speed:CD:trim || increment of drag coefficient due to aircraft trim in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:aircraft:low_speed:CL || scale of lift coefficient values for drag computations in low speed conditions
 data:aerodynamics:aircraft:low_speed:CL_alpha || derivative of lift coefficient with respect to angle of attack in low speed conditions
@@ -41,28 +41,28 @@ data:aerodynamics:aircraft:takeoff:CL0_clean || value of lift coefficient at ang
 data:aerodynamics:aircraft:takeoff:CL_alpha || derivative of lift coefficient with respect to angle of attack in takeoff conditions
 data:aerodynamics:aircraft:takeoff:mach || considered Mach number for takeoff phase
 data:aerodynamics:high_speed:neutral_point:x || X-position of neutral point - X-position of aircraft nose
-data:aerodynamics:fuselage:high_speed:CD:cd0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:high_speed:CL
-data:aerodynamics:fuselage:low_speed:CD:cd0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:fuselage:high_speed:CD:CD0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:high_speed:CL
+data:aerodynamics:fuselage:low_speed:CD:CD0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:fuselage:high_speed:CnBeta || derivative of yawing moment against sideslip angle for fuselage in cruise conditions
 data:aerodynamics:high_lift_devices:landing:CD || increment of CD due to high-lift devices for landing phase
 data:aerodynamics:high_lift_devices:landing:CL || increment of CL due to high-lift devices for landing phase
 data:aerodynamics:high_lift_devices:takeoff:CD || increment of CD due to high-lift devices for takeoff phase
 data:aerodynamics:high_lift_devices:takeoff:CL || increment of CL due to high-lift devices for takeoff phase
-data:aerodynamics:horizontal_tail:high_speed:CD:cd0 || profile drag coefficient for horizontal tail in cruise conditions
+data:aerodynamics:horizontal_tail:high_speed:CD:CD0 || profile drag coefficient for horizontal tail in cruise conditions
 data:aerodynamics:horizontal_tail:high_speed:CL_alpha || derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions
-data:aerodynamics:horizontal_tail:low_speed:CD:cd0 || profile drag coefficient for horizontal tail in low speed conditions
-data:aerodynamics:nacelles:high_speed:CD:cd0 || profile drag coefficient for nacelles in cruise conditions
-data:aerodynamics:nacelles:low_speed:CD:cd0 || profile drag coefficient for nacelles in low speed conditions
-data:aerodynamics:pylons:high_speed:CD:cd0 || profile drag coefficient for pylons in cruise conditions
-data:aerodynamics:pylons:low_speed:CD:cd0 || profile drag coefficient for pylons in low speed conditions
-data:aerodynamics:vertical_tail:high_speed:CD:cd0 || profile drag coefficient for vertical tail in cruise conditions
+data:aerodynamics:horizontal_tail:low_speed:CD:CD0 || profile drag coefficient for horizontal tail in low speed conditions
+data:aerodynamics:nacelles:high_speed:CD:CD0 || profile drag coefficient for nacelles in cruise conditions
+data:aerodynamics:nacelles:low_speed:CD:CD0 || profile drag coefficient for nacelles in low speed conditions
+data:aerodynamics:pylons:high_speed:CD:CD0 || profile drag coefficient for pylons in cruise conditions
+data:aerodynamics:pylons:low_speed:CD:CD0 || profile drag coefficient for pylons in low speed conditions
+data:aerodynamics:vertical_tail:high_speed:CD:CD0 || profile drag coefficient for vertical tail in cruise conditions
 data:aerodynamics:vertical_tail:high_speed:CL_alpha || derivative of lift coefficient of vertical tail with respect to local "angle of attack" in cruise conditions
 data:aerodynamics:vertical_tail:high_speed:CnBeta || derivative of yawing moment against sideslip angle for vertical tail in cruise conditions
-data:aerodynamics:vertical_tail:low_speed:CD:cd0 || profile drag coefficient for vertical tail in low speed conditions
-data:aerodynamics:wing:high_speed:CD:cd0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL
+data:aerodynamics:vertical_tail:low_speed:CD:CD0 || profile drag coefficient for vertical tail in low speed conditions
+data:aerodynamics:wing:high_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:wing:high_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in cruise conditions
 data:aerodynamics:wing:landing:reynolds || Reynolds number based on wing mean aerodynamic chord in landing conditions
-data:aerodynamics:wing:low_speed:CD:cd0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:wing:low_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:wing:low_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in low speed conditions
 data:geometry:aircraft:wetted_area || total wetted area
 data:geometry:cabin:NPAX1 || number of passengers if there are only economical class seats

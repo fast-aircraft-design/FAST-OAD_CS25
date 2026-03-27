@@ -254,9 +254,9 @@ def test_cd0():
             )  # needed because size of input array is fixed
         problem = run_system(CD0(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
-            return problem["data:aerodynamics:aircraft:low_speed:CD:cd0"][0]
+            return problem["data:aerodynamics:aircraft:low_speed:CD:CD0"][0]
         else:
-            return problem["data:aerodynamics:aircraft:high_speed:CD:cd0"][0]
+            return problem["data:aerodynamics:aircraft:high_speed:CD:CD0"][0]
 
     assert get_cd0(35000, 0.78, 0.5, False) == approx(0.01975, abs=1e-5)
     assert get_cd0(0, 0.2, 0.9, True) == approx(0.02727, abs=1e-5)
@@ -378,7 +378,7 @@ def test_polar_high_speed():
     cd = problem["data:aerodynamics:aircraft:high_speed:CD"]
     cl = problem["data:aerodynamics:aircraft:high_speed:CL"]
     cd_sum = (
-        problem["data:aerodynamics:aircraft:high_speed:CD:cd0"]
+        problem["data:aerodynamics:aircraft:high_speed:CD:CD0"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:wave"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:trim_contribution"]
@@ -452,7 +452,7 @@ def test_polar_low_speed():
     cd = problem["data:aerodynamics:aircraft:low_speed:CD"]
     cl = problem["data:aerodynamics:aircraft:low_speed:CL"]
     cd_sum = (
-        problem["data:aerodynamics:aircraft:low_speed:CD:cd0"]
+        problem["data:aerodynamics:aircraft:low_speed:CD:CD0"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:wave"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:trim_contribution"]
@@ -523,7 +523,7 @@ def test_polar_high_lift():
     cd = problem["data:aerodynamics:aircraft:takeoff:CD"]
     cl = problem["data:aerodynamics:aircraft:takeoff:CL"]
     cd_sum = (
-        problem["data:aerodynamics:aircraft:takeoff:CD:cd0"]
+        problem["data:aerodynamics:aircraft:takeoff:CD:CD0"]
         + problem["data:aerodynamics:aircraft:takeoff:CD:induced"]
         + problem["data:aerodynamics:aircraft:takeoff:CD:wave"]
         + problem["data:aerodynamics:aircraft:takeoff:CD:trim"]

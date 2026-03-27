@@ -48,11 +48,11 @@ class Cd0HorizontalTail(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD:cd0")
+            self.add_output("data:aerodynamics:horizontal_tail:low_speed:CD:CD0")
         else:
             self.add_input("data:aerodynamics:wing:high_speed:reynolds", val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:horizontal_tail:high_speed:CD:cd0")
+            self.add_output("data:aerodynamics:horizontal_tail:high_speed:CD:CD0")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -77,6 +77,6 @@ class Cd0HorizontalTail(om.ExplicitComponent):
         cd0_ht = compute_cd0_lifting_surface(ht_geometry, mach, reynolds, wing_area)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:horizontal_tail:low_speed:CD:cd0"] = cd0_ht
+            outputs["data:aerodynamics:horizontal_tail:low_speed:CD:CD0"] = cd0_ht
         else:
-            outputs["data:aerodynamics:horizontal_tail:high_speed:CD:cd0"] = cd0_ht
+            outputs["data:aerodynamics:horizontal_tail:high_speed:CD:CD0"] = cd0_ht

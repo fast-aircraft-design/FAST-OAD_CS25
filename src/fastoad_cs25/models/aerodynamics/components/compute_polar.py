@@ -36,7 +36,7 @@ class ComputePolar(om.ExplicitComponent):
 
         if self.options["polar_type"] != PolarType.HIGH_SPEED:
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:CD:cd0",
+                "data:aerodynamics:aircraft:low_speed:CD:CD0",
                 shape_by_conn=True,
                 val=np.nan,
             )
@@ -67,7 +67,7 @@ class ComputePolar(om.ExplicitComponent):
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
                 self.add_output(
-                    "data:aerodynamics:aircraft:takeoff:CD:cd0",
+                    "data:aerodynamics:aircraft:takeoff:CD:CD0",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
                 self.add_output(
@@ -100,7 +100,7 @@ class ComputePolar(om.ExplicitComponent):
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
                 self.add_output(
-                    "data:aerodynamics:aircraft:landing:CD:cd0",
+                    "data:aerodynamics:aircraft:landing:CD:CD0",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
                 self.add_output(
@@ -148,7 +148,7 @@ class ComputePolar(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:high_speed:CL", shape_by_conn=True, val=np.nan
             )
             self.add_input(
-                "data:aerodynamics:aircraft:high_speed:CD:cd0",
+                "data:aerodynamics:aircraft:high_speed:CD:CD0",
                 shape_by_conn=True,
                 val=np.nan,
             )
@@ -198,7 +198,7 @@ class ComputePolar(om.ExplicitComponent):
         ]
         if self.options["polar_type"] != PolarType.HIGH_SPEED:
             cl = inputs["data:aerodynamics:aircraft:low_speed:CL"]
-            cd0 = inputs["data:aerodynamics:aircraft:low_speed:CD:cd0"]
+            cd0 = inputs["data:aerodynamics:aircraft:low_speed:CD:CD0"]
             cd_trim = inputs["data:aerodynamics:aircraft:low_speed:CD:trim"]
             cd_c = 0.0
             coef_k = inputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
@@ -216,7 +216,7 @@ class ComputePolar(om.ExplicitComponent):
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
             cl = inputs["data:aerodynamics:aircraft:high_speed:CL"]
-            cd0 = inputs["data:aerodynamics:aircraft:high_speed:CD:cd0"]
+            cd0 = inputs["data:aerodynamics:aircraft:high_speed:CD:CD0"]
             cd_trim = inputs["data:aerodynamics:aircraft:high_speed:CD:trim"]
             cd_c = inputs["data:aerodynamics:aircraft:high_speed:CD:wave"]
             coef_k = inputs["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"]
@@ -242,7 +242,7 @@ class ComputePolar(om.ExplicitComponent):
         elif self.options["polar_type"] == PolarType.TAKEOFF:
             outputs["data:aerodynamics:aircraft:takeoff:CL"] = cl
             outputs["data:aerodynamics:aircraft:takeoff:CD"] = cd
-            outputs["data:aerodynamics:aircraft:takeoff:CD:cd0"] = cd_cd0
+            outputs["data:aerodynamics:aircraft:takeoff:CD:CD0"] = cd_cd0
             outputs["data:aerodynamics:aircraft:takeoff:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:takeoff:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:takeoff:CD:trim"] = cd_trim_component
@@ -251,7 +251,7 @@ class ComputePolar(om.ExplicitComponent):
         elif self.options["polar_type"] == PolarType.LANDING:
             outputs["data:aerodynamics:aircraft:landing:CL"] = cl
             outputs["data:aerodynamics:aircraft:landing:CD"] = cd
-            outputs["data:aerodynamics:aircraft:landing:CD:cd0"] = cd_cd0
+            outputs["data:aerodynamics:aircraft:landing:CD:CD0"] = cd_cd0
             outputs["data:aerodynamics:aircraft:landing:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:landing:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:landing:CD:trim"] = cd_trim_component
