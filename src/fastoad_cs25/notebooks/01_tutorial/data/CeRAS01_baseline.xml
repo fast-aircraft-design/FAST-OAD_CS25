@@ -428,7 +428,7 @@
                     </climb>
                     <cruise>
                         <altitude_input units="m">
-                            10668.0<!--altitude_input during cruise phase in sizing mission--></altitude_input>
+                            10668.0<!--altitude during cruise phase in sizing mission--></altitude_input>
                         <distance units="m">
                             4611231.829170648<!--covered ground distance during cruise phase--></distance>
                         <duration units="s">

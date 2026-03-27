@@ -435,7 +435,7 @@
             <max_climb_rate units="m/s">0.0</max_climb_rate>
           </climb>
           <cruise>
-            <altitude_input units="ft">35000.0</altitude_input>
+            <altitude_input units="ft"_input>35000.0</altitude_input_input>
             <duration units="min">17.0</duration>
             <fuel units="kg">586.64</fuel>
             <mach units="unitless">0.78</mach>
