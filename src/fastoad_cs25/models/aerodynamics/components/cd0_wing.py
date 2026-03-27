@@ -48,7 +48,7 @@ class Cd0Wing(om.ExplicitComponent):
             )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output(
-                "data:aerodynamics:wing:low_speed:CD:cd0",
+                "data:aerodynamics:wing:low_speed:CD:CD0",
                 units="unitless",
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
             )
@@ -62,7 +62,7 @@ class Cd0Wing(om.ExplicitComponent):
             )
             self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output(
-                "data:aerodynamics:wing:high_speed:CD:cd0",
+                "data:aerodynamics:wing:high_speed:CD:CD0",
                 units="unitless",
                 copy_shape="data:aerodynamics:aircraft:high_speed:CL",
             )
@@ -98,6 +98,6 @@ class Cd0Wing(om.ExplicitComponent):
         cd0_wing = compute_cd0_lifting_surface(wing_geometry, mach, reynolds, wing_area, cl)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:wing:low_speed:CD:cd0"] = cd0_wing
+            outputs["data:aerodynamics:wing:low_speed:CD:CD0"] = cd0_wing
         else:
-            outputs["data:aerodynamics:wing:high_speed:CD:cd0"] = cd0_wing
+            outputs["data:aerodynamics:wing:high_speed:CD:CD0"] = cd0_wing
