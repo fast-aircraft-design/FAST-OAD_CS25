@@ -31,7 +31,7 @@ class ComputeReynolds(ExplicitComponent):
         self.options.declare("low_speed_aero", default=False, types=bool)
         self.options.declare(
             "cruise_altitude_var",
-            default="data:mission:sizing:main_route:cruise:altitude",
+            default="data:mission:sizing:main_route:cruise:altitude_input",
             types=str,
             desc="Name of the variable to use for cruise altitude evaluation in Reynolds number "
             "computation.",

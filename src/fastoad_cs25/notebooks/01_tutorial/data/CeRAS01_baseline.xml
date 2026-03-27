@@ -427,8 +427,8 @@
                             1630.9563636434905<!--mass of consumed fuel during climb phase in sizing mission--></fuel>
                     </climb>
                     <cruise>
-                        <altitude units="m">
-                            10668.0<!--altitude during cruise phase in sizing mission--></altitude>
+                        <altitude_input units="m">
+                            10668.0<!--altitude during cruise phase in sizing mission--></altitude_input>
                         <distance units="m">
                             4611231.829170648<!--covered ground distance during cruise phase--></distance>
                         <duration units="s">

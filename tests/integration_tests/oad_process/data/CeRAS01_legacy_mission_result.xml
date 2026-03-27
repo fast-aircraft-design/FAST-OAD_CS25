@@ -320,7 +320,7 @@
             <max_climb_rate>2.4<!--maximum climb rate in sizing mission--></max_climb_rate>
           </climb>
           <cruise>
-            <altitude units="ft">35000.0<!--altitude during cruise phase in sizing mission--></altitude>
+            <altitude_input units="ft">35000.0<!--altitude during cruise phase in sizing mission--></altitude_input>
             <duration units="h">5.6<!--duration of cruise phase in sizing mission--></duration>
             <fuel units="kg">14349.3924533<!--mass of consumed fuel during cruise phase in sizing mission--></fuel>
           </cruise>
