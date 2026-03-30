@@ -14,7 +14,6 @@ data:aerodynamics:aircraft:high_speed:CD:CD0:parasitic || estimated parasitic dr
 data:aerodynamics:aircraft:high_speed:CD:wave || increment of drag coefficient due to compressibility effects (shock waves) w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CD:trim || increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CL || scale of lift coefficient values for drag computations in high-speed conditions
-data:aerodynamics:aircraft:high_speed:CL || scale of lift coefficient values for drag computations in high-speed conditions
 data:aerodynamics:aircraft:high_speed:CL_alpha || derivative of lift coefficient with respect to angle of attack in high-speed conditions
 data:aerodynamics:aircraft:high_speed:L_D_max || max lift/drag ratio in high-speed conditions
 data:aerodynamics:aircraft:high_speed:induced_drag_coefficient || multiply squared lift coefficient by this coefficient to get induced drag coefficient
@@ -43,24 +42,24 @@ data:aerodynamics:aircraft:takeoff:mach || considered Mach number for takeoff ph
 data:aerodynamics:high_speed:neutral_point:x || X-position of neutral point - X-position of aircraft nose
 data:aerodynamics:fuselage:high_speed:CD:CD0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:fuselage:low_speed:CD:CD0 || profile drag coefficient for fuselage w.r.t. data:aerodynamics:aircraft:low_speed:CL
-data:aerodynamics:fuselage:high_speed:CnBeta || derivative of yawing moment against sideslip angle for fuselage in cruise conditions
+data:aerodynamics:fuselage:high_speed:CnBeta || derivative of yawing moment against sideslip angle for fuselage in high_speed conditions
 data:aerodynamics:high_lift_devices:landing:CD || increment of CD due to high-lift devices for landing phase
 data:aerodynamics:high_lift_devices:landing:CL || increment of CL due to high-lift devices for landing phase
 data:aerodynamics:high_lift_devices:takeoff:CD || increment of CD due to high-lift devices for takeoff phase
 data:aerodynamics:high_lift_devices:takeoff:CL || increment of CL due to high-lift devices for takeoff phase
-data:aerodynamics:horizontal_tail:high_speed:CD:CD0 || profile drag coefficient for horizontal tail in cruise conditions
-data:aerodynamics:horizontal_tail:high_speed:CL_alpha || derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions
+data:aerodynamics:horizontal_tail:high_speed:CD:CD0 || profile drag coefficient for horizontal tail in high_speed conditions
+data:aerodynamics:horizontal_tail:high_speed:CL_alpha || derivative of lift coefficient of horizontal tail with respect to local angle of attack in high_speed conditions
 data:aerodynamics:horizontal_tail:low_speed:CD:CD0 || profile drag coefficient for horizontal tail in low speed conditions
-data:aerodynamics:nacelles:high_speed:CD:CD0 || profile drag coefficient for nacelles in cruise conditions
+data:aerodynamics:nacelles:high_speed:CD:CD0 || profile drag coefficient for nacelles in high_speed conditions
 data:aerodynamics:nacelles:low_speed:CD:CD0 || profile drag coefficient for nacelles in low speed conditions
-data:aerodynamics:pylons:high_speed:CD:CD0 || profile drag coefficient for pylons in cruise conditions
+data:aerodynamics:pylons:high_speed:CD:CD0 || profile drag coefficient for pylons in high_speed conditions
 data:aerodynamics:pylons:low_speed:CD:CD0 || profile drag coefficient for pylons in low speed conditions
-data:aerodynamics:vertical_tail:high_speed:CD:CD0 || profile drag coefficient for vertical tail in cruise conditions
-data:aerodynamics:vertical_tail:high_speed:CL_alpha || derivative of lift coefficient of vertical tail with respect to local "angle of attack" in cruise conditions
-data:aerodynamics:vertical_tail:high_speed:CnBeta || derivative of yawing moment against sideslip angle for vertical tail in cruise conditions
+data:aerodynamics:vertical_tail:high_speed:CD:CD0 || profile drag coefficient for vertical tail in high_speed conditions
+data:aerodynamics:vertical_tail:high_speed:CL_alpha || derivative of lift coefficient of vertical tail with respect to local "angle of attack" in high_speed conditions
+data:aerodynamics:vertical_tail:high_speed:CnBeta || derivative of yawing moment against sideslip angle for vertical tail in high_speed conditions
 data:aerodynamics:vertical_tail:low_speed:CD:CD0 || profile drag coefficient for vertical tail in low speed conditions
 data:aerodynamics:wing:high_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL
-data:aerodynamics:wing:high_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in cruise conditions
+data:aerodynamics:wing:high_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in high_speed conditions
 data:aerodynamics:wing:landing:reynolds || Reynolds number based on wing mean aerodynamic chord in landing conditions
 data:aerodynamics:wing:low_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:wing:low_speed:reynolds || Reynolds number based on wing mean aerodynamic chord in low speed conditions
@@ -335,14 +334,14 @@ settings:geometry:vertical_tail:position_ratio_on_fuselage || distance to aircra
 test:test_variable || for testing (do not remove, keep first)
 tuning:aerodynamics:aircraft:high_speed:CD:compressibility:max_value  || maximum authorized value for compressibility drag. Allows to prevent the model from overestimating the compressibility effect, especially for aircraft models after year 2000.
 tuning:aerodynamics:aircraft:high_speed:CD:compressibility:characteristic_mach_increment || increment to apply to the computed characteristic Mach (where compressibility drag is 20 d.c.)
-tuning:aerodynamics:aircraft:high_speed:CD:k || correction ratio to apply to computed drag coefficient in cruise conditions
-tuning:aerodynamics:aircraft:high_speed:CD:offset || correction offset to apply to computed drag coefficient in cruise conditions
-tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k || correction ratio to apply to computed induced drag coefficient in cruise conditions
-tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset || correction ratio to apply to computed drag coefficient in cruise conditions
-tuning:aerodynamics:aircraft:high_speed:CL:k || ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation
-tuning:aerodynamics:aircraft:high_speed:CL:offset || offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation
-tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k || ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation
-tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:offset || offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation
+tuning:aerodynamics:aircraft:high_speed:CD:k || correction ratio to apply to computed drag coefficient in high_speed conditions
+tuning:aerodynamics:aircraft:high_speed:CD:offset || correction offset to apply to computed drag coefficient in high_speed conditions
+tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k || correction ratio to apply to computed induced drag coefficient in high_speed conditions
+tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset || correction ratio to apply to computed drag coefficient in high_speed conditions
+tuning:aerodynamics:aircraft:high_speed:CL:k || ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation
+tuning:aerodynamics:aircraft:high_speed:CL:offset || offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation
+tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k || ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation
+tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:offset || offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation
 tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k || correction ratio to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear
 tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:offset || correction offset to apply to computed maximum lift coefficient in landing conditions to take into account effect of landing gear
 tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k || correction ratio to apply to computed additional drag from flap to take into account multiple slots flaps
