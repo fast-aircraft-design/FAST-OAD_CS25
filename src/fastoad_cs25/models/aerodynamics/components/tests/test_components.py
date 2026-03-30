@@ -396,7 +396,7 @@ def test_polar_high_speed():
         problem["data:aerodynamics:aircraft:high_speed:CD:CD0"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:wave"]
-        + problem["data:aerodynamics:aircraft:high_speed:CD:trim_contribution"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:trim"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:viscous"]
     )
 
@@ -472,7 +472,7 @@ def test_polar_low_speed():
         problem["data:aerodynamics:aircraft:low_speed:CD:CD0"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:wave"]
-        + problem["data:aerodynamics:aircraft:low_speed:CD:trim_contribution"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:trim"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:viscous"]
     )
 
