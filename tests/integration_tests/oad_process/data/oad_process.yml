@@ -2,8 +2,8 @@ title: OAD Process
 
 module_folders:
 
-input_file: ../results/oad_process_inputs.xml
-output_file: ../results/oad_process_outputs.xml
+input_file: ./oad_process_inputs.xml
+output_file: ./oad_process_outputs.xml
 
 model:
   nonlinear_solver: om.NonlinearBlockGS(maxiter=100, atol=1e-2)
@@ -26,7 +26,7 @@ model:
   performance:
         id: fastoad.performances.mission
         propulsion_id: fastoad.wrapper.propulsion.rubber_engine
-        out_file: ../results/flight_points.csv
+        out_file: ./flight_points.csv
         mission_file_path: ::sizing_breguet
         adjust_fuel: true
         add_solver: false
