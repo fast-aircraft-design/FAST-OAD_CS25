@@ -82,10 +82,6 @@ class ComputePolar(om.ExplicitComponent):
                     "data:aerodynamics:aircraft:takeoff:CD:trim",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
-                self.add_output(
-                    "data:aerodynamics:aircraft:takeoff:CD:trim_contribution",
-                    copy_shape="data:aerodynamics:aircraft:low_speed:CL",
-                )
                 self.add_output("data:aerodynamics:aircraft:takeoff:CD:viscous")
 
             elif self.options["polar_type"] == PolarType.LANDING:
@@ -115,10 +111,6 @@ class ComputePolar(om.ExplicitComponent):
                     "data:aerodynamics:aircraft:landing:CD:trim",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
-                self.add_output(
-                    "data:aerodynamics:aircraft:landing:CD:trim_contribution",
-                    copy_shape="data:aerodynamics:aircraft:low_speed:CL",
-                )
                 self.add_output("data:aerodynamics:aircraft:landing:CD:viscous")
 
             elif self.options["polar_type"] == PolarType.LOW_SPEED:
@@ -132,10 +124,6 @@ class ComputePolar(om.ExplicitComponent):
                 )
                 self.add_output(
                     "data:aerodynamics:aircraft:low_speed:CD:wave",
-                    copy_shape="data:aerodynamics:aircraft:low_speed:CL",
-                )
-                self.add_output(
-                    "data:aerodynamics:aircraft:low_speed:CD:trim_contribution",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                 )
                 self.add_output("data:aerodynamics:aircraft:low_speed:CD:viscous")
@@ -172,10 +160,6 @@ class ComputePolar(om.ExplicitComponent):
             )
             self.add_output(
                 "data:aerodynamics:aircraft:high_speed:CD:induced",
-                copy_shape="data:aerodynamics:aircraft:high_speed:CL",
-            )
-            self.add_output(
-                "data:aerodynamics:aircraft:high_speed:CD:trim_contribution",
                 copy_shape="data:aerodynamics:aircraft:high_speed:CL",
             )
             self.add_output("data:aerodynamics:aircraft:high_speed:CD:viscous")
@@ -237,7 +221,6 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:low_speed:CD"] = cd
             outputs["data:aerodynamics:aircraft:low_speed:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:low_speed:CD:wave"] = cd_wave
-            outputs["data:aerodynamics:aircraft:low_speed:CD:trim_contribution"] = cd_trim_component
             outputs["data:aerodynamics:aircraft:low_speed:CD:viscous"] = cd_viscous
         elif self.options["polar_type"] == PolarType.TAKEOFF:
             outputs["data:aerodynamics:aircraft:takeoff:CL"] = cl
@@ -246,7 +229,6 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:takeoff:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:takeoff:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:takeoff:CD:trim"] = cd_trim_component
-            outputs["data:aerodynamics:aircraft:takeoff:CD:trim_contribution"] = cd_trim_component
             outputs["data:aerodynamics:aircraft:takeoff:CD:viscous"] = cd_viscous
         elif self.options["polar_type"] == PolarType.LANDING:
             outputs["data:aerodynamics:aircraft:landing:CL"] = cl
@@ -255,14 +237,10 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:landing:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:landing:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:landing:CD:trim"] = cd_trim_component
-            outputs["data:aerodynamics:aircraft:landing:CD:trim_contribution"] = cd_trim_component
             outputs["data:aerodynamics:aircraft:landing:CD:viscous"] = cd_viscous
         else:
             outputs["data:aerodynamics:aircraft:high_speed:CD"] = cd
             outputs["data:aerodynamics:aircraft:high_speed:CD:induced"] = cd_induced
-            outputs["data:aerodynamics:aircraft:high_speed:CD:trim_contribution"] = (
-                cd_trim_component
-            )
             outputs["data:aerodynamics:aircraft:high_speed:CD:viscous"] = cd_viscous
 
             Cl_opt, Cd_opt = get_optimum_ClCd(np.array([cd, cl]))[0:2]
