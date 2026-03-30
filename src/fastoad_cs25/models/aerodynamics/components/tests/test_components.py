@@ -116,14 +116,16 @@ def test_compute_reynolds():
     altitude_m = 10668.0  # 35000 ft in meters
     mach = 0.78
 
-    def get_cruise_reynolds(altitude, mach, cruise_altitude_var=None):
+    def get_cruise_reynolds(altitude, mach, altitude_var_name_high_speed=None):
         ivc = IndepVarComp()
         ivc.add_output("data:TLAR:cruise_mach", mach)
-        var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude_input"
+        var_name = (
+            altitude_var_name_high_speed or "data:mission:sizing:main_route:cruise:altitude_input"
+        )
         ivc.add_output(var_name, altitude, units="m")
         kwargs = {}
-        if cruise_altitude_var is not None:
-            kwargs["cruise_altitude_var"] = cruise_altitude_var
+        if altitude_var_name_high_speed is not None:
+            kwargs["altitude_var_name_high_speed"] = altitude_var_name_high_speed
         problem = run_system(ComputeReynolds(**kwargs), ivc)
         return problem["data:aerodynamics:wing:high_speed:reynolds"]
 
@@ -136,7 +138,9 @@ def test_compute_reynolds():
 
     # Test custom variable name produces the same result
     assert get_cruise_reynolds(
-        altitude_m, mach, cruise_altitude_var="data:mission:sizing:custom_route:high_speed:altitude"
+        altitude_m,
+        mach,
+        altitude_var_name_high_speed="data:mission:sizing:custom_route:high_speed:altitude",
     ) == approx(expected_reynolds, rel=1e-6)
 
     # Test low_speed_aero (altitude = 0, uses takeoff mach)
@@ -366,7 +370,7 @@ def test_polar_high_speed():
     group.add_subsystem("oswald", OswaldCoefficient(), promotes=["*"])
     group.add_subsystem("induced_drag_coeff", InducedDragCoefficient(), promotes=["*"])
     group.add_subsystem("cd0", CD0(), promotes=["*"])
-    group.add_subsystem("cd_compressibility", CdCompressibility(), promotes=["*"])
+    group.add_subsystem("cd_wave", CdCompressibility(), promotes=["*"])
     group.add_subsystem("cd_trim", CdTrim(), promotes=["*"])
     group.add_subsystem("polar", ComputePolar(), promotes=["*"])
 
