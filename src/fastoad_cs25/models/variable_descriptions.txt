@@ -11,6 +11,7 @@ data:aerodynamics:aircraft:high_speed:CD || drag coefficient in high-speed condi
 data:aerodynamics:aircraft:high_speed:CD:CD0 || profile drag coefficient for whole aircraft in high-speed conditions w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CD:CD0:clean || like data:aerodynamics:aircraft:high_speed:CD:CD0 but without parasitic drag
 data:aerodynamics:aircraft:high_speed:CD:CD0:parasitic || estimated parasitic drag for whole aircraft in high-speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:aircraft:high_speed:CD:offset || offset to apply to drag coefficient in high-speed conditions cd_offset = delta_cd_hl * k_cd + offset_cd
 data:aerodynamics:aircraft:high_speed:CD:wave || increment of drag coefficient due to compressibility effects (shock waves) w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CD:trim || increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:high_speed:CL
 data:aerodynamics:aircraft:high_speed:CL || scale of lift coefficient values for drag computations in high-speed conditions
@@ -29,6 +30,7 @@ data:aerodynamics:aircraft:low_speed:CD || drag coefficient in low speed conditi
 data:aerodynamics:aircraft:low_speed:CD:CD0 || profile drag coefficient for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:aircraft:low_speed:CD:CD0:clean || like data:aerodynamics:aircraft:low_speed:CD:CD0 but without parasitic drag
 data:aerodynamics:aircraft:low_speed:CD:CD0:parasitic || estimated parasitic drag for whole aircraft in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
+data:aerodynamics:aircraft:low_speed:CD:offset || offset to apply to drag coefficient in low-speed conditions cd_offset = delta_cd_hl * k_cd + offset_cd
 data:aerodynamics:aircraft:low_speed:CD:trim || increment of drag coefficient due to aircraft trim in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:aerodynamics:aircraft:low_speed:CL || scale of lift coefficient values for drag computations in low speed conditions
 data:aerodynamics:aircraft:low_speed:CL_alpha || derivative of lift coefficient with respect to angle of attack in low speed conditions
