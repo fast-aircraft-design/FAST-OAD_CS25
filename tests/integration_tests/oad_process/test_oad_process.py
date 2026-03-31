@@ -51,8 +51,11 @@ def test_oad_process(cleanup):
     """
     Test for the overall aircraft design process.
     """
+    results_folder_path = RESULTS_FOLDER_PATH / "oad_process"
+    results_folder_path.mkdir(parents=True, exist_ok=True)
+    shutil.copy(DATA_FOLDER_PATH / "oad_process.yml", results_folder_path / "oad_process.yml")
 
-    configurator = FASTOADProblemConfigurator(DATA_FOLDER_PATH / "oad_process.yml")
+    configurator = FASTOADProblemConfigurator(results_folder_path / "oad_process.yml")
 
     # Create inputs
     ref_inputs = DATA_FOLDER_PATH / "CeRAS01_legacy.xml"
@@ -64,18 +67,17 @@ def test_oad_process(cleanup):
     problem.run_model()
     problem.write_outputs()
 
-    RESULTS_FOLDER_PATH.mkdir(parents=True, exist_ok=True)
     om.view_connections(
-        problem, outfile=(RESULTS_FOLDER_PATH / "connections.html").as_posix(), show_browser=False
+        problem, outfile=(results_folder_path / "connections.html").as_posix(), show_browser=False
     )
-    om.n2(problem, outfile=(RESULTS_FOLDER_PATH / "n2.html").as_posix(), show_browser=False)
+    om.n2(problem, outfile=(results_folder_path / "n2.html").as_posix(), show_browser=False)
 
     # Check that weight-performances loop correctly converged
     _check_weight_performance_loop(problem)
 
 
 def test_base_configuration_file(cleanup):
-    results_folder_path = RESULTS_FOLDER_PATH / "base_conf_file"
+    results_folder_path = RESULTS_FOLDER_PATH / "base_configuration_file"
     configuration_file_path = results_folder_path / "base_conf.yml"
     api.generate_configuration_file(configuration_file_path, overwrite=True)
     api.generate_inputs(configuration_file_path, TUTO_REF_DATA, overwrite=True)

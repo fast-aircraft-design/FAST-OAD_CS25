@@ -34,13 +34,13 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             self.add_input("data:aerodynamics:wing:low_speed:reynolds", val=np.nan)
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:nacelles:low_speed:CD0")
-            self.add_output("data:aerodynamics:pylons:low_speed:CD0")
+            self.add_output("data:aerodynamics:nacelles:low_speed:CD:CD0")
+            self.add_output("data:aerodynamics:pylons:low_speed:CD:CD0")
         else:
-            self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
+            self.add_input("data:aerodynamics:wing:high_speed:reynolds", val=np.nan)
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:nacelles:cruise:CD0")
-            self.add_output("data:aerodynamics:pylons:cruise:CD0")
+            self.add_output("data:aerodynamics:nacelles:high_speed:CD:CD0")
+            self.add_output("data:aerodynamics:pylons:high_speed:CD:CD0")
 
         self.add_input("data:geometry:propulsion:pylon:length", val=np.nan, units="m")
         self.add_input("data:geometry:propulsion:nacelle:length", val=np.nan, units="m")
@@ -61,17 +61,17 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
             reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
         else:
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:cruise:reynolds"]
+            reynolds = inputs["data:aerodynamics:wing:high_speed:reynolds"]
 
         cd0_pylon = self._compute_cd0_for_pylons(inputs, n_engines, wing_area, mach, reynolds)
         cd0_nac = self._compute_cd0_for_nacelles(inputs, n_engines, wing_area, mach, reynolds)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:pylons:low_speed:CD0"] = cd0_pylon
-            outputs["data:aerodynamics:nacelles:low_speed:CD0"] = cd0_nac
+            outputs["data:aerodynamics:pylons:low_speed:CD:CD0"] = cd0_pylon
+            outputs["data:aerodynamics:nacelles:low_speed:CD:CD0"] = cd0_nac
         else:
-            outputs["data:aerodynamics:pylons:cruise:CD0"] = cd0_pylon
-            outputs["data:aerodynamics:nacelles:cruise:CD0"] = cd0_nac
+            outputs["data:aerodynamics:pylons:high_speed:CD:CD0"] = cd0_pylon
+            outputs["data:aerodynamics:nacelles:high_speed:CD:CD0"] = cd0_nac
 
     @staticmethod
     def _compute_cd0_for_pylons(inputs, n_engines, wing_area, mach, reynolds):

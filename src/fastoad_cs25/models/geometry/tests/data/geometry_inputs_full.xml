@@ -347,7 +347,7 @@
             <max_climb_rate>2.4</max_climb_rate>
           </climb>
           <cruise>
-            <altitude units="ft" is_input="True">35000.0</altitude>
+            <altitude_input units="ft" is_input="True">35000.0</altitude_input>
             <duration units="s" is_input="True">5.44<!--duration of phase "cruise" of route "main_route" in mission "sizing"--></duration>
             <fuel units="kg" is_input="True">13675.36<!--burned fuel during phase "cruise" of route "main_route" in mission "sizing"--></fuel>
           </cruise>
@@ -435,7 +435,7 @@
             <max_climb_rate>0.0</max_climb_rate>
           </climb>
           <cruise>
-            <altitude>35000.0</altitude>
+            <altitude_input>35000.0</altitude_input>
             <duration>17.0</duration>
             <fuel>586.64</fuel>
             <mach>0.78</mach>
@@ -706,10 +706,10 @@
     </weight>
     <aerodynamics>
       <aircraft>
-        <cruise>
-          <CL_alpha is_input="True">6.2<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
-          <L_D_max is_input="True">16.0<!--max lift/drag ratio in cruise conditions--></L_D_max>
-        </cruise>
+        <high_speed>
+          <CL_alpha is_input="True">6.2<!--derivative of lift coefficient with respect to angle of attack in high_speed conditions--></CL_alpha>
+          <L_D_max is_input="True">16.0<!--max lift/drag ratio in high_speed conditions--></L_D_max>
+        </high_speed>
         <landing>
           <CL_max is_input="True">2.84<!--maximum lift coefficient in landing conditions--></CL_max>
           <CL_max_clean is_input="True">1.59<!--maximum lift coefficient in landing conditions without high-lift devices--></CL_max_clean>
@@ -720,14 +720,14 @@
         </takeoff>
       </aircraft>
       <horizontal_tail>
-        <cruise>
-          <CL_alpha is_input="True">3.47<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha is_input="True">3.47<!--derivative of lift coefficient of horizontal tail with respect to local angle of attack in high_speed conditions--></CL_alpha>
+        </high_speed>
       </horizontal_tail>
       <vertical_tail>
-        <cruise>
-          <CL_alpha is_input="True">2.55<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha is_input="True">2.55<!--derivative of lift coefficient of vertical tail with respect to local "angle of attack" in high_speed conditions--></CL_alpha>
+        </high_speed>
       </vertical_tail>
     </aerodynamics>
   </data>
@@ -899,24 +899,24 @@
   <tuning>
     <aerodynamics>
       <aircraft>
-        <cruise>
+        <high_speed>
           <CD>
-            <k is_input="True">1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
-            <offset is_input="True">0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
+            <k is_input="True">1.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></k>
+            <offset is_input="True">0.0<!--correction offset to apply to computed drag coefficient in high_speed conditions--></offset>
             <winglet_effect>
-              <k is_input="True">1.0<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
-              <offset is_input="True">0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
+              <k is_input="True">1.0<!--correction ratio to apply to computed induced drag coefficient in high_speed conditions--></k>
+              <offset is_input="True">0.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></offset>
             </winglet_effect>
           </CD>
           <CL>
-            <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-            <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+            <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
+            <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
             <winglet_effect>
-              <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
-              <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+              <k is_input="True">1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
+              <offset is_input="True">0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
             </winglet_effect>
           </CL>
-        </cruise>
+        </high_speed>
         <landing>
           <CL_max>
             <landing_gear_effect>

@@ -39,8 +39,8 @@ class InducedDragCoefficient(om.ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:low_speed:oswald_coefficient", val=np.nan)
             self.add_output("data:aerodynamics:aircraft:low_speed:induced_drag_coefficient")
         else:
-            self.add_input("data:aerodynamics:aircraft:cruise:oswald_coefficient", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:cruise:induced_drag_coefficient")
+            self.add_input("data:aerodynamics:aircraft:high_speed:oswald_coefficient", val=np.nan)
+            self.add_output("data:aerodynamics:aircraft:high_speed:induced_drag_coefficient")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -53,14 +53,14 @@ class InducedDragCoefficient(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             coef_e = inputs["data:aerodynamics:aircraft:low_speed:oswald_coefficient"]
         else:
-            coef_e = inputs["data:aerodynamics:aircraft:cruise:oswald_coefficient"]
+            coef_e = inputs["data:aerodynamics:aircraft:high_speed:oswald_coefficient"]
 
         coef_k = 1.0 / (np.pi * aspect_ratio * coef_e)
 
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"] = coef_k
         else:
-            outputs["data:aerodynamics:aircraft:cruise:induced_drag_coefficient"] = coef_k
+            outputs["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"] = coef_k
 
 
 @oad.RegisterSubmodel(
@@ -89,7 +89,7 @@ class OswaldCoefficient(om.ExplicitComponent):
             self.add_output("data:aerodynamics:aircraft:low_speed:oswald_coefficient")
         else:
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:cruise:oswald_coefficient")
+            self.add_output("data:aerodynamics:aircraft:high_speed:oswald_coefficient")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -126,4 +126,4 @@ class OswaldCoefficient(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:aircraft:low_speed:oswald_coefficient"] = coef_e
         else:
-            outputs["data:aerodynamics:aircraft:cruise:oswald_coefficient"] = coef_e
+            outputs["data:aerodynamics:aircraft:high_speed:oswald_coefficient"] = coef_e
