@@ -397,7 +397,7 @@ def test_polar_high_speed():
         + problem["data:aerodynamics:aircraft:high_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:wave"]
         + problem["data:aerodynamics:aircraft:high_speed:CD:trim"]
-        + problem["data:aerodynamics:aircraft:high_speed:CD:viscous"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:offset"]
     )
 
     assert cd[cl == 0.0] == approx(0.02102, abs=1e-5)
@@ -473,7 +473,7 @@ def test_polar_low_speed():
         + problem["data:aerodynamics:aircraft:low_speed:CD:induced"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:wave"]
         + problem["data:aerodynamics:aircraft:low_speed:CD:trim"]
-        + problem["data:aerodynamics:aircraft:low_speed:CD:viscous"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:offset"]
     )
 
     assert cd[cl == 0.5] == approx(0.033441, abs=1e-5)
@@ -546,7 +546,7 @@ def test_polar_high_lift():
         + problem["data:aerodynamics:aircraft:takeoff:CD:induced"]
         + problem["data:aerodynamics:aircraft:takeoff:CD:wave"]
         + problem["data:aerodynamics:aircraft:takeoff:CD:trim"]
-        + problem["data:aerodynamics:aircraft:takeoff:CD:viscous"]
+        + problem["data:aerodynamics:aircraft:takeoff:CD:offset"]
     )
 
     assert cd[cl == 1.006] == approx([0.083137], abs=1e-5)

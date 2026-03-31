@@ -103,7 +103,7 @@ class ComputePolar(om.ExplicitComponent):
                     units="unitless",
                 )
                 self.add_output(
-                    "data:aerodynamics:aircraft:takeoff:CD:viscous",
+                    "data:aerodynamics:aircraft:takeoff:CD:offset",
                     units="unitless",
             )
 
@@ -145,7 +145,7 @@ class ComputePolar(om.ExplicitComponent):
                     units="unitless",
                 )
                 self.add_output(
-                    "data:aerodynamics:aircraft:landing:CD:viscous",
+                    "data:aerodynamics:aircraft:landing:CD:offset",
                     units="unitless",
             )
 
@@ -165,7 +165,7 @@ class ComputePolar(om.ExplicitComponent):
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                     units="unitless",
                 )
-                self.add_output("data:aerodynamics:aircraft:low_speed:CD:viscous", 
+                self.add_output("data:aerodynamics:aircraft:low_speed:CD:offset", 
                     units="unitless")
 
             else:
@@ -214,7 +214,7 @@ class ComputePolar(om.ExplicitComponent):
                 copy_shape="data:aerodynamics:aircraft:high_speed:CL",
                 units="unitless",
             )
-            self.add_output("data:aerodynamics:aircraft:high_speed:CD:viscous", units="unitless")
+            self.add_output("data:aerodynamics:aircraft:high_speed:CD:offset", units="unitless")
             self.add_output("data:aerodynamics:aircraft:high_speed:L_D_max", units="unitless")
             self.add_output("data:aerodynamics:aircraft:high_speed:optimal_CL", units="unitless")
             self.add_output("data:aerodynamics:aircraft:high_speed:optimal_CD", units="unitless")
@@ -265,15 +265,15 @@ class ComputePolar(om.ExplicitComponent):
         cd_cd0 = cd0 * k_cd
         cd_wave = cd_c * k_cd
         cd_trim_component = cd_trim * k_cd
-        cd_induced = coef_k * cl**2 * k_winglet_cd * k_cd
-        cd_viscous = (offset_winglet_cd + delta_cd_hl) * k_cd + offset_cd
-        cd = cd_cd0 + cd_wave + cd_trim_component + cd_induced + cd_viscous
+        cd_induced = (coef_k * cl**2 * k_winglet_cd + offset_winglet_cd) * k_cd
+        cd_offset = delta_cd_hl * k_cd + offset_cd
+        cd = cd_cd0 + cd_wave + cd_trim_component + cd_induced + cd_offset
 
         if self.options["polar_type"] == PolarType.LOW_SPEED:
             outputs["data:aerodynamics:aircraft:low_speed:CD"] = cd
             outputs["data:aerodynamics:aircraft:low_speed:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:low_speed:CD:wave"] = cd_wave
-            outputs["data:aerodynamics:aircraft:low_speed:CD:viscous"] = cd_viscous
+            outputs["data:aerodynamics:aircraft:low_speed:CD:offset"] = cd_offset
         elif self.options["polar_type"] == PolarType.TAKEOFF:
             outputs["data:aerodynamics:aircraft:takeoff:CL"] = cl
             outputs["data:aerodynamics:aircraft:takeoff:CD"] = cd
@@ -281,7 +281,7 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:takeoff:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:takeoff:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:takeoff:CD:trim"] = cd_trim_component
-            outputs["data:aerodynamics:aircraft:takeoff:CD:viscous"] = cd_viscous
+            outputs["data:aerodynamics:aircraft:takeoff:CD:offset"] = cd_offset
         elif self.options["polar_type"] == PolarType.LANDING:
             outputs["data:aerodynamics:aircraft:landing:CL"] = cl
             outputs["data:aerodynamics:aircraft:landing:CD"] = cd
@@ -289,11 +289,11 @@ class ComputePolar(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:landing:CD:induced"] = cd_induced
             outputs["data:aerodynamics:aircraft:landing:CD:wave"] = cd_wave
             outputs["data:aerodynamics:aircraft:landing:CD:trim"] = cd_trim_component
-            outputs["data:aerodynamics:aircraft:landing:CD:viscous"] = cd_viscous
+            outputs["data:aerodynamics:aircraft:landing:CD:offset"] = cd_offset
         else:
             outputs["data:aerodynamics:aircraft:high_speed:CD"] = cd
             outputs["data:aerodynamics:aircraft:high_speed:CD:induced"] = cd_induced
-            outputs["data:aerodynamics:aircraft:high_speed:CD:viscous"] = cd_viscous
+            outputs["data:aerodynamics:aircraft:high_speed:CD:offset"] = cd_offset
 
             Cl_opt, Cd_opt = get_optimum_ClCd(np.array([cd, cl]))[0:2]
             outputs["data:aerodynamics:aircraft:high_speed:L_D_max"] = Cl_opt / Cd_opt
