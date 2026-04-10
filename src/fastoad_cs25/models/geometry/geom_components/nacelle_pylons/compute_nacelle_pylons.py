@@ -171,7 +171,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
         root_chord = Chord(
-            x=None,
+            x=0.0,
             y=inputs["data:geometry:wing:root:y"],
             length=inputs["data:geometry:wing:root:chord"],
         )
@@ -231,7 +231,8 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         ) / (chord2.y - chord1.y)
         delta_x_nacelle = 0.05 * chord_at_engine_location
         x_nacelle_cg = (
-            chord2.x * (y_nacelle - chord1.y) / (chord2.y - chord1.y)
+            chord1.x
+            + (chord2.x - chord1.x) * (y_nacelle - chord1.y) / (chord2.y - chord1.y)
             - delta_x_nacelle
             - 0.2 * nacelle.length
         )
