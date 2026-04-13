@@ -200,9 +200,9 @@ def test_induced_drag_coefficient():
             ivc.add_output("data:aerodynamics:aircraft:high_speed:oswald_coefficient", mach)
         problem = run_system(InducedDragCoefficient(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
-            return problem["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
+            return problem["data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"]
         else:
-            return problem["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"]
+            return problem["data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"]
 
     assert get_coeff(0.8490, True) == approx(0.0465, abs=1e-4)
     assert get_coeff(0.7451, False) == approx(0.0530, abs=1e-4)

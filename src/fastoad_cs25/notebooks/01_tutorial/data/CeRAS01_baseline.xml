@@ -958,6 +958,9 @@
                             0.0008481599999999999, 0.00085405, 0.00085994, 0.0008658299999999999,
                             0.00087172,
                             0.00087761]<!--increment of drag coefficient due to aircraft trim w.r.t. data:aerodynamics:aircraft:high_speed:CL--></trim>
+                        <induced>
+                            <coefficient is_input="False">0.042638546205243245<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--> </coefficient>
+                        </induced> 
                     </CD>
                     <CD0>[0.020333923225037458, 0.020324975213394946,
                         0.020314574333666447, 0.020302819684400928, 0.020289810364147363,
@@ -1031,8 +1034,6 @@
                         6.4187174171460235<!--derivative of lift coefficient with respect to angle of attack in high_speed conditions--></CL_alpha>
                     <L_D_max>
                         17.43<!--max lift/drag ratio in high_speed conditions--></L_D_max>
-                    <induced_drag_coefficient>
-                        0.042638546205243245<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--></induced_drag_coefficient>
                     <optimal_CD>
                         0.03353318616106758<!--drag coefficient at maximum lift/drag ratio in high_speed conditions--></optimal_CD>
                     <optimal_CL>
@@ -1136,6 +1137,9 @@
                             0.0008481599999999999, 0.00085405, 0.00085994, 0.0008658299999999999,
                             0.00087172,
                             0.00087761]<!--increment of drag coefficient due to aircraft trim in low speed conditions (no high-lift) w.r.t. data:aerodynamics:aircraft:low_speed:CL--></trim>
+                        <induced>
+                            <coefficient is_input="False">0.03944988545489512<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--> </coefficient>
+                        </induced> 
                     </CD>
                     <CD0>[0.022081372046169997, 0.022073784984430956,
                         0.022064584429373955, 0.022053879093609185, 0.022041777689746824,
@@ -1205,8 +1209,6 @@
                         1.3900000000000001, 1.4000000000000001, 1.41, 1.42, 1.43, 1.44, 1.45, 1.46,
                         1.47, 1.48,
                         1.49]<!--scale of lift coefficient values for drag computations in low speed conditions--></CL>
-                    <induced_drag_coefficient>
-                        0.03944988545489512<!--multiply squared lift coefficient by this coefficient to get induced drag coefficient--></induced_drag_coefficient>
                 </low_speed>
                 <takeoff>
                     <CD>[0.04536617400148779, 0.04571920962142919,

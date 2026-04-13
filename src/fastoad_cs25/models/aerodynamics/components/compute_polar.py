@@ -51,7 +51,7 @@ class ComputePolar(om.ExplicitComponent):
                 val=np.nan,
             )
             self.add_input(
-                "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient",
+                "data:aerodynamics:aircraft:low_speed:CD:induced:coefficient",
                 val=np.nan,
             )
 
@@ -151,7 +151,7 @@ class ComputePolar(om.ExplicitComponent):
                 val=np.nan,
             )
             self.add_input(
-                "data:aerodynamics:aircraft:high_speed:induced_drag_coefficient", val=np.nan
+                "data:aerodynamics:aircraft:high_speed:CD:induced:coefficient", val=np.nan
             )
 
             self.add_output(
@@ -185,7 +185,7 @@ class ComputePolar(om.ExplicitComponent):
             cd0 = inputs["data:aerodynamics:aircraft:low_speed:CD:CD0"]
             cd_trim = inputs["data:aerodynamics:aircraft:low_speed:CD:trim"]
             cd_c = 0.0
-            coef_k = inputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
+            coef_k = inputs["data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"]
             if self.options["polar_type"] == PolarType.TAKEOFF:
                 delta_cl_hl = inputs["data:aerodynamics:high_lift_devices:takeoff:CL"]
                 delta_cd_hl = inputs["data:aerodynamics:high_lift_devices:takeoff:CD"]
@@ -203,7 +203,7 @@ class ComputePolar(om.ExplicitComponent):
             cd0 = inputs["data:aerodynamics:aircraft:high_speed:CD:CD0"]
             cd_trim = inputs["data:aerodynamics:aircraft:high_speed:CD:trim"]
             cd_c = inputs["data:aerodynamics:aircraft:high_speed:CD:wave"]
-            coef_k = inputs["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"]
+            coef_k = inputs["data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"]
             delta_cl_hl = 0.0
             delta_cd_hl = 0.0
         else:
