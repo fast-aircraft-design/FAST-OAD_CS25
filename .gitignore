@@ -61,3 +61,6 @@ venv*/
 
 # External tools
 /XFOIL
+
+# md files at root level
+*.md

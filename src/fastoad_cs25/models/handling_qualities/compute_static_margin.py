@@ -34,7 +34,7 @@ class ComputeStaticMargin(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
-        self.add_input("data:aerodynamics:cruise:neutral_point:x", val=np.nan)
+        self.add_input("data:aerodynamics:high_speed:neutral_point:x", val=np.nan)
 
         self.add_output("data:handling_qualities:static_margin")
 
@@ -43,6 +43,6 @@ class ComputeStaticMargin(om.ExplicitComponent):
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         cg_ratio = inputs["data:weight:aircraft:CG:aft:MAC_position"]
-        ac_ratio = inputs["data:aerodynamics:cruise:neutral_point:x"]
+        ac_ratio = inputs["data:aerodynamics:high_speed:neutral_point:x"]
 
         outputs["data:handling_qualities:static_margin"] = ac_ratio - cg_ratio

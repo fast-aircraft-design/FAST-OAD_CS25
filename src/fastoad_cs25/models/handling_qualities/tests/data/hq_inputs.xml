@@ -88,9 +88,9 @@
     </weight>
     <aerodynamics>
       <vertical_tail>
-        <cruise>
-          <CL_alpha is_input="True">2.55<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha is_input="True">2.55<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in high_speed conditions--></CL_alpha>
+        </high_speed>
       </vertical_tail>
     </aerodynamics>
   </data>
