@@ -42,14 +42,14 @@ class InducedDragCoefficient(om.ExplicitComponent):
                 units="unitless",
             )
             self.add_output(
-                "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient", units="unitless"
+                "data:aerodynamics:aircraft:low_speed:CD:induced:coefficient", units="unitless"
             )
         else:
             self.add_input(
                 "data:aerodynamics:aircraft:high_speed:oswald_coefficient", val=np.nan, units="unitless"
             )
             self.add_output(
-                "data:aerodynamics:aircraft:high_speed:induced_drag_coefficient", units="unitless"
+                "data:aerodynamics:aircraft:high_speed:CD:induced:coefficient", units="unitless"
             )
 
     def setup_partials(self):
@@ -68,9 +68,9 @@ class InducedDragCoefficient(om.ExplicitComponent):
         coef_k = 1.0 / (np.pi * aspect_ratio * coef_e)
 
         if self.options["low_speed_aero"]:
-            outputs["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"] = coef_k
+            outputs["data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"] = coef_k
         else:
-            outputs["data:aerodynamics:aircraft:high_speed:induced_drag_coefficient"] = coef_k
+            outputs["data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"] = coef_k
 
 
 @oad.RegisterSubmodel(
