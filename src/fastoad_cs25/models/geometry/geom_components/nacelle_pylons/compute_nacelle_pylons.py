@@ -231,8 +231,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         ) / (chord2.y - chord1.y)
         delta_x_nacelle = 0.05 * chord_at_engine_location
         x_nacelle_cg = (
-            chord1.x
-            + (chord2.x - chord1.x) * (y_nacelle - chord1.y) / (chord2.y - chord1.y)
+            np.interp(y_nacelle, [chord1.y, chord2.y], [chord1.x, chord2.x])
             - delta_x_nacelle
             - 0.2 * nacelle.length
         )
