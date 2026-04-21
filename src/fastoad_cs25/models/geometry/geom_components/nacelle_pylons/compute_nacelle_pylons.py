@@ -19,6 +19,7 @@ from dataclasses import dataclass
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
+from fastoad._utils.arrays import scalarize
 
 from ...constants import SERVICE_NACELLE_PYLON_GEOMETRY
 
@@ -171,19 +172,19 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
         root_chord = Chord(
-            x=0.0,
-            y=inputs["data:geometry:wing:root:y"],
-            length=inputs["data:geometry:wing:root:chord"],
+            x=scalarize(0.0),
+            y=scalarize(inputs["data:geometry:wing:root:y"]),
+            length=scalarize(inputs["data:geometry:wing:root:chord"]),
         )
         kink_chord = Chord(
-            x=inputs["data:geometry:wing:kink:leading_edge:x:local"],
-            y=inputs["data:geometry:wing:kink:y"],
-            length=inputs["data:geometry:wing:kink:chord"],
+            x=scalarize(inputs["data:geometry:wing:kink:leading_edge:x:local"]),
+            y=scalarize(inputs["data:geometry:wing:kink:y"]),
+            length=scalarize(inputs["data:geometry:wing:kink:chord"]),
         )
         tip_chord = Chord(
-            x=inputs["data:geometry:wing:tip:leading_edge:x:local"],
-            y=inputs["data:geometry:wing:tip:y"],
-            length=inputs["data:geometry:wing:tip:chord"],
+            x=scalarize(inputs["data:geometry:wing:tip:leading_edge:x:local"]),
+            y=scalarize(inputs["data:geometry:wing:tip:y"]),
+            length=scalarize(inputs["data:geometry:wing:tip:chord"]),
         )
 
         nacelle = Nacelle(inputs["data:propulsion:MTO_thrust"])
