@@ -19,6 +19,7 @@ from dataclasses import dataclass
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
+from fastoad._utils.arrays import scalarize
 
 from ...constants import SERVICE_NACELLE_PYLON_GEOMETRY
 
@@ -171,19 +172,19 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
         root_chord = Chord(
-            x=None,
-            y=inputs["data:geometry:wing:root:y"],
-            length=inputs["data:geometry:wing:root:chord"],
+            x=scalarize(0.0),
+            y=scalarize(inputs["data:geometry:wing:root:y"]),
+            length=scalarize(inputs["data:geometry:wing:root:chord"]),
         )
         kink_chord = Chord(
-            x=inputs["data:geometry:wing:kink:leading_edge:x:local"],
-            y=inputs["data:geometry:wing:kink:y"],
-            length=inputs["data:geometry:wing:kink:chord"],
+            x=scalarize(inputs["data:geometry:wing:kink:leading_edge:x:local"]),
+            y=scalarize(inputs["data:geometry:wing:kink:y"]),
+            length=scalarize(inputs["data:geometry:wing:kink:chord"]),
         )
         tip_chord = Chord(
-            x=inputs["data:geometry:wing:tip:leading_edge:x:local"],
-            y=inputs["data:geometry:wing:tip:y"],
-            length=inputs["data:geometry:wing:tip:chord"],
+            x=scalarize(inputs["data:geometry:wing:tip:leading_edge:x:local"]),
+            y=scalarize(inputs["data:geometry:wing:tip:y"]),
+            length=scalarize(inputs["data:geometry:wing:tip:chord"]),
         )
 
         nacelle = Nacelle(inputs["data:propulsion:MTO_thrust"])
@@ -231,7 +232,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         ) / (chord2.y - chord1.y)
         delta_x_nacelle = 0.05 * chord_at_engine_location
         x_nacelle_cg = (
-            chord2.x * (y_nacelle - chord1.y) / (chord2.y - chord1.y)
+            np.interp(y_nacelle, [chord1.y, chord2.y], [chord1.x, chord2.x])
             - delta_x_nacelle
             - 0.2 * nacelle.length
         )
