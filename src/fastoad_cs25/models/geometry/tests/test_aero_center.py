@@ -47,13 +47,13 @@ def test_compute_aero_center(input_xml):
         "data:geometry:wing:area",
         "data:geometry:horizontal_tail:area",
         "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-        "data:aerodynamics:aircraft:cruise:CL_alpha",
-        "data:aerodynamics:horizontal_tail:cruise:CL_alpha",
+        "data:aerodynamics:aircraft:high_speed:CL_alpha",
+        "data:aerodynamics:horizontal_tail:high_speed:CL_alpha",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
     problem = run_system(ComputeAeroCenter(), input_vars)
 
-    x_ac_ratio = problem["data:aerodynamics:cruise:neutral_point:x"]
+    x_ac_ratio = problem["data:aerodynamics:high_speed:neutral_point:x"]
     assert x_ac_ratio == pytest.approx(0.422638, abs=1e-6)

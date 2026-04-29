@@ -30,10 +30,12 @@ class ComputeVTClalpha(om.ExplicitComponent):
         self.add_input("data:geometry:vertical_tail:aspect_ratio", val=np.nan)
         self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="deg")
 
-        self.add_output("data:aerodynamics:vertical_tail:cruise:CL_alpha", units="1/rad")
+        self.add_output("data:aerodynamics:vertical_tail:high_speed:CL_alpha", units="1/rad")
 
     def setup_partials(self):
-        self.declare_partials("data:aerodynamics:vertical_tail:cruise:CL_alpha", "*", method="fd")
+        self.declare_partials(
+            "data:aerodynamics:vertical_tail:high_speed:CL_alpha", "*", method="fd"
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tail_type = np.round(inputs["data:geometry:has_T_tail"])
@@ -60,4 +62,4 @@ class ComputeVTClalpha(om.ExplicitComponent):
             )
         )
 
-        outputs["data:aerodynamics:vertical_tail:cruise:CL_alpha"] = cl_alpha_vt
+        outputs["data:aerodynamics:vertical_tail:high_speed:CL_alpha"] = cl_alpha_vt

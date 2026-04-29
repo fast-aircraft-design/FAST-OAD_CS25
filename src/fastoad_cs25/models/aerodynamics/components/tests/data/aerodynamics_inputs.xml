@@ -118,7 +118,7 @@
                     <CL_alpha units="rad**-1">5.0</CL_alpha>
                     <CL0>0.2</CL0>
                 </low_speed>
-                <cruise>
+                <high_speed>
                     <CL>[0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12,
                         0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25,
                         0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38,
@@ -131,7 +131,7 @@
                     <CL_alpha units="rad**-1">6.49</CL_alpha>
                     <CL0>0.1</CL0>
 
-                </cruise>
+                </high_speed>
                 <takeoff>
                     <mach>0.2</mach>
                 </takeoff>
@@ -163,7 +163,7 @@
                 </takeoff>
                 <main_route>
                     <cruise>
-                        <altitude units="ft">35000.0</altitude>
+                        <altitude_input units="ft">35000.0</altitude_input>
                     </cruise>
                 </main_route>
             </sizing>
@@ -172,32 +172,32 @@
     <tuning>
         <aerodynamics>
             <aircraft>
-                <cruise>
+                <high_speed>
                     <CD>
                         <k>
-                            1.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></k>
+                            1.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></k>
                         <offset>
-                            0.0<!--correction offset to apply to computed drag coefficient in cruise conditions--></offset>
+                            0.0<!--correction offset to apply to computed drag coefficient in high_speed conditions--></offset>
                         <winglet_effect>
                             <k>
-                                1.0<!--correction ratio to apply to computed induced drag coefficient in cruise conditions--></k>
+                                1.0<!--correction ratio to apply to computed induced drag coefficient in high_speed conditions--></k>
                             <offset>
-                                0.0<!--correction ratio to apply to computed drag coefficient in cruise conditions--></offset>
+                                0.0<!--correction ratio to apply to computed drag coefficient in high_speed conditions--></offset>
                         </winglet_effect>
                     </CD>
                     <CL>
                         <k>
-                            1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+                            1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
                         <offset>
-                            0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+                            0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
                         <winglet_effect>
                             <k>
-                                1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></k>
+                                1.0<!--ratio to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></k>
                             <offset>
-                                0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in cruise polar computation--></offset>
+                                0.0<!--offset to apply to defined cl range (which goes by default from 0.0 to 1.5) in high_speed polar computation--></offset>
                         </winglet_effect>
                     </CL>
-                </cruise>
+                </high_speed>
                 <landing>
                     <CL_max>
                         <landing_gear_effect>

@@ -30,8 +30,8 @@ class ComputeReynolds(ExplicitComponent):
     def initialize(self):
         self.options.declare("low_speed_aero", default=False, types=bool)
         self.options.declare(
-            "cruise_altitude_var",
-            default="data:mission:sizing:main_route:cruise:altitude",
+            "altitude_var_name_high_speed",
+            default="data:mission:sizing:main_route:cruise:altitude_input",
             types=str,
             desc="Name of the variable to use for cruise altitude evaluation in Reynolds number "
             "computation.",
@@ -43,8 +43,8 @@ class ComputeReynolds(ExplicitComponent):
             self.add_output("data:aerodynamics:wing:low_speed:reynolds")
         else:
             self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_input(self.options["cruise_altitude_var"], val=np.nan, units="m")
-            self.add_output("data:aerodynamics:wing:cruise:reynolds")
+            self.add_input(self.options["altitude_var_name_high_speed"], val=np.nan, units="m")
+            self.add_output("data:aerodynamics:wing:high_speed:reynolds")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -55,7 +55,7 @@ class ComputeReynolds(ExplicitComponent):
             altitude = 0.0
         else:
             mach = inputs["data:TLAR:cruise_mach"]
-            altitude = inputs[self.options["cruise_altitude_var"]]
+            altitude = inputs[self.options["altitude_var_name_high_speed"]]
 
         atm = AtmosphereSI(altitude)
         atm.mach = mach
@@ -64,4 +64,4 @@ class ComputeReynolds(ExplicitComponent):
         if self.options["low_speed_aero"]:
             outputs["data:aerodynamics:wing:low_speed:reynolds"] = reynolds
         else:
-            outputs["data:aerodynamics:wing:cruise:reynolds"] = reynolds
+            outputs["data:aerodynamics:wing:high_speed:reynolds"] = reynolds
