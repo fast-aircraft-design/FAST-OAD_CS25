@@ -26,7 +26,7 @@ class ComputeHTClalpha(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:horizontal_tail:aspect_ratio", val=np.nan)
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
 
         self.add_output("data:aerodynamics:horizontal_tail:cruise:CL_alpha", units="1/rad")

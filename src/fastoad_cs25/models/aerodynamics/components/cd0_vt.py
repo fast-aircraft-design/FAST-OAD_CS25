@@ -49,7 +49,7 @@ class Cd0VerticalTail(om.ExplicitComponent):
             self.add_output("data:aerodynamics:vertical_tail:low_speed:CD0")
         else:
             self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:vertical_tail:cruise:CD0")
 
     def setup_partials(self):

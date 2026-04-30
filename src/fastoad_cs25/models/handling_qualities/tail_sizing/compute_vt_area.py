@@ -27,7 +27,7 @@ class ComputeVTArea(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:weight:aircraft:CG:aft:MAC_position", val=np.nan)
         self.add_input("data:aerodynamics:fuselage:cruise:CnBeta", val=np.nan)
         self.add_input("data:aerodynamics:vertical_tail:cruise:CL_alpha", val=np.nan, units="1/rad")

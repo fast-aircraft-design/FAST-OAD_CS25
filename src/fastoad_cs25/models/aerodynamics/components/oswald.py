@@ -88,7 +88,7 @@ class OswaldCoefficient(om.ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output("data:aerodynamics:aircraft:low_speed:oswald_coefficient")
         else:
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:aircraft:cruise:oswald_coefficient")
 
     def setup_partials(self):

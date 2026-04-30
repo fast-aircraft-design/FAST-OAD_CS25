@@ -289,7 +289,7 @@ def test_geometry_wing_toc():
     """Tests computation of the wing ToC (Thickness of Chord)"""
 
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.4, units=None)
 
@@ -305,7 +305,7 @@ def test_geometry_wing_toc():
 
     # With no kink
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:wing:sweep_25", 25.0, units="deg")
     input_vars.add_output("data:geometry:wing:kink:span_ratio", 0.0, units=None)
 

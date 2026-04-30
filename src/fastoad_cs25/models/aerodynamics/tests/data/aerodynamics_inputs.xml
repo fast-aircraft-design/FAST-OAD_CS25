@@ -20,7 +20,7 @@
   <data>
     <TLAR>
       <approach_speed units="kn">132.0<!--top-level requirement: approach speed--></approach_speed>
-      <cruise_mach>0.78<!--top-level requirement: cruise Mach number--></cruise_mach>
+      <cruise_mach units="unitless">0.78<!--top-level requirement: cruise Mach number--></cruise_mach>
     </TLAR>
     <geometry>
       <aircraft>

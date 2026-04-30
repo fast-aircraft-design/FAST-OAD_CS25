@@ -25,7 +25,7 @@ class ComputeVTClalpha(om.ExplicitComponent):
     """Vertical tail lift coefficient estimation"""
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:geometry:has_T_tail", val=np.nan)
         self.add_input("data:geometry:vertical_tail:aspect_ratio", val=np.nan)
         self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="deg")

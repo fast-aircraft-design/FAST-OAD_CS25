@@ -38,7 +38,7 @@ class Cd0NacellesAndPylons(om.ExplicitComponent):
             self.add_output("data:aerodynamics:pylons:low_speed:CD0")
         else:
             self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:nacelles:cruise:CD0")
             self.add_output("data:aerodynamics:pylons:cruise:CD0")
 

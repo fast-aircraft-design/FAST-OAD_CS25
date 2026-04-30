@@ -29,7 +29,7 @@ class ComputeToCWing(om.ExplicitComponent):
     """Wing ToC estimation"""
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:wing:kink:span_ratio", val=np.nan)
 

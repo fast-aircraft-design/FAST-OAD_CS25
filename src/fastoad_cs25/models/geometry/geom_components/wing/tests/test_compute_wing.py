@@ -20,7 +20,7 @@ from ..compute_wing import ComputeWingGeometry
 
 def test_compute_wing_with_kink():
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
@@ -60,7 +60,7 @@ def test_compute_wing_with_kink():
 
 def test_compute_wing_with_absolute_kink():
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
@@ -100,7 +100,7 @@ def test_compute_wing_with_absolute_kink():
 def test_compute_wing_without_kink():
     # Method 1 : kink span_ratio = 0.
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")
@@ -138,7 +138,7 @@ def test_compute_wing_without_kink():
 
     # Method 2 : sweep_100_ratio = 1.0
     input_vars = om.IndepVarComp()
-    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units=None)
+    input_vars.add_output("data:TLAR:cruise_mach", 0.78, units="unitless")
     input_vars.add_output("data:geometry:fuselage:maximum_height", 4.06, units="m")
     input_vars.add_output("data:geometry:fuselage:maximum_width", 3.92, units="m")
     input_vars.add_output("data:geometry:wing:area", 124.843, units="m**2")

@@ -58,7 +58,7 @@
     <TLAR>
       <NPAX is_input="True">150.0<!--top-level requirement: number of passengers, assuming a classic eco/business class repartition--></NPAX>
       <approach_speed units="m/s" is_input="True">132.0<!--top-level requirement: approach speed--></approach_speed>
-      <cruise_mach is_input="True">0.78<!--Input defined by the mission.--></cruise_mach>
+      <cruise_mach  units="unitless" is_input="True">0.78<!--Input defined by the mission.--></cruise_mach>
       <max_TOFL>0.0<!--top-level requirement: maximum takeoff field length--></max_TOFL>
       <range units="nmi" is_input="True">2750.0<!--Input defined by the mission.--></range>
     </TLAR>

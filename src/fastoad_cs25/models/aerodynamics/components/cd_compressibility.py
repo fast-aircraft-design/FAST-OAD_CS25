@@ -38,7 +38,7 @@ class CdCompressibility(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input("data:TLAR:cruise_mach", val=np.nan)
+        self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input(
             "data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, units="unitless", val=np.nan
         )

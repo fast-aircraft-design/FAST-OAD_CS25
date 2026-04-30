@@ -32,7 +32,7 @@ class ComputeCLAlpha(om.ExplicitComponent):
 
     def setup(self):
         if not self.options["low_speed_aero"]:
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")

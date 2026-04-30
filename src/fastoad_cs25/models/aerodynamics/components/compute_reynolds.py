@@ -42,7 +42,7 @@ class ComputeReynolds(ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output("data:aerodynamics:wing:low_speed:reynolds")
         else:
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_input(self.options["cruise_altitude_var"], val=np.nan, units="m")
             self.add_output("data:aerodynamics:wing:cruise:reynolds")
 

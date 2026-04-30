@@ -118,7 +118,7 @@ def test_compute_reynolds():
 
     def get_cruise_reynolds(altitude, mach, cruise_altitude_var=None):
         ivc = IndepVarComp()
-        ivc.add_output("data:TLAR:cruise_mach", mach)
+        ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
         var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude"
         ivc.add_output(var_name, altitude, units="m")
         kwargs = {}
@@ -167,7 +167,7 @@ def test_oswald_coefficient():
         if low_speed_aero:
             ivc.add_output("data:aerodynamics:aircraft:takeoff:mach", mach)
         else:
-            ivc.add_output("data:TLAR:cruise_mach", mach)
+            ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
         problem = run_system(OswaldCoefficient(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
             return problem["data:aerodynamics:aircraft:low_speed:oswald_coefficient"]
@@ -247,7 +247,7 @@ def test_cd0():
                 "data:aerodynamics:aircraft:low_speed:CL", 150 * [cl]
             )  # needed because size of input array is fixed
         else:
-            ivc.add_output("data:TLAR:cruise_mach", mach)
+            ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
             ivc.add_output("data:aerodynamics:wing:cruise:reynolds", reynolds)
             ivc.add_output(
                 "data:aerodynamics:aircraft:cruise:CL", 150 * [cl]
@@ -270,7 +270,7 @@ def test_cd_compressibility():
         ivc.add_output(
             "data:aerodynamics:aircraft:cruise:CL", 150 * [cl]
         )  # needed because size of input array is fixed
-        ivc.add_output("data:TLAR:cruise_mach", mach)
+        ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
         ivc.add_output("data:geometry:wing:sweep_25", sweep, units="deg")
         ivc.add_output("data:geometry:wing:thickness_ratio", thickness_ratio)
         ivc.add_output(
