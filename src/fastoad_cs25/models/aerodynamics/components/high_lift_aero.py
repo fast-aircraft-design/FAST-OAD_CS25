@@ -41,14 +41,26 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
             self.add_input("data:mission:sizing:landing:flap_angle", val=np.nan, units="deg")
             self.add_input("data:mission:sizing:landing:slat_angle", val=np.nan, units="deg")
             self.add_input("data:aerodynamics:aircraft:landing:mach", val=np.nan)
-            self.add_output("data:aerodynamics:high_lift_devices:landing:CL")
-            self.add_output("data:aerodynamics:high_lift_devices:landing:CD")
+            self.add_output(
+                "data:aerodynamics:high_lift_devices:landing:CL",
+                units="unitless",
+            )
+            self.add_output(
+                "data:aerodynamics:high_lift_devices:landing:CD",
+                units="unitless",
+            )
         else:
             self.add_input("data:mission:sizing:takeoff:flap_angle", val=np.nan, units="deg")
             self.add_input("data:mission:sizing:takeoff:slat_angle", val=np.nan, units="deg")
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CL")
-            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CD")
+            self.add_output(
+                "data:aerodynamics:high_lift_devices:takeoff:CL",
+                units="unitless",
+            )
+            self.add_output(
+                "data:aerodynamics:high_lift_devices:takeoff:CD",
+                units="unitless",
+            )
 
         self.add_input("data:geometry:wing:sweep_0", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:sweep_100_outer", val=np.nan, units="rad")

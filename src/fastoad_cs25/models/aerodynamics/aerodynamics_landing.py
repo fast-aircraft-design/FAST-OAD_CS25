@@ -187,9 +187,16 @@ class Compute3DMaxCL(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
-        self.add_input("data:aerodynamics:aircraft:landing:CL_max_clean_2D", val=np.nan)
+        self.add_input(
+            "data:aerodynamics:aircraft:landing:CL_max_clean_2D",
+            val=np.nan,
+            units="unitless",
+        )
 
-        self.add_output("data:aerodynamics:aircraft:landing:CL_max_clean")
+        self.add_output(
+            "data:aerodynamics:aircraft:landing:CL_max_clean",
+            units="unitless",
+        )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

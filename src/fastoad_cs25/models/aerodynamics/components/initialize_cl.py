@@ -33,9 +33,17 @@ class InitializeClPolar(om.ExplicitComponent):
         self.add_input("tuning:aerodynamics:aircraft:cruise:CL:winglet_effect:offset", val=np.nan)
 
         if self.options["low_speed_aero"]:
-            self.add_output("data:aerodynamics:aircraft:low_speed:CL", shape=POLAR_POINT_COUNT)
+            self.add_output(
+                "data:aerodynamics:aircraft:low_speed:CL",
+                shape=POLAR_POINT_COUNT,
+                units="unitless",
+            )
         else:
-            self.add_output("data:aerodynamics:aircraft:cruise:CL", shape=POLAR_POINT_COUNT)
+            self.add_output(
+                "data:aerodynamics:aircraft:cruise:CL",
+                shape=POLAR_POINT_COUNT,
+                units="unitless",
+            )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

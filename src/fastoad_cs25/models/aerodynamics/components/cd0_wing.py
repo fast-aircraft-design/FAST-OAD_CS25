@@ -42,19 +42,31 @@ class Cd0Wing(om.ExplicitComponent):
                 "data:aerodynamics:aircraft:low_speed:CL",
                 shape_by_conn=True,
                 val=np.nan,
+                units="unitless",
             )
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
             self.add_output(
                 "data:aerodynamics:wing:low_speed:CD0",
                 copy_shape="data:aerodynamics:aircraft:low_speed:CL",
+                units="unitless",
             )
         else:
             self.add_input("data:aerodynamics:wing:cruise:reynolds", val=np.nan)
-            self.add_input("data:aerodynamics:aircraft:cruise:CL", shape_by_conn=True, val=np.nan)
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:CL",
+                shape_by_conn=True,
+                units="unitless",
+                val=np.nan,
+            )
+            self.add_input(
+                "data:TLAR:cruise_mach",
+                val=np.nan,
+                units="unitless",
+            )
             self.add_output(
                 "data:aerodynamics:wing:cruise:CD0",
                 copy_shape="data:aerodynamics:aircraft:cruise:CL",
+                units="unitless",
             )
 
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
