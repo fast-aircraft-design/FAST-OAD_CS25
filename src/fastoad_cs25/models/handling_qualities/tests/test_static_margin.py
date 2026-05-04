@@ -40,7 +40,7 @@ def test_compute_static_margin(input_xml):
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.438971)
-    input_vars.add_output("data:aerodynamics:cruise:neutral_point:x", 0.537521)
+    input_vars.add_output("data:aerodynamics:high_speed:neutral_point:x", 0.537521)
 
     problem = run_system(ComputeStaticMargin(), input_vars)
     static_margin = problem["data:handling_qualities:static_margin"]

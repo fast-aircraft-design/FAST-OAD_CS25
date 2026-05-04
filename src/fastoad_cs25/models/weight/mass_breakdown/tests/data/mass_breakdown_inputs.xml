@@ -114,9 +114,9 @@
     </weight>
     <aerodynamics>
       <aircraft>
-        <cruise>
-          <CL_alpha>6.2<!--derivative of lift coefficient with respect to angle of attack in cruise conditions--></CL_alpha>
-        </cruise>
+        <high_speed>
+          <CL_alpha>6.2<!--derivative of lift coefficient with respect to angle of attack in high_speed conditions--></CL_alpha>
+        </high_speed>
       </aircraft>
     </aerodynamics>
   </data>

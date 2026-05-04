@@ -41,12 +41,12 @@ class ComputeAeroCenter(om.ExplicitComponent):
         self.add_input(
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
-        self.add_input("data:aerodynamics:aircraft:cruise:CL_alpha", val=np.nan, units="1/rad")
+        self.add_input("data:aerodynamics:aircraft:high_speed:CL_alpha", val=np.nan, units="1/rad")
         self.add_input(
-            "data:aerodynamics:horizontal_tail:cruise:CL_alpha", val=np.nan, units="1/rad"
+            "data:aerodynamics:horizontal_tail:high_speed:CL_alpha", val=np.nan, units="1/rad"
         )
 
-        self.add_output("data:aerodynamics:cruise:neutral_point:x")
+        self.add_output("data:aerodynamics:high_speed:neutral_point:x")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -61,8 +61,8 @@ class ComputeAeroCenter(om.ExplicitComponent):
         wing_area = inputs["data:geometry:wing:area"]
         s_h = inputs["data:geometry:horizontal_tail:area"]
         lp_ht = inputs["data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"]
-        cl_alpha_wing = inputs["data:aerodynamics:aircraft:cruise:CL_alpha"]
-        cl_alpha_ht = inputs["data:aerodynamics:horizontal_tail:cruise:CL_alpha"]
+        cl_alpha_wing = inputs["data:aerodynamics:aircraft:high_speed:CL_alpha"]
+        cl_alpha_ht = inputs["data:aerodynamics:horizontal_tail:high_speed:CL_alpha"]
         # TODO: make variable name is computation sequence more english
         x0_25 = fa_length - 0.25 * l0_wing - x0_wing + 0.25 * l1_wing
         ratio_x025 = x0_25 / fus_length
@@ -77,4 +77,4 @@ class ComputeAeroCenter(om.ExplicitComponent):
         ) / (cl_alpha_wing + cl_alpha_ht * (1 - 0.4) * 0.9 * s_h / wing_area)
         x_aero_center = x_ca_plane - fa_length / l0_wing + 0.25
 
-        outputs["data:aerodynamics:cruise:neutral_point:x"] = x_aero_center
+        outputs["data:aerodynamics:high_speed:neutral_point:x"] = x_aero_center

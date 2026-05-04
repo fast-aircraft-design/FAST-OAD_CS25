@@ -7,8 +7,8 @@ data:geometry:wing:MAC:at25percent:x, Aircraft/geometry/wing/fa_length
 data:geometry:wing:area, Aircraft/geometry/wing/wing_area
 data:geometry:horizontal_tail:area, Aircraft/geometry/ht/area
 data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25, Aircraft/geometry/ht/lp
-data:aerodynamics:aircraft:cruise:CL_alpha, Aircraft/aerodynamics/CL_alpha
-data:aerodynamics:horizontal_tail:cruise:CL_alpha, Aircraft/aerodynamics/CL_alpha_ht
+data:aerodynamics:aircraft:high_speed:CL_alpha, Aircraft/aerodynamics/CL_alpha
+data:aerodynamics:horizontal_tail:high_speed:CL_alpha, Aircraft/aerodynamics/CL_alpha_ht
 data:geometry:wing:MAC:y, Aircraft/geometry/wing/y0_wing
 data:geometry:wing:root:chord, Aircraft/geometry/wing/l2_wing
 data:geometry:wing:kink:chord, Aircraft/geometry/wing/l3_wing

@@ -185,7 +185,7 @@ def test_compute_ht_cl(input_xml):
 
     problem = run_system(ComputeHTClalpha(), input_vars)
 
-    cl_alpha = problem["data:aerodynamics:horizontal_tail:cruise:CL_alpha"]
+    cl_alpha = problem["data:aerodynamics:horizontal_tail:high_speed:CL_alpha"]
     assert cl_alpha == pytest.approx(3.47, abs=1e-2)
 
 
@@ -268,7 +268,7 @@ def test_compute_fuselage_cnbeta(input_xml):
 
     problem = run_system(component, input_vars)
 
-    cn_beta = problem["data:aerodynamics:fuselage:cruise:CnBeta"]
+    cn_beta = problem["data:aerodynamics:fuselage:high_speed:CnBeta"]
     assert cn_beta == pytest.approx(-0.117901, abs=1e-6)
 
 
@@ -370,7 +370,7 @@ def test_compute_vt_cl(input_xml):
     input_vars = input_xml.read(only=input_list).to_ivc()
     problem = run_system(ComputeVTClalpha(), input_vars)
 
-    cl_alpha = problem["data:aerodynamics:vertical_tail:cruise:CL_alpha"]
+    cl_alpha = problem["data:aerodynamics:vertical_tail:high_speed:CL_alpha"]
     assert cl_alpha == pytest.approx(2.55, abs=1e-2)
 
 

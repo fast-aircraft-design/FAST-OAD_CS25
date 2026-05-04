@@ -93,19 +93,19 @@ def test_compute_vt_area(input_xml):
         "data:geometry:wing:area",
         "data:geometry:wing:span",
         "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
-        "data:aerodynamics:vertical_tail:cruise:CL_alpha",
+        "data:aerodynamics:vertical_tail:high_speed:CL_alpha",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
     input_vars.add_output("data:weight:aircraft:CG:aft:MAC_position", 0.364924)
-    input_vars.add_output("data:aerodynamics:fuselage:cruise:CnBeta", -0.117901)
+    input_vars.add_output("data:aerodynamics:fuselage:high_speed:CnBeta", -0.117901)
 
     component = ComputeVTArea()
 
     problem = run_system(component, input_vars)
 
-    cn_beta_vt = problem["data:aerodynamics:vertical_tail:cruise:CnBeta"]
+    cn_beta_vt = problem["data:aerodynamics:vertical_tail:high_speed:CnBeta"]
     assert cn_beta_vt == pytest.approx(0.258348, abs=1e-6)
     wet_area = problem["data:geometry:vertical_tail:wetted_area"]
     assert wet_area == pytest.approx(52.34, abs=1e-2)
