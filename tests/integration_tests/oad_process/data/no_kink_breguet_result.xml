@@ -644,7 +644,7 @@
         <cruise>
           <CD0 is_input="False">0.001300013266319344<!--profile drag coefficient for vertical tail in cruise conditions--></CD0>
           <CL_alpha units="1/rad" is_input="False">2.546156443275808<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-          <CnBeta units="m**2" is_input="False">0.24058703344407045<!--derivative of yawing moment against sideslip angle for vertical tail in cruise conditions--></CnBeta>
+          <CnBeta units="1/rad" is_input="False">0.24058703344407045<!--derivative of yawing moment against sideslip angle for vertical tail in cruise conditions--></CnBeta>
         </cruise>
       </vertical_tail>
       <wing>
