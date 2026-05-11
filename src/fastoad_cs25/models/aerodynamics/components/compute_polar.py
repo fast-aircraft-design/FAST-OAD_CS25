@@ -91,7 +91,7 @@ class ComputePolar(om.ExplicitComponent):
                     "data:aerodynamics:high_lift_devices:landing:CD", val=np.nan, units="unitless"
                 )
                 self.add_output(
-                    "data:aerodynamics:landing:CL",
+                    "data:aerodynamics:aircraft:landing:CL",
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                     units="unitless",
                 )
