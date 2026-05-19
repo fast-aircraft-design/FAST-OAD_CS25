@@ -353,8 +353,8 @@
             <sizing>
                 <main_route>
                     <cruise>
-                        <altitude units="ft" is_input="True">
-                            35000.0<!--altitude during cruise phase in sizing mission--></altitude>
+                        <altitude_input units="ft" is_input="True">
+                            35000.0<!--altitude during cruise phase in sizing mission--></altitude_input>
                     </cruise>
                 </main_route>
                 <landing>

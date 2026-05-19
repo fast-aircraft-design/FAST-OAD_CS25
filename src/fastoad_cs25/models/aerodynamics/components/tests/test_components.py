@@ -123,7 +123,7 @@ def test_compute_reynolds():
     def get_cruise_reynolds(altitude, mach, cruise_altitude_var=None):
         ivc = IndepVarComp()
         ivc.add_output("data:TLAR:cruise_mach", mach)
-        var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude"
+        var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude_input"
         ivc.add_output(var_name, altitude, units="m")
         kwargs = {}
         if cruise_altitude_var is not None:
@@ -140,7 +140,9 @@ def test_compute_reynolds():
 
     # Test custom variable name produces the same result
     assert get_cruise_reynolds(
-        altitude_m, mach, cruise_altitude_var="data:mission:sizing:custom_route:cruise:altitude"
+        altitude_m,
+        mach,
+        cruise_altitude_var="data:mission:sizing:custom_route:cruise:altitude_input",
     ) == approx(expected_reynolds, rel=1e-6)
 
     # Test low_speed_aero (altitude = 0, uses takeoff mach)
@@ -368,7 +370,7 @@ def test_polar_high_speed():
         "data:geometry:wing:root:chord",
         "data:geometry:wing:tip:chord",
         "data:TLAR:cruise_mach",
-        "data:mission:sizing:main_route:cruise:altitude",
+        "data:mission:sizing:main_route:cruise:altitude_input",
     ]
     group = Group()
     group.add_subsystem("reynolds", ComputeReynolds(), promotes=["*"])

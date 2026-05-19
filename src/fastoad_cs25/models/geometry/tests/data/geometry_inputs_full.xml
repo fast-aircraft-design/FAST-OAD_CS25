@@ -347,7 +347,7 @@
             <max_climb_rate units="unitless">2.4</max_climb_rate>
           </climb>
           <cruise>
-            <altitude units="ft" is_input="True">35000.0</altitude>
+            <altitude_input units="ft" is_input="True">35000.0</altitude_input>
             <duration units="s" is_input="True">5.44<!--duration of phase "cruise" of route "main_route" in mission "sizing"--></duration>
             <fuel units="kg" is_input="True">13675.36<!--burned fuel during phase "cruise" of route "main_route" in mission "sizing"--></fuel>
           </cruise>
@@ -388,61 +388,61 @@
           <thrust_rate units="unitless">0.1<!--thrust rate (between 0.0 and 1.0) during landing phase in operational mission--></thrust_rate>
         </landing>
         <takeoff>
-          <TOFL units="unitless">1560.94<!--TakeOff Field Length in operational mission--></TOFL>
-          <V2 units="unitless">0.0<!--safety speed before reaching 35 feet height in operational mission--></V2>
-          <VLOF units="unitless">0.0<!--lift-off speed in operational mission--></VLOF>
-          <VMCA units="unitless">0.0<!--air minimum control speed in operational mission--></VMCA>
-          <VR units="unitless">0.0<!--rotation speed in operational mission--></VR>
-          <altitude units="unitless">0.0<!--altitude at takeoff in operational mission--></altitude>
+          <TOFL units="m">1560.94<!--TakeOff Field Length in operational mission--></TOFL>
+          <V2 units="m/s">0.0<!--safety speed before reaching 35 feet height in operational mission--></V2>
+          <VLOF units="m/s">0.0<!--lift-off speed in operational mission--></VLOF>
+          <VMCA units="m/s">0.0<!--air minimum control speed in operational mission--></VMCA>
+          <VR units="m/s">0.0<!--rotation speed in operational mission--></VR>
+          <altitude units="m">0.0<!--altitude at takeoff in operational mission--></altitude>
           <delta_ISA units="unitless">15.0<!--ISA temperature increment during takeoff phase in operational mission--></delta_ISA>
-          <duration units="unitless">0.55<!--duration of takeoff phase in operational mission--></duration>
-          <flap_angle units="unitless">10.0<!--flap angle during takeoff phase in operational mission--></flap_angle>
+          <duration units="min">0.55<!--duration of takeoff phase in operational mission--></duration>
+          <flap_angle units="deg">10.0<!--flap angle during takeoff phase in operational mission--></flap_angle>
           <friction_coefficient_no_brake units="unitless">0.03<!--ground friction coefficient with no brake in operational mission--></friction_coefficient_no_brake>
-          <fuel units="unitless">77.8<!--mass of consumed fuel during takeoff phase in operational mission--></fuel>
-          <slat_angle units="unitless">18.0<!--slat angle during takeoff phase in operational mission--></slat_angle>
+          <fuel units="kg">77.8<!--mass of consumed fuel during takeoff phase in operational mission--></fuel>
+          <slat_angle units="deg">18.0<!--slat angle during takeoff phase in operational mission--></slat_angle>
         </takeoff>
         <taxi_in>
-          <duration units="unitless">300.0<!--duration of taxi-in phase in operational mission--></duration>
-          <fuel units="unitless">157.06<!--mass of consumed fuel during taxi-in phase in operational mission--></fuel>
-          <speed units="unitless">30.0<!--speed during taxi-in phase in operational mission--></speed>
+          <duration units="s">300.0<!--duration of taxi-in phase in operational mission--></duration>
+          <fuel units="kg">157.06<!--mass of consumed fuel during taxi-in phase in operational mission--></fuel>
+          <speed units="m/s">30.0<!--speed during taxi-in phase in operational mission--></speed>
           <thrust_rate units="unitless">0.3<!--thrust rate (between 0.0 and 1.0) during taxi-in phase in operational mission--></thrust_rate>
         </taxi_in>
         <taxi_out>
-          <duration units="unitless">540.0<!--duration of taxi-out phase in operational mission--></duration>
-          <fuel units="unitless">282.7<!--mass of consumed fuel during taxi-out phase in operational mission--></fuel>
-          <speed units="unitless">30.0<!--speed during taxi-out phase in operational mission--></speed>
+          <duration units="s">540.0<!--duration of taxi-out phase in operational mission--></duration>
+          <fuel units="kg">282.7<!--mass of consumed fuel during taxi-out phase in operational mission--></fuel>
+          <speed units="m/s">30.0<!--speed during taxi-out phase in operational mission--></speed>
           <thrust_rate units="unitless">0.3<!--thrust rate (between 0.0 and 1.0) during taxi-out phase in operational mission--></thrust_rate>
         </taxi_out>
         <diversion>
           <climb>
-            <duration units="unitless">7.5</duration>
-            <fuel units="unitless">602.43</fuel>
+            <duration units="min">7.5</duration>
+            <fuel units="kg">602.43</fuel>
           </climb>
           <cruise>
-            <distance units="unitless">200.0</distance>
-            <duration units="unitless">0.5</duration>
-            <fuel units="unitless">24.75</fuel>
+            <distance units="km">200.0</distance>
+            <duration units="h">0.5</duration>
+            <fuel units="kg">24.75</fuel>
           </cruise>
           <descent>
-            <duration units="unitless">21.42</duration>
-            <fuel units="unitless">306.82</fuel>
+            <duration units="min">21.42</duration>
+            <fuel units="kg">306.82</fuel>
           </descent>
         </diversion>
         <main_route>
           <climb>
-            <duration units="unitless">19.84</duration>
-            <fuel units="unitless">1298.63</fuel>
-            <max_climb_rate units="unitless">0.0</max_climb_rate>
+            <duration units="min">19.84</duration>
+            <fuel units="kg">1298.63</fuel>
+            <max_climb_rate units="m/s">0.0</max_climb_rate>
           </climb>
           <cruise>
-            <altitude units="unitless">35000.0</altitude>
-            <duration units="unitless">17.0</duration>
-            <fuel units="unitless">586.64</fuel>
+            <altitude_input units="ft">35000.0</altitude_input>
+            <duration units="min">17.0</duration>
+            <fuel units="kg">586.64</fuel>
             <mach units="unitless">0.78</mach>
           </cruise>
           <descent>
-            <duration units="unitless">21.42</duration>
-            <fuel units="unitless">350.45</fuel>
+            <duration units="min">21.42</duration>
+            <fuel units="kg">350.45</fuel>
           </descent>
         </main_route>
       </operational>
