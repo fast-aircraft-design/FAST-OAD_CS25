@@ -26,8 +26,8 @@ def test_update_wing_area_aero():
     ivc = om.IndepVarComp()
     ivc.add_output("data:TLAR:approach_speed", val=132, units="kn")
     ivc.add_output("data:weight:aircraft:MLW", val=66300, units="kg")
-    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.8)
-    ivc.add_output("data:geometry:wing:area", val=2.80)
+    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.8, units="unitless")
+    ivc.add_output("data:geometry:wing:area", val=2.80, units="m**2")
 
     problem = run_system(UpdateWingAreaAero(), ivc)
     assert_allclose(problem["wing_area:aero"], 124.38, atol=1e-2)
@@ -40,7 +40,7 @@ def test_wing_area_constraints_aero():
     ivc = om.IndepVarComp()
     ivc.add_output("data:TLAR:approach_speed", val=132, units="kn")
     ivc.add_output("data:weight:aircraft:MLW", val=66300, units="kg")
-    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.8)
+    ivc.add_output("data:aerodynamics:aircraft:landing:CL_max", val=2.8, units="unitless")
     ivc.add_output("data:geometry:wing:area", val=116.09, units="m**2")
 
     problem = run_system(WingAreaConstraintsAero(), ivc)

@@ -48,7 +48,7 @@ class CGRatiosForLoadCases(om.Group):
 
         # This part aggregates all CG ratios values in one vector variable.
         cg_ratio_aggregator.add_var(
-            "data:weight:aircraft:load_cases:CG:MAC_position", shape=(1,), axis=0
+            "data:weight:aircraft:load_cases:CG:MAC_position", shape=(1,), axis=0, units="unitless"
         )
         for i in range(load_case_count):
             self.connect(
@@ -64,10 +64,13 @@ class MaxCGRatiosForLoadCases(om.ExplicitComponent):
 
     def setup(self):
         self.add_input(
-            "data:weight:aircraft:load_cases:CG:MAC_position", val=np.nan, shape_by_conn=True
+            "data:weight:aircraft:load_cases:CG:MAC_position",
+            val=np.nan,
+            shape_by_conn=True,
+            units="unitless",
         )
 
-        self.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum")
+        self.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

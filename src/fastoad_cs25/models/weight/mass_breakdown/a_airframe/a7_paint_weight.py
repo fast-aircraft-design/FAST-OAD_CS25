@@ -31,7 +31,7 @@ class PaintWeight(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:geometry:aircraft:wetted_area", val=np.nan, units="m**2")
-        self.add_input("tuning:weight:airframe:paint:mass:k", val=1.0)
+        self.add_input("tuning:weight:airframe:paint:mass:k", val=1.0, units="unitless")
         self.add_input("tuning:weight:airframe:paint:mass:offset", val=0.0, units="kg")
 
         self.add_output("data:weight:airframe:paint:mass", units="kg")

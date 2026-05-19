@@ -353,8 +353,8 @@
             <sizing>
                 <main_route>
                     <cruise>
-                        <altitude units="ft" is_input="True">
-                            35000.0<!--altitude during cruise phase in sizing mission--></altitude>
+                        <altitude_input units="ft" is_input="True">
+                            35000.0<!--altitude during cruise phase in sizing mission--></altitude_input>
                     </cruise>
                 </main_route>
                 <landing>
@@ -1524,7 +1524,7 @@
                         0.001313982153381285<!--profile drag coefficient for vertical tail--></CD0>
                     <CL_alpha is_input="False">
                         2.546156443275808<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-                    <CnBeta units="m**2" is_input="False">
+                    <CnBeta units="1/rad" is_input="False">
                         0.2529993970595141<!--derivative of yawing moment against sideslip angle for vertical tail in cruise conditions--></CnBeta>
                 </cruise>
                 <low_speed>

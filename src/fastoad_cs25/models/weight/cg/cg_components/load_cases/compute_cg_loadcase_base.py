@@ -39,7 +39,7 @@ class ComputeCGLoadCase(om.ExplicitComponent):
         self.add_input("data:weight:payload:PAX:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:payload:rear_fret:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:payload:front_fret:CG:x", val=np.nan, units="m")
-        self.add_input("data:TLAR:NPAX", val=np.nan)
+        self.add_input("data:TLAR:NPAX", val=np.nan, units="unitless")
         self.add_input("data:weight:aircraft_empty:CG:x", val=np.nan, units="m")
         self.add_input("data:weight:aircraft_empty:mass", val=np.nan, units="kg")
 
@@ -47,7 +47,7 @@ class ComputeCGLoadCase(om.ExplicitComponent):
             self.add_input(self.options["fuel_mass_variable"], val=np.nan, units="kg")
             self.add_input("data:weight:fuel_tank:CG:x", val=np.nan, units="m")
 
-        self.add_output(self.output_name)
+        self.add_output(self.output_name, units="unitless")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

@@ -32,16 +32,16 @@ class ComputeCLAlpha(om.ExplicitComponent):
 
     def setup(self):
         if not self.options["low_speed_aero"]:
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:aspect_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:area", val=np.nan, units="m**2")
-        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan)
+        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan, units="unitless")
 
         if self.options["low_speed_aero"]:
             self.add_output("data:aerodynamics:aircraft:low_speed:CL_alpha", units="1/rad")

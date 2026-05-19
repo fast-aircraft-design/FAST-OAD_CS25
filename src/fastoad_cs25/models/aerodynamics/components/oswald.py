@@ -36,11 +36,21 @@ class InducedDragCoefficient(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
 
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:aircraft:low_speed:oswald_coefficient", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:low_speed:induced_drag_coefficient")
+            self.add_input(
+                "data:aerodynamics:aircraft:low_speed:oswald_coefficient",
+                val=np.nan,
+                units="unitless",
+            )
+            self.add_output(
+                "data:aerodynamics:aircraft:low_speed:induced_drag_coefficient", units="unitless"
+            )
         else:
-            self.add_input("data:aerodynamics:aircraft:cruise:oswald_coefficient", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:cruise:induced_drag_coefficient")
+            self.add_input(
+                "data:aerodynamics:aircraft:cruise:oswald_coefficient", val=np.nan, units="unitless"
+            )
+            self.add_output(
+                "data:aerodynamics:aircraft:cruise:induced_drag_coefficient", units="unitless"
+            )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")
@@ -85,11 +95,15 @@ class OswaldCoefficient(om.ExplicitComponent):
         self.add_input("data:geometry:wing:sweep_25", val=np.nan, units="deg")
 
         if self.options["low_speed_aero"]:
-            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:low_speed:oswald_coefficient")
+            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
+            self.add_output(
+                "data:aerodynamics:aircraft:low_speed:oswald_coefficient", units="unitless"
+            )
         else:
-            self.add_input("data:TLAR:cruise_mach", val=np.nan)
-            self.add_output("data:aerodynamics:aircraft:cruise:oswald_coefficient")
+            self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
+            self.add_output(
+                "data:aerodynamics:aircraft:cruise:oswald_coefficient", units="unitless"
+            )
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="fd")

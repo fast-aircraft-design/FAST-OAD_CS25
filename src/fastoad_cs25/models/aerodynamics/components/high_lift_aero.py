@@ -40,29 +40,31 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         if self.options["landing_flag"]:
             self.add_input("data:mission:sizing:landing:flap_angle", val=np.nan, units="deg")
             self.add_input("data:mission:sizing:landing:slat_angle", val=np.nan, units="deg")
-            self.add_input("data:aerodynamics:aircraft:landing:mach", val=np.nan)
-            self.add_output("data:aerodynamics:high_lift_devices:landing:CL")
-            self.add_output("data:aerodynamics:high_lift_devices:landing:CD")
+            self.add_input("data:aerodynamics:aircraft:landing:mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:high_lift_devices:landing:CL", units="unitless")
+            self.add_output("data:aerodynamics:high_lift_devices:landing:CD", units="unitless")
         else:
             self.add_input("data:mission:sizing:takeoff:flap_angle", val=np.nan, units="deg")
             self.add_input("data:mission:sizing:takeoff:slat_angle", val=np.nan, units="deg")
-            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan)
-            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CL")
-            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CD")
+            self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
+            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CL", units="unitless")
+            self.add_output("data:aerodynamics:high_lift_devices:takeoff:CD", units="unitless")
 
         self.add_input("data:geometry:wing:sweep_0", val=np.nan, units="rad")
         self.add_input("data:geometry:wing:sweep_100_outer", val=np.nan, units="rad")
-        self.add_input("data:geometry:flap:chord_ratio", val=np.nan)
-        self.add_input("data:geometry:flap:span_ratio", val=np.nan)
-        self.add_input("data:geometry:slat:chord_ratio", val=np.nan)
-        self.add_input("data:geometry:slat:span_ratio", val=np.nan)
+        self.add_input("data:geometry:flap:chord_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:flap:span_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:slat:chord_ratio", val=np.nan, units="unitless")
+        self.add_input("data:geometry:slat:span_ratio", val=np.nan, units="unitless")
         self.add_input(
             "tuning:aerodynamics:high_lift_devices:landing:CD:multi_slotted_flap_effect:k",
             val=1.0,
+            units="unitless",
         )
         self.add_input(
             "tuning:aerodynamics:high_lift_devices:landing:CL:multi_slotted_flap_effect:k",
             val=1.0,
+            units="unitless",
         )
 
     def setup_partials(self):

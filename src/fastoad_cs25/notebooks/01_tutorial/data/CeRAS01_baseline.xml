@@ -427,8 +427,8 @@
                             1630.9563636434905<!--mass of consumed fuel during climb phase in sizing mission--></fuel>
                     </climb>
                     <cruise>
-                        <altitude units="m">
-                            10668.0<!--altitude during cruise phase in sizing mission--></altitude>
+                        <altitude_input units="m">
+                            10668.0<!--altitude_input during cruise phase in sizing mission--></altitude_input>
                         <distance units="m">
                             4611231.829170648<!--covered ground distance during cruise phase--></distance>
                         <duration units="s">
@@ -1484,7 +1484,7 @@
                         0.001313982153381285<!--profile drag coefficient for vertical tail--></CD0>
                     <CL_alpha>
                         2.546156443275808<!--derivative of lift coefficient of horizontal tail with respect to local "angle of attack" in cruise conditions--></CL_alpha>
-                    <CnBeta units="m**2">
+                    <CnBeta units="1/rad">
                         0.2529993970595141<!--derivative of yawing moment against sideslip angle for vertical tail in cruise conditions--></CnBeta>
                 </cruise>
                 <low_speed>
