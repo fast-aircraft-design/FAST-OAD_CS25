@@ -82,7 +82,7 @@ sphinxcontrib-bibtex = "^2.6.3"
 [tool.poetry.group.lint.dependencies]
 pre-commit = "^4.5.0"
 nbstripout = "^0.6.0"
-ruff       = ">0.15.0"
+ruff       = ">=0.15.0,<0.16.0"
 
 
 # Poetry plugins ==================================================
