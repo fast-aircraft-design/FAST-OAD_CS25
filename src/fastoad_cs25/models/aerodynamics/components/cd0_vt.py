@@ -50,7 +50,9 @@ class Cd0VerticalTail(om.ExplicitComponent):
             self.add_input("data:aerodynamics:aircraft:takeoff:mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:vertical_tail:low_speed:CD:CD0", units="unitless")
         else:
-            self.add_input("data:aerodynamics:wing:high_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:wing:high_speed:reynolds", val=np.nan, units="unitless"
+            )
             self.add_input("data:TLAR:cruise_mach", val=np.nan, units="unitless")
             self.add_output("data:aerodynamics:vertical_tail:high_speed:CD:CD0", units="unitless")
 

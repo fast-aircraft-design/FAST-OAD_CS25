@@ -48,8 +48,12 @@ class Cd0Total(om.ExplicitComponent):
             self.add_input(
                 "data:aerodynamics:vertical_tail:low_speed:CD:CD0", val=np.nan, units="unitless"
             )
-            self.add_input("data:aerodynamics:nacelles:low_speed:CD:CD0", val=np.nan, units="unitless")
-            self.add_input("data:aerodynamics:pylons:low_speed:CD:CD0", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:nacelles:low_speed:CD:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input(
+                "data:aerodynamics:pylons:low_speed:CD:CD0", val=np.nan, units="unitless"
+            )
             self.add_output(
                 "data:aerodynamics:aircraft:low_speed:CD:CD0",
                 units="unitless",
@@ -84,8 +88,12 @@ class Cd0Total(om.ExplicitComponent):
             self.add_input(
                 "data:aerodynamics:vertical_tail:high_speed:CD:CD0", val=np.nan, units="unitless"
             )
-            self.add_input("data:aerodynamics:nacelles:high_speed:CD:CD0", val=np.nan, units="unitless")
-            self.add_input("data:aerodynamics:pylons:high_speed:CD:CD0", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:nacelles:high_speed:CD:CD0", val=np.nan, units="unitless"
+            )
+            self.add_input(
+                "data:aerodynamics:pylons:high_speed:CD:CD0", val=np.nan, units="unitless"
+            )
             self.add_output(
                 "data:aerodynamics:aircraft:high_speed:CD:CD0",
                 units="unitless",

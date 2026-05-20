@@ -32,7 +32,9 @@ class InitializeClPolar(om.ExplicitComponent):
             "tuning:aerodynamics:aircraft:high_speed:CL:offset", val=np.nan, units="unitless"
         )
         self.add_input(
-            "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k", val=np.nan, units="unitless"
+            "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:k",
+            val=np.nan,
+            units="unitless",
         )
         self.add_input(
             "tuning:aerodynamics:aircraft:high_speed:CL:winglet_effect:offset",
@@ -46,7 +48,9 @@ class InitializeClPolar(om.ExplicitComponent):
             )
         else:
             self.add_output(
-                "data:aerodynamics:aircraft:high_speed:CL", shape=POLAR_POINT_COUNT, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:CL",
+                shape=POLAR_POINT_COUNT,
+                units="unitless",
             )
 
     def setup_partials(self):

@@ -45,7 +45,9 @@ class Cd0Fuselage(om.ExplicitComponent):
                 units="unitless",
             )
         else:
-            self.add_input("data:aerodynamics:wing:high_speed:reynolds", val=np.nan, units="unitless")
+            self.add_input(
+                "data:aerodynamics:wing:high_speed:reynolds", val=np.nan, units="unitless"
+            )
             self.add_input(
                 "data:aerodynamics:aircraft:high_speed:CL",
                 shape_by_conn=True,

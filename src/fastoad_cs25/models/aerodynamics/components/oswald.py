@@ -46,7 +46,9 @@ class InducedDragCoefficient(om.ExplicitComponent):
             )
         else:
             self.add_input(
-                "data:aerodynamics:aircraft:high_speed:oswald_coefficient", val=np.nan, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:oswald_coefficient",
+                val=np.nan,
+                units="unitless",
             )
             self.add_output(
                 "data:aerodynamics:aircraft:high_speed:CD:induced:coefficient", units="unitless"

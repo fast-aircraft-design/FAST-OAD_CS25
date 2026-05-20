@@ -32,7 +32,9 @@ class ComputePolar(om.ExplicitComponent):
             "tuning:aerodynamics:aircraft:high_speed:CD:offset", val=np.nan, units="unitless"
         )
         self.add_input(
-            "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k", val=np.nan, units="unitless"
+            "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k",
+            val=np.nan,
+            units="unitless",
         )
         self.add_input(
             "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
@@ -105,7 +107,7 @@ class ComputePolar(om.ExplicitComponent):
                 self.add_output(
                     "data:aerodynamics:aircraft:takeoff:CD:offset",
                     units="unitless",
-            )
+                )
 
             elif self.options["polar_type"] == PolarType.LANDING:
                 self.add_input(
@@ -147,7 +149,7 @@ class ComputePolar(om.ExplicitComponent):
                 self.add_output(
                     "data:aerodynamics:aircraft:landing:CD:offset",
                     units="unitless",
-            )
+                )
 
             elif self.options["polar_type"] == PolarType.LOW_SPEED:
                 self.add_output(
@@ -165,20 +167,17 @@ class ComputePolar(om.ExplicitComponent):
                     copy_shape="data:aerodynamics:aircraft:low_speed:CL",
                     units="unitless",
                 )
-                self.add_output("data:aerodynamics:aircraft:low_speed:CD:offset", 
-                    units="unitless")
+                self.add_output("data:aerodynamics:aircraft:low_speed:CD:offset", units="unitless")
 
             else:
                 raise AttributeError(f"Unknown polar type: {self.options['polar_type']}")
 
         elif self.options["polar_type"] == PolarType.HIGH_SPEED:
             self.add_input(
-                
                 "data:aerodynamics:aircraft:high_speed:CL",
                 shape_by_conn=True,
                 val=np.nan,
                 units="unitless",
-            
             )
             self.add_input(
                 "data:aerodynamics:aircraft:high_speed:CD:CD0",
