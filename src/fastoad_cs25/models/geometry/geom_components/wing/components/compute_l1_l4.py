@@ -62,6 +62,8 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
             / (2.0 * (span - 2 * y2_wing))
         )
 
+        if l1_wing <= 0.0:
+            l1_wing = span * 0.05
         l4_wing = l1_wing * virtual_taper_ratio
 
         outputs["data:geometry:wing:root:virtual_chord"] = l1_wing
