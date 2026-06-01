@@ -120,16 +120,18 @@ def test_compute_reynolds():
     altitude_m = 10668.0  # 35000 ft in meters
     mach = 0.78
 
-    def get_cruise_reynolds(altitude, mach, cruise_altitude_var=None):
+    def get_cruise_reynolds(altitude, mach, altitude_var_name_high_speed=None):
         ivc = IndepVarComp()
         ivc.add_output("data:TLAR:cruise_mach", mach)
-        var_name = cruise_altitude_var or "data:mission:sizing:main_route:cruise:altitude_input"
+        var_name = (
+            altitude_var_name_high_speed or "data:mission:sizing:main_route:cruise:altitude_input"
+        )
         ivc.add_output(var_name, altitude, units="m")
         kwargs = {}
-        if cruise_altitude_var is not None:
-            kwargs["cruise_altitude_var"] = cruise_altitude_var
+        if altitude_var_name_high_speed is not None:
+            kwargs["altitude_var_name_high_speed"] = altitude_var_name_high_speed
         problem = run_system(ComputeReynolds(**kwargs), ivc)
-        return problem["data:aerodynamics:wing:cruise:reynolds"]
+        return problem["data:aerodynamics:wing:high_speed:reynolds"]
 
     atm = AtmosphereSI(altitude_m)
     atm.mach = mach
@@ -142,7 +144,7 @@ def test_compute_reynolds():
     assert get_cruise_reynolds(
         altitude_m,
         mach,
-        cruise_altitude_var="data:mission:sizing:custom_route:cruise:altitude_input",
+        altitude_var_name_high_speed="data:mission:sizing:custom_route:high_speed:altitude_input",
     ) == approx(expected_reynolds, rel=1e-6)
 
     # Test low_speed_aero (altitude = 0, uses takeoff mach)
@@ -178,7 +180,7 @@ def test_oswald_coefficient():
         if low_speed_aero:
             return problem["data:aerodynamics:aircraft:low_speed:oswald_coefficient"]
         else:
-            return problem["data:aerodynamics:aircraft:cruise:oswald_coefficient"]
+            return problem["data:aerodynamics:aircraft:high_speed:oswald_coefficient"]
 
     assert get_coeff(0.2, True) == approx(0.8490, abs=1e-4)
     # FIXME: Obtained Oswald coeff is too low, especially for high speed.
@@ -191,7 +193,7 @@ def test_induced_drag_coefficient():
         "data:geometry:wing:area",
         "data:geometry:wing:span",
         "data:aerodynamics:aircraft:low_speed:oswald_coefficient",
-        "data:aerodynamics:aircraft:cruise:oswald_coefficient",
+        "data:aerodynamics:aircraft:high_speed:oswald_coefficient",
     ]
 
     def get_coeff(mach, low_speed_aero=False):
@@ -202,13 +204,13 @@ def test_induced_drag_coefficient():
             )
         else:
             ivc.add_output(
-                "data:aerodynamics:aircraft:cruise:oswald_coefficient", mach, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:oswald_coefficient", mach, units="unitless"
             )
         problem = run_system(InducedDragCoefficient(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
-            return problem["data:aerodynamics:aircraft:low_speed:induced_drag_coefficient"]
+            return problem["data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"]
         else:
-            return problem["data:aerodynamics:aircraft:cruise:induced_drag_coefficient"]
+            return problem["data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"]
 
     assert get_coeff(0.8490, True) == approx(0.0465, abs=1e-4)
     assert get_coeff(0.7451, False) == approx(0.0530, abs=1e-4)
@@ -258,15 +260,15 @@ def test_cd0():
             )  # needed because size of input array is fixed
         else:
             ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
-            ivc.add_output("data:aerodynamics:wing:cruise:reynolds", reynolds, units="unitless")
+            ivc.add_output("data:aerodynamics:wing:high_speed:reynolds", reynolds, units="unitless")
             ivc.add_output(
-                "data:aerodynamics:aircraft:cruise:CL", 150 * [cl], units="unitless"
+                "data:aerodynamics:aircraft:high_speed:CL", 150 * [cl], units="unitless"
             )  # needed because size of input array is fixed
         problem = run_system(CD0(low_speed_aero=low_speed_aero), ivc)
         if low_speed_aero:
-            return problem["data:aerodynamics:aircraft:low_speed:CD0"][0]
+            return problem["data:aerodynamics:aircraft:low_speed:CD:CD0"][0]
         else:
-            return problem["data:aerodynamics:aircraft:cruise:CD0"][0]
+            return problem["data:aerodynamics:aircraft:high_speed:CD:CD0"][0]
 
     assert get_cd0(35000, 0.78, 0.5, False) == approx(0.01975, abs=1e-5)
     assert get_cd0(0, 0.2, 0.9, True) == approx(0.02727, abs=1e-5)
@@ -278,19 +280,19 @@ def test_cd_compressibility():
     def get_cd_compressibility(mach, cl, sweep, thickness_ratio, delta_charac_mach=0.0):
         ivc = IndepVarComp()
         ivc.add_output(
-            "data:aerodynamics:aircraft:cruise:CL", 150 * [cl], units="unitless"
+            "data:aerodynamics:aircraft:high_speed:CL", 150 * [cl], units="unitless"
         )  # needed because size of input array is fixed
         ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
         ivc.add_output("data:geometry:wing:sweep_25", sweep, units="deg")
         ivc.add_output("data:geometry:wing:thickness_ratio", thickness_ratio, units="unitless")
         ivc.add_output(
-            "tuning:aerodynamics:aircraft:cruise:CD:compressibility:characteristic_mach_increment",
+            "tuning:aerodynamics:aircraft:high_speed:CD:compressibility:characteristic_mach_increment",
             delta_charac_mach,
             units="unitless",
         )
 
         problem = run_system(CdCompressibility(), ivc)
-        return problem["data:aerodynamics:aircraft:cruise:CD:compressibility"][0]
+        return problem["data:aerodynamics:aircraft:high_speed:CD:wave"][0]
 
     assert get_cd_compressibility(0.2, 0.9, 28, 0.12) == approx(0.0, abs=1e-5)
     assert get_cd_compressibility(0.78, 0.2, 28, 0.12) == approx(0.00028, abs=1e-5)
@@ -321,10 +323,10 @@ def test_cd_trim():
     def get_cd_trim(cl):
         ivc = IndepVarComp()
         ivc.add_output(
-            "data:aerodynamics:aircraft:cruise:CL", 150 * [cl], units="unitless"
+            "data:aerodynamics:aircraft:high_speed:CL", 150 * [cl], units="unitless"
         )  # needed because size of input array is fixed
         problem = run_system(CdTrim(), ivc)
-        return problem["data:aerodynamics:aircraft:cruise:CD:trim"][0]
+        return problem["data:aerodynamics:aircraft:high_speed:CD:trim"][0]
 
     assert get_cd_trim(0.5) == approx(0.0002945, abs=1e-6)
     assert get_cd_trim(0.9) == approx(0.0005301, abs=1e-6)
@@ -336,10 +338,10 @@ def test_polar_high_speed():
     # Need to plug Cd modules, Reynolds and Oswald
 
     input_list = [
-        "tuning:aerodynamics:aircraft:cruise:CD:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:offset",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
         "data:geometry:fuselage:maximum_height",
         "data:geometry:fuselage:length",
         "data:geometry:fuselage:wetted_area",
@@ -377,27 +379,35 @@ def test_polar_high_speed():
     group.add_subsystem("oswald", OswaldCoefficient(), promotes=["*"])
     group.add_subsystem("induced_drag_coeff", InducedDragCoefficient(), promotes=["*"])
     group.add_subsystem("cd0", CD0(), promotes=["*"])
-    group.add_subsystem("cd_compressibility", CdCompressibility(), promotes=["*"])
+    group.add_subsystem("cd_wave", CdCompressibility(), promotes=["*"])
     group.add_subsystem("cd_trim", CdTrim(), promotes=["*"])
     group.add_subsystem("polar", ComputePolar(), promotes=["*"])
 
     ivc = get_indep_var_comp(input_list)
     ivc.add_output(
-        "data:aerodynamics:aircraft:cruise:CL", np.arange(0.0, 1.5, 0.01), units="unitless"
+        "data:aerodynamics:aircraft:high_speed:CL", np.arange(0.0, 1.5, 0.01), units="unitless"
     )
 
     problem = run_system(group, ivc)
 
-    cd = problem["data:aerodynamics:aircraft:cruise:CD"]
-    cl = problem["data:aerodynamics:aircraft:cruise:CL"]
+    cd = problem["data:aerodynamics:aircraft:high_speed:CD"]
+    cl = problem["data:aerodynamics:aircraft:high_speed:CL"]
+    cd_sum = (
+        problem["data:aerodynamics:aircraft:high_speed:CD:CD0"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:induced"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:wave"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:trim"]
+        + problem["data:aerodynamics:aircraft:high_speed:CD:offset"]
+    )
 
     assert cd[cl == 0.0] == approx(0.02102, abs=1e-5)
     assert cd[cl == 0.2] == approx(0.02281, abs=1e-5)
     assert cd[cl == 0.42] == approx(0.02977, abs=1e-5)
     assert cd[cl == 0.85] == approx(0.24041, abs=1e-5)
+    assert_allclose(cd, cd_sum, atol=1e-12)
 
-    assert problem["data:aerodynamics:aircraft:cruise:optimal_CL"] == approx(0.51, abs=1e-3)
-    assert problem["data:aerodynamics:aircraft:cruise:optimal_CD"] == approx(0.03487, abs=1e-5)
+    assert problem["data:aerodynamics:aircraft:high_speed:optimal_CL"] == approx(0.51, abs=1e-3)
+    assert problem["data:aerodynamics:aircraft:high_speed:optimal_CD"] == approx(0.03487, abs=1e-5)
 
 
 def test_polar_low_speed():
@@ -434,10 +444,10 @@ def test_polar_low_speed():
         "data:geometry:propulsion:engine:count",
         "data:geometry:propulsion:fan:length",
         "data:geometry:aircraft:wetted_area",
-        "tuning:aerodynamics:aircraft:cruise:CD:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:offset",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
     ]
     group = Group()
     group.add_subsystem("reynolds", ComputeReynolds(low_speed_aero=True), promotes=["*"])
@@ -458,9 +468,17 @@ def test_polar_low_speed():
 
     cd = problem["data:aerodynamics:aircraft:low_speed:CD"]
     cl = problem["data:aerodynamics:aircraft:low_speed:CL"]
+    cd_sum = (
+        problem["data:aerodynamics:aircraft:low_speed:CD:CD0"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:induced"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:wave"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:trim"]
+        + problem["data:aerodynamics:aircraft:low_speed:CD:offset"]
+    )
 
     assert cd[cl == 0.5] == approx(0.033441, abs=1e-5)
     assert cd[cl == 1.0] == approx(0.077523, abs=1e-5)
+    assert_allclose(cd, cd_sum, atol=1e-12)
 
 
 def test_polar_high_lift():
@@ -497,10 +515,10 @@ def test_polar_high_lift():
         "data:geometry:propulsion:engine:count",
         "data:geometry:propulsion:fan:length",
         "data:geometry:aircraft:wetted_area",
-        "tuning:aerodynamics:aircraft:cruise:CD:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:offset",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:k",
-        "tuning:aerodynamics:aircraft:cruise:CD:winglet_effect:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:offset",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:k",
+        "tuning:aerodynamics:aircraft:high_speed:CD:winglet_effect:offset",
         "data:aerodynamics:high_lift_devices:takeoff:CL",
         "data:aerodynamics:high_lift_devices:takeoff:CD",
     ]
@@ -523,9 +541,17 @@ def test_polar_high_lift():
 
     cd = problem["data:aerodynamics:aircraft:takeoff:CD"]
     cl = problem["data:aerodynamics:aircraft:takeoff:CL"]
+    cd_sum = (
+        problem["data:aerodynamics:aircraft:takeoff:CD:CD0"]
+        + problem["data:aerodynamics:aircraft:takeoff:CD:induced"]
+        + problem["data:aerodynamics:aircraft:takeoff:CD:wave"]
+        + problem["data:aerodynamics:aircraft:takeoff:CD:trim"]
+        + problem["data:aerodynamics:aircraft:takeoff:CD:offset"]
+    )
 
     assert cd[cl == 1.006] == approx([0.083137], abs=1e-5)
     assert cd[cl == 1.506] == approx([0.150439], abs=1e-5)
+    assert_allclose(cd, cd_sum, atol=1e-12)
 
 
 def test_compute_cl_alpha_low_speed():
@@ -564,7 +590,7 @@ def test_compute_cl_alpha_cruise():
     ]
     ivc = get_indep_var_comp(input_list)
     problem = run_system(ComputeCLAlpha(), ivc)
-    cl_alpha = problem["data:aerodynamics:aircraft:cruise:CL_alpha"]
+    cl_alpha = problem["data:aerodynamics:aircraft:high_speed:CL_alpha"]
     assert cl_alpha == approx(6.49, abs=1e-2)
 
 
@@ -598,24 +624,21 @@ def test_compute_alpha_low_speed():
 
 def test_compute_alpha_cruise():
     """Tests computation of the wing lift coefficient"""
-    input_list = [
-        "data:aerodynamics:aircraft:cruise:CL",
-        "data:aerodynamics:aircraft:cruise:CL_alpha",
-        # Using default CL0 value of 0.1
-    ]
-    ivc = get_indep_var_comp(input_list)
+    ivc = IndepVarComp()
+    ivc.add_output("data:aerodynamics:aircraft:high_speed:CL", np.linspace(0.0, 1.0, 101))
+    ivc.add_output("data:aerodynamics:aircraft:high_speed:CL_alpha", 6.49)
 
     problem = run_system(ComputeAlpha(), ivc)
-    alpha = problem.get_val("data:aerodynamics:aircraft:cruise:AoA", units="deg")
+    alpha = problem.get_val("data:aerodynamics:aircraft:high_speed:AoA", units="deg")
     assert_allclose(
         alpha,
         np.linspace(-0.882832, 7.9454856, 101),
         atol=1e-4,
     )
 
-    problem.set_val("data:aerodynamics:aircraft:cruise:CL0", 0.05)
+    problem.set_val("data:aerodynamics:aircraft:high_speed:CL0", 0.05)
     problem.run_model()
-    alpha = problem.get_val("data:aerodynamics:aircraft:cruise:AoA", units="deg")
+    alpha = problem.get_val("data:aerodynamics:aircraft:high_speed:AoA", units="deg")
     assert_allclose(
         alpha,
         np.linspace(-0.882832, 7.9454856, 101) + np.degrees(0.05 / 6.49),
