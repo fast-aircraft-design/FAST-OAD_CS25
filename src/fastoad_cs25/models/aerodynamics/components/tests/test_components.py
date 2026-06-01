@@ -131,7 +131,7 @@ def test_compute_reynolds():
         if altitude_var_name_high_speed is not None:
             kwargs["altitude_var_name_high_speed"] = altitude_var_name_high_speed
         problem = run_system(ComputeReynolds(**kwargs), ivc)
-        return problem["data:aerodynamics:wing:high_speed:reynolds"]
+        return problem["data:aerodynamics:high_speed:unit_reynolds"]
 
     atm = AtmosphereSI(altitude_m)
     atm.mach = mach
@@ -153,7 +153,7 @@ def test_compute_reynolds():
     problem = run_system(ComputeReynolds(low_speed_aero=True), ivc)
     atm_ls = AtmosphereSI(0.0)
     atm_ls.mach = 0.2
-    assert problem["data:aerodynamics:wing:low_speed:reynolds"] == approx(
+    assert problem["data:aerodynamics:low_speed:unit_reynolds"] == approx(
         atm_ls.unitary_reynolds, rel=1e-6
     )
 
