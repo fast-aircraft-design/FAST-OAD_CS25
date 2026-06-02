@@ -1078,6 +1078,8 @@
                         0.03353318616106758<!--drag coefficient at maximum lift/drag ratio in high_speed conditions--></optimal_CD>
                     <optimal_CL is_input="False">
                         0.54<!--lift coefficient at maximum lift/drag ratio in high_speed conditions--></optimal_CL>
+                    <unit_reynolds is_input="False">
+                            6124998.624249204<!--Reynolds number based on wing mean aerodynamic chord in high_speed conditions--></unit_reynolds>
                 </high_speed>
                 <landing>
                     <CL_max is_input="False">
@@ -1249,6 +1251,8 @@
                         1.3900000000000001, 1.4000000000000001, 1.41, 1.42, 1.43, 1.44, 1.45, 1.46,
                         1.47, 1.48,
                         1.49]<!--scale of lift coefficient values for drag computations in low speed conditions--></CL>
+                    <unit_reynolds is_input="False">
+                            4659199.490056267<!--Reynolds number based on wing mean aerodynamic chord in low speed conditions--></unit_reynolds>
                 </low_speed>
                 <takeoff>
                     <CD is_input="False">[0.04536617400148779, 0.04571920962142919,
@@ -1585,9 +1589,7 @@
                         0.03295316505925883, 0.03362660884048645, 0.03431107556532864,
                         0.03500665463847626, 0.0357134354646201, 0.03643150744845101,
                         0.03716095999465976, 0.03790188250793726, 0.03865436439297427,
-                        0.03941849505446165]<!--profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL--></CD0>
-                    <reynolds is_input="False">
-                        6124998.624249204<!--Reynolds number based on wing mean aerodynamic chord in high_speed conditions--></reynolds>
+                        0.03941849505446165]<!--profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL--></CD0>  
                 </high_speed>
                 <low_speed>
                     <CD0 is_input="False">[0.006252334439105561, 0.006266218233998396,
@@ -1642,8 +1644,6 @@
                         0.040766136339510824, 0.04157893956627417, 0.04240442359905587,
                         0.043242686516156814]
                     </CD0>
-                    <reynolds is_input="False">
-                        4659199.490056267<!--Reynolds number based on wing mean aerodynamic chord in low speed conditions--></reynolds>
                 </low_speed>
             </wing>
         </aerodynamics>

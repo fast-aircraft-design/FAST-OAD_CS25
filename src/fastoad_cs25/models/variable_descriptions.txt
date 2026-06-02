@@ -61,8 +61,8 @@ data:aerodynamics:vertical_tail:high_speed:CL_alpha || derivative of lift coeffi
 data:aerodynamics:vertical_tail:high_speed:CnBeta || derivative of yawing moment against sideslip angle for vertical tail in high_speed conditions
 data:aerodynamics:vertical_tail:low_speed:CD:CD0 || profile drag coefficient for vertical tail in low speed conditions
 data:aerodynamics:wing:high_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:high_speed:CL
-data:aerodynamics:high_speed:unit_reynolds || Unitary Reynolds number in high_speed conditions (Reynolds number per meter)
-data:aerodynamics:low_speed:unit_reynolds || Unitary Reynolds number in low speed conditions (Reynolds number per meter)
+data:aerodynamics:aircraft:high_speed:unit_reynolds || Unitary Reynolds number in high_speed conditions (Reynolds number per meter)
+data:aerodynamics:aircraft:low_speed:unit_reynolds || Unitary Reynolds number in low speed conditions (Reynolds number per meter)
 data:aerodynamics:wing:landing:reynolds || Reynolds number based on wing mean aerodynamic chord in landing conditions
 data:aerodynamics:wing:low_speed:CD:CD0 || profile drag coefficient for wing w.r.t. data:aerodynamics:aircraft:low_speed:CL
 data:geometry:aircraft:wetted_area || total wetted area
