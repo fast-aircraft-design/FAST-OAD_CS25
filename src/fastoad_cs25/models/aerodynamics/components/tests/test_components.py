@@ -153,7 +153,7 @@ def test_compute_reynolds():
     problem = run_system(ComputeReynolds(low_speed_aero=True), ivc)
     atm_ls = AtmosphereSI(0.0)
     atm_ls.mach = 0.2
-    assert problem["data:aerodynamics:aircraft:low_speed:unit_reynolds"] == approx(
+    assert problem.get_val("data:aerodynamics:aircraft:high_speed:unit_reynolds", units="unitless") == approx(
         atm_ls.unitary_reynolds, rel=1e-6
     )
 
