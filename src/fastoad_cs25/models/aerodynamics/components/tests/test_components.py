@@ -131,7 +131,7 @@ def test_compute_reynolds():
         if altitude_var_name_high_speed is not None:
             kwargs["altitude_var_name_high_speed"] = altitude_var_name_high_speed
         problem = run_system(ComputeReynolds(**kwargs), ivc)
-        return problem["data:aerodynamics:aircraft:high_speed:unit_reynolds"]
+        return problem.get_val("data:aerodynamics:aircraft:high_speed:unit_reynolds", units="unitless")
 
     atm = AtmosphereSI(altitude_m)
     atm.mach = mach
