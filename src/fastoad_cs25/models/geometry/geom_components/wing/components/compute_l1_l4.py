@@ -14,9 +14,13 @@ Estimation of wing chords (l1 and l4)
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
+
 import numpy as np
 import openmdao.api as om
 from fastoad.api import ValidityDomainChecker
+
+_LOGGER = logging.getLogger(__name__)  # Logger for this module
 
 
 @ValidityDomainChecker(
@@ -63,6 +67,11 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
         )
 
         if l1_wing <= 0.0:
+            _LOGGER.warning(
+                "Computed root virtual chord is non-positive : %f; using 5%% of span "
+                "as a fallback.",
+                l1_wing,
+            )
             l1_wing = span * 0.05
         l4_wing = l1_wing * virtual_taper_ratio
 

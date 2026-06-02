@@ -85,9 +85,10 @@ def test_geometry_wing_l1_l4():
 
 
 def test_correction_for_negative_l1():
-    """Test if a warning is generated when an unfeasible wing geometry is input and results
-    in a negative chord value. Unfeasible geometries concerned especially wings with high aspect
-    ratio, far lateral kink, and high sweep, low inner-kink trailing sweep."""
+    """Test that when an unfeasible wing geometry is inputed and results
+    in a negative chord value, the virtual chord value is set to a default
+    value of 5% of wingspan. Unfeasible geometries concerned especially wings
+    with high aspect ratio, far lateral kink, and high sweep, low inner-kink trailing sweep."""
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:area", 50, units="m**2")
@@ -98,9 +99,11 @@ def test_correction_for_negative_l1():
     input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
 
     problem = run_system(ComputeL1AndL4Wing(), input_vars)
-    wing_l1 = problem["data:geometry:wing:root:virtual_chord"]
+    wing_l1 = problem.get_val("data:geometry:wing:root:virtual_chord", units="m")
+    wing_span = 2.0 * problem.get_val("data:geometry:wing:tip:y", units="m")
+    expected_wing_l1 = 0.05 * wing_span
 
-    assert wing_l1 == pytest.approx(15.8015 * 2 * 0.05, abs=1e-3)
+    assert wing_l1 == pytest.approx(expected_wing_l1, abs=1e-3)
 
 
 def test_geometry_wing_l2_l3():
