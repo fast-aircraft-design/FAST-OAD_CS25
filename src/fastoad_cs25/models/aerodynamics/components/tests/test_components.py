@@ -131,7 +131,9 @@ def test_compute_reynolds():
         if altitude_var_name_high_speed is not None:
             kwargs["altitude_var_name_high_speed"] = altitude_var_name_high_speed
         problem = run_system(ComputeReynolds(**kwargs), ivc)
-        return problem["data:aerodynamics:wing:high_speed:reynolds"]
+        return problem.get_val(
+            "data:aerodynamics:aircraft:high_speed:unit_reynolds", units="unitless"
+        )
 
     atm = AtmosphereSI(altitude_m)
     atm.mach = mach
@@ -153,9 +155,9 @@ def test_compute_reynolds():
     problem = run_system(ComputeReynolds(low_speed_aero=True), ivc)
     atm_ls = AtmosphereSI(0.0)
     atm_ls.mach = 0.2
-    assert problem["data:aerodynamics:wing:low_speed:reynolds"] == approx(
-        atm_ls.unitary_reynolds, rel=1e-6
-    )
+    assert problem.get_val(
+        "data:aerodynamics:aircraft:low_speed:unit_reynolds", units="unitless"
+    ) == approx(atm_ls.unitary_reynolds, rel=1e-6)
 
 
 def test_oswald_coefficient():
@@ -254,13 +256,17 @@ def test_cd0():
         ivc = get_indep_var_comp(input_list)
         if low_speed_aero:
             ivc.add_output("data:aerodynamics:aircraft:takeoff:mach", mach, units="unitless")
-            ivc.add_output("data:aerodynamics:wing:low_speed:reynolds", reynolds, units="unitless")
+            ivc.add_output(
+                "data:aerodynamics:aircraft:low_speed:unit_reynolds", reynolds, units="unitless"
+            )
             ivc.add_output(
                 "data:aerodynamics:aircraft:low_speed:CL", 150 * [cl], units="unitless"
             )  # needed because size of input array is fixed
         else:
             ivc.add_output("data:TLAR:cruise_mach", mach, units="unitless")
-            ivc.add_output("data:aerodynamics:wing:high_speed:reynolds", reynolds, units="unitless")
+            ivc.add_output(
+                "data:aerodynamics:aircraft:high_speed:unit_reynolds", reynolds, units="unitless"
+            )
             ivc.add_output(
                 "data:aerodynamics:aircraft:high_speed:CL", 150 * [cl], units="unitless"
             )  # needed because size of input array is fixed

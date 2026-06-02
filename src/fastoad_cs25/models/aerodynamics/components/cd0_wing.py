@@ -38,7 +38,7 @@ class Cd0Wing(om.ExplicitComponent):
     def setup(self):
         if self.options["low_speed_aero"]:
             self.add_input(
-                "data:aerodynamics:wing:low_speed:reynolds", val=np.nan, units="unitless"
+                "data:aerodynamics:aircraft:low_speed:unit_reynolds", val=np.nan, units="unitless"
             )
             self.add_input(
                 "data:aerodynamics:aircraft:low_speed:CL",
@@ -54,7 +54,7 @@ class Cd0Wing(om.ExplicitComponent):
             )
         else:
             self.add_input(
-                "data:aerodynamics:wing:high_speed:reynolds", val=np.nan, units="unitless"
+                "data:aerodynamics:aircraft:high_speed:unit_reynolds", val=np.nan, units="unitless"
             )
             self.add_input(
                 "data:aerodynamics:aircraft:high_speed:CL",
@@ -91,11 +91,11 @@ class Cd0Wing(om.ExplicitComponent):
         if self.options["low_speed_aero"]:
             cl = inputs["data:aerodynamics:aircraft:low_speed:CL"]
             mach = inputs["data:aerodynamics:aircraft:takeoff:mach"]
-            reynolds = inputs["data:aerodynamics:wing:low_speed:reynolds"]
+            reynolds = inputs["data:aerodynamics:aircraft:low_speed:unit_reynolds"]
         else:
             cl = inputs["data:aerodynamics:aircraft:high_speed:CL"]
             mach = inputs["data:TLAR:cruise_mach"]
-            reynolds = inputs["data:aerodynamics:wing:high_speed:reynolds"]
+            reynolds = inputs["data:aerodynamics:aircraft:high_speed:unit_reynolds"]
 
         cd0_wing = compute_cd0_lifting_surface(wing_geometry, mach, reynolds, wing_area, cl)
 
