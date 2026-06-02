@@ -2,6 +2,23 @@
 Changelog
 =========
 
+Version 0.9.0
+=============
+
+Added:
+
+- Allow configurable cruise altitude variable in Reynolds computation. (#91)
+- Default output of the landing polar when using compute_landing_polar. (#78)
+- Enforce explicit ``unitless`` units instead of ``None`` in all variable declarations. (#81)
+- Refactor aerodynamics polars. (#93)
+
+Fixed:
+
+- Fixed the X CG evaluation so that it works even when the engine is positioned after the kink. (#94)
+- Fix misnamed Reynolds variables: rename to unit_reynolds. (#86)
+- Update fast-oad-core dependency to 1.10.0. (#96)
+
+
 Version 0.8.1
 =============
 Added:
