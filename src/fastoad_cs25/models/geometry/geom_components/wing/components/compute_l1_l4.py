@@ -68,9 +68,8 @@ class ComputeL1AndL4Wing(om.ExplicitComponent):
 
         if l1_wing <= 0.0:
             _LOGGER.warning(
-                "Computed root virtual chord is non-positive : %f; using 5%% of span "
-                "as a fallback.",
-                l1_wing[0],
+                "Computed root virtual chord is non-positive. Using 5%% of span "
+                "as a fallback. This is likely a transient effect."
             )
             l1_wing = span * 0.05
         l4_wing = l1_wing * virtual_taper_ratio

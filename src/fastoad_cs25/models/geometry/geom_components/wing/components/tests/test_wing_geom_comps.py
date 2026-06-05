@@ -84,7 +84,7 @@ def test_geometry_wing_l1_l4():
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
 
 
-def test_correction_for_negative_l1():
+def test_correction_for_negative_l1(caplog):
     """Test that when an unfeasible wing geometry is inputed and results
     in a negative chord value, the virtual chord value is set to a default
     value of 5% of wingspan. Unfeasible geometries concerned especially wings
@@ -104,6 +104,12 @@ def test_correction_for_negative_l1():
     expected_wing_l1 = 0.05 * wing_span
 
     assert wing_l1 == pytest.approx(expected_wing_l1, abs=1e-3)
+    expected_core = (
+        "Computed root virtual chord is non-positive. Using 5%% of span "
+        "as a fallback. This is likely a transient effect."
+    )
+
+    assert expected_core in caplog.text, f"Expected warning not found in logs. Logs: {caplog.text}"
 
 
 def test_geometry_wing_l2_l3():
