@@ -84,10 +84,13 @@ def test_geometry_wing_l1_l4():
     assert wing_l4 == pytest.approx(1.882, abs=1e-3)
 
 
-def test_activation_warning_for_negative_l1(caplog):
-    """Test if a warning is generated when an unfeasible wing geometry is input and results
-    in a negative chord value. Unfeasible geometries concerned especially wings with high aspect
-    ratio, far lateral kink, and high sweep, low inner-kink trailing sweep."""
+def test_correction_for_negative_l1(caplog):
+    """
+    Test that when an unfeasible wing geometry is inputed and results
+    in a negative chord value, the virtual chord value is set to a default
+    value of 5% of wingspan. Unfeasible geometries are affected, especially wings
+    with high aspect ratio, far lateral kink, and high sweep, low inner-kink trailing sweep.
+    """
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:area", 50, units="m**2")
@@ -98,12 +101,16 @@ def test_activation_warning_for_negative_l1(caplog):
     input_vars.add_output("data:geometry:wing:tip:y", 15.8015, units="m")
 
     problem = run_system(ComputeL1AndL4Wing(), input_vars)
-    wing_l1 = problem["data:geometry:wing:root:virtual_chord"]
+    wing_l1 = problem.get_val("data:geometry:wing:root:virtual_chord", units="m")
+    wing_span = 2.0 * problem.get_val("data:geometry:wing:tip:y", units="m")
+    expected_wing_l1 = 0.05 * wing_span
 
-    # Check for the core part of the warning message
+    assert wing_l1 == pytest.approx(expected_wing_l1, abs=1e-3)
     expected_core = (
-        f'"data:geometry:wing:root:virtual_chord" out of bound: value [{wing_l1[0]:.8f}] m'
+        "Computed root virtual chord is non-positive. Using 5%% of span "
+        "as a fallback. This is likely a transient effect."
     )
+
     assert expected_core in caplog.text, f"Expected warning not found in logs. Logs: {caplog.text}"
 
 
