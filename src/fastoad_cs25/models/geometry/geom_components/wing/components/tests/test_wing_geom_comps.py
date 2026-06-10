@@ -86,7 +86,7 @@ def test_geometry_wing_l1_l4():
 
 def test_correction_for_negative_l1(caplog):
     """
-    Test that when an unfeasible wing geometry is inputed and results
+    Test that when an unfeasible wing geometry is inputted and results
     in a negative chord value, the virtual chord value is set to a default
     value of 5% of wingspan. Unfeasible geometries are affected, especially wings
     with high aspect ratio, far lateral kink, and high sweep, low inner-kink trailing sweep.
