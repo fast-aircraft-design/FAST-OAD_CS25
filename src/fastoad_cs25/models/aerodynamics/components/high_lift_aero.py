@@ -19,6 +19,7 @@ from importlib.resources import open_text
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
+from fastoad._utils.arrays import scalarize
 from scipy import interpolate
 
 from . import resources
@@ -155,8 +156,8 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         :return: increment of lift coefficient
         """
 
-        flap_angle = np.radians(flap_angle)
-        slat_angle = np.radians(slat_angle)
+        flap_angle = scalarize(np.radians(flap_angle))
+        slat_angle = scalarize(np.radians(slat_angle))
 
         #  ratio of chord with flap extended compared to clean chord
         ratio_c_flap = 1.0 + flap_chord_ratio * np.cos(flap_angle)
