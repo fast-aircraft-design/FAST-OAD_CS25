@@ -71,9 +71,13 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
                 inputs["data:geometry:wing:tip:chord"],
             ]
         )
+        sort_idx = np.argsort(y_values)
+        y_sorted = y_values[sort_idx]
+        x_sorted = x_values[sort_idx]
+        l_sorted = l_values[sort_idx]
 
-        x_leading_edge = np.interp(inputs["data:geometry:wing:MAC:y"], y_values, x_values)
-        l_cg_control = np.interp(inputs["data:geometry:wing:MAC:y"], y_values, l_values)
+        x_leading_edge = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, x_sorted)
+        l_cg_control = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, l_sorted)
         x_cg_control = x_leading_edge + l_cg_control
 
         outputs["data:weight:airframe:flight_controls:CG:x"] = (

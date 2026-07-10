@@ -17,6 +17,7 @@ from typing import Optional, Sequence, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from fastoad._utils.arrays import scalarize
 from fastoad.constants import EngineSetting
 from fastoad.exceptions import FastUnknownEngineSettingError
 from fastoad.model_base import FlightPoint
@@ -129,8 +130,8 @@ class RubberEngine(AbstractFuelPropulsion):
             flight_points.altitude,
             [-1000.0, 0.0, 13106.4, 20000.0],
             np.hstack((self.k_sfc_sl, self.k_sfc_sl, self.k_sfc_cr, self.k_sfc_cr)),
-            left=self.k_sfc_sl,
-            right=self.k_sfc_cr,
+            left=scalarize(self.k_sfc_sl),
+            right=scalarize(self.k_sfc_cr),
         )
 
         flight_points.sfc = sfc * k_sfc
