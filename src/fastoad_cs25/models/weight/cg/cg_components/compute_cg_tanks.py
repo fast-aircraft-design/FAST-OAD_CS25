@@ -17,7 +17,6 @@ Estimation of tanks center of gravity
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from scipy import interpolate
 
 from fastoad_cs25.models.geometry.profiles.profile_getter import get_profile
 
@@ -212,4 +211,4 @@ class ComputeTanksCG(om.ExplicitComponent):
         relative_thickness = profile.get_relative_thickness()
         relative_x_scale = relative_thickness.x
         thickness = relative_thickness.thickness * l2_wing
-        return interpolate.interp1d(relative_x_scale, thickness)(relative_x)
+        return np.interp(relative_x, relative_x_scale, thickness)

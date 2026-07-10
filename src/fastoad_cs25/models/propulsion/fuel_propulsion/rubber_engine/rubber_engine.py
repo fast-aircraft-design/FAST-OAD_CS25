@@ -21,7 +21,6 @@ from fastoad.constants import EngineSetting
 from fastoad.exceptions import FastUnknownEngineSettingError
 from fastoad.model_base import FlightPoint
 from fastoad.model_base.propulsion import AbstractFuelPropulsion
-from scipy.interpolate import interp1d
 from stdatm import Atmosphere
 
 from .constants import (
@@ -126,13 +125,13 @@ class RubberEngine(AbstractFuelPropulsion):
                     flight_points.insert(len(flight_points.columns), name, value=np.nan)
 
         # SFC correction for NEO engines dependent on altitude.
-        k_sfc_alt = interp1d(
+        k_sfc = np.interp(
+            flight_points.altitude,
             [-1000.0, 0.0, 13106.4, 20000.0],
             np.hstack((self.k_sfc_sl, self.k_sfc_sl, self.k_sfc_cr, self.k_sfc_cr)),
-            bounds_error=False,
-            fill_value=(self.k_sfc_sl, self.k_sfc_cr),
+            left=self.k_sfc_sl,
+            right=self.k_sfc_cr,
         )
-        k_sfc = k_sfc_alt(flight_points.altitude)
 
         flight_points.sfc = sfc * k_sfc
         flight_points.thrust_rate = thrust_rate
