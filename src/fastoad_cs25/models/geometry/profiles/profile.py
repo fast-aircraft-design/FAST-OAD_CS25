@@ -20,7 +20,7 @@ from typing import Sequence, Tuple
 
 import numpy as np
 import pandas as pd
-from scipy.interpolate import interp1d
+from scipy.interpolate import make_interp_spline
 
 Coordinates2D = namedtuple("Coordinates2D", ["x", "y"])
 
@@ -170,8 +170,8 @@ class Profile:
             .reset_index(drop=True)
         )
 
-        interp_lower = interp1d(lower_side_points[X], lower_side_points[Z], kind="quadratic")
-        interp_upper = interp1d(upper_side_points[X], upper_side_points[Z], kind="quadratic")
+        interp_lower = make_interp_spline(lower_side_points[X], lower_side_points[Z], k=2)
+        interp_upper = make_interp_spline(upper_side_points[X], upper_side_points[Z], k=2)
         z_sides = pd.DataFrame({"z_lower": interp_lower(x), "z_upper": interp_upper(x)})
         z = z_sides.mean(axis=1)
         thickness = z_sides.diff(axis=1).iloc[:, -1]

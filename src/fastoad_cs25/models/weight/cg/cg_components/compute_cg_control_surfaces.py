@@ -17,7 +17,6 @@ Estimation of control surfaces center of gravity
 import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
-from scipy.interpolate import interp1d
 
 from ..constants import SERVICE_FLIGHT_CONTROLS_CG
 
@@ -72,11 +71,13 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
                 inputs["data:geometry:wing:tip:chord"],
             ]
         )
+        sort_idx = np.argsort(y_values)
+        y_sorted = y_values[sort_idx]
+        x_sorted = x_values[sort_idx]
+        l_sorted = l_values[sort_idx]
 
-        x_interp = interp1d(y_values, x_values)
-        x_leading_edge = x_interp(inputs["data:geometry:wing:MAC:y"])
-        l_interp = interp1d(y_values, l_values)
-        l_cg_control = l_interp(inputs["data:geometry:wing:MAC:y"])
+        x_leading_edge = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, x_sorted)
+        l_cg_control = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, l_sorted)
         x_cg_control = x_leading_edge + l_cg_control
 
         outputs["data:weight:airframe:flight_controls:CG:x"] = (
