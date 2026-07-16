@@ -39,7 +39,7 @@ class AerodynamicsLowSpeed(om.Group):
     def setup(self):
         low_speed_option = {"low_speed_aero": True}
 
-        ivc = om.IndepVarComp("data:aerodynamics:aircraft:takeoff:mach", val=0.2)
+        ivc = om.IndepVarComp("data:aerodynamics:aircraft:takeoff:mach", val=0.2, units="unitless")
         self.add_subsystem("mach_low_speed", ivc, promotes=["*"])
 
         self.add_subsystem(
