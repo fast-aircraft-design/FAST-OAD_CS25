@@ -18,17 +18,19 @@ import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 
-from ..constants import SERVICE_EMPTY_AIRCRAFT_CG
+from ..constants import SERVICE_EMPTY_AIRCRAFT_CG_X
 
 
-@oad.RegisterSubmodel(SERVICE_EMPTY_AIRCRAFT_CG, "fastoad.submodel.weight.cg.empty_aircraft.legacy")
-class ComputeCGRatioAft(om.Group):
+@oad.RegisterSubmodel(
+    SERVICE_EMPTY_AIRCRAFT_CG_X, "fastoad.submodel.weight.cg.x.empty_aircraft.legacy"
+)
+class ComputeCGXRatioAft(om.Group):
     def setup(self):
-        self.add_subsystem("cg_all", ComputeCG(), promotes=["*"])
-        self.add_subsystem("cg_ratio", CGRatio(), promotes=["*"])
+        self.add_subsystem("cg_x_all", ComputeCGX(), promotes=["*"])
+        self.add_subsystem("cg_x_ratio", CGXRatio(), promotes=["*"])
 
 
-class ComputeCG(om.ExplicitComponent):
+class ComputeCGX(om.ExplicitComponent):
     def initialize(self):
         self.options.declare(
             "cg_names",
@@ -128,7 +130,7 @@ class ComputeCG(om.ExplicitComponent):
         )
 
 
-class CGRatio(om.ExplicitComponent):
+class CGXRatio(om.ExplicitComponent):
     def setup(self):
         self.add_input("data:weight:aircraft_empty:CG:x", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
