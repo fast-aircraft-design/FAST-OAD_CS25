@@ -55,18 +55,22 @@ def test_compute_cg_control_surfaces():
     """Tests computation of control surfaces center of gravity"""
 
     input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:dihedral", 6.0, units="deg")
     input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units="m")
     input_vars.add_output("data:geometry:wing:MAC:y", 6.293, units="m")
     input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units="m")
     input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units="m")
     input_vars.add_output("data:geometry:wing:kink:chord", 3.985, units="m")
     input_vars.add_output("data:geometry:wing:kink:y", 6.321, units="m")
+    input_vars.add_output("data:geometry:wing:kink:thickness_ratio", 0.121, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 2.275, units="m")
     input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:root:thickness_ratio", 0.159, units="unitless")
     # Tip chord should not be used in this case
     input_vars.add_output("data:geometry:wing:tip:chord", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 0.0, units="m")
+    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.0, units="unitless")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units="m")
 
     problem = run_system(ComputeControlSurfacesCG(), input_vars)
@@ -75,24 +79,32 @@ def test_compute_cg_control_surfaces():
     assert x_cg_a4 == pytest.approx(19.24, abs=1e-2)
 
     input_vars = om.IndepVarComp()
+    input_vars.add_output("data:geometry:wing:dihedral", 6.0, units="deg")
     input_vars.add_output("data:geometry:wing:MAC:length", 4.457, units="m")
     input_vars.add_output("data:geometry:wing:MAC:y", 6.293, units="m")
     input_vars.add_output("data:geometry:wing:MAC:at25percent:x", 16.457, units="m")
     input_vars.add_output("data:geometry:wing:MAC:leading_edge:x:local", 2.361, units="m")
     input_vars.add_output("data:geometry:wing:kink:chord", 6.26, units="m")
     input_vars.add_output("data:geometry:wing:kink:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:kink:thickness_ratio", 0.121, units="unitless")
     input_vars.add_output("data:geometry:wing:kink:leading_edge:x:local", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:root:chord", 6.26, units="m")
     input_vars.add_output("data:geometry:wing:root:y", 1.96, units="m")
+    input_vars.add_output("data:geometry:wing:root:thickness_ratio", 0.159, units="unitless")
     # Tip chord should be used in this case
     input_vars.add_output("data:geometry:wing:tip:chord", 1.7, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 17.0, units="m")
+    input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units="unitless")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.8, units="m")
 
     problem = run_system(ComputeControlSurfacesCG(), input_vars)
 
-    x_cg_a4 = problem["data:weight:airframe:flight_controls:CG:x"]
+    x_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:x", units="m")
     assert x_cg_a4 == pytest.approx(20.18, abs=1e-2)
+    z_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:z", units="m")
+    assert z_cg_a4 == pytest.approx(0.95, abs=1e-2)
+    y_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:y", units="m")
+    assert y_cg_a4 == pytest.approx(0.0, abs=1e-2)
 
 
 def test_compute_cg_loadcases(input_xml):
@@ -357,6 +369,7 @@ def test_compute_cg_wing(input_xml):
     """Tests computation of wing center of gravity"""
 
     input_list = [
+        "data:geometry:wing:dihedral",
         "data:geometry:wing:kink:span_ratio",
         "data:geometry:wing:spar_ratio:front:root",
         "data:geometry:wing:spar_ratio:front:kink",
@@ -371,10 +384,13 @@ def test_compute_cg_wing(input_xml):
         "data:geometry:wing:kink:chord",
         "data:geometry:wing:tip:chord",
         "data:geometry:wing:root:y",
+        "data:geometry:wing:root:thickness_ratio",
         "data:geometry:wing:kink:leading_edge:x:local",
         "data:geometry:wing:kink:y",
+        "data:geometry:wing:kink:thickness_ratio",
         "data:geometry:wing:tip:y",
         "data:geometry:wing:tip:leading_edge:x:local",
+        "data:geometry:wing:tip:thickness_ratio",
         "data:geometry:wing:MAC:at25percent:x",
     ]
 
@@ -382,8 +398,12 @@ def test_compute_cg_wing(input_xml):
 
     problem = run_system(ComputeWingCG(), input_vars)
 
-    x_cg_wing = problem["data:weight:airframe:wing:CG:x"]
+    x_cg_wing = problem.get_val("data:weight:airframe:wing:CG:x", units="m")
     assert x_cg_wing == pytest.approx(16.67, abs=1e-2)
+    z_cg_wing = problem.get_val("data:weight:airframe:wing:CG:z", units="m")
+    assert z_cg_wing == pytest.approx(0.86, abs=1e-2)
+    y_cg_wing = problem.get_val("data:weight:airframe:wing:CG:y", units="m")
+    assert y_cg_wing == pytest.approx(0.0, abs=1e-2)
 
 
 def test_compute_global_cg(input_xml):
