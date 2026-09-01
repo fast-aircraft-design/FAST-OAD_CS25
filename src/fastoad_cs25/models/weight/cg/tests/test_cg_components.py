@@ -293,6 +293,8 @@ def test_compute_cg_ratio_aft(input_xml):
     cg_ratio_aft = problem["data:weight:aircraft:empty:CG:MAC_position"]
     assert cg_ratio_aft == pytest.approx(0.374702, abs=1e-6)
 
+    problem.check_partials(compact_print=True)
+
 
 def test_compute_cg_tanks(input_xml):
     """Tests computation of tanks center of gravity"""
