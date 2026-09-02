@@ -97,5 +97,4 @@ class ComputeVTcg(om.ExplicitComponent):
             z_cg_vt += inputs["data:geometry:horizontal_tail:span"]
 
         outputs["data:weight:airframe:vertical_tail:CG:x"] = x_cg_vt_absolute
-        # TODO: It should be separated in a separate submodel for cases like T-tail aircraft
         outputs["data:weight:airframe:vertical_tail:CG:z"] = z_cg_vt
