@@ -22,11 +22,12 @@ import openmdao.api as om
 import pytest
 from fastoad.io import VariableIO
 from fastoad.testing import run_system
+from openmdao.utils.assert_utils import assert_check_partials
 
 from ..cg import ComputeAircraftCG
 from ..cg_components.compute_cg_control_surfaces import ComputeControlSurfacesCG
 from ..cg_components.compute_cg_others import ComputeOthersCG
-from ..cg_components.compute_cg_ratio_aft import ComputeCGRatioAft
+from ..cg_components.compute_cg_ratio_aft import ComputeCGXRatioAft
 from ..cg_components.compute_cg_tanks import ComputeTanksCG
 from ..cg_components.compute_cg_wing import ComputeWingCG
 from ..cg_components.compute_global_cg import ComputeGlobalCG
@@ -286,12 +287,15 @@ def test_compute_cg_ratio_aft(input_xml):
 
     input_vars = input_xml.read(only=input_list).to_ivc()
 
-    problem = run_system(ComputeCGRatioAft(), input_vars)
+    problem = run_system(ComputeCGXRatioAft(), input_vars)
 
     empty_mass = problem["data:weight:aircraft_empty:mass"]
     assert empty_mass == pytest.approx(41120, abs=11)
     cg_ratio_aft = problem["data:weight:aircraft:empty:CG:MAC_position"]
     assert cg_ratio_aft == pytest.approx(0.374702, abs=1e-6)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-6)
 
 
 def test_compute_cg_tanks(input_xml):
