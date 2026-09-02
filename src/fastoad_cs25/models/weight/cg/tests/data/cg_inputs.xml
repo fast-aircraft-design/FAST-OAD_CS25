@@ -31,6 +31,7 @@
       </rubber_engine>
     </propulsion>
     <geometry>
+      <has_T_tail units="unitless" is_input="True">0.0<!--0=horizontal tail is attached to fuselage / 1=horizontal tail is attached to top of vertical tail--></has_T_tail>
       <aircraft>
         <wetted_area units="m**2" is_input="True">784.007<!--total wetted area--></wetted_area>
       </aircraft>
