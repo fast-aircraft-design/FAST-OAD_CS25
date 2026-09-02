@@ -22,7 +22,7 @@ from ..constants import SERVICE_EMPTY_AIRCRAFT_CG_X
 
 
 @oad.RegisterSubmodel(
-    SERVICE_EMPTY_AIRCRAFT_CG_X, "fastoad.submodel.weight.cg.x.empty_aircraft.legacy"
+    SERVICE_EMPTY_AIRCRAFT_CG_X, "fastoad.submodel.weight.cg.empty_aircraft.x.legacy"
 )
 class ComputeCGXRatioAft(om.Group):
     def setup(self):
@@ -69,7 +69,7 @@ class ComputeCGX(om.ExplicitComponent):
             ],
             desc="Names of the items for consideration in the computation of the aircraft's empty "
             "CG in the x-axis. Items' names will be appended with 'CG:x' for the position of "
-            "the item's CG and ':mass' for the item's mass.",
+            "the item's CG and 'mass' for the item's mass.",
         )
 
     def setup(self):

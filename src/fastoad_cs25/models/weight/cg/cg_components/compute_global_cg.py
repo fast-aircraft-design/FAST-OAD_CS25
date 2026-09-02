@@ -28,7 +28,7 @@ class ComputeGlobalCG(om.Group):
 
     def setup(self):
         self.add_subsystem(
-            "cg_x_ratio_empty",
+            "cg_ratio_empty_x",
             oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_X),
             promotes=["*"],
         )
