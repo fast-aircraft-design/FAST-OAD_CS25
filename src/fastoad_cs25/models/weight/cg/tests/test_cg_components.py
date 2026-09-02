@@ -606,6 +606,7 @@ def test_compute_ht_cg(input_xml):
         "data:geometry:wing:MAC:at25percent:x",
         "data:geometry:horizontal_tail:sweep_25",
         "data:geometry:horizontal_tail:MAC:length",
+        "data:geometry:fuselage:maximum_height",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -613,8 +614,12 @@ def test_compute_ht_cg(input_xml):
 
     problem = run_system(ComputeHTcg(), input_vars)
 
-    cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:x", units="m")
-    assert cg_a31 == pytest.approx(34.58, abs=1e-2)
+    x_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:x", units="m")
+    assert x_cg_a31 == pytest.approx(34.58, abs=1e-2)
+    y_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:y", units="m")
+    assert y_cg_a31 == pytest.approx(0.0, abs=1e-2)
+    z_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:z", units="m")
+    assert z_cg_a31 == pytest.approx(8.7264, abs=1e-2)
 
 
 def test_compute_vt_cg(input_xml):
@@ -625,9 +630,13 @@ def test_compute_vt_cg(input_xml):
         "data:geometry:vertical_tail:tip:chord",
         "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
         "data:geometry:vertical_tail:span",
+        "data:geometry:vertical_tail:thickness_ratio",
         "data:geometry:wing:MAC:at25percent:x",
         "data:geometry:vertical_tail:sweep_25",
         "data:geometry:vertical_tail:MAC:length",
+        "data:geometry:fuselage:maximum_height",
+        "data:geometry:has_T_tail",
+        "data:geometry:horizontal_tail:span",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -638,8 +647,12 @@ def test_compute_vt_cg(input_xml):
 
     problem = run_system(component, input_vars)
 
-    cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:x", units="m")
-    assert cg_a32 == pytest.approx(34.265, abs=1e-3)
+    x_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:x", units="m")
+    assert x_cg_a32 == pytest.approx(34.265, abs=1e-3)
+    y_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:y", units="m")
+    assert y_cg_a32 == pytest.approx(0.0, abs=1e-3)
+    z_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:z", units="m")
+    assert z_cg_a32 == pytest.approx(3.7681, abs=1e-3)
 
 
 def test_geometry_update_mlg(input_xml):
