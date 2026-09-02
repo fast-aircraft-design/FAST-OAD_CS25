@@ -22,7 +22,13 @@ from ..constants import SERVICE_OTHERS_CG
 
 
 @oad.RegisterSubmodel(SERVICE_OTHERS_CG, "fastoad.submodel.weight.cg.others.legacy")
-class ComputeOthersCG(om.ExplicitComponent):
+class ComputeOthersCG(om.Group):
+    def setup(self):
+        self.add_subsystem(name="compute_cg_x_others", subsys=ComputeOthersCGX(), promotes=["*"])
+        self.add_subsystem(name="compute_cg_z_others", subsys=ComputeOthersCGZ(), promotes=["*"])
+
+
+class ComputeOthersCGX(om.ExplicitComponent):
     # TODO: Document equations. Cite sources
     """Other components center of gravities estimation"""
 
@@ -280,3 +286,163 @@ class ComputeOthersCG(om.ExplicitComponent):
         outputs["data:weight:payload:PAX:CG:x"] = x_cg_pl
         outputs["data:weight:payload:rear_fret:CG:x"] = x_cg_rear_fret
         outputs["data:weight:payload:front_fret:CG:x"] = x_cg_front_fret
+
+
+class ComputeOthersCGZ(om.ExplicitComponent):
+    # TODO: Document equations. Cite sources
+    """Other components center of gravities estimation"""
+
+    def setup(self):
+        self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
+        self.add_input("data:geometry:propulsion:nacelle:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:dihedral", val=6.0 * np.pi / 180.0, units="rad")
+        self.add_input("data:geometry:propulsion:pylon:height", val=np.nan, units="m")
+        self.add_input("data:weight:propulsion:engine:CG:z", val=np.nan, units="m")
+        self.add_input("data:weight:airframe:wing:CG:z", val=np.nan, units="m")
+
+        self.add_output("data:weight:airframe:fuselage:CG:z", units="m")
+        self.add_output("data:weight:airframe:landing_gear:front:CG:z", units="m")
+        self.add_output("data:weight:airframe:pylon:CG:z", units="m")
+        self.add_output("data:weight:airframe:paint:CG:z", units="m")
+        self.add_output("data:weight:propulsion:fuel_lines:CG:z", units="m")
+        self.add_output("data:weight:propulsion:unconsumables:CG:z", units="m")
+        self.add_output("data:weight:systems:power:auxiliary_power_unit:CG:z", units="m")
+        self.add_output("data:weight:systems:power:electric_systems:CG:z", units="m")
+        self.add_output("data:weight:systems:power:hydraulic_systems:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:insulation:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:air_conditioning:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:de-icing:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:cabin_lighting:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:seats_crew_accommodation:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:oxygen:CG:z", units="m")
+        self.add_output("data:weight:systems:life_support:safety_equipment:CG:z", units="m")
+        self.add_output("data:weight:systems:navigation:CG:z", units="m")
+        self.add_output("data:weight:systems:transmission:CG:z", units="m")
+        self.add_output("data:weight:systems:operational:radar:CG:z", units="m")
+        self.add_output("data:weight:systems:operational:cargo_hold:CG:z", units="m")
+        self.add_output("data:weight:furniture:food_water:CG:z", units="m")
+        self.add_output("data:weight:furniture:security_kit:CG:z", units="m")
+        self.add_output("data:weight:furniture:toilets:CG:z", units="m")
+        self.add_output("data:weight:payload:PAX:CG:z", units="m")
+        self.add_output("data:weight:payload:rear_fret:CG:z", units="m")
+        self.add_output("data:weight:payload:front_fret:CG:z", units="m")
+
+    def setup_partials(self):
+        self.declare_partials(
+            of=[
+                "data:weight:airframe:fuselage:CG:z",
+                "data:weight:airframe:paint:CG:z",
+                "data:weight:systems:life_support:insulation:CG:z",
+                "data:weight:systems:operational:radar:CG:z",
+            ],
+            wrt="data:geometry:fuselage:maximum_height",
+            val=0.5,
+        )
+        self.declare_partials(
+            of="data:weight:airframe:pylon:CG:z",
+            wrt=[
+                "data:geometry:propulsion:nacelle:y",
+                "data:geometry:wing:dihedral",
+                "data:geometry:propulsion:pylon:height",
+            ],
+            method="exact",
+        )
+        self.declare_partials(
+            of=[
+                "data:weight:propulsion:fuel_lines:CG:z",
+                "data:weight:propulsion:unconsumables:CG:z",
+            ],
+            wrt="data:weight:propulsion:engine:CG:z",
+            val=1.0,
+        )
+        self.declare_partials(
+            of=[
+                "data:weight:systems:power:auxiliary_power_unit:CG:z",
+                "data:weight:systems:life_support:cabin_lighting:CG:z",
+                "data:weight:systems:life_support:seats_crew_accommodation:CG:z",
+                "data:weight:systems:life_support:oxygen:CG:z",
+                "data:weight:systems:life_support:safety_equipment:CG:z",
+                "data:weight:systems:navigation:CG:z",
+                "data:weight:systems:transmission:CG:z",
+                "data:weight:furniture:food_water:CG:z",
+                "data:weight:furniture:security_kit:CG:z",
+                "data:weight:furniture:toilets:CG:z",
+            ],
+            wrt="data:geometry:fuselage:maximum_height",
+            val=2.0 / 3.0,
+        )
+        self.declare_partials(
+            of=[
+                "data:weight:systems:power:electric_systems:CG:z",
+                "data:weight:systems:power:hydraulic_systems:CG:z",
+                "data:weight:systems:life_support:air_conditioning:CG:z",
+                "data:weight:systems:operational:cargo_hold:CG:z",
+            ],
+            wrt="data:geometry:fuselage:maximum_height",
+            val=1.0 / 6.0,
+        )
+        self.declare_partials(
+            of="data:weight:systems:life_support:de-icing:CG:z",
+            wrt="data:weight:airframe:wing:CG:z",
+            val=1.0,
+        )
+
+    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
+        fuselage_height = inputs["data:geometry:fuselage:maximum_height"]
+        dihedral = inputs["data:geometry:wing:dihedral"]
+        engine_y = inputs["data:geometry:propulsion:nacelle:y"]
+        pylon_height = inputs["data:geometry:propulsion:pylon:height"]
+        z_cg_b1 = inputs["data:weight:propulsion:engine:CG:z"]
+        z_cg_a1 = inputs["data:weight:airframe:wing:CG:z"]
+
+        # For the CG in the Z direction of many components, we will make a simple assumption that
+        # the fuselage is divided in two part, under the floor which occupy the bottom third of
+        # the fuselage height and the cabin which occupy the remaining two thirds
+
+        outputs["data:weight:airframe:fuselage:CG:z"] = fuselage_height / 2.0
+        outputs["data:weight:airframe:landing_gear:front:CG:z"] = 0.0
+        outputs["data:weight:airframe:pylon:CG:z"] = (
+            engine_y * np.sin(dihedral) - pylon_height / 2.0
+        )
+        outputs["data:weight:airframe:paint:CG:z"] = fuselage_height / 2.0
+
+        outputs["data:weight:propulsion:fuel_lines:CG:z"] = z_cg_b1
+        outputs["data:weight:propulsion:unconsumables:CG:z"] = z_cg_b1
+
+        # APU is flush with the top of the fuselage
+        outputs["data:weight:systems:power:auxiliary_power_unit:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:power:electric_systems:CG:z"] = fuselage_height / 6.0
+        outputs["data:weight:systems:power:hydraulic_systems:CG:z"] = fuselage_height / 6.0
+        outputs["data:weight:systems:life_support:insulation:CG:z"] = fuselage_height / 2.0
+        outputs["data:weight:systems:life_support:air_conditioning:CG:z"] = fuselage_height / 6.0
+        outputs["data:weight:systems:life_support:de-icing:CG:z"] = z_cg_a1
+        outputs["data:weight:systems:life_support:cabin_lighting:CG:z"] = (
+            2.0 * fuselage_height / 3.0
+        )
+        outputs["data:weight:systems:life_support:seats_crew_accommodation:CG:z"] = (
+            2.0 * fuselage_height / 3.0
+        )
+        outputs["data:weight:systems:life_support:oxygen:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:life_support:safety_equipment:CG:z"] = (
+            2.0 * fuselage_height / 3.0
+        )
+        outputs["data:weight:systems:navigation:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:transmission:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:operational:radar:CG:z"] = fuselage_height / 2.0
+        outputs["data:weight:systems:operational:cargo_hold:CG:z"] = fuselage_height / 6.0
+
+        outputs["data:weight:furniture:food_water:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:furniture:security_kit:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:furniture:toilets:CG:z"] = 2.0 * fuselage_height / 3.0
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        dihedral = inputs["data:geometry:wing:dihedral"]
+        engine_y = inputs["data:geometry:propulsion:nacelle:y"]
+
+        partials["data:weight:airframe:pylon:CG:z", "data:geometry:wing:dihedral"] = (
+            engine_y * np.cos(dihedral)
+        )
+        partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:nacelle:y"] = np.sin(
+            dihedral
+        )
+        partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:pylon:height"] = 0.5

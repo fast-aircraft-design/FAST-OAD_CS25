@@ -216,6 +216,7 @@
         </nacelle>
         <pylon>
           <length units="m" is_input="True">5.733<!--pylon length--></length>
+          <height units="m" is_input="True">0.66<!--pylon length--></height>
           <wetted_area units="m**2" is_input="True">7.563<!--wetted area of pylon--></wetted_area>
         </pylon>
       </propulsion>
@@ -273,6 +274,7 @@
           <mass units="kg" is_input="True">7746.72<!--Mass of airframe_inp_data:weight:airframe:wing:mass--></mass>
           <CG>
             <x units="m" is_input="True">16.67<!--wing (A1): X-position of center of gravity--></x>
+            <z units="m" is_input="True">0.86<!--wing (A1): X-position of center of gravity--></z>
           </CG>
         </wing>
         <landing_gear>
@@ -335,6 +337,7 @@
           <mass units="kg" is_input="True">7161.33<!--Mass of the propulsion system_inp_data:weight:propulsion:engine:mass--></mass>
           <CG>
             <x units="m" is_input="True">13.5<!--engine (B1): X-position of center of gravity--></x>
+            <z units="m" is_input="True">-0.96<!--engine (B1): X-position of center of gravity--></z>
           </CG>
         </engine>
         <fuel_lines>
