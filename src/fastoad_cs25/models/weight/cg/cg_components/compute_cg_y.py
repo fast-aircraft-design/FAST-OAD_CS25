@@ -1,8 +1,5 @@
-"""
-Estimation of center of gravity ratio with aft
-"""
 #  This file is part of FAST-OAD_CS25
-#  Copyright (C) 2022 ONERA & ISAE-SUPAERO
+#  Copyright (C) 2026 ONERA & ISAE-SUPAERO
 #  FAST is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -18,22 +15,16 @@ import fastoad.api as oad
 import numpy as np
 import openmdao.api as om
 
-from ..constants import SERVICE_EMPTY_AIRCRAFT_CG_X
+from ..constants import SERVICE_EMPTY_AIRCRAFT_CG_Y
 
 
 @oad.RegisterSubmodel(
-    SERVICE_EMPTY_AIRCRAFT_CG_X, "fastoad.submodel.weight.cg.empty_aircraft.x.legacy"
+    SERVICE_EMPTY_AIRCRAFT_CG_Y, "fastoad.submodel.weight.cg.empty_aircraft.y.legacy"
 )
-class ComputeCGXRatioAft(om.Group):
-    def setup(self):
-        self.add_subsystem("cg_x_all", ComputeCGX(), promotes=["*"])
-        self.add_subsystem("cg_x_ratio", CGXRatio(), promotes=["*"])
-
-
-class ComputeCGX(om.ExplicitComponent):
+class ComputeCGY(om.ExplicitComponent):
     def initialize(self):
         self.options.declare(
-            "cg_x_item_names",
+            "cg_y_item_names",
             default=[
                 "data:weight:airframe:wing:",
                 "data:weight:airframe:fuselage:",
@@ -68,88 +59,50 @@ class ComputeCGX(om.ExplicitComponent):
                 "data:weight:furniture:toilets:",
             ],
             desc="Names of the items for consideration in the computation of the aircraft's empty "
-            "CG in the x-axis. Items' names will be appended with 'CG:x' for the position of "
+            "CG in the y-axis. Items' names will be appended with 'CG:y' for the position of "
             "the item's CG and 'mass' for the item's mass.",
         )
 
     def setup(self):
-        for item_names in self.options["cg_x_item_names"]:
-            self.add_input(item_names + "CG:x", val=np.nan, units="m")
+        for item_names in self.options["cg_y_item_names"]:
+            # By default, the aircraft is symmetrical but user inputs or other models can change it.
+            self.add_input(item_names + "CG:y", val=0.0, units="m")
             self.add_input(item_names + "mass", val=np.nan, units="kg")
 
-        self.add_output("data:weight:aircraft_empty:mass", units="kg")
-        self.add_output("data:weight:aircraft_empty:CG:x", units="m")
+        self.add_output("data:weight:aircraft_empty:CG:y", units="m")
 
     def setup_partials(self):
-        for item_names in self.options["cg_x_item_names"]:
-            self.declare_partials("data:weight:aircraft_empty:mass", item_names + "mass", val=1.0)
+        for item_names in self.options["cg_y_item_names"]:
             self.declare_partials(
-                "data:weight:aircraft_empty:CG:x", item_names + "mass", method="exact"
+                "data:weight:aircraft_empty:CG:y", item_names + "mass", method="exact"
             )
             self.declare_partials(
-                "data:weight:aircraft_empty:CG:x", item_names + "CG:x", method="exact"
+                "data:weight:aircraft_empty:CG:y", item_names + "CG:y", method="exact"
             )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         total_moment = 0.0
         total_mass = 0.0
 
-        for item_names in self.options["cg_x_item_names"]:
-            total_moment += inputs[item_names + "CG:x"] * inputs[item_names + "mass"]
+        for item_names in self.options["cg_y_item_names"]:
+            total_moment += inputs[item_names + "CG:y"] * inputs[item_names + "mass"]
             total_mass += inputs[item_names + "mass"]
 
-        outputs["data:weight:aircraft_empty:mass"] = total_mass
-        outputs["data:weight:aircraft_empty:CG:x"] = total_moment / total_mass
+        outputs["data:weight:aircraft_empty:CG:y"] = total_moment / total_mass
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         total_moment = 0.0
         total_mass = 0.0
 
         # Need to run it once to get the denominator and common terms
-        for item_names in self.options["cg_x_item_names"]:
+        for item_names in self.options["cg_y_item_names"]:
             total_mass += inputs[item_names + "mass"]
-            total_moment += inputs[item_names + "CG:x"] * inputs[item_names + "mass"]
+            total_moment += inputs[item_names + "CG:y"] * inputs[item_names + "mass"]
 
-        for item_names in self.options["cg_x_item_names"]:
-            partials["data:weight:aircraft_empty:CG:x", item_names + "CG:x"] = (
+        for item_names in self.options["cg_y_item_names"]:
+            partials["data:weight:aircraft_empty:CG:y", item_names + "CG:y"] = (
                 inputs[item_names + "mass"] / total_mass
             )
-            partials["data:weight:aircraft_empty:CG:x", item_names + "mass"] = (
-                inputs[item_names + "CG:x"] * total_mass - total_moment
+            partials["data:weight:aircraft_empty:CG:y", item_names + "mass"] = (
+                inputs[item_names + "CG:y"] * total_mass - total_moment
             ) / total_mass**2.0
-
-
-class CGXRatio(om.ExplicitComponent):
-    def setup(self):
-        self.add_input("data:weight:aircraft_empty:CG:x", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
-        self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
-
-        self.add_output("data:weight:aircraft:empty:CG:MAC_position", units="unitless")
-
-    def setup_partials(self):
-        self.declare_partials("*", "*", method="exact")
-
-    def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
-        x_cg_all = inputs["data:weight:aircraft_empty:CG:x"]
-        wing_position = inputs["data:geometry:wing:MAC:at25percent:x"]
-        mac = inputs["data:geometry:wing:MAC:length"]
-
-        outputs["data:weight:aircraft:empty:CG:MAC_position"] = (
-            x_cg_all - wing_position + 0.25 * mac
-        ) / mac
-
-    def compute_partials(self, inputs, partials, discrete_inputs=None):
-        x_cg_all = inputs["data:weight:aircraft_empty:CG:x"]
-        wing_position = inputs["data:geometry:wing:MAC:at25percent:x"]
-        mac = inputs["data:geometry:wing:MAC:length"]
-
-        partials[
-            "data:weight:aircraft:empty:CG:MAC_position", "data:weight:aircraft_empty:CG:x"
-        ] = 1.0 / mac
-        partials[
-            "data:weight:aircraft:empty:CG:MAC_position", "data:geometry:wing:MAC:at25percent:x"
-        ] = -1.0 / mac
-        partials["data:weight:aircraft:empty:CG:MAC_position", "data:geometry:wing:MAC:length"] = (
-            -(x_cg_all - wing_position) / mac**2.0
-        )

@@ -76,10 +76,14 @@ def test_compute_fuselage_cabin_sizing(input_xml):
 
     npax1 = problem["data:geometry:cabin:NPAX1"]
     assert npax1 == pytest.approx(157, abs=1)
-    cg_systems_c6 = problem["data:weight:systems:flight_kit:CG:x"]
-    assert cg_systems_c6 == pytest.approx(7.47, abs=1e-2)
-    cg_furniture_d2 = problem["data:weight:furniture:passenger_seats:CG:x"]
-    assert cg_furniture_d2 == pytest.approx(16.62, abs=1e-2)
+    x_cg_systems_c6 = problem["data:weight:systems:flight_kit:CG:x"]
+    assert x_cg_systems_c6 == pytest.approx(7.47, abs=1e-2)
+    z_cg_systems_c6 = problem.get_val("data:weight:systems:flight_kit:CG:z", units="m")
+    assert z_cg_systems_c6 == pytest.approx(2.71, abs=1e-2)
+    x_cg_furniture_d2 = problem["data:weight:furniture:passenger_seats:CG:x"]
+    assert x_cg_furniture_d2 == pytest.approx(16.62, abs=1e-2)
+    z_cg_furniture_d2 = problem.get_val("data:weight:furniture:passenger_seats:CG:z", units="m")
+    assert z_cg_furniture_d2 == pytest.approx(2.71, abs=1e-2)
     fuselage_length = problem["data:geometry:fuselage:length"]
     assert fuselage_length == pytest.approx(37.507, abs=1e-3)
     fuselage_width_max = problem["data:geometry:fuselage:maximum_width"]

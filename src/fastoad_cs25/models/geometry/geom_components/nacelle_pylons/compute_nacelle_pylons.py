@@ -75,6 +75,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
             self.add_input("data:geometry:propulsion:engine:y_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:propulsion:layout", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:dihedral", val=6.0 * np.pi / 180.0, units="rad")
         self.add_input("data:geometry:wing:MAC:length", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
@@ -99,8 +100,10 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         else:
             self.add_output("data:geometry:propulsion:nacelle:y", units="m")
         self.add_output("data:geometry:propulsion:pylon:wetted_area", units="m**2")
+        self.add_output("data:geometry:propulsion:pylon:height", units="m")
         self.add_output("data:geometry:propulsion:nacelle:wetted_area", units="m**2")
         self.add_output("data:weight:propulsion:engine:CG:x", units="m")
+        self.add_output("data:weight:propulsion:engine:CG:z", units="m")
 
     def setup_partials(self):
         self.declare_partials(
@@ -125,6 +128,15 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 method="fd",
             )
             inp_fd = "data:geometry:propulsion:nacelle:y"
+            self.declare_partials(
+                "data:weight:propulsion:engine:CG:z",
+                [
+                    "data:propulsion:MTO_thrust",
+                    "data:geometry:propulsion:nacelle:y",
+                    "data:geometry:wing:dihedral",
+                ],
+                method="fd",
+            )
         else:
             self.declare_partials(
                 "data:geometry:propulsion:nacelle:y",
@@ -137,6 +149,17 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                 method="fd",
             )
             inp_fd = "data:geometry:propulsion:engine:y_ratio"
+            self.declare_partials(
+                "data:weight:propulsion:engine:CG:z",
+                [
+                    "data:propulsion:MTO_thrust",
+                    "data:geometry:fuselage:maximum_width",
+                    "data:geometry:propulsion:engine:y_ratio",
+                    "data:geometry:wing:span",
+                    "data:geometry:wing:dihedral",
+                ],
+                method="fd",
+            )
 
         self.declare_partials(
             "data:weight:propulsion:engine:CG:x",
@@ -167,6 +190,9 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         )
         self.declare_partials(
             "data:geometry:propulsion:pylon:wetted_area", "data:propulsion:MTO_thrust", method="fd"
+        )
+        self.declare_partials(
+            "data:geometry:propulsion:pylon:height", "data:propulsion:MTO_thrust", method="fd"
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -219,10 +245,21 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         else:
             outputs["data:geometry:propulsion:nacelle:y"] = y_nacelle
         outputs["data:weight:propulsion:engine:CG:x"] = x_nacelle_cg_absolute
+        # From the AP avion, statistical value that gives the distance between nacelle and engine
+        # CG and the wing.
+        outputs["data:weight:propulsion:engine:CG:z"] = (
+            y_nacelle * np.sin(inputs["data:geometry:wing:dihedral"])
+            - 0.7 * outputs["data:geometry:propulsion:nacelle:diameter"]
+        )
 
         outputs["data:geometry:propulsion:pylon:wetted_area"] = 0.35 * nacelle.wetted_area
         outputs["data:geometry:landing_gear:height"] = 1.4 * (
             0.00904 * np.sqrt(inputs["data:propulsion:MTO_thrust"] * 0.225) + 0.7
+        )
+        outputs["data:geometry:propulsion:pylon:height"] = (
+            outputs["data:geometry:propulsion:pylon:wetted_area"]
+            / outputs["data:geometry:propulsion:pylon:length"]
+            / 2
         )
 
     @staticmethod

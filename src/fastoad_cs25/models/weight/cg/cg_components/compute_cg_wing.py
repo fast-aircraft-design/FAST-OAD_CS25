@@ -35,21 +35,27 @@ class ComputeWingCG(om.ExplicitComponent):
         self.add_input("data:geometry:wing:spar_ratio:rear:kink", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:spar_ratio:rear:tip", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:dihedral", val=6.0 * np.pi / 180.0, units="rad")
         self.add_input("data:geometry:wing:MAC:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:chord", val=np.nan, units="m")
         self.add_input("data:geometry:wing:root:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:root:thickness_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:kink:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:kink:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:kink:thickness_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:tip:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan, units="unitless")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:wing:CG:x", units="m")
+        self.add_output("data:weight:airframe:wing:CG:z", units="m")
 
     def setup_partials(self):
         self.declare_partials("data:weight:airframe:wing:CG:x", "*", method="fd")
+        self.declare_partials("data:weight:airframe:wing:CG:z", "*", method="fd")
 
     def compute(self, inputs, outputs):
         wing_break = inputs["data:geometry:wing:kink:span_ratio"]
@@ -60,21 +66,28 @@ class ComputeWingCG(om.ExplicitComponent):
         rear_spar_ratio_middle = inputs["data:geometry:wing:spar_ratio:rear:kink"]
         rear_spar_ratio_tip = inputs["data:geometry:wing:spar_ratio:rear:tip"]
         span = inputs["data:geometry:wing:span"]
+        dihedral = inputs["data:geometry:wing:dihedral"]
         x0_wing = inputs["data:geometry:wing:MAC:leading_edge:x:local"]
         l2_wing = inputs["data:geometry:wing:root:chord"]
         l3_wing = inputs["data:geometry:wing:kink:chord"]
         l4_wing = inputs["data:geometry:wing:tip:chord"]
         y2_wing = inputs["data:geometry:wing:root:y"]
+        root_thickness_ratio = inputs["data:geometry:wing:root:thickness_ratio"]
         x3_wing = inputs["data:geometry:wing:kink:leading_edge:x:local"]
         y3_wing = inputs["data:geometry:wing:kink:y"]
+        kink_thickness_ratio = inputs["data:geometry:wing:kink:thickness_ratio"]
         y4_wing = inputs["data:geometry:wing:tip:y"]
         x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
+        tip_thickness_ratio = inputs["data:geometry:wing:tip:thickness_ratio"]
         fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
 
         # TODO: make this constant an option
         if wing_break >= 0.35:
             y_cg = span / 2 * 0.35
             l_cg = (y3_wing - y_cg) / (y3_wing - y2_wing) * (l2_wing - l3_wing) + l3_wing
+            el_cg = (y3_wing - y_cg) / (y3_wing - y2_wing) * (
+                root_thickness_ratio - kink_thickness_ratio
+            ) + kink_thickness_ratio
             front_spar_cg = (y3_wing - y_cg) / (y3_wing - y2_wing) * (
                 l2_wing * front_spar_ratio_root - l3_wing * front_spar_ratio_middle
             ) + l3_wing * front_spar_ratio_middle
@@ -86,9 +99,14 @@ class ComputeWingCG(om.ExplicitComponent):
                 + front_spar_cg
                 + (l_cg - front_spar_cg - rear_spar_cg) * 0.7
             )
+            z_cg = y_cg * np.sin(dihedral) + el_cg * l_cg / 2.0
+
         elif wing_break < 0.35:
             y_cg = span / 2 * 0.35
             l_cg = (y4_wing - y_cg) / (y4_wing - y3_wing) * (l3_wing - l4_wing) + l4_wing
+            el_cg = (y4_wing - y_cg) / (y4_wing - y3_wing) * (
+                kink_thickness_ratio - tip_thickness_ratio
+            ) + tip_thickness_ratio
             front_spar_cg = (y4_wing - y_cg) / (y4_wing - y3_wing) * (
                 l3_wing * front_spar_ratio_middle - l4_wing * front_spar_ratio_tip
             ) + l4_wing * front_spar_ratio_tip
@@ -101,6 +119,9 @@ class ComputeWingCG(om.ExplicitComponent):
                 + front_spar_cg
                 + (l_cg - front_spar_cg - rear_spar_cg) * 0.7
             )
+            z_cg = y_cg * np.sin(dihedral) + el_cg * l_cg / 2.0
         x_cg_absolute = fa_length - 0.25 * x0_wing + (x_cg - x0_wing)
 
         outputs["data:weight:airframe:wing:CG:x"] = x_cg_absolute
+        # This assumes a datum for z CG at the bottom of the fuselage
+        outputs["data:weight:airframe:wing:CG:z"] = z_cg
