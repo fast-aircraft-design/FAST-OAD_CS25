@@ -324,9 +324,6 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         self.add_output("data:weight:furniture:food_water:CG:z", units="m")
         self.add_output("data:weight:furniture:security_kit:CG:z", units="m")
         self.add_output("data:weight:furniture:toilets:CG:z", units="m")
-        self.add_output("data:weight:payload:PAX:CG:z", units="m")
-        self.add_output("data:weight:payload:rear_fret:CG:z", units="m")
-        self.add_output("data:weight:payload:front_fret:CG:z", units="m")
 
     def setup_partials(self):
         self.declare_partials(
