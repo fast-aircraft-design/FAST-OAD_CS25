@@ -447,4 +447,4 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:nacelle:y"] = np.sin(
             dihedral
         )
-        partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:pylon:height"] = 0.5
+        partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:pylon:height"] = -0.5

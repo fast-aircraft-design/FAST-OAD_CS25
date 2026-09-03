@@ -217,7 +217,7 @@
         </nacelle>
         <pylon>
           <length units="m" is_input="True">5.733<!--pylon length--></length>
-          <height units="m" is_input="True">0.66<!--pylon length--></height>
+          <height units="m" is_input="True">0.66<!--pylon height--></height>
           <wetted_area units="m**2" is_input="True">7.563<!--wetted area of pylon--></wetted_area>
         </pylon>
       </propulsion>
@@ -296,7 +296,7 @@
             <mass units="kg" is_input="True">2143.75<!--Mass of airframe_inp_data:weight:airframe:landing_gear:main:mass--></mass>
             <CG>
               <x units="m" is_input="True">18.11<!--main landing gear (A51): X-position of center of gravity--></x>
-              <z units="m" is_input="True">18.11<!--main landing gear (A51): Z-position of center of gravity--></z>
+              <z units="m" is_input="True">0.0<!--main landing gear (A51): Z-position of center of gravity--></z>
             </CG>
           </main>
         </landing_gear>
