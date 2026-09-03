@@ -43,7 +43,6 @@ class ComputeVTcg(om.ExplicitComponent):
         self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:vertical_tail:CG:x", units="m")
-        self.add_output("data:weight:airframe:vertical_tail:CG:y", val=0.0, units="m")
         self.add_output("data:weight:airframe:vertical_tail:CG:z", units="m")
 
     def setup_partials(self):

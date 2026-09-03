@@ -52,7 +52,6 @@ class ComputeWingCG(om.ExplicitComponent):
 
         self.add_output("data:weight:airframe:wing:CG:x", units="m")
         self.add_output("data:weight:airframe:wing:CG:z", units="m")
-        self.add_output("data:weight:airframe:wing:CG:y", units="m", val=0.0)
 
     def setup_partials(self):
         self.declare_partials("data:weight:airframe:wing:CG:x", "*", method="fd")

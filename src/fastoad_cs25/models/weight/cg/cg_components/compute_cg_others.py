@@ -302,6 +302,7 @@ class ComputeOthersCGZ(om.ExplicitComponent):
 
         self.add_output("data:weight:airframe:fuselage:CG:z", units="m")
         self.add_output("data:weight:airframe:landing_gear:front:CG:z", units="m")
+        self.add_output("data:weight:airframe:landing_gear:main:CG:z", units="m")
         self.add_output("data:weight:airframe:pylon:CG:z", units="m")
         self.add_output("data:weight:airframe:paint:CG:z", units="m")
         self.add_output("data:weight:propulsion:fuel_lines:CG:z", units="m")
@@ -401,6 +402,7 @@ class ComputeOthersCGZ(om.ExplicitComponent):
 
         outputs["data:weight:airframe:fuselage:CG:z"] = fuselage_height / 2.0
         outputs["data:weight:airframe:landing_gear:front:CG:z"] = 0.0
+        outputs["data:weight:airframe:landing_gear:main:CG:z"] = 0.0
         outputs["data:weight:airframe:pylon:CG:z"] = (
             engine_y * np.sin(dihedral) - pylon_height / 2.0
         )
