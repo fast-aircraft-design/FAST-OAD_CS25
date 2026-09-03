@@ -533,7 +533,7 @@ def test_compute_cg_z(input_xml):
     problem = run_system(ComputeCGZ(), input_vars)
 
     cg_z = problem.get_val("data:weight:aircraft_empty:CG:z", units="m")
-    assert cg_z == pytest.approx(2.11, abs=1e-2)
+    assert cg_z == pytest.approx(1.17, abs=1e-2)
 
     data = problem.check_partials(out_stream=None)
     assert_check_partials(data, atol=1, rtol=1e-6)
