@@ -124,7 +124,9 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
 
         self.add_output("data:geometry:cabin:NPAX1", units="unitless")
         self.add_output("data:weight:systems:flight_kit:CG:x", units="m")
+        self.add_output("data:weight:systems:flight_kit:CG:z", units="m")
         self.add_output("data:weight:furniture:passenger_seats:CG:x", units="m")
+        self.add_output("data:weight:furniture:passenger_seats:CG:z", units="m")
         self.add_output("data:geometry:fuselage:length", units="m")
         self.add_output("data:geometry:fuselage:maximum_width", units="m")
         self.add_output("data:geometry:fuselage:maximum_height", units="m")
@@ -212,12 +214,30 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
             method="fd",
         )
         self.declare_partials(
+            "data:weight:systems:flight_kit:CG:z",
+            [
+                "data:geometry:cabin:seats:economical:count_by_row",
+                "data:geometry:cabin:seats:economical:width",
+                "data:geometry:cabin:aisle_width",
+            ],
+            method="fd",
+        )
+        self.declare_partials(
             "data:weight:furniture:passenger_seats:CG:x",
             [
                 "data:geometry:cabin:seats:economical:count_by_row",
                 "data:geometry:cabin:seats:economical:width",
                 "data:geometry:cabin:seats:economical:length",
                 "data:geometry:cabin:exit_width",
+                "data:geometry:cabin:aisle_width",
+            ],
+            method="fd",
+        )
+        self.declare_partials(
+            "data:weight:furniture:passenger_seats:CG:z",
+            [
+                "data:geometry:cabin:seats:economical:count_by_row",
+                "data:geometry:cabin:seats:economical:width",
                 "data:geometry:cabin:aisle_width",
             ],
             method="fd",
@@ -272,7 +292,9 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
         fus_length = lav + lar + l_cyl
         cabin_length = 0.81 * fus_length
         x_cg_c6 = lav - (front_seat_number_eco - 4) * ls_eco + lpax * 0.1
+        z_cg_c6 = h_f * 2.0 / 3.0
         x_cg_d2 = lav - (front_seat_number_eco - 4) * ls_eco + lpax / 2
+        z_cg_d2 = h_f * 2.0 / 3.0
 
         # Equivalent diameter of the fuselage
         fus_dia = np.sqrt(b_f * h_f)
@@ -283,7 +305,9 @@ class ComputeFuselageGeometryCabinSizing(om.ExplicitComponent):
 
         outputs["data:geometry:cabin:NPAX1"] = npax_1
         outputs["data:weight:systems:flight_kit:CG:x"] = x_cg_c6
+        outputs["data:weight:systems:flight_kit:CG:z"] = z_cg_c6
         outputs["data:weight:furniture:passenger_seats:CG:x"] = x_cg_d2
+        outputs["data:weight:furniture:passenger_seats:CG:z"] = z_cg_d2
         outputs["data:geometry:fuselage:length"] = fus_length
         outputs["data:geometry:fuselage:maximum_width"] = b_f
         outputs["data:geometry:fuselage:maximum_height"] = h_f

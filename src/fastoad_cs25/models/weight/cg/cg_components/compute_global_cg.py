@@ -18,7 +18,13 @@ import fastoad.api as oad
 import openmdao.api as om
 
 from .compute_max_cg_ratio import ComputeMaxCGratio
-from ..constants import SERVICE_EMPTY_AIRCRAFT_CG_X, SERVICE_GLOBAL_CG, SERVICE_LOAD_CASES_CG
+from ..constants import (
+    SERVICE_EMPTY_AIRCRAFT_CG_X,
+    SERVICE_EMPTY_AIRCRAFT_CG_Y,
+    SERVICE_EMPTY_AIRCRAFT_CG_Z,
+    SERVICE_GLOBAL_CG,
+    SERVICE_LOAD_CASES_CG,
+)
 
 
 @oad.RegisterSubmodel(SERVICE_GLOBAL_CG, "fastoad.submodel.weight.cg.global.legacy")
@@ -30,6 +36,16 @@ class ComputeGlobalCG(om.Group):
         self.add_subsystem(
             "cg_ratio_empty_x",
             oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_X),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "cg_y_empty",
+            oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_Y),
+            promotes=["*"],
+        )
+        self.add_subsystem(
+            "cg_z_empty",
+            oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_Z),
             promotes=["*"],
         )
         self.add_subsystem(

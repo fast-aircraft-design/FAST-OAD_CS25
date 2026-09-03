@@ -44,7 +44,6 @@ class ComputeHTcg(om.ExplicitComponent):
         self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:horizontal_tail:CG:x", units="m")
-        self.add_output("data:weight:airframe:horizontal_tail:CG:y", val=0.0, units="m")
         self.add_output("data:weight:airframe:horizontal_tail:CG:z", units="m")
 
     def setup_partials(self):

@@ -30,6 +30,8 @@ from ..cg_components.compute_cg_others import ComputeOthersCGX, ComputeOthersCGZ
 from ..cg_components.compute_cg_ratio_aft import ComputeCGXRatioAft
 from ..cg_components.compute_cg_tanks import ComputeTanksCG
 from ..cg_components.compute_cg_wing import ComputeWingCG
+from ..cg_components.compute_cg_y import ComputeCGY
+from ..cg_components.compute_cg_z import ComputeCGZ
 from ..cg_components.compute_global_cg import ComputeGlobalCG
 from ..cg_components.compute_ht_cg import ComputeHTcg
 from ..cg_components.compute_max_cg_ratio import ComputeMaxCGratio
@@ -103,8 +105,6 @@ def test_compute_cg_control_surfaces():
     assert x_cg_a4 == pytest.approx(20.18, abs=1e-2)
     z_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:z", units="m")
     assert z_cg_a4 == pytest.approx(0.95, abs=1e-2)
-    y_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:y", units="m")
-    assert y_cg_a4 == pytest.approx(0.0, abs=1e-2)
 
 
 def test_compute_cg_loadcases(input_xml):
@@ -251,6 +251,8 @@ def test_compute_cg_z_others(input_xml):
     assert z_cg_a2 == pytest.approx(2.03, abs=1e-2)
     z_cg_a52 = problem.get_val("data:weight:airframe:landing_gear:front:CG:z", units="m")
     assert z_cg_a52 == pytest.approx(0.0, abs=1e-2)
+    z_cg_a51 = problem.get_val("data:weight:airframe:landing_gear:main:CG:z", units="m")
+    assert z_cg_a51 == pytest.approx(0.0, abs=1e-2)
     z_cg_a6 = problem.get_val("data:weight:airframe:pylon:CG:z", units="m")
     assert z_cg_a6 == pytest.approx(0.23, abs=1e-1)
     z_cg_a7 = problem.get_val("data:weight:airframe:paint:CG:z", units="m")
@@ -383,6 +385,160 @@ def test_compute_cg_ratio_aft(input_xml):
     assert_check_partials(data, atol=1, rtol=1e-6)
 
 
+def test_compute_cg_y(input_xml):
+    input_list = [
+        "data:weight:airframe:wing:CG:y",
+        "data:weight:airframe:fuselage:CG:y",
+        "data:weight:airframe:horizontal_tail:CG:y",
+        "data:weight:airframe:vertical_tail:CG:y",
+        "data:weight:airframe:flight_controls:CG:y",
+        "data:weight:airframe:landing_gear:main:CG:y",
+        "data:weight:airframe:landing_gear:front:CG:y",
+        "data:weight:airframe:pylon:CG:y",
+        "data:weight:airframe:paint:CG:y",
+        "data:weight:airframe:wing:mass",
+        "data:weight:airframe:fuselage:mass",
+        "data:weight:airframe:horizontal_tail:mass",
+        "data:weight:airframe:vertical_tail:mass",
+        "data:weight:airframe:flight_controls:mass",
+        "data:weight:airframe:landing_gear:main:mass",
+        "data:weight:airframe:landing_gear:front:mass",
+        "data:weight:airframe:pylon:mass",
+        "data:weight:airframe:paint:mass",
+        "data:weight:propulsion:engine:CG:y",
+        "data:weight:propulsion:fuel_lines:CG:y",
+        "data:weight:propulsion:unconsumables:CG:y",
+        "data:weight:propulsion:engine:mass",
+        "data:weight:propulsion:fuel_lines:mass",
+        "data:weight:propulsion:unconsumables:mass",
+        "data:weight:systems:power:auxiliary_power_unit:CG:y",
+        "data:weight:systems:power:electric_systems:CG:y",
+        "data:weight:systems:power:hydraulic_systems:CG:y",
+        "data:weight:systems:life_support:insulation:CG:y",
+        "data:weight:systems:life_support:air_conditioning:CG:y",
+        "data:weight:systems:life_support:de-icing:CG:y",
+        "data:weight:systems:life_support:cabin_lighting:CG:y",
+        "data:weight:systems:life_support:seats_crew_accommodation:CG:y",
+        "data:weight:systems:life_support:oxygen:CG:y",
+        "data:weight:systems:life_support:safety_equipment:CG:y",
+        "data:weight:systems:navigation:CG:y",
+        "data:weight:systems:transmission:CG:y",
+        "data:weight:systems:operational:radar:CG:y",
+        "data:weight:systems:operational:cargo_hold:CG:y",
+        "data:weight:systems:flight_kit:CG:y",
+        "data:weight:systems:power:auxiliary_power_unit:mass",
+        "data:weight:systems:power:electric_systems:mass",
+        "data:weight:systems:power:hydraulic_systems:mass",
+        "data:weight:systems:life_support:insulation:mass",
+        "data:weight:systems:life_support:air_conditioning:mass",
+        "data:weight:systems:life_support:de-icing:mass",
+        "data:weight:systems:life_support:cabin_lighting:mass",
+        "data:weight:systems:life_support:seats_crew_accommodation:mass",
+        "data:weight:systems:life_support:oxygen:mass",
+        "data:weight:systems:life_support:safety_equipment:mass",
+        "data:weight:systems:navigation:mass",
+        "data:weight:systems:transmission:mass",
+        "data:weight:systems:operational:radar:mass",
+        "data:weight:systems:operational:cargo_hold:mass",
+        "data:weight:systems:flight_kit:mass",
+        "data:weight:furniture:passenger_seats:CG:y",
+        "data:weight:furniture:food_water:CG:y",
+        "data:weight:furniture:security_kit:CG:y",
+        "data:weight:furniture:toilets:CG:y",
+        "data:weight:furniture:passenger_seats:mass",
+        "data:weight:furniture:food_water:mass",
+        "data:weight:furniture:security_kit:mass",
+        "data:weight:furniture:toilets:mass",
+    ]
+
+    input_vars = input_xml.read(only=input_list).to_ivc()
+
+    problem = run_system(ComputeCGY(), input_vars)
+
+    cg_y = problem.get_val("data:weight:aircraft_empty:CG:y", units="m")
+    assert cg_y == pytest.approx(0.0, abs=1e-2)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-6)
+
+
+def test_compute_cg_z(input_xml):
+    input_list = [
+        "data:weight:airframe:wing:CG:z",
+        "data:weight:airframe:fuselage:CG:z",
+        "data:weight:airframe:horizontal_tail:CG:z",
+        "data:weight:airframe:vertical_tail:CG:z",
+        "data:weight:airframe:flight_controls:CG:z",
+        "data:weight:airframe:landing_gear:main:CG:z",
+        "data:weight:airframe:landing_gear:front:CG:z",
+        "data:weight:airframe:pylon:CG:z",
+        "data:weight:airframe:paint:CG:z",
+        "data:weight:airframe:wing:mass",
+        "data:weight:airframe:fuselage:mass",
+        "data:weight:airframe:horizontal_tail:mass",
+        "data:weight:airframe:vertical_tail:mass",
+        "data:weight:airframe:flight_controls:mass",
+        "data:weight:airframe:landing_gear:main:mass",
+        "data:weight:airframe:landing_gear:front:mass",
+        "data:weight:airframe:pylon:mass",
+        "data:weight:airframe:paint:mass",
+        "data:weight:propulsion:engine:CG:z",
+        "data:weight:propulsion:fuel_lines:CG:z",
+        "data:weight:propulsion:unconsumables:CG:z",
+        "data:weight:propulsion:engine:mass",
+        "data:weight:propulsion:fuel_lines:mass",
+        "data:weight:propulsion:unconsumables:mass",
+        "data:weight:systems:power:auxiliary_power_unit:CG:z",
+        "data:weight:systems:power:electric_systems:CG:z",
+        "data:weight:systems:power:hydraulic_systems:CG:z",
+        "data:weight:systems:life_support:insulation:CG:z",
+        "data:weight:systems:life_support:air_conditioning:CG:z",
+        "data:weight:systems:life_support:de-icing:CG:z",
+        "data:weight:systems:life_support:cabin_lighting:CG:z",
+        "data:weight:systems:life_support:seats_crew_accommodation:CG:z",
+        "data:weight:systems:life_support:oxygen:CG:z",
+        "data:weight:systems:life_support:safety_equipment:CG:z",
+        "data:weight:systems:navigation:CG:z",
+        "data:weight:systems:transmission:CG:z",
+        "data:weight:systems:operational:radar:CG:z",
+        "data:weight:systems:operational:cargo_hold:CG:z",
+        "data:weight:systems:flight_kit:CG:z",
+        "data:weight:systems:power:auxiliary_power_unit:mass",
+        "data:weight:systems:power:electric_systems:mass",
+        "data:weight:systems:power:hydraulic_systems:mass",
+        "data:weight:systems:life_support:insulation:mass",
+        "data:weight:systems:life_support:air_conditioning:mass",
+        "data:weight:systems:life_support:de-icing:mass",
+        "data:weight:systems:life_support:cabin_lighting:mass",
+        "data:weight:systems:life_support:seats_crew_accommodation:mass",
+        "data:weight:systems:life_support:oxygen:mass",
+        "data:weight:systems:life_support:safety_equipment:mass",
+        "data:weight:systems:navigation:mass",
+        "data:weight:systems:transmission:mass",
+        "data:weight:systems:operational:radar:mass",
+        "data:weight:systems:operational:cargo_hold:mass",
+        "data:weight:systems:flight_kit:mass",
+        "data:weight:furniture:passenger_seats:CG:z",
+        "data:weight:furniture:food_water:CG:z",
+        "data:weight:furniture:security_kit:CG:z",
+        "data:weight:furniture:toilets:CG:z",
+        "data:weight:furniture:passenger_seats:mass",
+        "data:weight:furniture:food_water:mass",
+        "data:weight:furniture:security_kit:mass",
+        "data:weight:furniture:toilets:mass",
+    ]
+
+    input_vars = input_xml.read(only=input_list).to_ivc()
+
+    problem = run_system(ComputeCGZ(), input_vars)
+
+    cg_z = problem.get_val("data:weight:aircraft_empty:CG:z", units="m")
+    assert cg_z == pytest.approx(2.11, abs=1e-2)
+
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data, atol=1, rtol=1e-6)
+
+
 def test_compute_cg_tanks(input_xml):
     """Tests computation of tanks center of gravity"""
 
@@ -475,8 +631,6 @@ def test_compute_cg_wing(input_xml):
     assert x_cg_wing == pytest.approx(16.67, abs=1e-2)
     z_cg_wing = problem.get_val("data:weight:airframe:wing:CG:z", units="m")
     assert z_cg_wing == pytest.approx(0.86, abs=1e-2)
-    y_cg_wing = problem.get_val("data:weight:airframe:wing:CG:y", units="m")
-    assert y_cg_wing == pytest.approx(0.0, abs=1e-2)
 
 
 def test_compute_global_cg(input_xml):
@@ -616,10 +770,6 @@ def test_compute_ht_cg(input_xml):
 
     x_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:x", units="m")
     assert x_cg_a31 == pytest.approx(34.58, abs=1e-2)
-    y_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:y", units="m")
-    assert y_cg_a31 == pytest.approx(0.0, abs=1e-2)
-    z_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:z", units="m")
-    assert z_cg_a31 == pytest.approx(8.7264, abs=1e-2)
 
 
 def test_compute_vt_cg(input_xml):
@@ -649,10 +799,6 @@ def test_compute_vt_cg(input_xml):
 
     x_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:x", units="m")
     assert x_cg_a32 == pytest.approx(34.265, abs=1e-3)
-    y_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:y", units="m")
-    assert y_cg_a32 == pytest.approx(0.0, abs=1e-3)
-    z_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:z", units="m")
-    assert z_cg_a32 == pytest.approx(3.7681, abs=1e-3)
 
 
 def test_geometry_update_mlg(input_xml):
