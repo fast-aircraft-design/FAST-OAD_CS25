@@ -50,6 +50,8 @@ def test_geometry_nacelle_pylons():
 
     pylon_length = problem["data:geometry:propulsion:pylon:length"]
     assert pylon_length == pytest.approx(5.733, abs=1e-3)
+    pylon_height = problem.get_val("data:geometry:propulsion:pylon:height", units="m")
+    assert pylon_height == pytest.approx(0.66, abs=1e-3)
     fan_length = problem["data:geometry:propulsion:fan:length"]
     assert fan_length == pytest.approx(3.127, abs=1e-3)
     nacelle_length = problem["data:geometry:propulsion:nacelle:length"]
@@ -64,8 +66,10 @@ def test_geometry_nacelle_pylons():
     assert pylon_wet_area == pytest.approx(7.563, abs=1e-3)
     nacelle_wet_area = problem["data:geometry:propulsion:nacelle:wetted_area"]
     assert nacelle_wet_area == pytest.approx(21.609, abs=1e-3)
-    cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
-    assert cg_b1 == pytest.approx(13.5, abs=1e-1)
+    x_cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
+    assert x_cg_b1 == pytest.approx(13.5, abs=1e-1)
+    z_cg_b1 = problem.get_val("data:weight:propulsion:engine:CG:z", units="m")
+    assert z_cg_b1 == pytest.approx(-0.96, abs=1e-2)
 
 
 def test_geometry_nacelle_pylons_absolute_engine_y():
@@ -97,6 +101,8 @@ def test_geometry_nacelle_pylons_absolute_engine_y():
 
     pylon_length = problem["data:geometry:propulsion:pylon:length"]
     assert pylon_length == pytest.approx(5.733, abs=1e-3)
+    pylon_height = problem.get_val("data:geometry:propulsion:pylon:height", units="m")
+    assert pylon_height == pytest.approx(0.66, abs=1e-3)
     fan_length = problem["data:geometry:propulsion:fan:length"]
     assert fan_length == pytest.approx(3.127, abs=1e-3)
     nacelle_length = problem["data:geometry:propulsion:nacelle:length"]
@@ -111,8 +117,10 @@ def test_geometry_nacelle_pylons_absolute_engine_y():
     assert pylon_wet_area == pytest.approx(7.563, abs=1e-3)
     nacelle_wet_area = problem["data:geometry:propulsion:nacelle:wetted_area"]
     assert nacelle_wet_area == pytest.approx(21.609, abs=1e-3)
-    cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
-    assert cg_b1 == pytest.approx(13.5, abs=1e-1)
+    x_cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
+    assert x_cg_b1 == pytest.approx(13.5, abs=1e-1)
+    z_cg_b1 = problem.get_val("data:weight:propulsion:engine:CG:z", units="m")
+    assert z_cg_b1 == pytest.approx(-0.96, abs=1e-2)
 
 
 def test_geometry_nacelle_pylons_no_kink():

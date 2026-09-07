@@ -125,6 +125,7 @@ data:geometry:propulsion:nacelle:length || nacelle length
 data:geometry:propulsion:nacelle:wetted_area || wetted area of nacelle
 data:geometry:propulsion:nacelle:y || Y-position of nacelle center
 data:geometry:propulsion:pylon:length || pylon length
+data:geometry:propulsion:pylon:height || pylon height
 data:geometry:propulsion:pylon:wetted_area || wetted area of pylon
 data:geometry:slat:chord_ratio || mean value of slat chord)/(section chord)
 data:geometry:slat:span_ratio || ratio (width of slats)/(total span)
@@ -159,6 +160,7 @@ data:geometry:wing:aspect_ratio || wing aspect ratio
 data:geometry:wing:b_50 || actual length between root and tip along 50% of chord
 data:geometry:wing:center:chord || chord length at wing Y axis of symmetry (fuselage center line)
 data:geometry:wing:center:leading_edge:x:local || X-position of leading edge at wing center w.r.t. leading edge of root chord
+data:geometry:wing:dihedral || dihedral angle of the wing
 data:geometry:wing:kink:chord || chord length at wing kink
 data:geometry:wing:kink:leading_edge:x:local || X-position of leading edge at wing kink w.r.t. leading edge of root chord
 data:geometry:wing:kink:span_ratio || ratio (Y-position of kink)/(semi-span)
@@ -244,26 +246,46 @@ data:weight:aircraft:payload || design payload weight
 data:weight:aircraft:sizing_block_fuel || block fuel quantity (i.e. loaded before taxi-out) used for sizing process
 data:weight:aircraft:sizing_onboard_fuel_at_takeoff || fuel quantity at instant of takeoff used for computation of MTOW (Max. TakeOff Weight)
 data:weight:aircraft_empty:CG:x || X-position center of gravity of empty aircraft
+data:weight:aircraft_empty:CG:y || Y-position center of gravity of empty aircraft
+data:weight:aircraft_empty:CG:z || Z-position center of gravity of empty aircraft
 data:weight:aircraft_empty:mass || mass of empty aircraft (=OWE - mass of crew)
 data:weight:airframe:CG:x || airframe (A): X-position of center of gravity
 data:weight:airframe:flight_controls:CG:x || flight controls (A4): X-position of center of gravity
+data:weight:airframe:flight_controls:CG:y || flight controls (A4): Y-position of center of gravity
+data:weight:airframe:flight_controls:CG:z || flight controls (A4): Z-position of center of gravity
 data:weight:airframe:flight_controls:mass || flight controls (A4): total mass
 data:weight:airframe:fuselage:CG:x || fuselage (A2): X-position of center of gravity
+data:weight:airframe:fuselage:CG:y || fuselage (A2): Y-position of center of gravity
+data:weight:airframe:fuselage:CG:z || fuselage (A2): Z-position of center of gravity
 data:weight:airframe:fuselage:mass || fuselage (A2): total mass
 data:weight:airframe:horizontal_tail:CG:x || horizontal tail (A31): X-position of center of gravity
+data:weight:airframe:horizontal_tail:CG:y || horizontal tail (A31): Y-position of center of gravity
+data:weight:airframe:horizontal_tail:CG:z || horizontal tail (A31): Z-position of center of gravity
 data:weight:airframe:horizontal_tail:mass || horizontal tail (A31): mass
 data:weight:airframe:landing_gear:front:CG:x || front landing gear (A52): X-position of center of gravity
+data:weight:airframe:landing_gear:front:CG:y || front landing gear (A52): Y-position of center of gravity
+data:weight:airframe:landing_gear:front:CG:z || front landing gear (A52): Z-position of center of gravity
 data:weight:airframe:landing_gear:front:mass || front landing gear (A52): mass
 data:weight:airframe:landing_gear:main:CG:x || main landing gear (A51): X-position of center of gravity
+data:weight:airframe:landing_gear:main:CG:y || main landing gear (A51): Y-position of center of gravity
+data:weight:airframe:landing_gear:main:CG:z || main landing gear (A51): Z-position of center of gravity
 data:weight:airframe:landing_gear:main:mass || main landing gear (A51): mass
 data:weight:airframe:mass || airframe (A): mass
 data:weight:airframe:paint:CG:x || paint (A7): X-position of center of gravity
+data:weight:airframe:paint:CG:y || paint (A7): Y-position of center of gravity
+data:weight:airframe:paint:CG:z || paint (A7): Z-position of center of gravity
 data:weight:airframe:paint:mass || paint (A7): total mass
 data:weight:airframe:pylon:CG:x || pylon (A6): X-position of center of gravity
+data:weight:airframe:pylon:CG:y || pylon (A6): Y-position of center of gravity
+data:weight:airframe:pylon:CG:z || pylon (A6): Z-position of center of gravity
 data:weight:airframe:pylon:mass || pylon (A6): total mass
 data:weight:airframe:vertical_tail:CG:x || vertical tail (A32): X-position of center of gravity
+data:weight:airframe:vertical_tail:CG:y || vertical tail (A32): Y-position of center of gravity
+data:weight:airframe:vertical_tail:CG:z || vertical tail (A32): Z-position of center of gravity
 data:weight:airframe:vertical_tail:mass || vertical tail (A32): mass
 data:weight:airframe:wing:CG:x || wing (A1): X-position of center of gravity
+data:weight:airframe:wing:CG:y || wing (A1): Y-position of center of gravity
+data:weight:airframe:wing:CG:z || wing (A1): Z-position of center of gravity
 data:weight:airframe:wing:mass || wing (A1): total mass
 data:weight:crew:CG:x || crew (E): X-position of center of gravity
 data:weight:crew:mass || crew (E): mass
@@ -272,56 +294,100 @@ data:weight:furniture:CG:x || aircraft furniture (D): X-position of center of gr
 data:weight:furniture:cargo_configuration:CG:x || cargo configuration (D1): X-position of center of gravity
 data:weight:furniture:cargo_configuration:mass || cargo configuration (D1): mass
 data:weight:furniture:food_water:CG:x || food water (D3): X-position of center of gravity
+data:weight:furniture:food_water:CG:y || food water (D3): Y-position of center of gravity
+data:weight:furniture:food_water:CG:z || food water (D3): Z-position of center of gravity
 data:weight:furniture:food_water:mass || food water (D3): mass
 data:weight:furniture:mass || aircraft furniture (D): mass
 data:weight:furniture:passenger_seats:CG:x || passenger seats (D2): X-position of center of gravity
+data:weight:furniture:passenger_seats:CG:y || passenger seats (D2): Y-position of center of gravity
+data:weight:furniture:passenger_seats:CG:z || passenger seats (D2): Z-position of center of gravity
 data:weight:furniture:passenger_seats:mass || passenger seats (D2): mass
 data:weight:furniture:security_kit:CG:x || security kit (D4): X-position of center of gravity
+data:weight:furniture:security_kit:CG:y || security kit (D4): Y-position of center of gravity
+data:weight:furniture:security_kit:CG:z || security kit (D4): Z-position of center of gravity
 data:weight:furniture:security_kit:mass || security kit (D4): mass
 data:weight:furniture:toilets:CG:x || toilets (D5): X-position of center of gravity
+data:weight:furniture:toilets:CG:y || toilets (D5): Y-position of center of gravity
+data:weight:furniture:toilets:CG:z || toilets (D5): Z-position of center of gravity
 data:weight:furniture:toilets:mass || toilets (D5): mass
 data:weight:payload:PAX:CG:x || passengers: X-position of center of gravity
 data:weight:payload:front_fret:CG:x || front fret: X-position of center of gravity
 data:weight:payload:rear_fret:CG:x || rear fret: X-position of center of gravity
 data:weight:propulsion:CG:x || propulsion system (B): X-position of center of gravity
+data:weight:propulsion:CG:y || propulsion system (B): Y-position of center of gravity
+data:weight:propulsion:CG:z || propulsion system (B): Z-position of center of gravity
 data:weight:propulsion:engine:CG:x || engine (B1): X-position of center of gravity
+data:weight:propulsion:engine:CG:y || engine (B1): Y-position of center of gravity
+data:weight:propulsion:engine:CG:z || engine (B1): Z-position of center of gravity
 data:weight:propulsion:engine:mass || engine (B1): mass
 data:weight:propulsion:fuel_lines:CG:x || fuel lines (B2): X-position of center of gravity
+data:weight:propulsion:fuel_lines:CG:y || fuel lines (B2): Y-position of center of gravity
+data:weight:propulsion:fuel_lines:CG:z || fuel lines (B2): Z-position of center of gravity
 data:weight:propulsion:fuel_lines:mass || fuel lines (B2): mass
 data:weight:propulsion:mass || propulsion system (B): mass
 data:weight:propulsion:unconsumables:CG:x || unconsumables (B3): X-position of center of gravity
 data:weight:propulsion:unconsumables:mass || unconsumables (B3): mass
 data:weight:systems:CG:x || aircraft systems (C): X-position of center of gravity
 data:weight:systems:flight_kit:CG:x || flight kit (C6): X-position of center of gravity
+data:weight:systems:flight_kit:CG:y || flight kit (C6): Y-position of center of gravity
+data:weight:systems:flight_kit:CG:z || flight kit (C6): Z-position of center of gravity
 data:weight:systems:flight_kit:mass || flight kit (C6): mass
 data:weight:systems:life_support:air_conditioning:CG:x || air conditioning (C2): X-position of center of gravity
+data:weight:systems:life_support:air_conditioning:CG:y || air conditioning (C2): Y-position of center of gravity
+data:weight:systems:life_support:air_conditioning:CG:z || air conditioning (C2): Z-position of center of gravity
 data:weight:systems:life_support:air_conditioning:mass || air conditioning (C2): mass
 data:weight:systems:life_support:cabin_lighting:CG:x || cabin lighting (C2): X-position of center of gravity
+data:weight:systems:life_support:cabin_lighting:CG:y || cabin lighting (C2): Y-position of center of gravity
+data:weight:systems:life_support:cabin_lighting:CG:z || cabin lighting (C2): Z-position of center of gravity
 data:weight:systems:life_support:cabin_lighting:mass || cabin lighting (C2): mass
 data:weight:systems:life_support:de-icing:CG:x || de-icing (C2): X-position of center of gravity
+data:weight:systems:life_support:de-icing:CG:y || de-icing (C2): Y-position of center of gravity
+data:weight:systems:life_support:de-icing:CG:z || de-icing (C2): Z-position of center of gravity
 data:weight:systems:life_support:de-icing:mass || de-icing (C2): mass
 data:weight:systems:life_support:insulation:CG:x || insulation (C21): X-position of center of gravity
+data:weight:systems:life_support:insulation:CG:y || insulation (C21): Y-position of center of gravity
+data:weight:systems:life_support:insulation:CG:z || insulation (C21): Z-position of center of gravity
 data:weight:systems:life_support:insulation:mass || insulation (C21): mass
 data:weight:systems:life_support:oxygen:CG:x || oxygen (C21): X-position of center of gravity
+data:weight:systems:life_support:oxygen:CG:y || oxygen (C21): Y-position of center of gravity
+data:weight:systems:life_support:oxygen:CG:z || oxygen (C21): Z-position of center of gravity
 data:weight:systems:life_support:oxygen:mass || oxygen (C21): mass
 data:weight:systems:life_support:safety_equipment:CG:x || safety equipment (C21): X-position of center of gravity
+data:weight:systems:life_support:safety_equipment:CG:y || safety equipment (C21): Y-position of center of gravity
+data:weight:systems:life_support:safety_equipment:CG:z || safety equipment (C21): Z-position of center of gravity
 data:weight:systems:life_support:safety_equipment:mass || safety equipment (C21): mass
 data:weight:systems:life_support:seats_crew_accommodation:CG:x || seats crew accommodation (C21): X-position of center of gravity
+data:weight:systems:life_support:seats_crew_accommodation:CG:y || seats crew accommodation (C21): Y-position of center of gravity
+data:weight:systems:life_support:seats_crew_accommodation:CG:z || seats crew accommodation (C21): Z-position of center of gravity
 data:weight:systems:life_support:seats_crew_accommodation:mass || seats crew accommodation (C21): mass
 data:weight:systems:mass || aircraft systems (C): mass
 data:weight:systems:navigation:CG:x || navigation (C3): X-position of center of gravity
+data:weight:systems:navigation:CG:y || navigation (C3): Y-position of center of gravity
+data:weight:systems:navigation:CG:z || navigation (C3): Z-position of center of gravity
 data:weight:systems:navigation:mass || navigation (C3): mass
 data:weight:systems:operational:cargo_hold:CG:x || cargo hold (C52): X-position of center of gravity
+data:weight:systems:operational:cargo_hold:CG:y || cargo hold (C52): Y-position of center of gravity
+data:weight:systems:operational:cargo_hold:CG:z || cargo hold (C52): Z-position of center of gravity
 data:weight:systems:operational:cargo_hold:mass || cargo hold (C52): mass
 data:weight:systems:operational:radar:CG:x || radar (C51): X-position of center of gravity
+data:weight:systems:operational:radar:CG:y || radar (C51): Y-position of center of gravity
+data:weight:systems:operational:radar:CG:z || radar (C51): Z-position of center of gravity
 data:weight:systems:operational:radar:mass || radar (C51): mass
 data:weight:systems:power:auxiliary_power_unit:CG:x || power (C1): X-position of center of gravity
+data:weight:systems:power:auxiliary_power_unit:CG:y || power (C1): Y-position of center of gravity
+data:weight:systems:power:auxiliary_power_unit:CG:z || power (C1): Z-position of center of gravity
 data:weight:systems:power:auxiliary_power_unit:mass || power (C1): mass
 data:weight:systems:power:electric_systems:CG:x || power (C1): X-position of center of gravity
+data:weight:systems:power:electric_systems:CG:y || power (C1): Y-position of center of gravity
+data:weight:systems:power:electric_systems:CG:z || power (C1): Z-position of center of gravity
 data:weight:systems:power:electric_systems:mass || power (C1): mass
 data:weight:systems:power:hydraulic_systems:CG:x || power (C1): X-position of center of gravity
+data:weight:systems:power:hydraulic_systems:CG:y || power (C1): Y-position of center of gravity
+data:weight:systems:power:hydraulic_systems:CG:z || power (C1): Z-position of center of gravity
 data:weight:systems:power:hydraulic_systems:mass || power (C1): mass
 data:weight:systems:transmission:CG:x || transmission (C4): X-position of center of gravity
+data:weight:systems:transmission:CG:y || transmission (C4): Y-position of center of gravity
+data:weight:systems:transmission:CG:z || transmission (C4): Z-position of center of gravity
 data:weight:systems:transmission:mass || transmission (C4): mass
 settings:weight:aircraft:CG:range || distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)
 settings:weight:airframe:landing_gear:front:CG:position_ratio_on_front_fuselage || x-distance between nose and front landing gear divided by data:geometry:fuselage:front_length
