@@ -39,12 +39,12 @@ class ComputeGlobalCG(om.Group):
             promotes=["*"],
         )
         self.add_subsystem(
-            "cg_y_empty",
+            "cg_empty_y",
             oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_Y),
             promotes=["*"],
         )
         self.add_subsystem(
-            "cg_z_empty",
+            "cg_empty_z",
             oad.RegisterSubmodel.get_submodel(SERVICE_EMPTY_AIRCRAFT_CG_Z),
             promotes=["*"],
         )
