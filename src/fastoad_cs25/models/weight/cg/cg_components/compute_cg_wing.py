@@ -57,6 +57,7 @@ class ComputeWingCG(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials("data:weight:airframe:wing:CG:x", "*", method="fd")
         self.declare_partials("data:weight:airframe:wing:CG:z", "*", method="fd")
+        self.declare_partials("data:weight:airframe:wing:CG:thickness", "*", method="fd")
 
     def compute(self, inputs, outputs):
         wing_break = inputs["data:geometry:wing:kink:span_ratio"]

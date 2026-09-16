@@ -121,10 +121,14 @@ def test_compute_fuselage_basic(input_xml):
 
     problem = run_system(ComputeFuselageGeometryBasic(), input_vars)
 
-    cg_systems_c6 = problem["data:weight:systems:flight_kit:CG:x"]
-    assert cg_systems_c6 == pytest.approx(9.19, abs=1e-2)
-    cg_furniture_d2 = problem["data:weight:furniture:passenger_seats:CG:x"]
-    assert cg_furniture_d2 == pytest.approx(14.91, abs=1e-2)
+    x_cg_systems_c6 = problem["data:weight:systems:flight_kit:CG:x"]
+    assert x_cg_systems_c6 == pytest.approx(9.19, abs=1e-2)
+    z_cg_systems_c6 = problem.get_val("data:weight:systems:flight_kit:CG:z", units="m")
+    assert z_cg_systems_c6 == pytest.approx(2.71, abs=1e-2)
+    x_cg_furniture_d2 = problem["data:weight:furniture:passenger_seats:CG:x"]
+    assert x_cg_furniture_d2 == pytest.approx(14.91, abs=1e-2)
+    z_cg_furniture_d2 = problem.get_val("data:weight:furniture:passenger_seats:CG:z", units="m")
+    assert z_cg_furniture_d2 == pytest.approx(2.71, abs=1e-2)
     fuselage_lcabin = problem["data:geometry:cabin:length"]
     assert fuselage_lcabin == pytest.approx(30.38, abs=1e-2)
     fuselage_wet_area = problem["data:geometry:fuselage:wetted_area"]

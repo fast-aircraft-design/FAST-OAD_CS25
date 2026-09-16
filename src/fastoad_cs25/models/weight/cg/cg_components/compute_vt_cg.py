@@ -62,7 +62,7 @@ class ComputeVTcg(om.ExplicitComponent):
             "data:weight:airframe:vertical_tail:CG:z",
             [
                 "data:geometry:fuselage:maximum_height",
-                "data:geometry:horizontal_tail:span",
+                "data:geometry:vertical_tail:span",
                 "data:geometry:vertical_tail:root:chord",
                 "data:geometry:vertical_tail:tip:chord",
             ],
