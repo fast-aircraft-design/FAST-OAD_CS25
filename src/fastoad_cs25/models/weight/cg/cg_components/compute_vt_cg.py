@@ -37,11 +37,37 @@ class ComputeVTcg(om.ExplicitComponent):
         self.add_input("data:geometry:vertical_tail:sweep_25", val=np.nan, units="deg")
         self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
+        self.add_input("data:geometry:fuselage:maximum_height", val=np.nan, units="m")
+        self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:vertical_tail:CG:x", units="m")
+        self.add_output("data:weight:airframe:vertical_tail:CG:z", units="m")
 
     def setup_partials(self):
-        self.declare_partials("data:weight:airframe:vertical_tail:CG:x", "*", method="fd")
+        self.declare_partials(
+            "data:weight:airframe:vertical_tail:CG:x",
+            [
+                "data:geometry:vertical_tail:MAC:length",
+                "data:geometry:vertical_tail:root:chord",
+                "data:geometry:vertical_tail:tip:chord",
+                "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
+                "data:geometry:vertical_tail:MAC:at25percent:x:local",
+                "data:geometry:vertical_tail:sweep_25",
+                "data:geometry:vertical_tail:span",
+                "data:geometry:wing:MAC:at25percent:x",
+            ],
+            method="fd",
+        )
+        self.declare_partials(
+            "data:weight:airframe:vertical_tail:CG:z",
+            [
+                "data:geometry:fuselage:maximum_height",
+                "data:geometry:vertical_tail:span",
+                "data:geometry:vertical_tail:root:chord",
+                "data:geometry:vertical_tail:tip:chord",
+            ],
+            method="fd",
+        )
 
     def compute(self, inputs, outputs):
         root_chord = inputs["data:geometry:vertical_tail:root:chord"]
@@ -52,10 +78,23 @@ class ComputeVTcg(om.ExplicitComponent):
         x0_vt = inputs["data:geometry:vertical_tail:MAC:at25percent:x:local"]
         sweep_25_vt = inputs["data:geometry:vertical_tail:sweep_25"]
         b_v = inputs["data:geometry:vertical_tail:span"]
+        height_max = inputs["data:geometry:fuselage:maximum_height"]
 
         tmp = root_chord * 0.25 + b_v * np.tan(sweep_25_vt / 180.0 * np.pi) - tip_chord * 0.25
         l_cg_vt = (1 - 0.55) * (root_chord - tip_chord) + tip_chord
         x_cg_vt = 0.42 * l_cg_vt + 0.55 * tmp
         x_cg_vt_absolute = lp_vt + fa_length - 0.25 * mac_vt + (x_cg_vt - x0_vt)
 
+        # Based on the assumption that relative thickness is constant and that chord varies
+        # linearly with height of the VT the centroid of the VT assumed to coincide with the CG can
+        # be written as
+        z_cg_vt_relative = (
+            0.25
+            * b_v
+            * (root_chord**2.0 + 2.0 * root_chord * tip_chord + 3 * tip_chord**2.0)
+            / (root_chord**2.0 + root_chord * tip_chord + tip_chord**2.0)
+        )
+        z_cg_vt_absolute = height_max + z_cg_vt_relative
+
         outputs["data:weight:airframe:vertical_tail:CG:x"] = x_cg_vt_absolute
+        outputs["data:weight:airframe:vertical_tail:CG:z"] = z_cg_vt_absolute
