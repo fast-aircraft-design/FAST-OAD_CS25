@@ -392,6 +392,7 @@ data:weight:systems:transmission:CG:x || transmission (C4): X-position of center
 data:weight:systems:transmission:CG:y || transmission (C4): Y-position of center of gravity
 data:weight:systems:transmission:CG:z || transmission (C4): Z-position of center of gravity
 data:weight:systems:transmission:mass || transmission (C4): mass
+settings:geometry:fuselage:floor_height_ratio || height at which the cabin floor is located, as a ratio of fuselage height
 settings:weight:aircraft:CG:range || distance between front position and aft position of CG, as ratio of mean aerodynamic chord (allows to have front position of CG, as currently, FAST-OAD estimates only the aft position of CG)
 settings:weight:airframe:landing_gear:front:CG:position_ratio_on_front_fuselage || x-distance between nose and front landing gear divided by data:geometry:fuselage:front_length
 settings:weight:airframe:flight_controls:mass:k_fc || flight controls (A4): 0.85e-4 if electrical, 1.35e-4 if conventional

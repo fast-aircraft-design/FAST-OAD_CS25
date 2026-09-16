@@ -35,6 +35,7 @@ class ComputeHTcg(om.ExplicitComponent):
             "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25", val=np.nan, units="m"
         )
         self.add_input("data:geometry:horizontal_tail:span", val=np.nan, units="m")
+        self.add_input("data:geometry:vertical_tail:span", val=np.nan, units="m")
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:horizontal_tail:sweep_25", val=np.nan, units="deg")
         self.add_input(
@@ -67,13 +68,13 @@ class ComputeHTcg(om.ExplicitComponent):
         )
         self.declare_partials(
             "data:weight:airframe:horizontal_tail:CG:z",
-            "data:geometry:fuselage:maximum_height",
-            val=1.0,
-        )
-        self.declare_partials(
-            "data:weight:airframe:horizontal_tail:CG:z",
-            "data:geometry:horizontal_tail:span",
-            val=0.38,
+            [
+                "data:geometry:fuselage:maximum_height",
+                "data:geometry:vertical_tail:span",
+                "data:geometry:horizontal_tail:thickness_ratio",
+                "data:geometry:horizontal_tail:center:chord",
+            ],
+            method="fd",
         )
 
     def compute(self, inputs, outputs):
@@ -98,7 +99,7 @@ class ComputeHTcg(om.ExplicitComponent):
         # We assume that the upper surface of the HTP is flush with the fuselage
         z_cg_ht = height_max - root_chord * thickness_ratio / 2.0
         if tail_type == 1:
-            z_cg_ht += inputs["data:geometry:horizontal_tail:span"]
+            z_cg_ht += inputs["data:geometry:vertical_tail:span"]
 
         outputs["data:weight:airframe:horizontal_tail:CG:x"] = x_cg_ht_absolute
         outputs["data:weight:airframe:horizontal_tail:CG:z"] = z_cg_ht

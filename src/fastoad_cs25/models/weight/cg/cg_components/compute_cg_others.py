@@ -302,6 +302,10 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         self.add_input("data:geometry:wing:span", val=np.nan, units="m")
         self.add_input("data:weight:airframe:wing:CG:thickness", val=np.nan, units="m")
 
+        self.add_input(
+            "settings:geometry:fuselage:floor_height_ratio", val=1.0 / 3.0, units="unitless"
+        )
+
         self.add_output("data:weight:airframe:fuselage:CG:z", units="m")
         self.add_output("data:weight:airframe:landing_gear:front:CG:z", units="m")
         self.add_output("data:weight:airframe:landing_gear:main:CG:z", units="m")
@@ -370,20 +374,18 @@ class ComputeOthersCGZ(om.ExplicitComponent):
                 "data:weight:furniture:food_water:CG:z",
                 "data:weight:furniture:security_kit:CG:z",
                 "data:weight:furniture:toilets:CG:z",
-            ],
-            wrt="data:geometry:fuselage:maximum_height",
-            val=2.0 / 3.0,
-        )
-        self.declare_partials(
-            of=[
                 "data:weight:systems:power:electric_systems:CG:z",
                 "data:weight:systems:power:hydraulic_systems:CG:z",
                 "data:weight:systems:life_support:air_conditioning:CG:z",
                 "data:weight:systems:operational:cargo_hold:CG:z",
             ],
-            wrt="data:geometry:fuselage:maximum_height",
-            val=1.0 / 6.0,
+            wrt=[
+                "data:geometry:fuselage:maximum_height",
+                "settings:geometry:fuselage:floor_height_ratio",
+            ],
+            method="exact",
         )
+
         self.declare_partials(
             of="data:weight:systems:life_support:de-icing:CG:z",
             wrt="data:weight:airframe:wing:CG:z",
@@ -399,6 +401,8 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         z_cg_a1 = inputs["data:weight:airframe:wing:CG:z"]
         y_cg_a1 = 0.35 * inputs["data:geometry:wing:span"] / 2.0
         thickness_cg_a1 = inputs["data:weight:airframe:wing:CG:thickness"]
+
+        floor_height_ratio = inputs["settings:geometry:fuselage:floor_height_ratio"]
 
         # For the CG in the Z direction of many components, we will make a simple assumption that
         # the fuselage is divided in two part, under the floor which occupy the bottom third of
@@ -418,36 +422,62 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         outputs["data:weight:propulsion:fuel_lines:CG:z"] = z_cg_b1
         outputs["data:weight:propulsion:unconsumables:CG:z"] = z_cg_b1
 
-        # APU is flush with the top of the fuselage
-        outputs["data:weight:systems:power:auxiliary_power_unit:CG:z"] = 2.0 * fuselage_height / 3.0
-        outputs["data:weight:systems:power:electric_systems:CG:z"] = fuselage_height / 6.0
-        outputs["data:weight:systems:power:hydraulic_systems:CG:z"] = fuselage_height / 6.0
+        # APU is in the top part of the fuselage This formula comes from the fact that elements
+        # in the top half of the fuselage are at half the height of the top half of the fuselage
+        # (1.0 - floor_height_ratio) above the floor located at floor_height_ratio
+        outputs["data:weight:systems:power:auxiliary_power_unit:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        outputs["data:weight:systems:power:electric_systems:CG:z"] = (
+            fuselage_height * floor_height_ratio / 2.0
+        )
+        outputs["data:weight:systems:power:hydraulic_systems:CG:z"] = (
+            fuselage_height * floor_height_ratio / 2.0
+        )
         outputs["data:weight:systems:life_support:insulation:CG:z"] = fuselage_height / 2.0
-        outputs["data:weight:systems:life_support:air_conditioning:CG:z"] = fuselage_height / 6.0
+        outputs["data:weight:systems:life_support:air_conditioning:CG:z"] = (
+            fuselage_height * floor_height_ratio / 2.0
+        )
         outputs["data:weight:systems:life_support:de-icing:CG:z"] = z_cg_a1
-        outputs["data:weight:systems:life_support:cabin_lighting:CG:z"] = (
-            2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:life_support:cabin_lighting:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
         )
         outputs["data:weight:systems:life_support:seats_crew_accommodation:CG:z"] = (
-            2.0 * fuselage_height / 3.0
+            fuselage_height * (floor_height_ratio + (1.0 - floor_height_ratio) / 2.0)
         )
-        outputs["data:weight:systems:life_support:oxygen:CG:z"] = 2.0 * fuselage_height / 3.0
-        outputs["data:weight:systems:life_support:safety_equipment:CG:z"] = (
-            2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:life_support:oxygen:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
         )
-        outputs["data:weight:systems:navigation:CG:z"] = 2.0 * fuselage_height / 3.0
-        outputs["data:weight:systems:transmission:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:systems:life_support:safety_equipment:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        outputs["data:weight:systems:navigation:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        outputs["data:weight:systems:transmission:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
         outputs["data:weight:systems:operational:radar:CG:z"] = fuselage_height / 2.0
-        outputs["data:weight:systems:operational:cargo_hold:CG:z"] = fuselage_height / 6.0
+        outputs["data:weight:systems:operational:cargo_hold:CG:z"] = (
+            fuselage_height * floor_height_ratio / 2.0
+        )
 
-        outputs["data:weight:furniture:food_water:CG:z"] = 2.0 * fuselage_height / 3.0
-        outputs["data:weight:furniture:security_kit:CG:z"] = 2.0 * fuselage_height / 3.0
-        outputs["data:weight:furniture:toilets:CG:z"] = 2.0 * fuselage_height / 3.0
+        outputs["data:weight:furniture:food_water:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        outputs["data:weight:furniture:security_kit:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        outputs["data:weight:furniture:toilets:CG:z"] = fuselage_height * (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
+        fuselage_height = inputs["data:geometry:fuselage:maximum_height"]
         dihedral = inputs["data:geometry:wing:dihedral"]
         engine_y = inputs["data:geometry:propulsion:nacelle:y"]
         y_cg_a1 = 0.35 * inputs["data:geometry:wing:span"] / 2.0
+        floor_height_ratio = inputs["settings:geometry:fuselage:floor_height_ratio"]
 
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:wing:dihedral"] = (
             engine_y - y_cg_a1
@@ -460,4 +490,120 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         )
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:pylon:height"] = -0.5
         partials["data:weight:airframe:pylon:CG:z", "data:weight:airframe:wing:CG:z"] = 1.0
-        partials["data:weight:airframe:pylon:CG:z", "data:weight:airframe:wing:CG:thickness"] = 0.5
+        partials["data:weight:airframe:pylon:CG:z", "data:weight:airframe:wing:CG:thickness"] = -0.5
+
+        partials[
+            "data:weight:systems:power:auxiliary_power_unit:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:power:auxiliary_power_unit:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:life_support:cabin_lighting:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:life_support:cabin_lighting:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:life_support:seats_crew_accommodation:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:life_support:seats_crew_accommodation:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:life_support:oxygen:CG:z", "data:geometry:fuselage:maximum_height"
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:life_support:oxygen:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:life_support:safety_equipment:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:life_support:safety_equipment:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials["data:weight:systems:navigation:CG:z", "data:geometry:fuselage:maximum_height"] = (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        partials[
+            "data:weight:systems:navigation:CG:z", "settings:geometry:fuselage:floor_height_ratio"
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:transmission:CG:z", "data:geometry:fuselage:maximum_height"
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:systems:transmission:CG:z", "settings:geometry:fuselage:floor_height_ratio"
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:furniture:food_water:CG:z", "data:geometry:fuselage:maximum_height"
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:furniture:food_water:CG:z", "settings:geometry:fuselage:floor_height_ratio"
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:furniture:security_kit:CG:z", "data:geometry:fuselage:maximum_height"
+        ] = floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        partials[
+            "data:weight:furniture:security_kit:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials["data:weight:furniture:toilets:CG:z", "data:geometry:fuselage:maximum_height"] = (
+            floor_height_ratio + (1.0 - floor_height_ratio) / 2.0
+        )
+        partials[
+            "data:weight:furniture:toilets:CG:z", "settings:geometry:fuselage:floor_height_ratio"
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:power:electric_systems:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio / 2.0
+        partials[
+            "data:weight:systems:power:electric_systems:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:power:hydraulic_systems:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio / 2.0
+        partials[
+            "data:weight:systems:power:hydraulic_systems:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:life_support:air_conditioning:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio / 2.0
+        partials[
+            "data:weight:systems:life_support:air_conditioning:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
+
+        partials[
+            "data:weight:systems:operational:cargo_hold:CG:z",
+            "data:geometry:fuselage:maximum_height",
+        ] = floor_height_ratio / 2.0
+        partials[
+            "data:weight:systems:operational:cargo_hold:CG:z",
+            "settings:geometry:fuselage:floor_height_ratio",
+        ] = fuselage_height / 2.0
