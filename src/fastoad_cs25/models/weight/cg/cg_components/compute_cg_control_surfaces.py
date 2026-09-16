@@ -45,6 +45,8 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
         self.add_input("data:geometry:wing:tip:leading_edge:x:local", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:y", val=np.nan, units="m")
         self.add_input("data:geometry:wing:tip:thickness_ratio", val=np.nan, units="unitless")
+        self.add_input("data:weight:airframe:wing:CG:z", val=np.nan, units="m")
+        self.add_input("data:weight:airframe:wing:CG:thickness", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:flight_controls:CG:x", units="m")
         self.add_output("data:weight:airframe:flight_controls:CG:z", units="m")
@@ -93,10 +95,20 @@ class ComputeControlSurfacesCG(om.ExplicitComponent):
         l_cg_control = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, l_sorted)
         el_cg_control = np.interp(inputs["data:geometry:wing:MAC:y"], y_sorted, el_sorted)
         x_cg_control = x_leading_edge + l_cg_control
+        z_cg_wing = inputs["data:weight:airframe:wing:CG:z"]
+        thickness_cg_wing = inputs["data:weight:airframe:wing:CG:thickness"]
+        y_cg_wing = 0.35 * inputs["data:geometry:wing:tip:y"]
         z_cg_control = (
-            inputs["data:geometry:wing:MAC:y"] * np.sin(inputs["data:geometry:wing:dihedral"])
-            + l_cg_control * el_cg_control / 2.0
+            z_cg_wing
+            + (inputs["data:geometry:wing:MAC:y"] - y_cg_wing)
+            * np.sin(inputs["data:geometry:wing:dihedral"])
+            + np.sign(inputs["data:geometry:wing:dihedral"])
+            * (l_cg_control * el_cg_control - thickness_cg_wing)
+            / 2.0
         )
+        # By convention low wing have positive dihedral and high wing negative dihedral. Since for
+        # low wing we need to add the wing thickness and for high to subtract it this works out
+        # perfectly :)
 
         outputs["data:weight:airframe:flight_controls:CG:x"] = (
             inputs["data:geometry:wing:MAC:at25percent:x"]

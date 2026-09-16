@@ -253,7 +253,7 @@
           <mass units="kg" is_input="True">754.04<!--Mass of airframe_inp_data:weight:airframe:horizontal_tail:mass--></mass>
           <CG>
             <x units="m" is_input="True">34.58<!--horizontal tail (A31): X-position of center of gravity--></x>
-            <z units="m" is_input="True">8.73<!--horizontal tail (A31): Z-position of center of gravity--></z>
+            <z units="m" is_input="True">3.84<!--horizontal tail (A31): Z-position of center of gravity--></z>
           </CG>
         </horizontal_tail>
         <paint>
@@ -274,7 +274,7 @@
           <mass units="kg" is_input="True">515.53<!--Mass of airframe_inp_data:weight:airframe:vertical_tail:mass--></mass>
           <CG>
             <x units="m" is_input="True">35.11<!--vertical tail (A32): X-position of center of gravity--></x>
-            <z units="m" is_input="True">3.77<!--vertical tail (A32): Z-position of center of gravity--></z>
+            <z units="m" is_input="True">6.286<!--vertical tail (A32): Z-position of center of gravity--></z>
           </CG>
         </vertical_tail>
         <wing>
@@ -282,6 +282,7 @@
           <CG>
             <x units="m" is_input="True">16.67<!--wing (A1): X-position of center of gravity--></x>
             <z units="m" is_input="True">0.86<!--wing (A1): Z-position of center of gravity--></z>
+            <thickness units="m" is_input="True">0.562</thickness>
           </CG>
         </wing>
         <landing_gear>

@@ -52,6 +52,7 @@ class ComputeWingCG(om.ExplicitComponent):
 
         self.add_output("data:weight:airframe:wing:CG:x", units="m")
         self.add_output("data:weight:airframe:wing:CG:z", units="m")
+        self.add_output("data:weight:airframe:wing:CG:thickness", units="m")
 
     def setup_partials(self):
         self.declare_partials("data:weight:airframe:wing:CG:x", "*", method="fd")
@@ -101,7 +102,7 @@ class ComputeWingCG(om.ExplicitComponent):
             )
             z_cg = y_cg * np.sin(dihedral) + el_cg * l_cg / 2.0
 
-        elif wing_break < 0.35:
+        else:
             y_cg = span / 2 * 0.35
             l_cg = (y4_wing - y_cg) / (y4_wing - y3_wing) * (l3_wing - l4_wing) + l4_wing
             el_cg = (y4_wing - y_cg) / (y4_wing - y3_wing) * (
@@ -125,3 +126,4 @@ class ComputeWingCG(om.ExplicitComponent):
         outputs["data:weight:airframe:wing:CG:x"] = x_cg_absolute
         # This assumes a datum for z CG at the bottom of the fuselage
         outputs["data:weight:airframe:wing:CG:z"] = z_cg
+        outputs["data:weight:airframe:wing:CG:thickness"] = el_cg * l_cg
