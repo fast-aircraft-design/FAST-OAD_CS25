@@ -309,6 +309,9 @@ def test_compute_cg_z_others(input_xml):
     z_cg_d5 = problem.get_val("data:weight:furniture:toilets:CG:z", units="m")
     assert z_cg_d5 == pytest.approx(2.71, abs=1e-2)
 
+    data = problem.check_partials(out_stream=None)
+    assert_check_partials(data)
+
 
 def test_compute_cg_ratio_aft(input_xml):
     """Tests computation of center of gravity with aft estimation"""
@@ -798,6 +801,7 @@ def test_compute_ht_cg(input_xml):
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
         "data:geometry:horizontal_tail:span",
+        "data:geometry:vertical_tail:span",
         "data:geometry:horizontal_tail:thickness_ratio",
         "data:geometry:wing:MAC:at25percent:x",
         "data:geometry:horizontal_tail:sweep_25",
