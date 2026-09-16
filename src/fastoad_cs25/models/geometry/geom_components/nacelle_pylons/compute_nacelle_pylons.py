@@ -89,6 +89,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         self.add_input("data:geometry:wing:MAC:at25percent:x", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:length", val=np.nan, units="m")
         self.add_input("data:geometry:fuselage:maximum_width", val=np.nan, units="m")
+        self.add_input("data:weight:airframe:wing:CG:z", val=np.nan, units="m")
 
         self.add_output("data:geometry:propulsion:pylon:length", units="m")
         self.add_output("data:geometry:propulsion:fan:length", units="m")
@@ -134,6 +135,8 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                     "data:propulsion:MTO_thrust",
                     "data:geometry:propulsion:nacelle:y",
                     "data:geometry:wing:dihedral",
+                    "data:weight:airframe:wing:CG:z",
+                    "data:geometry:wing:span",
                 ],
                 method="fd",
             )
@@ -157,6 +160,7 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
                     "data:geometry:propulsion:engine:y_ratio",
                     "data:geometry:wing:span",
                     "data:geometry:wing:dihedral",
+                    "data:weight:airframe:wing:CG:z",
                 ],
                 method="fd",
             )
@@ -247,10 +251,15 @@ class ComputeNacelleAndPylonsGeometry(om.ExplicitComponent):
         outputs["data:weight:propulsion:engine:CG:x"] = x_nacelle_cg_absolute
         # From the AP avion, statistical value that gives the distance between nacelle and engine
         # CG and the wing.
+        z_cg_wing = inputs["data:weight:airframe:wing:CG:z"]
+        y_cg_wing = 0.35 * inputs["data:geometry:wing:span"] / 2
+
         outputs["data:weight:propulsion:engine:CG:z"] = (
-            y_nacelle * np.sin(inputs["data:geometry:wing:dihedral"])
+            z_cg_wing
+            + (y_nacelle - y_cg_wing) * np.sin(inputs["data:geometry:wing:dihedral"])
             - 0.7 * outputs["data:geometry:propulsion:nacelle:diameter"]
         )
+        # The 70% already includes half of the wing thickness
 
         outputs["data:geometry:propulsion:pylon:wetted_area"] = 0.35 * nacelle.wetted_area
         outputs["data:geometry:landing_gear:height"] = 1.4 * (

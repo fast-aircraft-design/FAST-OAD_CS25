@@ -299,6 +299,8 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         self.add_input("data:geometry:propulsion:pylon:height", val=np.nan, units="m")
         self.add_input("data:weight:propulsion:engine:CG:z", val=np.nan, units="m")
         self.add_input("data:weight:airframe:wing:CG:z", val=np.nan, units="m")
+        self.add_input("data:geometry:wing:span", val=np.nan, units="m")
+        self.add_input("data:weight:airframe:wing:CG:thickness", val=np.nan, units="m")
 
         self.add_output("data:weight:airframe:fuselage:CG:z", units="m")
         self.add_output("data:weight:airframe:landing_gear:front:CG:z", units="m")
@@ -342,6 +344,9 @@ class ComputeOthersCGZ(om.ExplicitComponent):
                 "data:geometry:propulsion:nacelle:y",
                 "data:geometry:wing:dihedral",
                 "data:geometry:propulsion:pylon:height",
+                "data:weight:airframe:wing:CG:z",
+                "data:geometry:wing:span",
+                "data:weight:airframe:wing:CG:thickness",
             ],
             method="exact",
         )
@@ -392,6 +397,8 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         pylon_height = inputs["data:geometry:propulsion:pylon:height"]
         z_cg_b1 = inputs["data:weight:propulsion:engine:CG:z"]
         z_cg_a1 = inputs["data:weight:airframe:wing:CG:z"]
+        y_cg_a1 = 0.35 * inputs["data:geometry:wing:span"] / 2.0
+        thickness_cg_a1 = inputs["data:weight:airframe:wing:CG:thickness"]
 
         # For the CG in the Z direction of many components, we will make a simple assumption that
         # the fuselage is divided in two part, under the floor which occupy the bottom third of
@@ -401,7 +408,10 @@ class ComputeOthersCGZ(om.ExplicitComponent):
         outputs["data:weight:airframe:landing_gear:front:CG:z"] = 0.0
         outputs["data:weight:airframe:landing_gear:main:CG:z"] = 0.0
         outputs["data:weight:airframe:pylon:CG:z"] = (
-            engine_y * np.sin(dihedral) - pylon_height / 2.0
+            z_cg_a1
+            - thickness_cg_a1 / 2.0
+            + (engine_y - y_cg_a1) * np.sin(dihedral)
+            - pylon_height / 2.0
         )
         outputs["data:weight:airframe:paint:CG:z"] = fuselage_height / 2.0
 
@@ -437,11 +447,17 @@ class ComputeOthersCGZ(om.ExplicitComponent):
     def compute_partials(self, inputs, partials, discrete_inputs=None):
         dihedral = inputs["data:geometry:wing:dihedral"]
         engine_y = inputs["data:geometry:propulsion:nacelle:y"]
+        y_cg_a1 = 0.35 * inputs["data:geometry:wing:span"] / 2.0
 
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:wing:dihedral"] = (
-            engine_y * np.cos(dihedral)
-        )
+            engine_y - y_cg_a1
+        ) * np.cos(dihedral)
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:nacelle:y"] = np.sin(
             dihedral
         )
+        partials["data:weight:airframe:pylon:CG:z", "data:geometry:wing:span"] = (
+            -0.35 / 2.0 * np.sin(dihedral)
+        )
         partials["data:weight:airframe:pylon:CG:z", "data:geometry:propulsion:pylon:height"] = -0.5
+        partials["data:weight:airframe:pylon:CG:z", "data:weight:airframe:wing:CG:z"] = 1.0
+        partials["data:weight:airframe:pylon:CG:z", "data:weight:airframe:wing:CG:thickness"] = 0.5

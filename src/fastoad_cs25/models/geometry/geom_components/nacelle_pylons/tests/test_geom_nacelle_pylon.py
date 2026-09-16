@@ -43,6 +43,7 @@ def test_geometry_nacelle_pylons():
     input_vars.add_output("data:geometry:wing:tip:chord", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:z", 0.86, units="m")
 
     component = ComputeNacelleAndPylonsGeometry()
 
@@ -69,7 +70,7 @@ def test_geometry_nacelle_pylons():
     x_cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
     assert x_cg_b1 == pytest.approx(13.5, abs=1e-1)
     z_cg_b1 = problem.get_val("data:weight:propulsion:engine:CG:z", units="m")
-    assert z_cg_b1 == pytest.approx(-0.96, abs=1e-2)
+    assert z_cg_b1 == pytest.approx(-0.68, abs=1e-2)
 
 
 def test_geometry_nacelle_pylons_absolute_engine_y():
@@ -94,6 +95,7 @@ def test_geometry_nacelle_pylons_absolute_engine_y():
     input_vars.add_output("data:geometry:wing:tip:chord", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:z", 0.86, units="m")
 
     component = ComputeNacelleAndPylonsGeometry(impose_absolute_engine=True)
 
@@ -120,7 +122,7 @@ def test_geometry_nacelle_pylons_absolute_engine_y():
     x_cg_b1 = problem["data:weight:propulsion:engine:CG:x"]
     assert x_cg_b1 == pytest.approx(13.5, abs=1e-1)
     z_cg_b1 = problem.get_val("data:weight:propulsion:engine:CG:z", units="m")
-    assert z_cg_b1 == pytest.approx(-0.96, abs=1e-2)
+    assert z_cg_b1 == pytest.approx(-0.68, abs=1e-2)
 
 
 def test_geometry_nacelle_pylons_no_kink():
@@ -145,6 +147,7 @@ def test_geometry_nacelle_pylons_no_kink():
     input_vars.add_output("data:geometry:wing:tip:chord", 1.7, units="m")
     input_vars.add_output("data:geometry:wing:tip:y", 17.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.8, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:z", 0.86, units="m")
 
     component = ComputeNacelleAndPylonsGeometry()
 

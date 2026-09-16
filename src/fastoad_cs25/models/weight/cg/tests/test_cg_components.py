@@ -74,11 +74,15 @@ def test_compute_cg_control_surfaces():
     input_vars.add_output("data:geometry:wing:tip:y", 0.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.0, units="unitless")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 0.0, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:z", 0.86, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:thickness", 0.562, units="m")
 
     problem = run_system(ComputeControlSurfacesCG(), input_vars)
 
     x_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:x", units="m")
     assert x_cg_a4 == pytest.approx(19.24, abs=1e-2)
+    z_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:z", units="m")
+    assert z_cg_a4 == pytest.approx(1.48, abs=1e-2)
 
     input_vars = om.IndepVarComp()
     input_vars.add_output("data:geometry:wing:dihedral", 6.0, units="deg")
@@ -98,13 +102,15 @@ def test_compute_cg_control_surfaces():
     input_vars.add_output("data:geometry:wing:tip:y", 17.0, units="m")
     input_vars.add_output("data:geometry:wing:tip:thickness_ratio", 0.11, units="unitless")
     input_vars.add_output("data:geometry:wing:tip:leading_edge:x:local", 7.8, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:z", 0.86, units="m")
+    input_vars.add_output("data:weight:airframe:wing:CG:thickness", 0.562, units="m")
 
     problem = run_system(ComputeControlSurfacesCG(), input_vars)
 
     x_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:x", units="m")
     assert x_cg_a4 == pytest.approx(20.18, abs=1e-2)
     z_cg_a4 = problem.get_val("data:weight:airframe:flight_controls:CG:z", units="m")
-    assert z_cg_a4 == pytest.approx(0.95, abs=1e-2)
+    assert z_cg_a4 == pytest.approx(0.91, abs=1e-2)
 
 
 def test_compute_cg_loadcases(input_xml):
@@ -241,6 +247,8 @@ def test_compute_cg_z_others(input_xml):
         "data:geometry:wing:dihedral",
         "data:weight:propulsion:engine:CG:z",
         "data:weight:airframe:wing:CG:z",
+        "data:weight:airframe:wing:CG:thickness",
+        "data:geometry:wing:span",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -533,7 +541,7 @@ def test_compute_cg_z(input_xml):
     problem = run_system(ComputeCGZ(), input_vars)
 
     cg_z = problem.get_val("data:weight:aircraft_empty:CG:z", units="m")
-    assert cg_z == pytest.approx(1.17, abs=1e-2)
+    assert cg_z == pytest.approx(1.10, abs=1e-2)
 
     data = problem.check_partials(out_stream=None)
     assert_check_partials(data, atol=1, rtol=1e-6)
@@ -631,6 +639,8 @@ def test_compute_cg_wing(input_xml):
     assert x_cg_wing == pytest.approx(16.67, abs=1e-2)
     z_cg_wing = problem.get_val("data:weight:airframe:wing:CG:z", units="m")
     assert z_cg_wing == pytest.approx(0.86, abs=1e-2)
+    thickness_cg_wing = problem.get_val("data:weight:airframe:wing:CG:thickness", units="m")
+    assert thickness_cg_wing == pytest.approx(0.562, abs=1e-2)
 
 
 def test_compute_global_cg(input_xml):
@@ -788,10 +798,12 @@ def test_compute_ht_cg(input_xml):
         "data:geometry:horizontal_tail:tip:chord",
         "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
         "data:geometry:horizontal_tail:span",
+        "data:geometry:horizontal_tail:thickness_ratio",
         "data:geometry:wing:MAC:at25percent:x",
         "data:geometry:horizontal_tail:sweep_25",
         "data:geometry:horizontal_tail:MAC:length",
         "data:geometry:fuselage:maximum_height",
+        "data:geometry:has_T_tail",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -801,6 +813,8 @@ def test_compute_ht_cg(input_xml):
 
     x_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:x", units="m")
     assert x_cg_a31 == pytest.approx(34.58, abs=1e-2)
+    z_cg_a31 = problem.get_val("data:weight:airframe:horizontal_tail:CG:z", units="m")
+    assert z_cg_a31 == pytest.approx(3.84, abs=1e-2)
 
 
 def test_compute_vt_cg(input_xml):
@@ -811,12 +825,10 @@ def test_compute_vt_cg(input_xml):
         "data:geometry:vertical_tail:tip:chord",
         "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
         "data:geometry:vertical_tail:span",
-        "data:geometry:vertical_tail:thickness_ratio",
         "data:geometry:wing:MAC:at25percent:x",
         "data:geometry:vertical_tail:sweep_25",
         "data:geometry:vertical_tail:MAC:length",
         "data:geometry:fuselage:maximum_height",
-        "data:geometry:has_T_tail",
         "data:geometry:horizontal_tail:span",
     ]
 
@@ -830,6 +842,8 @@ def test_compute_vt_cg(input_xml):
 
     x_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:x", units="m")
     assert x_cg_a32 == pytest.approx(34.265, abs=1e-3)
+    z_cg_a32 = problem.get_val("data:weight:airframe:vertical_tail:CG:z", units="m")
+    assert z_cg_a32 == pytest.approx(6.286, abs=1e-3)
 
 
 def test_geometry_update_mlg(input_xml):
