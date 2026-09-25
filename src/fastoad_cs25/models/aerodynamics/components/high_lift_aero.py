@@ -279,6 +279,12 @@ class ComputeDeltaHighLift(om.ExplicitComponent):
         ynew4 = interpolate.splev(flap_angle, tck4, der=0)
         ynew5 = interpolate.splev(flap_angle, tck5, der=0)
         zs = [0.15, 0.20, 0.25, 0.30, 0.40]
-        y_final = [ynew1, ynew2, ynew3, ynew4, ynew5]
+        y_final = [
+            scalarize(ynew1),
+            scalarize(ynew2),
+            scalarize(ynew3),
+            scalarize(ynew4),
+            scalarize(ynew5),
+        ]
         tck6 = interpolate.splrep(zs, y_final, s=0)
         return interpolate.splev(ratio_cf_flap, tck6, der=0)
