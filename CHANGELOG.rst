@@ -2,6 +2,20 @@
 Changelog
 =========
 
+Version 0.9.1
+=============
+
+## Added:
+
+- Add minimal value to virtual root chord based on span. (#95)
+- Added units for takeoff Mach number. (#98)
+- Rework of CG X computation. (#100)
+- Scalarize the outputs of interpolate splev. (#102)
+
+Modified:
+
+- Removed scipy interp1d. (#99)
+
 Version 0.9.0
 =============
 
