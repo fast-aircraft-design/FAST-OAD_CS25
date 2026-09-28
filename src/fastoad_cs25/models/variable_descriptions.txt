@@ -73,6 +73,7 @@ data:geometry:cabin:containers:count_by_row || number of cargo containers along 
 data:geometry:cabin:crew_count:commercial || number of commercial crew members
 data:geometry:cabin:crew_count:technical || number of technical crew members
 data:geometry:cabin:exit_width || width of exits
+data:geometry:cabin:floor_height || height of the cabin floor above the bottom of the fuselage
 data:geometry:cabin:length || cabin length
 data:geometry:cabin:pallet_count || number of pallet in cargo hold
 data:geometry:cabin:seat_rows:count || number of seat rows in the cabin
@@ -124,8 +125,8 @@ data:geometry:propulsion:nacelle:diameter || nacelle diameter
 data:geometry:propulsion:nacelle:length || nacelle length
 data:geometry:propulsion:nacelle:wetted_area || wetted area of nacelle
 data:geometry:propulsion:nacelle:y || Y-position of nacelle center
-data:geometry:propulsion:pylon:length || pylon length
-data:geometry:propulsion:pylon:height || pylon height
+data:geometry:propulsion:pylon:length || pylon length, between the rear-most point of the wing attachment and the front-most point of the nacelle attachment
+data:geometry:propulsion:pylon:height || pylon height, between the wing pressure side and the center of the nacelle
 data:geometry:propulsion:pylon:wetted_area || wetted area of pylon
 data:geometry:slat:chord_ratio || mean value of slat chord)/(section chord)
 data:geometry:slat:span_ratio || ratio (width of slats)/(total span)
@@ -160,7 +161,7 @@ data:geometry:wing:aspect_ratio || wing aspect ratio
 data:geometry:wing:b_50 || actual length between root and tip along 50% of chord
 data:geometry:wing:center:chord || chord length at wing Y axis of symmetry (fuselage center line)
 data:geometry:wing:center:leading_edge:x:local || X-position of leading edge at wing center w.r.t. leading edge of root chord
-data:geometry:wing:dihedral || dihedral angle of the wing
+data:geometry:wing:dihedral || dihedral angle of the wing, currently only used for Z-CG computations
 data:geometry:wing:kink:chord || chord length at wing kink
 data:geometry:wing:kink:leading_edge:x:local || X-position of leading edge at wing kink w.r.t. leading edge of root chord
 data:geometry:wing:kink:span_ratio || ratio (Y-position of kink)/(semi-span)

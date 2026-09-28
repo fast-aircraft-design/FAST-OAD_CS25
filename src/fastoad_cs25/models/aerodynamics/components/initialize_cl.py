@@ -65,6 +65,8 @@ class InitializeClPolar(om.ExplicitComponent):
         ]
 
         # FIXME: initialization of CL range should be done more directly, without these coefficients
+        # Even though the wing dihedral angle is a variable, we will assume its influence on the
+        # CL to be negligible due to typically low values
         cl = np.arange(0.0, 1.5, 0.01) * k_cl * k_winglet_cl + offset_cl + offset_winglet_cl
 
         if self.options["low_speed_aero"]:

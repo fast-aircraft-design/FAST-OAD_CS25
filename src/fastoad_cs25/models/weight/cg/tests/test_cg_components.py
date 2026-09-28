@@ -249,6 +249,8 @@ def test_compute_cg_z_others(input_xml):
         "data:weight:airframe:wing:CG:z",
         "data:weight:airframe:wing:CG:thickness",
         "data:geometry:wing:span",
+        "data:geometry:cabin:floor_height",
+        "data:weight:furniture:passenger_seats:CG:z",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -288,7 +290,7 @@ def test_compute_cg_z_others(input_xml):
     z_cg_c25 = problem.get_val(
         "data:weight:systems:life_support:seats_crew_accommodation:CG:z", units="m"
     )
-    assert z_cg_c25 == pytest.approx(2.71, abs=1e-2)
+    assert z_cg_c25 == pytest.approx(1.90, abs=1e-2)
     z_cg_c26 = problem.get_val("data:weight:systems:life_support:oxygen:CG:z", units="m")
     assert z_cg_c26 == pytest.approx(2.71, abs=1e-2)
     z_cg_c27 = problem.get_val("data:weight:systems:life_support:safety_equipment:CG:z", units="m")
@@ -307,7 +309,7 @@ def test_compute_cg_z_others(input_xml):
     z_cg_d4 = problem.get_val("data:weight:furniture:security_kit:CG:z", units="m")
     assert z_cg_d4 == pytest.approx(2.71, abs=1e-2)
     z_cg_d5 = problem.get_val("data:weight:furniture:toilets:CG:z", units="m")
-    assert z_cg_d5 == pytest.approx(2.71, abs=1e-2)
+    assert z_cg_d5 == pytest.approx(1.90, abs=1e-2)
 
     data = problem.check_partials(out_stream=None)
     assert_check_partials(data)
@@ -537,6 +539,8 @@ def test_compute_cg_z(input_xml):
         "data:weight:furniture:food_water:mass",
         "data:weight:furniture:security_kit:mass",
         "data:weight:furniture:toilets:mass",
+        "data:geometry:cabin:floor_height",
+        "data:weight:furniture:passenger_seats:CG:z",
     ]
 
     input_vars = input_xml.read(only=input_list).to_ivc()
@@ -544,7 +548,7 @@ def test_compute_cg_z(input_xml):
     problem = run_system(ComputeCGZ(), input_vars)
 
     cg_z = problem.get_val("data:weight:aircraft_empty:CG:z", units="m")
-    assert cg_z == pytest.approx(1.10, abs=1e-2)
+    assert cg_z == pytest.approx(1.08, abs=1e-2)
 
     data = problem.check_partials(out_stream=None)
     assert_check_partials(data, atol=1, rtol=1e-6)
