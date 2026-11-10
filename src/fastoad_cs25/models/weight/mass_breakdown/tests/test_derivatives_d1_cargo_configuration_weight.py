@@ -38,7 +38,9 @@ class TestCargoConfigurationWeightDerivatives:
         return run_system(CargoConfigurationWeight(), ivc)
 
     def test_partials(self):
-        assert_component_derivatives(self._get_problem())
+        problem = self._get_problem()
+        problem.set_val("data:geometry:cabin:seats:economical:count_by_row", 4.0)
+        assert_component_derivatives(problem)
 
     def test_partials_for_cargo_configuration(self):
         problem = self._get_problem()
