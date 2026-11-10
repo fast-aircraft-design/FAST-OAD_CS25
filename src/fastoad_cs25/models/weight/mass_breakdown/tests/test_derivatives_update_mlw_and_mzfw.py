@@ -34,7 +34,13 @@ class TestUpdateMLWandMZFWDerivatives:
 
     @staticmethod
     def _get_problem():
-        ivc = get_ivc_from_xml(XML_PATH)
+        ivc = get_ivc_from_xml(
+            XML_PATH,
+            ignore=[
+                "data:weight:aircraft:MLW",
+                "data:weight:aircraft:MZFW",
+            ],
+        )
         ivc.add_output("data:weight:aircraft:OWE", 41591, units="kg")
         return run_system(UpdateMLWandMZFW(), ivc)
 
