@@ -33,8 +33,7 @@ class ComputeHTSweep(om.ExplicitComponent):
         self.add_output("data:geometry:horizontal_tail:sweep_100", units="deg")
 
     def setup_partials(self):
-        self.declare_partials("data:geometry:horizontal_tail:sweep_0", "*", method="fd")
-        self.declare_partials("data:geometry:horizontal_tail:sweep_100", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         b_h = inputs["data:geometry:horizontal_tail:span"]
@@ -55,3 +54,38 @@ class ComputeHTSweep(om.ExplicitComponent):
 
         outputs["data:geometry:horizontal_tail:sweep_0"] = sweep_0_ht
         outputs["data:geometry:horizontal_tail:sweep_100"] = sweep_100_ht
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        b_h = inputs["data:geometry:horizontal_tail:span"]
+        root_chord = inputs["data:geometry:horizontal_tail:center:chord"]
+        tip_chord = inputs["data:geometry:horizontal_tail:tip:chord"]
+        sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
+
+        half_span = b_h / 2.0
+        delta_chord = root_chord - tip_chord
+        tan_sweep = np.tan(sweep_25_ht)
+        factor = 180.0 / np.pi
+        d_tan_d_sweep = 1.0 / np.cos(sweep_25_ht) ** 2
+
+        sweep_0 = "data:geometry:horizontal_tail:sweep_0"
+        sweep_100 = "data:geometry:horizontal_tail:sweep_100"
+
+        for output_name, coefficient in ((sweep_0, 0.25), (sweep_100, -0.75)):
+            argument = tan_sweep + coefficient * delta_chord / half_span
+            d_output_d_argument = factor / (1.0 + argument**2)
+            d_argument_d_root = coefficient / half_span
+            d_argument_d_tip = -coefficient / half_span
+            d_argument_d_span = -coefficient * delta_chord / (2.0 * half_span**2)
+
+            partials[output_name, "data:geometry:horizontal_tail:center:chord"] = (
+                d_output_d_argument * d_argument_d_root
+            )
+            partials[output_name, "data:geometry:horizontal_tail:tip:chord"] = (
+                d_output_d_argument * d_argument_d_tip
+            )
+            partials[output_name, "data:geometry:horizontal_tail:span"] = (
+                d_output_d_argument * d_argument_d_span
+            )
+            partials[output_name, "data:geometry:horizontal_tail:sweep_25"] = (
+                d_output_d_argument * d_tan_d_sweep
+            )
