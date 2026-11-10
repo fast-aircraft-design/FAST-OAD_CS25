@@ -73,9 +73,24 @@ class MaxCGRatiosForLoadCases(om.ExplicitComponent):
         self.add_output("data:weight:aircraft:load_cases:CG:MAC_position:maximum", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials(
+            "data:weight:aircraft:load_cases:CG:MAC_position:maximum",
+            "data:weight:aircraft:load_cases:CG:MAC_position",
+            method="exact",
+        )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         outputs["data:weight:aircraft:load_cases:CG:MAC_position:maximum"] = (
             np.nanmax(inputs["data:weight:aircraft:load_cases:CG:MAC_position"]),
         )
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        values = inputs["data:weight:aircraft:load_cases:CG:MAC_position"]
+        max_index = int(np.nanargmax(values))
+
+        jacobian = np.zeros((1, values.size))
+        jacobian[0, max_index] = 1.0
+        partials[
+            "data:weight:aircraft:load_cases:CG:MAC_position:maximum",
+            "data:weight:aircraft:load_cases:CG:MAC_position",
+        ] = jacobian
