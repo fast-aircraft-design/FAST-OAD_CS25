@@ -35,8 +35,12 @@ class ComputeVTDistance(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials(
             "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
-            ["data:geometry:fuselage:length", "data:geometry:wing:MAC:at25percent:x"],
-            method="fd",
+            [
+                "data:geometry:fuselage:length",
+                "data:geometry:wing:MAC:at25percent:x",
+                "settings:geometry:vertical_tail:position_ratio_on_fuselage",
+            ],
+            method="exact",
         )
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -47,3 +51,14 @@ class ComputeVTDistance(om.ExplicitComponent):
         lp_vt = vtp_aero_center_ratio * fus_length - fa_length
 
         outputs["data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"] = lp_vt
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        fus_length = inputs["data:geometry:fuselage:length"]
+        vtp_aero_center_ratio = inputs["settings:geometry:vertical_tail:position_ratio_on_fuselage"]
+
+        output_name = "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"
+        partials[output_name, "data:geometry:fuselage:length"] = vtp_aero_center_ratio
+        partials[output_name, "settings:geometry:vertical_tail:position_ratio_on_fuselage"] = (
+            fus_length
+        )
+        partials[output_name, "data:geometry:wing:MAC:at25percent:x"] = -1.0
