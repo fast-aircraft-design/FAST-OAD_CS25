@@ -39,10 +39,7 @@ class ComputeToCWing(om.ExplicitComponent):
         self.add_output("data:geometry:wing:tip:thickness_ratio", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("data:geometry:wing:thickness_ratio", "*", method="fd")
-        self.declare_partials("data:geometry:wing:root:thickness_ratio", "*", method="fd")
-        self.declare_partials("data:geometry:wing:kink:thickness_ratio", "*", method="fd")
-        self.declare_partials("data:geometry:wing:tip:thickness_ratio", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         cruise_mach = inputs["data:TLAR:cruise_mach"]
@@ -62,3 +59,30 @@ class ComputeToCWing(om.ExplicitComponent):
         outputs["data:geometry:wing:root:thickness_ratio"] = el_emp
         outputs["data:geometry:wing:kink:thickness_ratio"] = el_break
         outputs["data:geometry:wing:tip:thickness_ratio"] = el_ext
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        cruise_mach = inputs["data:TLAR:cruise_mach"]
+        sweep_25 = inputs["data:geometry:wing:sweep_25"]
+        wing_break = inputs["data:geometry:wing:kink:span_ratio"]
+
+        sweep_rad = sweep_25 / 180.0 * np.pi
+        sqrt_cos_sweep = np.sqrt(np.cos(sweep_rad))
+        d_el_aero_d_mach = -sqrt_cos_sweep
+        d_el_aero_d_sweep = (
+            (cruise_mach + 0.02) * 0.5 * np.sin(sweep_rad) / sqrt_cos_sweep * np.pi / 180.0
+        )
+
+        thickness = "data:geometry:wing:thickness_ratio"
+        root = "data:geometry:wing:root:thickness_ratio"
+        kink = "data:geometry:wing:kink:thickness_ratio"
+        tip = "data:geometry:wing:tip:thickness_ratio"
+
+        partials[thickness, "data:TLAR:cruise_mach"] = d_el_aero_d_mach
+        partials[thickness, "data:geometry:wing:sweep_25"] = d_el_aero_d_sweep
+        partials[root, "data:TLAR:cruise_mach"] = 1.24 * d_el_aero_d_mach
+        partials[root, "data:geometry:wing:sweep_25"] = 1.24 * d_el_aero_d_sweep
+        kink_factor = 1.24 if wing_break == 0.0 else 0.94
+        partials[kink, "data:TLAR:cruise_mach"] = kink_factor * d_el_aero_d_mach
+        partials[kink, "data:geometry:wing:sweep_25"] = kink_factor * d_el_aero_d_sweep
+        partials[tip, "data:TLAR:cruise_mach"] = 0.86 * d_el_aero_d_mach
+        partials[tip, "data:geometry:wing:sweep_25"] = 0.86 * d_el_aero_d_sweep
