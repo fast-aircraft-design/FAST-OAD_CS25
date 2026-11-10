@@ -44,7 +44,7 @@ class ComputePayload(om.ExplicitComponent):
         self.add_output("data:weight:aircraft:max_payload", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         npax = inputs["data:TLAR:NPAX"]
@@ -53,3 +53,16 @@ class ComputePayload(om.ExplicitComponent):
 
         outputs["data:weight:aircraft:payload"] = npax * mass_per_pax
         outputs["data:weight:aircraft:max_payload"] = npax * max_mass_per_pax
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        npax = inputs["data:TLAR:NPAX"]
+        mass_per_pax = inputs["settings:weight:aircraft:payload:design_mass_per_passenger"]
+        max_mass_per_pax = inputs["settings:weight:aircraft:payload:max_mass_per_passenger"]
+
+        payload = "data:weight:aircraft:payload"
+        max_payload = "data:weight:aircraft:max_payload"
+
+        partials[payload, "data:TLAR:NPAX"] = mass_per_pax
+        partials[payload, "settings:weight:aircraft:payload:design_mass_per_passenger"] = npax
+        partials[max_payload, "data:TLAR:NPAX"] = max_mass_per_pax
+        partials[max_payload, "settings:weight:aircraft:payload:max_mass_per_passenger"] = npax
