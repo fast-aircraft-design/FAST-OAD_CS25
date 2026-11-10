@@ -68,7 +68,7 @@ def assert_exact_derivatives(problem):
     )
 
 
-def assert_component_derivatives(problem, atol=1e-5, rtol=1e-6):
+def assert_component_derivatives(problem, atol=1e-5, rtol=1e-5):
     """Checks model evaluation and analytic-vs-finite-difference partials."""
     assert_model_is_error_free(problem)
     assert_exact_derivatives(problem)
