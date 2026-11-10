@@ -41,7 +41,7 @@ class FuelLinesWeight(om.ExplicitComponent):
         self.add_output("data:weight:propulsion:fuel_lines:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         b_50 = inputs["data:geometry:wing:b_50"]
@@ -52,3 +52,26 @@ class FuelLinesWeight(om.ExplicitComponent):
 
         temp_b2 = 0.02 * weight_engines + 2.0 * b_50 + 0.35 * mfw**0.66
         outputs["data:weight:propulsion:fuel_lines:mass"] = k_b2 * temp_b2 + offset_b2
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        b_50 = inputs["data:geometry:wing:b_50"]
+        mfw = inputs["data:weight:aircraft:MFW"]
+        k_b2 = inputs["tuning:weight:propulsion:fuel_lines:mass:k"]
+        weight_engines = inputs["data:weight:propulsion:engine:mass"]
+
+        temp_b2 = 0.02 * weight_engines + 2.0 * b_50 + 0.35 * mfw**0.66
+
+        partials["data:weight:propulsion:fuel_lines:mass", "data:weight:propulsion:engine:mass"] = (
+            k_b2 * 0.02
+        )
+        partials["data:weight:propulsion:fuel_lines:mass", "data:geometry:wing:b_50"] = k_b2 * 2.0
+        partials["data:weight:propulsion:fuel_lines:mass", "data:weight:aircraft:MFW"] = (
+            k_b2 * 0.35 * 0.66 * mfw ** (-0.34)
+        )
+        partials[
+            "data:weight:propulsion:fuel_lines:mass", "tuning:weight:propulsion:fuel_lines:mass:k"
+        ] = temp_b2
+        partials[
+            "data:weight:propulsion:fuel_lines:mass",
+            "tuning:weight:propulsion:fuel_lines:mass:offset",
+        ] = 1.0
