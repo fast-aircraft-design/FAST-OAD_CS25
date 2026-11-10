@@ -39,7 +39,7 @@ class UpdateMLG(om.ExplicitComponent):
         self.add_output("data:weight:airframe:landing_gear:main:CG:x", units="m")
 
     def setup_partials(self):
-        self.declare_partials("data:weight:airframe:landing_gear:main:CG:x", "*", method="fd")
+        self.declare_partials("data:weight:airframe:landing_gear:main:CG:x", "*", method="exact")
 
     def compute(self, inputs, outputs):
         l0_wing = inputs["data:geometry:wing:MAC:length"]
@@ -53,3 +53,24 @@ class UpdateMLG(om.ExplicitComponent):
         cg_a51 = (x_cg - front_lg_weight_ratio * cg_a52) / (1 - front_lg_weight_ratio)
 
         outputs["data:weight:airframe:landing_gear:main:CG:x"] = cg_a51
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        l0_wing = inputs["data:geometry:wing:MAC:length"]
+        fa_length = inputs["data:geometry:wing:MAC:at25percent:x"]
+        cg_ratio = inputs["data:weight:aircraft:CG:aft:MAC_position"]
+        cg_a52 = inputs["data:weight:airframe:landing_gear:front:CG:x"]
+        front_lg_weight_ratio = inputs["settings:weight:airframe:landing_gear:front:weight_ratio"]
+
+        x_cg = fa_length - 0.25 * l0_wing + cg_ratio * l0_wing
+        denominator = 1.0 - front_lg_weight_ratio
+
+        output_name = "data:weight:airframe:landing_gear:main:CG:x"
+        partials[output_name, "data:geometry:wing:MAC:at25percent:x"] = 1.0 / denominator
+        partials[output_name, "data:geometry:wing:MAC:length"] = (-0.25 + cg_ratio) / denominator
+        partials[output_name, "data:weight:aircraft:CG:aft:MAC_position"] = l0_wing / denominator
+        partials[output_name, "data:weight:airframe:landing_gear:front:CG:x"] = (
+            -front_lg_weight_ratio / denominator
+        )
+        partials[output_name, "settings:weight:airframe:landing_gear:front:weight_ratio"] = (
+            x_cg - cg_a52
+        ) / denominator**2
