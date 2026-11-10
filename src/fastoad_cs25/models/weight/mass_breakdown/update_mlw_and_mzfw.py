@@ -38,7 +38,7 @@ class UpdateMLWandMZFW(ExplicitComponent):
         self.add_output("data:weight:aircraft:MLW", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         owe = inputs["data:weight:aircraft:OWE"]
@@ -50,3 +50,15 @@ class UpdateMLWandMZFW(ExplicitComponent):
 
         outputs["data:weight:aircraft:MZFW"] = mzfw
         outputs["data:weight:aircraft:MLW"] = mlw
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        owe = inputs["data:weight:aircraft:OWE"]
+        max_pl = inputs["data:weight:aircraft:max_payload"]
+        mlw_mzfw_ratio = inputs["tuning:weight:aircraft:mlw_mzfw_ratio"]
+        mzfw = owe + max_pl
+
+        partials["data:weight:aircraft:MZFW", "data:weight:aircraft:OWE"] = 1.0
+        partials["data:weight:aircraft:MZFW", "data:weight:aircraft:max_payload"] = 1.0
+        partials["data:weight:aircraft:MLW", "data:weight:aircraft:OWE"] = mlw_mzfw_ratio
+        partials["data:weight:aircraft:MLW", "data:weight:aircraft:max_payload"] = mlw_mzfw_ratio
+        partials["data:weight:aircraft:MLW", "tuning:weight:aircraft:mlw_mzfw_ratio"] = mzfw
