@@ -96,7 +96,8 @@ class WingWeight(om.ExplicitComponent):
         mlw = inputs["data:weight:aircraft:MLW"]
         max_nm = inputs["data:mission:sizing:cs25:sizing_load"] / g
         engine_count = inputs["data:geometry:propulsion:engine:count"]
-        engine_on_fuselage = inputs["data:geometry:propulsion:layout"] == 2
+        propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
+        engine_on_fuselage = propulsion_layout == 2
         if engine_on_fuselage:
             k_voil = 1.1
         elif engine_count >= 4:
