@@ -42,7 +42,7 @@ class NavigationSystemsWeight(om.ExplicitComponent):
         self.add_output("data:weight:systems:navigation:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tlar_range = inputs["data:TLAR:range"]
@@ -62,3 +62,34 @@ class NavigationSystemsWeight(om.ExplicitComponent):
 
         temp_c3 = base_weight + 0.033 * fuselage_length * b_50
         outputs["data:weight:systems:navigation:mass"] = k_c3 * temp_c3 + offset_c3
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        tlar_range = inputs["data:TLAR:range"]
+        fuselage_length = inputs["data:geometry:fuselage:length"]
+        b_50 = inputs["data:geometry:wing:b_50"]
+        k_c3 = inputs["tuning:weight:systems:navigation:mass:k"]
+
+        if tlar_range in RangeCategory.SHORT:
+            base_weight = 150.0
+        elif tlar_range in RangeCategory.SHORT_MEDIUM:
+            base_weight = 450.0
+        elif tlar_range in RangeCategory.MEDIUM:
+            base_weight = 700.0
+        else:
+            base_weight = 800.0
+
+        temp_c3 = base_weight + 0.033 * fuselage_length * b_50
+
+        partials["data:weight:systems:navigation:mass", "data:geometry:fuselage:length"] = (
+            k_c3 * 0.033 * b_50
+        )
+        partials["data:weight:systems:navigation:mass", "data:geometry:wing:b_50"] = (
+            k_c3 * 0.033 * fuselage_length
+        )
+        partials[
+            "data:weight:systems:navigation:mass", "tuning:weight:systems:navigation:mass:k"
+        ] = temp_c3
+        partials[
+            "data:weight:systems:navigation:mass",
+            "tuning:weight:systems:navigation:mass:offset",
+        ] = 1.0
