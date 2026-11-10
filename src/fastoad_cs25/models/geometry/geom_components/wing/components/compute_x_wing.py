@@ -35,28 +35,7 @@ class ComputeXWing(om.ExplicitComponent):
         self.add_output("data:geometry:wing:tip:leading_edge:x:local", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:geometry:wing:kink:leading_edge:x:local",
-            [
-                "data:geometry:wing:root:virtual_chord",
-                "data:geometry:wing:root:y",
-                "data:geometry:wing:kink:y",
-                "data:geometry:wing:kink:chord",
-                "data:geometry:wing:sweep_25",
-            ],
-            method="fd",
-        )
-        self.declare_partials(
-            "data:geometry:wing:tip:leading_edge:x:local",
-            [
-                "data:geometry:wing:root:virtual_chord",
-                "data:geometry:wing:root:y",
-                "data:geometry:wing:tip:y",
-                "data:geometry:wing:tip:chord",
-                "data:geometry:wing:sweep_25",
-            ],
-            method="fd",
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         y2_wing = inputs["data:geometry:wing:root:y"]
@@ -80,3 +59,28 @@ class ComputeXWing(om.ExplicitComponent):
 
         outputs["data:geometry:wing:kink:leading_edge:x:local"] = x3_wing
         outputs["data:geometry:wing:tip:leading_edge:x:local"] = x4_wing
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        y2_wing = inputs["data:geometry:wing:root:y"]
+        y3_wing = inputs["data:geometry:wing:kink:y"]
+        y4_wing = inputs["data:geometry:wing:tip:y"]
+        sweep_25 = inputs["data:geometry:wing:sweep_25"]
+
+        sweep_rad = sweep_25 / 180.0 * np.pi
+        tan_sweep = np.tan(sweep_rad)
+        d_tan_d_sweep = np.pi / 180.0 / np.cos(sweep_rad) ** 2
+
+        x3 = "data:geometry:wing:kink:leading_edge:x:local"
+        x4 = "data:geometry:wing:tip:leading_edge:x:local"
+
+        partials[x3, "data:geometry:wing:root:virtual_chord"] = 0.25
+        partials[x3, "data:geometry:wing:kink:chord"] = -0.25
+        partials[x3, "data:geometry:wing:kink:y"] = tan_sweep
+        partials[x3, "data:geometry:wing:root:y"] = -tan_sweep
+        partials[x3, "data:geometry:wing:sweep_25"] = (y3_wing - y2_wing) * d_tan_d_sweep
+
+        partials[x4, "data:geometry:wing:root:virtual_chord"] = 0.25
+        partials[x4, "data:geometry:wing:tip:chord"] = -0.25
+        partials[x4, "data:geometry:wing:tip:y"] = tan_sweep
+        partials[x4, "data:geometry:wing:root:y"] = -tan_sweep
+        partials[x4, "data:geometry:wing:sweep_25"] = (y4_wing - y2_wing) * d_tan_d_sweep
