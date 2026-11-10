@@ -40,7 +40,7 @@ class FlightKitWeight(om.ExplicitComponent):
         self.add_output("data:weight:systems:flight_kit:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tlar_range = inputs["data:TLAR:range"]
@@ -53,3 +53,18 @@ class FlightKitWeight(om.ExplicitComponent):
             temp_c6 = 45.0
 
         outputs["data:weight:systems:flight_kit:mass"] = k_c6 * temp_c6 + offset_c6
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        tlar_range = inputs["data:TLAR:range"]
+
+        if tlar_range <= RangeCategory.SHORT.max():
+            temp_c6 = 10.0
+        else:
+            temp_c6 = 45.0
+
+        partials[
+            "data:weight:systems:flight_kit:mass", "tuning:weight:systems:flight_kit:mass:k"
+        ] = temp_c6
+        partials[
+            "data:weight:systems:flight_kit:mass", "tuning:weight:systems:flight_kit:mass:offset"
+        ] = 1.0
