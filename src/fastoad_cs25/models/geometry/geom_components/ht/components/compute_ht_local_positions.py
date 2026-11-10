@@ -37,15 +37,7 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         self.add_output("data:geometry:horizontal_tail:MAC:leading_edge:x:local", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:geometry:horizontal_tail:tip:leading_edge:x:local", "*", method="fd"
-        )
-        self.declare_partials(
-            "data:geometry:horizontal_tail:center:leading_edge:x:local", "*", method="fd"
-        )
-        self.declare_partials(
-            "data:geometry:horizontal_tail:MAC:leading_edge:x:local", "*", method="fd"
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         y_mac = inputs["data:geometry:horizontal_tail:MAC:y"]
@@ -61,3 +53,29 @@ class ComputeHTLocalPositions(om.ExplicitComponent):
         outputs["data:geometry:horizontal_tail:tip:leading_edge:x:local"] = x_tip
         outputs["data:geometry:horizontal_tail:center:leading_edge:x:local"] = x_root
         outputs["data:geometry:horizontal_tail:MAC:leading_edge:x:local"] = x_mac
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        y_mac = inputs["data:geometry:horizontal_tail:MAC:y"]
+        b_h = inputs["data:geometry:horizontal_tail:span"]
+        sweep_0_ht = inputs["data:geometry:horizontal_tail:sweep_0"]
+
+        tan_sweep = np.tan(sweep_0_ht)
+        inv_cos2 = 1.0 / np.cos(sweep_0_ht) ** 2
+
+        x_tip = "data:geometry:horizontal_tail:tip:leading_edge:x:local"
+        x_root = "data:geometry:horizontal_tail:center:leading_edge:x:local"
+        x_mac = "data:geometry:horizontal_tail:MAC:leading_edge:x:local"
+
+        partials[x_mac, "data:geometry:horizontal_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_mac, "data:geometry:horizontal_tail:MAC:length"] = -0.25
+
+        partials[x_root, "data:geometry:horizontal_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_root, "data:geometry:horizontal_tail:MAC:length"] = -0.25
+        partials[x_root, "data:geometry:horizontal_tail:MAC:y"] = -tan_sweep
+        partials[x_root, "data:geometry:horizontal_tail:sweep_0"] = -y_mac * inv_cos2
+
+        partials[x_tip, "data:geometry:horizontal_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_tip, "data:geometry:horizontal_tail:MAC:length"] = -0.25
+        partials[x_tip, "data:geometry:horizontal_tail:MAC:y"] = -tan_sweep
+        partials[x_tip, "data:geometry:horizontal_tail:span"] = 0.5 * tan_sweep
+        partials[x_tip, "data:geometry:horizontal_tail:sweep_0"] = (0.5 * b_h - y_mac) * inv_cos2
