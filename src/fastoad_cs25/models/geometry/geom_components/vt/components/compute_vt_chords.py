@@ -32,13 +32,7 @@ class ComputeVTChords(om.ExplicitComponent):
         self.add_output("data:geometry:vertical_tail:tip:chord", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:geometry:vertical_tail:span",
-            ["data:geometry:vertical_tail:aspect_ratio", "data:geometry:vertical_tail:area"],
-            method="fd",
-        )
-        self.declare_partials("data:geometry:vertical_tail:root:chord", "*", method="fd")
-        self.declare_partials("data:geometry:vertical_tail:tip:chord", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         lambda_vt = inputs["data:geometry:vertical_tail:aspect_ratio"]
@@ -52,3 +46,39 @@ class ComputeVTChords(om.ExplicitComponent):
         outputs["data:geometry:vertical_tail:span"] = b_v
         outputs["data:geometry:vertical_tail:root:chord"] = root_chord
         outputs["data:geometry:vertical_tail:tip:chord"] = tip_chord
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        lambda_vt = inputs["data:geometry:vertical_tail:aspect_ratio"]
+        s_v = inputs["data:geometry:vertical_tail:area"]
+        taper_v = inputs["data:geometry:vertical_tail:taper_ratio"]
+
+        product = lambda_vt * s_v
+        if product > 0.1:
+            b_v = np.sqrt(product)
+            d_b_d_area = 0.5 * lambda_vt / b_v
+            d_b_d_aspect_ratio = 0.5 * s_v / b_v
+        else:
+            b_v = np.sqrt(0.1)
+            d_b_d_area = 0.0
+            d_b_d_aspect_ratio = 0.0
+
+        denominator = (1.0 + taper_v) * b_v
+        root_chord = 2.0 * s_v / denominator
+        d_root_d_area = 2.0 / denominator - 2.0 * s_v / ((1.0 + taper_v) * b_v**2) * d_b_d_area
+        d_root_d_taper = -2.0 * s_v / ((1.0 + taper_v) ** 2 * b_v)
+        d_root_d_aspect_ratio = -2.0 * s_v / ((1.0 + taper_v) * b_v**2) * d_b_d_aspect_ratio
+
+        span = "data:geometry:vertical_tail:span"
+        root = "data:geometry:vertical_tail:root:chord"
+        tip = "data:geometry:vertical_tail:tip:chord"
+
+        partials[span, "data:geometry:vertical_tail:area"] = d_b_d_area
+        partials[span, "data:geometry:vertical_tail:aspect_ratio"] = d_b_d_aspect_ratio
+        partials[root, "data:geometry:vertical_tail:area"] = d_root_d_area
+        partials[root, "data:geometry:vertical_tail:aspect_ratio"] = d_root_d_aspect_ratio
+        partials[root, "data:geometry:vertical_tail:taper_ratio"] = d_root_d_taper
+        partials[tip, "data:geometry:vertical_tail:area"] = taper_v * d_root_d_area
+        partials[tip, "data:geometry:vertical_tail:aspect_ratio"] = taper_v * d_root_d_aspect_ratio
+        partials[tip, "data:geometry:vertical_tail:taper_ratio"] = (
+            root_chord + taper_v * d_root_d_taper
+        )
