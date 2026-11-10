@@ -39,7 +39,7 @@ class PassengerSeatsWeight(om.ExplicitComponent):
         self.add_output("data:weight:furniture:passenger_seats:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tlar_range = inputs["data:TLAR:range"]
@@ -56,3 +56,22 @@ class PassengerSeatsWeight(om.ExplicitComponent):
 
         temp_d2 = k_ps * npax
         outputs["data:weight:furniture:passenger_seats:mass"] = k_d2 * temp_d2 + offset_d2
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        tlar_range = inputs["data:TLAR:range"]
+        npax = inputs["data:TLAR:NPAX"]
+        k_d2 = inputs["tuning:weight:furniture:passenger_seats:mass:k"]
+
+        if tlar_range in RangeCategory.SHORT:
+            k_ps = 9.0
+        elif RangeCategory.SHORT_MEDIUM.min() <= tlar_range <= RangeCategory.MEDIUM.max():
+            k_ps = 10.0
+        else:
+            k_ps = 11.0
+
+        temp_d2 = k_ps * npax
+        output_name = "data:weight:furniture:passenger_seats:mass"
+
+        partials[output_name, "data:TLAR:NPAX"] = k_d2 * k_ps
+        partials[output_name, "tuning:weight:furniture:passenger_seats:mass:k"] = temp_d2
+        partials[output_name, "tuning:weight:furniture:passenger_seats:mass:offset"] = 1.0
