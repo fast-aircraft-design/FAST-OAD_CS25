@@ -53,7 +53,7 @@ class CdTrim(om.ExplicitComponent):
             )
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         if self.options["low_speed_aero"]:
@@ -70,3 +70,14 @@ class CdTrim(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:low_speed:CD:trim"] = cd_trim
         else:
             outputs["data:aerodynamics:aircraft:high_speed:CD:trim"] = cd_trim
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        if self.options["low_speed_aero"]:
+            output_name = "data:aerodynamics:aircraft:low_speed:CD:trim"
+            input_name = "data:aerodynamics:aircraft:low_speed:CL"
+        else:
+            output_name = "data:aerodynamics:aircraft:high_speed:CD:trim"
+            input_name = "data:aerodynamics:aircraft:high_speed:CL"
+
+        size = inputs[input_name].size
+        partials[output_name, input_name] = 5.89 * 10 ** (-4) * np.eye(size)
