@@ -33,7 +33,7 @@ class ComputeHTClalpha(om.ExplicitComponent):
 
     def setup_partials(self):
         self.declare_partials(
-            "data:aerodynamics:horizontal_tail:high_speed:CL_alpha", "*", method="fd"
+            "data:aerodynamics:horizontal_tail:high_speed:CL_alpha", "*", method="exact"
         )
 
     def compute(self, inputs, outputs):
@@ -60,3 +60,34 @@ class ComputeHTClalpha(om.ExplicitComponent):
         )
 
         outputs["data:aerodynamics:horizontal_tail:high_speed:CL_alpha"] = cl_alpha_ht
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        cruise_mach = inputs["data:TLAR:cruise_mach"]
+        lambda_ht = inputs["data:geometry:horizontal_tail:aspect_ratio"]
+        sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
+
+        beta2 = 1.0 - cruise_mach**2
+        sweep_rad = sweep_25_ht / 180.0 * np.pi
+        tan_sweep = np.tan(sweep_rad)
+        root_term = 4.0 + lambda_ht**2 / 0.9025 * (beta2 + tan_sweep**2)
+        sqrt_term = np.sqrt(root_term)
+        denominator = 2.0 + sqrt_term
+        numerator = 0.8 * 2.0 * np.pi * lambda_ht
+
+        d_root_d_lambda = 2.0 * lambda_ht / 0.9025 * (beta2 + tan_sweep**2)
+        d_root_d_mach = -2.0 * cruise_mach * lambda_ht**2 / 0.9025
+        d_root_d_sweep = (
+            lambda_ht**2 / 0.9025 * 2.0 * tan_sweep / np.cos(sweep_rad) ** 2 * np.pi / 180.0
+        )
+
+        output_name = "data:aerodynamics:horizontal_tail:high_speed:CL_alpha"
+        partials[output_name, "data:geometry:horizontal_tail:aspect_ratio"] = (
+            0.8 * 2.0 * np.pi / denominator
+            - numerator / denominator**2 * 0.5 / sqrt_term * d_root_d_lambda
+        )
+        partials[output_name, "data:TLAR:cruise_mach"] = (
+            -numerator / denominator**2 * 0.5 / sqrt_term * d_root_d_mach
+        )
+        partials[output_name, "data:geometry:horizontal_tail:sweep_25"] = (
+            -numerator / denominator**2 * 0.5 / sqrt_term * d_root_d_sweep
+        )
