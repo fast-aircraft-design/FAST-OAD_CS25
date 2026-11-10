@@ -36,7 +36,7 @@ class ComputeWingPosition(om.ExplicitComponent):
         self.add_output("data:geometry:wing:MAC:at25percent:x", val=17.0, units="m")
 
     def setup_partials(self):
-        self.declare_partials(of="*", wrt="*", method="fd")
+        self.declare_partials(of="*", wrt="*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         static_margin = inputs["data:handling_qualities:static_margin"]
@@ -53,3 +53,18 @@ class ComputeWingPosition(om.ExplicitComponent):
         )
 
         outputs["data:geometry:wing:MAC:at25percent:x"] = mac_position
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        static_margin = inputs["data:handling_qualities:static_margin"]
+        target_static_margin = inputs["data:handling_qualities:static_margin:target"]
+        l0_wing = inputs["data:geometry:wing:MAC:length"]
+        cg_ratio = inputs["data:weight:aircraft:CG:aft:MAC_position"]
+
+        output_name = "data:geometry:wing:MAC:at25percent:x"
+        partials[output_name, "data:weight:aircraft:CG:aft:x"] = 1.0
+        partials[output_name, "data:geometry:wing:MAC:length"] = (
+            0.25 - cg_ratio - (static_margin - target_static_margin)
+        )
+        partials[output_name, "data:weight:aircraft:CG:aft:MAC_position"] = -l0_wing
+        partials[output_name, "data:handling_qualities:static_margin"] = -l0_wing
+        partials[output_name, "data:handling_qualities:static_margin:target"] = l0_wing
