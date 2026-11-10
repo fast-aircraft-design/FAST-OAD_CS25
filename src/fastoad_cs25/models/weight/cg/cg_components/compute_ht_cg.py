@@ -52,30 +52,7 @@ class ComputeHTcg(om.ExplicitComponent):
         self.add_output("data:weight:airframe:horizontal_tail:CG:z", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:weight:airframe:horizontal_tail:CG:x",
-            [
-                "data:geometry:horizontal_tail:center:chord",
-                "data:geometry:horizontal_tail:tip:chord",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25",
-                "data:geometry:horizontal_tail:span",
-                "data:geometry:wing:MAC:at25percent:x",
-                "data:geometry:horizontal_tail:sweep_25",
-                "data:geometry:horizontal_tail:MAC:length",
-                "data:geometry:horizontal_tail:MAC:at25percent:x:local",
-            ],
-            method="fd",
-        )
-        self.declare_partials(
-            "data:weight:airframe:horizontal_tail:CG:z",
-            [
-                "data:geometry:fuselage:maximum_height",
-                "data:geometry:vertical_tail:span",
-                "data:geometry:horizontal_tail:thickness_ratio",
-                "data:geometry:horizontal_tail:center:chord",
-            ],
-            method="fd",
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         root_chord = inputs["data:geometry:horizontal_tail:center:chord"]
@@ -103,3 +80,30 @@ class ComputeHTcg(om.ExplicitComponent):
 
         outputs["data:weight:airframe:horizontal_tail:CG:x"] = x_cg_ht_absolute
         outputs["data:weight:airframe:horizontal_tail:CG:z"] = z_cg_ht
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        root_chord = inputs["data:geometry:horizontal_tail:center:chord"]
+        b_h = inputs["data:geometry:horizontal_tail:span"]
+        sweep_25_ht = inputs["data:geometry:horizontal_tail:sweep_25"]
+        thickness_ratio = inputs["data:geometry:horizontal_tail:thickness_ratio"]
+        tail_type = np.round(inputs["data:geometry:has_T_tail"])
+
+        x_output = "data:weight:airframe:horizontal_tail:CG:x"
+        z_output = "data:weight:airframe:horizontal_tail:CG:z"
+
+        sweep_rad = sweep_25_ht / 180.0 * np.pi
+        partials[x_output, "data:geometry:horizontal_tail:center:chord"] = 0.3554
+        partials[x_output, "data:geometry:horizontal_tail:tip:chord"] = 0.0646
+        partials[x_output, "data:geometry:horizontal_tail:span"] = 0.19 * np.tan(sweep_rad)
+        partials[x_output, "data:geometry:horizontal_tail:sweep_25"] = (
+            0.19 * b_h * np.pi / 180.0 / np.cos(sweep_rad) ** 2
+        )
+        partials[x_output, "data:geometry:horizontal_tail:MAC:at25percent:x:from_wingMAC25"] = 1.0
+        partials[x_output, "data:geometry:wing:MAC:at25percent:x"] = 1.0
+        partials[x_output, "data:geometry:horizontal_tail:MAC:length"] = -0.25
+        partials[x_output, "data:geometry:horizontal_tail:MAC:at25percent:x:local"] = -1.0
+
+        partials[z_output, "data:geometry:fuselage:maximum_height"] = 1.0
+        partials[z_output, "data:geometry:horizontal_tail:center:chord"] = -thickness_ratio / 2.0
+        partials[z_output, "data:geometry:horizontal_tail:thickness_ratio"] = -root_chord / 2.0
+        partials[z_output, "data:geometry:vertical_tail:span"] = 1.0 if tail_type == 1 else 0.0
