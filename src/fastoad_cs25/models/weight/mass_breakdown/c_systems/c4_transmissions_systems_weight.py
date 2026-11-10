@@ -40,7 +40,7 @@ class TransmissionSystemsWeight(om.ExplicitComponent):
         self.add_output("data:weight:systems:transmission:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tlar_range = inputs["data:TLAR:range"]
@@ -57,3 +57,24 @@ class TransmissionSystemsWeight(om.ExplicitComponent):
             temp_c4 = 350.0
 
         outputs["data:weight:systems:transmission:mass"] = k_c4 * temp_c4 + offset_c4
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        tlar_range = inputs["data:TLAR:range"]
+
+        if tlar_range in RangeCategory.SHORT:
+            temp_c4 = 100.0
+        elif tlar_range in RangeCategory.SHORT_MEDIUM:
+            temp_c4 = 200.0
+        elif tlar_range in RangeCategory.MEDIUM:
+            temp_c4 = 250.0
+        else:
+            temp_c4 = 350.0
+
+        partials[
+            "data:weight:systems:transmission:mass",
+            "tuning:weight:systems:transmission:mass:k",
+        ] = temp_c4
+        partials[
+            "data:weight:systems:transmission:mass",
+            "tuning:weight:systems:transmission:mass:offset",
+        ] = 1.0
