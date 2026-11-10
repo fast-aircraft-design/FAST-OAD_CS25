@@ -42,6 +42,6 @@ class TestFlightKitWeightDerivatives:
 
     def test_partials_for_other_range_categories(self):
         problem = self._get_problem()
-        for tlar_range in [500.0, 1500.0, 3000.0, 6000.0]:
+        for tlar_range in [500.0, 2000.0, 3500.0, 5000.0, 7000.0]:
             problem.set_val("data:TLAR:range", tlar_range, units="NM")
             assert_component_derivatives(problem)
