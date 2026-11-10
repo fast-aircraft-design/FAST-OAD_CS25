@@ -108,12 +108,15 @@ build-backend = "poetry_dynamic_versioning.backend"
 # Pytest settings ==============================================================
 [tool.pytest.ini_options]
 minversion     = "8.0"
-addopts        = "--cov-report term-missing --cov-report html --verbose"
+addopts        = "--cov-report term-missing --cov-report html --verbose -m 'not slow'"
 testpaths      = ["src", "tests"]
 norecursedirs  = [".tox", "build", "dist"]
 filterwarnings = ["default"]
 # Use @pytest.mark.skip_if_no_xfoil() before a test to skip it if xfoil_path fixture returns None and OS is not Windows.
-markers = ["skip_if_no_xfoil: skip test if XFOIL is not installed or not found in the system PATH"]
+markers = [
+    "skip_if_no_xfoil: skip test if XFOIL is not installed or not found in the system PATH",
+    "slow: long-running analytic derivative checks (run with '-m slow')",
+]
 
 
 # Coverage settings ============================================================
