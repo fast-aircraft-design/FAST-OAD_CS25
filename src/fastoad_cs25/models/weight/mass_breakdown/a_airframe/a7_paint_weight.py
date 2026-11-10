@@ -37,7 +37,7 @@ class PaintWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:paint:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         total_wet_surface = inputs["data:geometry:aircraft:wetted_area"]
@@ -46,3 +46,17 @@ class PaintWeight(om.ExplicitComponent):
 
         temp_a7 = 0.180 * total_wet_surface
         outputs["data:weight:airframe:paint:mass"] = k_a7 * temp_a7 + offset_a7
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        total_wet_surface = inputs["data:geometry:aircraft:wetted_area"]
+        k_a7 = inputs["tuning:weight:airframe:paint:mass:k"]
+
+        partials["data:weight:airframe:paint:mass", "data:geometry:aircraft:wetted_area"] = (
+            k_a7 * 0.180
+        )
+        partials["data:weight:airframe:paint:mass", "tuning:weight:airframe:paint:mass:k"] = (
+            0.180 * total_wet_surface
+        )
+        partials["data:weight:airframe:paint:mass", "tuning:weight:airframe:paint:mass:offset"] = (
+            1.0
+        )
