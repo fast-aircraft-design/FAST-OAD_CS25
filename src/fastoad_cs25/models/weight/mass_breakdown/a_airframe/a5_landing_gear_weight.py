@@ -40,7 +40,7 @@ class LandingGearWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:landing_gear:front:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         mtow = inputs["data:weight:aircraft:MTOW"]
@@ -55,3 +55,35 @@ class LandingGearWeight(om.ExplicitComponent):
 
         outputs["data:weight:airframe:landing_gear:main:mass"] = a51
         outputs["data:weight:airframe:landing_gear:front:mass"] = a52
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        mtow = inputs["data:weight:aircraft:MTOW"]
+        k_a5 = inputs["tuning:weight:airframe:landing_gear:mass:k"]
+
+        temp_a51 = 18.1 + 0.131 * mtow**0.75 + 0.019 * mtow + 2.23e-5 * mtow**1.5
+        temp_a52 = 9.1 + 0.082 * mtow**0.75 + 2.97e-6 * mtow**1.5
+        d_temp_a51_d_mtow = 0.131 * 0.75 * mtow ** (-0.25) + 0.019 + 2.23e-5 * 1.5 * mtow**0.5
+        d_temp_a52_d_mtow = 0.082 * 0.75 * mtow ** (-0.25) + 2.97e-6 * 1.5 * mtow**0.5
+
+        partials["data:weight:airframe:landing_gear:main:mass", "data:weight:aircraft:MTOW"] = (
+            k_a5 * d_temp_a51_d_mtow
+        )
+        partials["data:weight:airframe:landing_gear:front:mass", "data:weight:aircraft:MTOW"] = (
+            k_a5 * d_temp_a52_d_mtow
+        )
+        partials[
+            "data:weight:airframe:landing_gear:main:mass",
+            "tuning:weight:airframe:landing_gear:mass:k",
+        ] = temp_a51
+        partials[
+            "data:weight:airframe:landing_gear:front:mass",
+            "tuning:weight:airframe:landing_gear:mass:k",
+        ] = temp_a52
+        partials[
+            "data:weight:airframe:landing_gear:main:mass",
+            "tuning:weight:airframe:landing_gear:mass:offset",
+        ] = 1.0
+        partials[
+            "data:weight:airframe:landing_gear:front:mass",
+            "tuning:weight:airframe:landing_gear:mass:offset",
+        ] = 1.0
