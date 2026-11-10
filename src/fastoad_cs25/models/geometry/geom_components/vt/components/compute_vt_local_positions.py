@@ -35,15 +35,7 @@ class ComputeVTLocalPositions(om.ExplicitComponent):
         self.add_output("data:geometry:vertical_tail:MAC:leading_edge:x:local", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:geometry:vertical_tail:tip:leading_edge:x:local", "*", method="fd"
-        )
-        self.declare_partials(
-            "data:geometry:vertical_tail:root:leading_edge:x:local", "*", method="fd"
-        )
-        self.declare_partials(
-            "data:geometry:vertical_tail:MAC:leading_edge:x:local", "*", method="fd"
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         z_mac = inputs["data:geometry:vertical_tail:MAC:z"]
@@ -59,3 +51,29 @@ class ComputeVTLocalPositions(om.ExplicitComponent):
         outputs["data:geometry:vertical_tail:tip:leading_edge:x:local"] = x_tip
         outputs["data:geometry:vertical_tail:root:leading_edge:x:local"] = x_root
         outputs["data:geometry:vertical_tail:MAC:leading_edge:x:local"] = x_mac
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        z_mac = inputs["data:geometry:vertical_tail:MAC:z"]
+        b_v = inputs["data:geometry:vertical_tail:span"]
+        sweep_0_vt = inputs["data:geometry:vertical_tail:sweep_0"]
+
+        tan_sweep = np.tan(sweep_0_vt)
+        inv_cos2 = 1.0 / np.cos(sweep_0_vt) ** 2
+
+        x_tip = "data:geometry:vertical_tail:tip:leading_edge:x:local"
+        x_root = "data:geometry:vertical_tail:root:leading_edge:x:local"
+        x_mac = "data:geometry:vertical_tail:MAC:leading_edge:x:local"
+
+        partials[x_mac, "data:geometry:vertical_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_mac, "data:geometry:vertical_tail:MAC:length"] = -0.25
+
+        partials[x_root, "data:geometry:vertical_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_root, "data:geometry:vertical_tail:MAC:length"] = -0.25
+        partials[x_root, "data:geometry:vertical_tail:MAC:z"] = -tan_sweep
+        partials[x_root, "data:geometry:vertical_tail:sweep_0"] = -z_mac * inv_cos2
+
+        partials[x_tip, "data:geometry:vertical_tail:MAC:at25percent:x:local"] = 1.0
+        partials[x_tip, "data:geometry:vertical_tail:MAC:length"] = -0.25
+        partials[x_tip, "data:geometry:vertical_tail:MAC:z"] = -tan_sweep
+        partials[x_tip, "data:geometry:vertical_tail:span"] = tan_sweep
+        partials[x_tip, "data:geometry:vertical_tail:sweep_0"] = (b_v - z_mac) * inv_cos2
