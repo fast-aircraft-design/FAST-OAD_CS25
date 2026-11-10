@@ -48,7 +48,7 @@ class FixedOperationalSystemsWeight(om.ExplicitComponent):
         self.add_output("data:weight:systems:operational:cargo_hold:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     # pylint: disable=too-many-locals
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -74,3 +74,38 @@ class FixedOperationalSystemsWeight(om.ExplicitComponent):
         # Cargo container systems
         temp_c52 = 23.4 * cargo_compartment_length * side_by_side_container_number
         outputs["data:weight:systems:operational:cargo_hold:mass"] = k_c5 * temp_c52 + offset_c5
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        front_section_length = inputs["data:geometry:fuselage:front_length"]
+        aft_section_length = inputs["data:geometry:fuselage:rear_length"]
+        fuselage_length = inputs["data:geometry:fuselage:length"]
+        front_seat_number_eco = inputs["data:geometry:cabin:seats:economical:count_by_row"]
+        l2_wing = inputs["data:geometry:wing:root:chord"]
+        container_number = inputs["data:geometry:cabin:containers:count_by_row"]
+        k_c5 = inputs["tuning:weight:systems:operational:mass:k"]
+
+        cylindrical_section_length = fuselage_length - front_section_length - aft_section_length
+        cargo_compartment_length = (
+            cylindrical_section_length + 0.864 * (front_seat_number_eco - 5) - 0.8 * l2_wing
+        )
+        temp_c52 = 23.4 * cargo_compartment_length * container_number
+
+        radar = "data:weight:systems:operational:radar:mass"
+        cargo = "data:weight:systems:operational:cargo_hold:mass"
+
+        partials[radar, "tuning:weight:systems:operational:mass:k"] = 100.0
+        partials[radar, "tuning:weight:systems:operational:mass:offset"] = 1.0
+
+        d_cargo_d_length = k_c5 * 23.4 * container_number
+        partials[cargo, "data:geometry:fuselage:length"] = d_cargo_d_length
+        partials[cargo, "data:geometry:fuselage:front_length"] = -d_cargo_d_length
+        partials[cargo, "data:geometry:fuselage:rear_length"] = -d_cargo_d_length
+        partials[cargo, "data:geometry:cabin:seats:economical:count_by_row"] = (
+            d_cargo_d_length * 0.864
+        )
+        partials[cargo, "data:geometry:wing:root:chord"] = -d_cargo_d_length * 0.8
+        partials[cargo, "data:geometry:cabin:containers:count_by_row"] = (
+            k_c5 * 23.4 * cargo_compartment_length
+        )
+        partials[cargo, "tuning:weight:systems:operational:mass:k"] = temp_c52
+        partials[cargo, "tuning:weight:systems:operational:mass:offset"] = 1.0
