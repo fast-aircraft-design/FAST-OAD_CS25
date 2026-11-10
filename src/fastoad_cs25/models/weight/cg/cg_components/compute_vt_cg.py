@@ -44,30 +44,7 @@ class ComputeVTcg(om.ExplicitComponent):
         self.add_output("data:weight:airframe:vertical_tail:CG:z", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:weight:airframe:vertical_tail:CG:x",
-            [
-                "data:geometry:vertical_tail:MAC:length",
-                "data:geometry:vertical_tail:root:chord",
-                "data:geometry:vertical_tail:tip:chord",
-                "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25",
-                "data:geometry:vertical_tail:MAC:at25percent:x:local",
-                "data:geometry:vertical_tail:sweep_25",
-                "data:geometry:vertical_tail:span",
-                "data:geometry:wing:MAC:at25percent:x",
-            ],
-            method="fd",
-        )
-        self.declare_partials(
-            "data:weight:airframe:vertical_tail:CG:z",
-            [
-                "data:geometry:fuselage:maximum_height",
-                "data:geometry:vertical_tail:span",
-                "data:geometry:vertical_tail:root:chord",
-                "data:geometry:vertical_tail:tip:chord",
-            ],
-            method="fd",
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         root_chord = inputs["data:geometry:vertical_tail:root:chord"]
@@ -98,3 +75,47 @@ class ComputeVTcg(om.ExplicitComponent):
 
         outputs["data:weight:airframe:vertical_tail:CG:x"] = x_cg_vt_absolute
         outputs["data:weight:airframe:vertical_tail:CG:z"] = z_cg_vt_absolute
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        root_chord = inputs["data:geometry:vertical_tail:root:chord"]
+        tip_chord = inputs["data:geometry:vertical_tail:tip:chord"]
+        b_v = inputs["data:geometry:vertical_tail:span"]
+        sweep_25_vt = inputs["data:geometry:vertical_tail:sweep_25"]
+
+        x_output = "data:weight:airframe:vertical_tail:CG:x"
+        z_output = "data:weight:airframe:vertical_tail:CG:z"
+
+        sweep_rad = sweep_25_vt / 180.0 * np.pi
+        partials[x_output, "data:geometry:vertical_tail:root:chord"] = 0.3265
+        partials[x_output, "data:geometry:vertical_tail:tip:chord"] = 0.0935
+        partials[x_output, "data:geometry:vertical_tail:span"] = 0.55 * np.tan(sweep_rad)
+        partials[x_output, "data:geometry:vertical_tail:sweep_25"] = (
+            0.55 * b_v * np.pi / 180.0 / np.cos(sweep_rad) ** 2
+        )
+        partials[x_output, "data:geometry:vertical_tail:MAC:at25percent:x:from_wingMAC25"] = 1.0
+        partials[x_output, "data:geometry:wing:MAC:at25percent:x"] = 1.0
+        partials[x_output, "data:geometry:vertical_tail:MAC:length"] = -0.25
+        partials[x_output, "data:geometry:vertical_tail:MAC:at25percent:x:local"] = -1.0
+
+        numerator = root_chord**2 + 2.0 * root_chord * tip_chord + 3.0 * tip_chord**2
+        denominator = root_chord**2 + root_chord * tip_chord + tip_chord**2
+        partials[z_output, "data:geometry:fuselage:maximum_height"] = 1.0
+        partials[z_output, "data:geometry:vertical_tail:span"] = 0.25 * numerator / denominator
+        partials[z_output, "data:geometry:vertical_tail:root:chord"] = (
+            0.25
+            * b_v
+            * (
+                (2.0 * root_chord + 2.0 * tip_chord) * denominator
+                - numerator * (2.0 * root_chord + tip_chord)
+            )
+            / denominator**2
+        )
+        partials[z_output, "data:geometry:vertical_tail:tip:chord"] = (
+            0.25
+            * b_v
+            * (
+                (2.0 * root_chord + 6.0 * tip_chord) * denominator
+                - numerator * (root_chord + 2.0 * tip_chord)
+            )
+            / denominator**2
+        )
