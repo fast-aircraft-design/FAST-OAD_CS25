@@ -38,7 +38,7 @@ class ComputeMaxCGratio(om.ExplicitComponent):
         self.add_output("data:weight:aircraft:CG:aft:MAC_position", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         outputs["data:weight:aircraft:CG:aft:MAC_position"] = inputs[
@@ -48,4 +48,17 @@ class ComputeMaxCGratio(om.ExplicitComponent):
                 inputs["data:weight:aircraft:empty:CG:MAC_position"],
                 inputs["data:weight:aircraft:load_cases:CG:MAC_position:maximum"],
             ]
+        )
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        empty_cg = inputs["data:weight:aircraft:empty:CG:MAC_position"]
+        max_load_case_cg = inputs["data:weight:aircraft:load_cases:CG:MAC_position:maximum"]
+
+        output_name = "data:weight:aircraft:CG:aft:MAC_position"
+        partials[output_name, "settings:weight:aircraft:CG:aft:MAC_position:margin"] = 1.0
+        partials[output_name, "data:weight:aircraft:empty:CG:MAC_position"] = (
+            1.0 if empty_cg >= max_load_case_cg else 0.0
+        )
+        partials[output_name, "data:weight:aircraft:load_cases:CG:MAC_position:maximum"] = (
+            0.0 if empty_cg >= max_load_case_cg else 1.0
         )
