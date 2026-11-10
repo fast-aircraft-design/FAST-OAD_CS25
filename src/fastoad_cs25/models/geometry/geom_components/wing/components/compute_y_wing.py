@@ -42,29 +42,7 @@ class ComputeYWing(om.ExplicitComponent):
         self.add_output("data:geometry:wing:tip:y", units="m")
 
     def setup_partials(self):
-        self.declare_partials(
-            "data:geometry:wing:span",
-            ["data:geometry:wing:area", "data:geometry:wing:aspect_ratio"],
-            method="fd",
-        )
-        self.declare_partials(
-            "data:geometry:wing:root:y", "data:geometry:fuselage:maximum_width", method="fd"
-        )
-        if not self.options["impose_absolute_kink"]:
-            self.declare_partials(
-                "data:geometry:wing:kink:y",
-                [
-                    "data:geometry:wing:area",
-                    "data:geometry:wing:aspect_ratio",
-                    "data:geometry:wing:kink:span_ratio",
-                ],
-                method="fd",
-            )
-        self.declare_partials(
-            "data:geometry:wing:tip:y",
-            ["data:geometry:wing:area", "data:geometry:wing:aspect_ratio"],
-            method="fd",
-        )
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
@@ -85,3 +63,39 @@ class ComputeYWing(om.ExplicitComponent):
             wing_break = inputs["data:geometry:wing:kink:span_ratio"]
             y3_wing = np.maximum(y2_wing, y4_wing * wing_break)
             outputs["data:geometry:wing:kink:y"] = y3_wing
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
+        wing_area = inputs["data:geometry:wing:area"]
+        width_max = inputs["data:geometry:fuselage:maximum_width"]
+
+        span = np.sqrt(lambda_wing * wing_area)
+        d_span_d_aspect_ratio = 0.5 * wing_area / span
+        d_span_d_area = 0.5 * lambda_wing / span
+
+        partials["data:geometry:wing:span", "data:geometry:wing:aspect_ratio"] = (
+            d_span_d_aspect_ratio
+        )
+        partials["data:geometry:wing:span", "data:geometry:wing:area"] = d_span_d_area
+        partials["data:geometry:wing:root:y", "data:geometry:fuselage:maximum_width"] = 0.5
+        partials["data:geometry:wing:tip:y", "data:geometry:wing:aspect_ratio"] = (
+            0.5 * d_span_d_aspect_ratio
+        )
+        partials["data:geometry:wing:tip:y", "data:geometry:wing:area"] = 0.5 * d_span_d_area
+
+        if not self.options["impose_absolute_kink"]:
+            wing_break = inputs["data:geometry:wing:kink:span_ratio"]
+            y4_wing = span / 2.0
+            y2_wing = width_max / 2.0
+            if y4_wing * wing_break >= y2_wing:
+                partials["data:geometry:wing:kink:y", "data:geometry:wing:aspect_ratio"] = (
+                    wing_break * 0.5 * d_span_d_aspect_ratio
+                )
+                partials["data:geometry:wing:kink:y", "data:geometry:wing:area"] = (
+                    wing_break * 0.5 * d_span_d_area
+                )
+                partials["data:geometry:wing:kink:y", "data:geometry:wing:kink:span_ratio"] = (
+                    y4_wing
+                )
+            else:
+                partials["data:geometry:wing:kink:y", "data:geometry:fuselage:maximum_width"] = 0.5
