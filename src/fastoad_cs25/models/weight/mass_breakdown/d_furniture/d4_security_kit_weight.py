@@ -39,7 +39,7 @@ class SecurityKitWeight(om.ExplicitComponent):
         self.add_output("data:weight:furniture:security_kit:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         npax = inputs["data:TLAR:NPAX"]
@@ -48,3 +48,12 @@ class SecurityKitWeight(om.ExplicitComponent):
 
         temp_d4 = 1.5 * npax
         outputs["data:weight:furniture:security_kit:mass"] = k_d4 * temp_d4 + offset_d4
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        npax = inputs["data:TLAR:NPAX"]
+        k_d4 = inputs["tuning:weight:furniture:security_kit:mass:k"]
+
+        output_name = "data:weight:furniture:security_kit:mass"
+        partials[output_name, "data:TLAR:NPAX"] = k_d4 * 1.5
+        partials[output_name, "tuning:weight:furniture:security_kit:mass:k"] = 1.5 * npax
+        partials[output_name, "tuning:weight:furniture:security_kit:mass:offset"] = 1.0
