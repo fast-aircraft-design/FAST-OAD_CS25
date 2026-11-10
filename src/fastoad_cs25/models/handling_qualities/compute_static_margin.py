@@ -39,10 +39,15 @@ class ComputeStaticMargin(om.ExplicitComponent):
         self.add_output("data:handling_qualities:static_margin", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         cg_ratio = inputs["data:weight:aircraft:CG:aft:MAC_position"]
         ac_ratio = inputs["data:aerodynamics:high_speed:neutral_point:x"]
 
         outputs["data:handling_qualities:static_margin"] = ac_ratio - cg_ratio
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        output_name = "data:handling_qualities:static_margin"
+        partials[output_name, "data:aerodynamics:high_speed:neutral_point:x"] = 1.0
+        partials[output_name, "data:weight:aircraft:CG:aft:MAC_position"] = -1.0
