@@ -33,7 +33,7 @@ class ComputeB50(om.ExplicitComponent):
         self.add_output("data:geometry:wing:b_50", units="m")
 
     def setup_partials(self):
-        self.declare_partials("data:geometry:wing:b_50", "*", method="fd")
+        self.declare_partials("data:geometry:wing:b_50", "*", method="exact")
 
     def compute(self, inputs, outputs):
         x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
@@ -47,3 +47,28 @@ class ComputeB50(om.ExplicitComponent):
         b_50 = span / np.cos(sweep_50)
 
         outputs["data:geometry:wing:b_50"] = b_50
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        x4_wing = inputs["data:geometry:wing:tip:leading_edge:x:local"]
+        y2_wing = inputs["data:geometry:wing:root:y"]
+        y4_wing = inputs["data:geometry:wing:tip:y"]
+        l1_wing = inputs["data:geometry:wing:root:virtual_chord"]
+        l4_wing = inputs["data:geometry:wing:tip:chord"]
+        span = inputs["data:geometry:wing:span"]
+
+        u = x4_wing + 0.5 * l4_wing - 0.5 * l1_wing
+        v = y4_wing - y2_wing
+        theta = np.atan(u / v)
+        denominator = u**2 + v**2
+
+        d_b_d_theta = span * np.sin(theta) / np.cos(theta) ** 2
+        d_b_d_u = d_b_d_theta * v / denominator
+        d_b_d_v = -d_b_d_theta * u / denominator
+
+        output_name = "data:geometry:wing:b_50"
+        partials[output_name, "data:geometry:wing:span"] = 1.0 / np.cos(theta)
+        partials[output_name, "data:geometry:wing:tip:leading_edge:x:local"] = d_b_d_u
+        partials[output_name, "data:geometry:wing:tip:chord"] = 0.5 * d_b_d_u
+        partials[output_name, "data:geometry:wing:root:virtual_chord"] = -0.5 * d_b_d_u
+        partials[output_name, "data:geometry:wing:tip:y"] = d_b_d_v
+        partials[output_name, "data:geometry:wing:root:y"] = -d_b_d_v
