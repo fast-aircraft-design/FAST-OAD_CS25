@@ -39,7 +39,7 @@ class ToiletsWeight(om.ExplicitComponent):
         self.add_output("data:weight:furniture:toilets:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         tlar_range = inputs["data:TLAR:range"]
@@ -58,3 +58,22 @@ class ToiletsWeight(om.ExplicitComponent):
 
         temp_d5 = k_toilet * npax
         outputs["data:weight:furniture:toilets:mass"] = k_d5 * temp_d5 + offset_d5
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        tlar_range = inputs["data:TLAR:range"]
+        npax = inputs["data:TLAR:NPAX"]
+        k_d5 = inputs["tuning:weight:furniture:toilets:mass:k"]
+
+        if tlar_range in RangeCategory.SHORT:
+            k_toilet = 0.1
+        elif tlar_range in RangeCategory.SHORT_MEDIUM:
+            k_toilet = 0.5
+        elif tlar_range in RangeCategory.MEDIUM:
+            k_toilet = 1.0
+        else:
+            k_toilet = 1.5
+
+        output_name = "data:weight:furniture:toilets:mass"
+        partials[output_name, "data:TLAR:NPAX"] = k_d5 * k_toilet
+        partials[output_name, "tuning:weight:furniture:toilets:mass:k"] = k_toilet * npax
+        partials[output_name, "tuning:weight:furniture:toilets:mass:offset"] = 1.0
