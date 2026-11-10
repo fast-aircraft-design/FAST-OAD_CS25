@@ -55,7 +55,7 @@ class ComputeAlpha(om.ExplicitComponent):
 
     def setup_partials(self):
         polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
-        self.declare_partials(f"data:aerodynamics:aircraft:{polar_type}:AoA", "*", method="fd")
+        self.declare_partials(f"data:aerodynamics:aircraft:{polar_type}:AoA", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
@@ -66,3 +66,21 @@ class ComputeAlpha(om.ExplicitComponent):
         CL0 = inputs[f"data:aerodynamics:aircraft:{polar_type}:CL0"]  # pylint: disable=invalid-name
 
         outputs[f"data:aerodynamics:aircraft:{polar_type}:AoA"] = (CL - CL0) / CLalpha
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        polar_type = "low_speed" if self.options["low_speed_aero"] else "high_speed"
+        output_name = f"data:aerodynamics:aircraft:{polar_type}:AoA"
+        cl = inputs[f"data:aerodynamics:aircraft:{polar_type}:CL"]
+        cl_alpha = inputs[f"data:aerodynamics:aircraft:{polar_type}:CL_alpha"]
+        cl0 = inputs[f"data:aerodynamics:aircraft:{polar_type}:CL0"]
+
+        size = cl.size
+        partials[output_name, f"data:aerodynamics:aircraft:{polar_type}:CL"] = (
+            np.eye(size) / cl_alpha
+        )
+        partials[output_name, f"data:aerodynamics:aircraft:{polar_type}:CL_alpha"] = (
+            -(cl - cl0) / cl_alpha**2
+        ).reshape((size, 1))
+        partials[output_name, f"data:aerodynamics:aircraft:{polar_type}:CL0"] = np.full(
+            (size, 1), -1.0 / cl_alpha
+        )
