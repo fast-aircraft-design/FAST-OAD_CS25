@@ -22,11 +22,11 @@ from openmdao.core.explicitcomponent import ExplicitComponent
 from openmdao.utils.assert_utils import assert_check_partials
 
 
-def get_ivc_from_xml(xml_path: Path):
-    """Reads all variables of an XML file and returns an IndepVarComp."""
+def get_ivc_from_xml(xml_path: Path, ignore: list[str] | None = None):
+    """Reads variables of an XML file and returns an IndepVarComp."""
     reader = VariableIO(str(xml_path))
     reader.path_separator = ":"
-    return reader.read().to_ivc()
+    return reader.read(ignore=ignore or []).to_ivc()
 
 
 def assert_model_is_error_free(problem):
