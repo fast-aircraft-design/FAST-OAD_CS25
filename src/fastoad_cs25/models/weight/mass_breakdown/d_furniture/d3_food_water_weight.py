@@ -39,7 +39,7 @@ class FoodWaterWeight(om.ExplicitComponent):
         self.add_output("data:weight:furniture:food_water:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         npax = inputs["data:TLAR:NPAX"]
@@ -48,3 +48,12 @@ class FoodWaterWeight(om.ExplicitComponent):
 
         temp_d3 = 8.75 * npax
         outputs["data:weight:furniture:food_water:mass"] = k_d3 * temp_d3 + offset_d3
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        npax = inputs["data:TLAR:NPAX"]
+        k_d3 = inputs["tuning:weight:furniture:food_water:mass:k"]
+
+        output_name = "data:weight:furniture:food_water:mass"
+        partials[output_name, "data:TLAR:NPAX"] = k_d3 * 8.75
+        partials[output_name, "tuning:weight:furniture:food_water:mass:k"] = 8.75 * npax
+        partials[output_name, "tuning:weight:furniture:food_water:mass:offset"] = 1.0
