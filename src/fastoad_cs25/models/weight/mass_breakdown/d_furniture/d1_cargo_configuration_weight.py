@@ -48,7 +48,7 @@ class CargoConfigurationWeight(om.ExplicitComponent):
         self.add_output("data:weight:furniture:cargo_configuration:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         npax1 = inputs["data:geometry:cabin:NPAX1"]
@@ -63,3 +63,25 @@ class CargoConfigurationWeight(om.ExplicitComponent):
         else:
             temp_d1 = 85 * container_count + 110 * pallet_number
         outputs["data:weight:furniture:cargo_configuration:mass"] = k_d1 * temp_d1 + offset_d1
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        npax1 = inputs["data:geometry:cabin:NPAX1"]
+        side_by_side_eco_seat_count = inputs["data:geometry:cabin:seats:economical:count_by_row"]
+        container_count = inputs["data:geometry:cabin:containers:count"]
+        pallet_number = inputs["data:geometry:cabin:pallet_count"]
+        k_d1 = inputs["tuning:weight:furniture:cargo_configuration:mass:k"]
+
+        output_name = "data:weight:furniture:cargo_configuration:mass"
+        partials[output_name, "data:geometry:cabin:NPAX1"] = 0.0
+        partials[output_name, "data:geometry:cabin:containers:count"] = 0.0
+        partials[output_name, "data:geometry:cabin:pallet_count"] = 0.0
+        if side_by_side_eco_seat_count <= 6.0:
+            temp_d1 = 0.351 * (npax1 - 38)
+            partials[output_name, "data:geometry:cabin:NPAX1"] = k_d1 * 0.351
+        else:
+            temp_d1 = 85 * container_count + 110 * pallet_number
+            partials[output_name, "data:geometry:cabin:containers:count"] = k_d1 * 85
+            partials[output_name, "data:geometry:cabin:pallet_count"] = k_d1 * 110
+
+        partials[output_name, "tuning:weight:furniture:cargo_configuration:mass:k"] = temp_d1
+        partials[output_name, "tuning:weight:furniture:cargo_configuration:mass:offset"] = 1.0
