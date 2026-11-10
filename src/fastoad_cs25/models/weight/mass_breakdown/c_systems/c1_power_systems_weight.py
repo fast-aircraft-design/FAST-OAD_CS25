@@ -66,7 +66,7 @@ class PowerSystemsWeight(om.ExplicitComponent):
         self.add_output("data:weight:systems:power:hydraulic_systems:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     # pylint: disable=too-many-locals
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -94,3 +94,44 @@ class PowerSystemsWeight(om.ExplicitComponent):
         # Mass of the hydraulic system
         temp_c13 = k_elec * (0.256 * mtow**0.66 + 1.46 * npax1 + 0.146 * flight_controls_weight)
         outputs["data:weight:systems:power:hydraulic_systems:mass"] = k_c13 * temp_c13 + offset_c13
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        npax1 = inputs["data:geometry:cabin:NPAX1"]
+        flight_controls_weight = inputs["data:weight:airframe:flight_controls:mass"]
+        mtow = inputs["data:weight:aircraft:MTOW"]
+        k_c11 = inputs["tuning:weight:systems:power:auxiliary_power_unit:mass:k"]
+        k_c12 = inputs["tuning:weight:systems:power:electric_systems:mass:k"]
+        k_c13 = inputs["tuning:weight:systems:power:hydraulic_systems:mass:k"]
+        k_elec = inputs["settings:weight:systems:power:mass:k_elec"]
+
+        temp_c11 = 11.3 * npax1**0.64
+        electric_term = 0.444 * mtow**0.66 + 2.54 * npax1 + 0.254 * flight_controls_weight
+        hydraulic_term = 0.256 * mtow**0.66 + 1.46 * npax1 + 0.146 * flight_controls_weight
+        temp_c12 = k_elec * electric_term
+        temp_c13 = k_elec * hydraulic_term
+
+        apu = "data:weight:systems:power:auxiliary_power_unit:mass"
+        electric = "data:weight:systems:power:electric_systems:mass"
+        hydraulic = "data:weight:systems:power:hydraulic_systems:mass"
+
+        partials[apu, "data:geometry:cabin:NPAX1"] = k_c11 * 11.3 * 0.64 * npax1 ** (-0.36)
+        partials[apu, "tuning:weight:systems:power:auxiliary_power_unit:mass:k"] = temp_c11
+        partials[apu, "tuning:weight:systems:power:auxiliary_power_unit:mass:offset"] = 1.0
+
+        partials[electric, "data:weight:aircraft:MTOW"] = (
+            k_c12 * k_elec * 0.444 * 0.66 * mtow ** (-0.34)
+        )
+        partials[electric, "data:geometry:cabin:NPAX1"] = k_c12 * k_elec * 2.54
+        partials[electric, "data:weight:airframe:flight_controls:mass"] = k_c12 * k_elec * 0.254
+        partials[electric, "settings:weight:systems:power:mass:k_elec"] = k_c12 * electric_term
+        partials[electric, "tuning:weight:systems:power:electric_systems:mass:k"] = temp_c12
+        partials[electric, "tuning:weight:systems:power:electric_systems:mass:offset"] = 1.0
+
+        partials[hydraulic, "data:weight:aircraft:MTOW"] = (
+            k_c13 * k_elec * 0.256 * 0.66 * mtow ** (-0.34)
+        )
+        partials[hydraulic, "data:geometry:cabin:NPAX1"] = k_c13 * k_elec * 1.46
+        partials[hydraulic, "data:weight:airframe:flight_controls:mass"] = k_c13 * k_elec * 0.146
+        partials[hydraulic, "settings:weight:systems:power:mass:k_elec"] = k_c13 * hydraulic_term
+        partials[hydraulic, "tuning:weight:systems:power:hydraulic_systems:mass:k"] = temp_c13
+        partials[hydraulic, "tuning:weight:systems:power:hydraulic_systems:mass:offset"] = 1.0
