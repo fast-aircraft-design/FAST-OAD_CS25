@@ -81,7 +81,7 @@ class WingWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:wing:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         toc_root = inputs["data:geometry:wing:root:thickness_ratio"]
@@ -149,3 +149,168 @@ class WingWeight(om.ExplicitComponent):
         temp_a1 = weight_a11 + weight_a12 + weight_a13 + weight_a14 + weight_a15
 
         outputs["data:weight:airframe:wing:mass"] = k_a1 * temp_a1 + offset_a1
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        toc_root = inputs["data:geometry:wing:root:thickness_ratio"]
+        toc_kink = inputs["data:geometry:wing:kink:thickness_ratio"]
+        toc_tip = inputs["data:geometry:wing:tip:thickness_ratio"]
+        wing_area = inputs["data:geometry:wing:area"]
+        span = inputs["data:geometry:wing:span"]
+        l2_wing = inputs["data:geometry:wing:root:chord"]
+        sweep_25 = inputs["data:geometry:wing:sweep_25"]
+        cantilevered_area = inputs["data:geometry:wing:outer_area"]
+        mtow = inputs["data:weight:aircraft:MTOW"]
+        mlw = inputs["data:weight:aircraft:MLW"]
+        max_nm = inputs["data:mission:sizing:cs25:sizing_load"] / g
+        engine_count = inputs["data:geometry:propulsion:engine:count"]
+        propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
+        engine_on_fuselage = propulsion_layout == 2
+        if engine_on_fuselage:
+            k_voil = 1.1
+        elif engine_count >= 4:
+            k_voil = 1.0
+        else:
+            k_voil = 1.05
+
+        k_a1 = inputs["tuning:weight:airframe:wing:mass:k"]
+        k_a11 = inputs["tuning:weight:airframe:wing:bending_sizing:mass:k"]
+        k_a12 = inputs["tuning:weight:airframe:wing:shear_sizing:mass:k"]
+        k_a13 = inputs["tuning:weight:airframe:wing:ribs:mass:k"]
+        k_a14 = inputs["tuning:weight:airframe:wing:reinforcements:mass:k"]
+        k_a15 = inputs["tuning:weight:airframe:wing:secondary_parts:mass:k"]
+        k_mvo = inputs["settings:weight:airframe:wing:mass:k_mvo"]
+
+        toc_mean = (3 * toc_root + 2 * toc_kink + toc_tip) / 6
+        cos_sweep = np.cos(sweep_25)
+
+        # A11 = mass of the wing due to flexion
+        a11_factor = (max_nm / (l2_wing * toc_mean)) * (span / cos_sweep) ** 2.0
+        temp_a11 = 5.922e-5 * k_voil * a11_factor**0.9
+        d_temp_a11_d_max_nm = 0.9 * temp_a11 / max_nm
+        d_temp_a11_d_l2 = -0.9 * temp_a11 / l2_wing
+        d_temp_a11_d_toc_mean = -0.9 * temp_a11 / toc_mean
+        d_temp_a11_d_span = 1.8 * temp_a11 / span
+        d_temp_a11_d_sweep = 1.8 * temp_a11 * np.tan(sweep_25)
+
+        # A12 = mass of the wing due to shear
+        a12_factor = max_nm * span / cos_sweep
+        temp_a12 = 5.184e-4 * k_voil * a12_factor**0.9
+        d_temp_a12_d_max_nm = 0.9 * temp_a12 / max_nm
+        d_temp_a12_d_span = 0.9 * temp_a12 / span
+        d_temp_a12_d_sweep = 0.9 * temp_a12 * np.tan(sweep_25)
+
+        # A13 = mass of the wing due to the ribs
+        temp_a13 = k_voil * (1.7009 * wing_area + 1e-3 * max_nm)
+        d_temp_a13_d_max_nm = k_voil * 1e-3
+
+        # A14 = mass of the wing due to reinforcements
+        temp_a14 = 4.4e-3 * k_voil * mlw**1.0169
+        d_temp_a14_d_mlw = 4.4e-3 * k_voil * 1.0169 * mlw**0.0169
+
+        # A15 = mass of the wing due to secondary parts
+        temp_a15 = 0.3285 * k_voil * mtow**0.35 * cantilevered_area * k_mvo
+        d_temp_a15_d_mtow = 0.3285 * k_voil * 0.35 * mtow ** (-0.65) * cantilevered_area * k_mvo
+        d_temp_a15_d_area = 0.3285 * k_voil * mtow**0.35 * k_mvo
+        d_temp_a15_d_k_mvo = 0.3285 * k_voil * mtow**0.35 * cantilevered_area
+
+        # Tuning factors are linear multipliers, so their partials are the corresponding
+        # un-tuned sub-masses.
+        offset_a11 = inputs["tuning:weight:airframe:wing:bending_sizing:mass:offset"]
+        offset_a12 = inputs["tuning:weight:airframe:wing:shear_sizing:mass:offset"]
+        offset_a13 = inputs["tuning:weight:airframe:wing:ribs:mass:offset"]
+        offset_a14 = inputs["tuning:weight:airframe:wing:reinforcements:mass:offset"]
+        offset_a15 = inputs["tuning:weight:airframe:wing:secondary_parts:mass:offset"]
+        temp_a1 = (
+            k_a11 * temp_a11
+            + offset_a11
+            + k_a12 * temp_a12
+            + offset_a12
+            + k_a13 * temp_a13
+            + offset_a13
+            + k_a14 * temp_a14
+            + offset_a14
+            + k_a15 * temp_a15
+            + offset_a15
+        )
+
+        partials["data:weight:airframe:wing:mass", "tuning:weight:airframe:wing:mass:k"] = temp_a1
+        partials["data:weight:airframe:wing:mass", "tuning:weight:airframe:wing:mass:offset"] = 1.0
+
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:bending_sizing:mass:k",
+        ] = k_a1 * temp_a11
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:bending_sizing:mass:offset",
+        ] = k_a1
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:shear_sizing:mass:k",
+        ] = k_a1 * temp_a12
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:shear_sizing:mass:offset",
+        ] = k_a1
+        partials["data:weight:airframe:wing:mass", "tuning:weight:airframe:wing:ribs:mass:k"] = (
+            k_a1 * temp_a13
+        )
+        partials[
+            "data:weight:airframe:wing:mass", "tuning:weight:airframe:wing:ribs:mass:offset"
+        ] = k_a1
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:reinforcements:mass:k",
+        ] = k_a1 * temp_a14
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:reinforcements:mass:offset",
+        ] = k_a1
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:secondary_parts:mass:k",
+        ] = k_a1 * temp_a15
+        partials[
+            "data:weight:airframe:wing:mass",
+            "tuning:weight:airframe:wing:secondary_parts:mass:offset",
+        ] = k_a1
+
+        d_temp_a1_d_max_nm = (
+            k_a11 * d_temp_a11_d_max_nm + k_a12 * d_temp_a12_d_max_nm + k_a13 * d_temp_a13_d_max_nm
+        )
+        partials["data:weight:airframe:wing:mass", "data:mission:sizing:cs25:sizing_load"] = (
+            k_a1 * d_temp_a1_d_max_nm / g
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:root:thickness_ratio"] = (
+            k_a1 * k_a11 * d_temp_a11_d_toc_mean * 3.0 / 6.0
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:kink:thickness_ratio"] = (
+            k_a1 * k_a11 * d_temp_a11_d_toc_mean * 2.0 / 6.0
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:tip:thickness_ratio"] = (
+            k_a1 * k_a11 * d_temp_a11_d_toc_mean / 6.0
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:root:chord"] = (
+            k_a1 * k_a11 * d_temp_a11_d_l2
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:span"] = k_a1 * (
+            k_a11 * d_temp_a11_d_span + k_a12 * d_temp_a12_d_span
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:sweep_25"] = k_a1 * (
+            k_a11 * d_temp_a11_d_sweep + k_a12 * d_temp_a12_d_sweep
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:area"] = (
+            k_a1 * k_a13 * k_voil * 1.7009
+        )
+        partials["data:weight:airframe:wing:mass", "data:weight:aircraft:MLW"] = (
+            k_a1 * k_a14 * d_temp_a14_d_mlw
+        )
+        partials["data:weight:airframe:wing:mass", "data:weight:aircraft:MTOW"] = (
+            k_a1 * k_a15 * d_temp_a15_d_mtow
+        )
+        partials["data:weight:airframe:wing:mass", "data:geometry:wing:outer_area"] = (
+            k_a1 * k_a15 * d_temp_a15_d_area
+        )
+        partials["data:weight:airframe:wing:mass", "settings:weight:airframe:wing:mass:k_mvo"] = (
+            k_a1 * k_a15 * d_temp_a15_d_k_mvo
+        )
