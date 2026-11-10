@@ -45,7 +45,7 @@ class FuselageWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:fuselage:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         fuselage_wet_area = inputs["data:geometry:fuselage:wetted_area"]
@@ -64,3 +64,49 @@ class FuselageWeight(om.ExplicitComponent):
             * k_fus
         )
         outputs["data:weight:airframe:fuselage:mass"] = k_a2 * temp_a2 + offset_a2
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        fuselage_wet_area = inputs["data:geometry:fuselage:wetted_area"]
+        width_max = inputs["data:geometry:fuselage:maximum_width"]
+        height_max = inputs["data:geometry:fuselage:maximum_height"]
+        n1m1 = inputs["data:mission:sizing:cs25:envelope:max_sizing_load_1"]
+        k_a2 = inputs["tuning:weight:airframe:fuselage:mass:k"]
+        k_lg = inputs["settings:weight:airframe:fuselage:mass:k_lg"]
+        k_fus = inputs["settings:weight:airframe:fuselage:mass:k_fus"]
+
+        fuselage_diameter = np.sqrt(width_max * height_max)
+        bracket = 10 + 1.2 * fuselage_diameter + 0.00019 * n1m1 / g / height_max**1.7
+        d_bracket_d_width = 0.6 * height_max / fuselage_diameter
+        d_bracket_d_height = (
+            0.6 * width_max / fuselage_diameter - 0.00019 * n1m1 / g * 1.7 * height_max ** (-2.7)
+        )
+        d_bracket_d_n1m1 = 0.00019 / g / height_max**1.7
+
+        common = k_a2 * fuselage_wet_area * k_lg * k_fus
+        partials["data:weight:airframe:fuselage:mass", "data:geometry:fuselage:wetted_area"] = (
+            k_a2 * bracket * k_lg * k_fus
+        )
+        partials["data:weight:airframe:fuselage:mass", "data:geometry:fuselage:maximum_width"] = (
+            common * d_bracket_d_width
+        )
+        partials["data:weight:airframe:fuselage:mass", "data:geometry:fuselage:maximum_height"] = (
+            common * d_bracket_d_height
+        )
+        partials[
+            "data:weight:airframe:fuselage:mass",
+            "data:mission:sizing:cs25:envelope:max_sizing_load_1",
+        ] = common * d_bracket_d_n1m1
+        partials[
+            "data:weight:airframe:fuselage:mass",
+            "settings:weight:airframe:fuselage:mass:k_lg",
+        ] = k_a2 * fuselage_wet_area * bracket * k_fus
+        partials[
+            "data:weight:airframe:fuselage:mass",
+            "settings:weight:airframe:fuselage:mass:k_fus",
+        ] = k_a2 * fuselage_wet_area * bracket * k_lg
+        partials["data:weight:airframe:fuselage:mass", "tuning:weight:airframe:fuselage:mass:k"] = (
+            fuselage_wet_area * bracket * k_lg * k_fus
+        )
+        partials[
+            "data:weight:airframe:fuselage:mass", "tuning:weight:airframe:fuselage:mass:offset"
+        ] = 1.0
