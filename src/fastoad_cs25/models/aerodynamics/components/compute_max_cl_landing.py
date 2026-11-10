@@ -38,7 +38,7 @@ class ComputeMaxClLanding(ExplicitComponent):
         self.add_output("data:aerodynamics:aircraft:landing:CL_max", units="unitless")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         cl_max_clean = inputs["data:aerodynamics:aircraft:landing:CL_max_clean"]
@@ -49,3 +49,16 @@ class ComputeMaxClLanding(ExplicitComponent):
         )
 
         outputs["data:aerodynamics:aircraft:landing:CL_max"] = cl_max_landing
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        cl_max_clean = inputs["data:aerodynamics:aircraft:landing:CL_max_clean"]
+        high_lift_cl = inputs["data:aerodynamics:high_lift_devices:landing:CL"]
+        gear_effect = inputs["tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k"]
+
+        output_name = "data:aerodynamics:aircraft:landing:CL_max"
+        partials[output_name, "data:aerodynamics:aircraft:landing:CL_max_clean"] = gear_effect
+        partials[output_name, "data:aerodynamics:high_lift_devices:landing:CL"] = gear_effect
+        partials[
+            output_name,
+            "tuning:aerodynamics:aircraft:landing:CL_max:landing_gear_effect:k",
+        ] = cl_max_clean + high_lift_cl
