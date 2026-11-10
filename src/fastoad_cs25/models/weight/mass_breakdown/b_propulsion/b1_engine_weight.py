@@ -39,7 +39,7 @@ class EngineWeight(om.ExplicitComponent):
         self.add_output("data:weight:propulsion:engine:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         sea_level_thrust = inputs["data:propulsion:MTO_thrust"]
@@ -54,3 +54,31 @@ class EngineWeight(om.ExplicitComponent):
 
         temp_b1 *= n_engines * 1.55
         outputs["data:weight:propulsion:engine:mass"] = k_b1 * temp_b1 + offset_b1
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        sea_level_thrust = inputs["data:propulsion:MTO_thrust"]
+        n_engines = inputs["data:geometry:propulsion:engine:count"]
+        k_b1 = inputs["tuning:weight:propulsion:engine:mass:k"]
+
+        if sea_level_thrust < 80000:
+            base_thrust = 22.2e-3 * sea_level_thrust
+            d_base_d_thrust = 22.2e-3
+        else:
+            base_thrust = 14.1e-3 * sea_level_thrust + 648
+            d_base_d_thrust = 14.1e-3
+
+        temp_b1 = base_thrust * n_engines * 1.55
+
+        partials["data:weight:propulsion:engine:mass", "data:propulsion:MTO_thrust"] = (
+            k_b1 * d_base_d_thrust * n_engines * 1.55
+        )
+        partials["data:weight:propulsion:engine:mass", "data:geometry:propulsion:engine:count"] = (
+            k_b1 * base_thrust * 1.55
+        )
+        partials["data:weight:propulsion:engine:mass", "tuning:weight:propulsion:engine:mass:k"] = (
+            temp_b1
+        )
+        partials[
+            "data:weight:propulsion:engine:mass",
+            "tuning:weight:propulsion:engine:mass:offset",
+        ] = 1.0
