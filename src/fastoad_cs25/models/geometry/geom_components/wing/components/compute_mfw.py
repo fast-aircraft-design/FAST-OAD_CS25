@@ -36,7 +36,7 @@ class ComputeMFW(om.ExplicitComponent):
         self.add_output("data:weight:aircraft:MFW", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("data:weight:aircraft:MFW", "*", method="fd")
+        self.declare_partials("data:weight:aircraft:MFW", "*", method="exact")
 
     def compute(self, inputs, outputs):
         wing_area = inputs["data:geometry:wing:area"]
@@ -48,3 +48,22 @@ class ComputeMFW(om.ExplicitComponent):
         mfw = 224 * (wing_area**1.5 * lambda_wing ** (-0.4) * (0.6 * el_emp + 0.4 * el_ext)) + 1570
 
         outputs["data:weight:aircraft:MFW"] = mfw
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        wing_area = inputs["data:geometry:wing:area"]
+        lambda_wing = inputs["data:geometry:wing:aspect_ratio"]
+        el_emp = inputs["data:geometry:wing:root:thickness_ratio"]
+        el_ext = inputs["data:geometry:wing:tip:thickness_ratio"]
+
+        thickness_term = 0.6 * el_emp + 0.4 * el_ext
+        base = wing_area**1.5 * lambda_wing ** (-0.4)
+
+        output_name = "data:weight:aircraft:MFW"
+        partials[output_name, "data:geometry:wing:area"] = (
+            224.0 * 1.5 * wing_area**0.5 * lambda_wing ** (-0.4) * thickness_term
+        )
+        partials[output_name, "data:geometry:wing:aspect_ratio"] = (
+            224.0 * base * (-0.4) * lambda_wing ** (-1.0) * thickness_term
+        )
+        partials[output_name, "data:geometry:wing:root:thickness_ratio"] = 224.0 * base * 0.6
+        partials[output_name, "data:geometry:wing:tip:thickness_ratio"] = 224.0 * base * 0.4
