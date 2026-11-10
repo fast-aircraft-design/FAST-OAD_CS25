@@ -31,11 +31,8 @@ class ComputeRelativeKink(om.ExplicitComponent):
     def setup_partials(self):
         self.declare_partials(
             "data:geometry:wing:kink:span_ratio",
-            [
-                "data:geometry:wing:kink:y",
-                "data:geometry:wing:tip:y",
-            ],
-            method="fd",
+            ["data:geometry:wing:kink:y", "data:geometry:wing:tip:y"],
+            method="exact",
         )
 
     def compute(self, inputs, outputs):
@@ -48,3 +45,15 @@ class ComputeRelativeKink(om.ExplicitComponent):
             wing_break = 0.0
 
         outputs["data:geometry:wing:kink:span_ratio"] = wing_break
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        y3_wing = inputs["data:geometry:wing:kink:y"]
+        y4_wing = inputs["data:geometry:wing:tip:y"]
+
+        output_name = "data:geometry:wing:kink:span_ratio"
+        if y4_wing > 0:
+            partials[output_name, "data:geometry:wing:kink:y"] = 1.0 / y4_wing
+            partials[output_name, "data:geometry:wing:tip:y"] = -y3_wing / y4_wing**2
+        else:
+            partials[output_name, "data:geometry:wing:kink:y"] = 0.0
+            partials[output_name, "data:geometry:wing:tip:y"] = 0.0
