@@ -40,7 +40,7 @@ class UnconsumablesWeight(om.ExplicitComponent):
         self.add_output("data:weight:propulsion:unconsumables:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         n_engines = inputs["data:geometry:propulsion:engine:count"]
@@ -50,3 +50,25 @@ class UnconsumablesWeight(om.ExplicitComponent):
 
         temp_b3 = 25 * n_engines + 0.0035 * mfw
         outputs["data:weight:propulsion:unconsumables:mass"] = k_b3 * temp_b3 + offset_b3
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        n_engines = inputs["data:geometry:propulsion:engine:count"]
+        mfw = inputs["data:weight:aircraft:MFW"]
+        k_b3 = inputs["tuning:weight:propulsion:unconsumables:mass:k"]
+
+        temp_b3 = 25 * n_engines + 0.0035 * mfw
+
+        partials[
+            "data:weight:propulsion:unconsumables:mass", "data:geometry:propulsion:engine:count"
+        ] = k_b3 * 25
+        partials["data:weight:propulsion:unconsumables:mass", "data:weight:aircraft:MFW"] = (
+            k_b3 * 0.0035
+        )
+        partials[
+            "data:weight:propulsion:unconsumables:mass",
+            "tuning:weight:propulsion:unconsumables:mass:k",
+        ] = temp_b3
+        partials[
+            "data:weight:propulsion:unconsumables:mass",
+            "tuning:weight:propulsion:unconsumables:mass:offset",
+        ] = 1.0
