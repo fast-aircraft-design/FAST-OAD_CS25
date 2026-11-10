@@ -34,7 +34,7 @@ class TestComputePayloadDerivatives:
 
     @staticmethod
     def _get_problem():
-        ivc = get_ivc_from_xml(XML_PATH)
+        ivc = get_ivc_from_xml(XML_PATH, ignore=["data:weight:aircraft:max_payload"])
         ivc.add_output(
             "settings:weight:aircraft:payload:design_mass_per_passenger", 90.72, units="kg"
         )
