@@ -45,7 +45,7 @@ class EmpennageWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:vertical_tail:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     # pylint: disable=too-many-locals
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
@@ -69,3 +69,42 @@ class EmpennageWeight(om.ExplicitComponent):
 
         temp_a32 = vt_area * (15.45 + 0.202 * vt_area) * k_engine * k_tail
         outputs["data:weight:airframe:vertical_tail:mass"] = k_a32 * temp_a32 + offset_a32
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        ht_area = inputs["data:geometry:horizontal_tail:area"]
+        vt_area = inputs["data:geometry:vertical_tail:area"]
+        k_a31 = inputs["tuning:weight:airframe:horizontal_tail:mass:k"]
+        k_a32 = inputs["tuning:weight:airframe:vertical_tail:mass:k"]
+        propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
+        tail_type = np.round(inputs["data:geometry:has_T_tail"])
+
+        k_tail = 1.3 if tail_type == 1 else 1.0
+        k_engine = 1.0 if propulsion_layout == 1.0 else 1.5
+
+        ht_factor = ht_area * (14.4 + 0.155 * ht_area) * k_tail
+        vt_factor = vt_area * (15.45 + 0.202 * vt_area) * k_engine * k_tail
+
+        partials[
+            "data:weight:airframe:horizontal_tail:mass",
+            "data:geometry:horizontal_tail:area",
+        ] = k_a31 * k_tail * (14.4 + 0.31 * ht_area)
+        partials[
+            "data:weight:airframe:horizontal_tail:mass",
+            "tuning:weight:airframe:horizontal_tail:mass:k",
+        ] = ht_factor
+        partials[
+            "data:weight:airframe:horizontal_tail:mass",
+            "tuning:weight:airframe:horizontal_tail:mass:offset",
+        ] = 1.0
+
+        partials["data:weight:airframe:vertical_tail:mass", "data:geometry:vertical_tail:area"] = (
+            k_a32 * k_engine * k_tail * (15.45 + 0.404 * vt_area)
+        )
+        partials[
+            "data:weight:airframe:vertical_tail:mass",
+            "tuning:weight:airframe:vertical_tail:mass:k",
+        ] = vt_factor
+        partials[
+            "data:weight:airframe:vertical_tail:mass",
+            "tuning:weight:airframe:vertical_tail:mass:offset",
+        ] = 1.0
