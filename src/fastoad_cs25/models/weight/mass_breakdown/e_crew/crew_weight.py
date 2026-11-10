@@ -36,10 +36,15 @@ class CrewWeight(om.ExplicitComponent):
         self.add_output("data:weight:crew:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         cockpit_crew = inputs["data:geometry:cabin:crew_count:technical"]
         cabin_crew = inputs["data:geometry:cabin:crew_count:commercial"]
 
         outputs["data:weight:crew:mass"] = 85 * cockpit_crew + 75 * cabin_crew
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        output_name = "data:weight:crew:mass"
+        partials[output_name, "data:geometry:cabin:crew_count:technical"] = 85.0
+        partials[output_name, "data:geometry:cabin:crew_count:commercial"] = 75.0
