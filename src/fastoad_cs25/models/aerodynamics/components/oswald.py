@@ -55,7 +55,7 @@ class InducedDragCoefficient(om.ExplicitComponent):
             )
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         wing_area = inputs["data:geometry:wing:area"]
@@ -73,6 +73,31 @@ class InducedDragCoefficient(om.ExplicitComponent):
             outputs["data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"] = coef_k
         else:
             outputs["data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"] = coef_k
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        wing_area = inputs["data:geometry:wing:area"]
+        span = inputs["data:geometry:wing:span"] / np.cos(5.0 / 180 * np.pi)
+
+        if self.options["low_speed_aero"]:
+            output_name = "data:aerodynamics:aircraft:low_speed:CD:induced:coefficient"
+            coef_e = inputs["data:aerodynamics:aircraft:low_speed:oswald_coefficient"]
+        else:
+            output_name = "data:aerodynamics:aircraft:high_speed:CD:induced:coefficient"
+            coef_e = inputs["data:aerodynamics:aircraft:high_speed:oswald_coefficient"]
+
+        coef_k = wing_area / (np.pi * coef_e * span**2)
+        partials[output_name, "data:geometry:wing:area"] = 1.0 / (np.pi * coef_e * span**2)
+        partials[output_name, "data:geometry:wing:span"] = (
+            -2.0 * wing_area / (np.pi * coef_e * span**3) / np.cos(5.0 / 180 * np.pi)
+        )
+        if self.options["low_speed_aero"]:
+            partials[output_name, "data:aerodynamics:aircraft:low_speed:oswald_coefficient"] = (
+                -coef_k / coef_e
+            )
+        else:
+            partials[output_name, "data:aerodynamics:aircraft:high_speed:oswald_coefficient"] = (
+                -coef_k / coef_e
+            )
 
 
 @oad.RegisterSubmodel(
