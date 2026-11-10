@@ -45,7 +45,7 @@ class FlightControlsWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:flight_controls:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         fus_length = inputs["data:geometry:fuselage:length"]
@@ -59,3 +59,35 @@ class FlightControlsWeight(om.ExplicitComponent):
         temp_a4 = k_fc * max_nm * (fus_length**0.66 + b_50**0.66)
 
         outputs["data:weight:airframe:flight_controls:mass"] = k_a4 * temp_a4 + offset_a4
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        fus_length = inputs["data:geometry:fuselage:length"]
+        b_50 = inputs["data:geometry:wing:b_50"]
+        k_fc = inputs["settings:weight:airframe:flight_controls:mass:k_fc"]
+        k_a4 = inputs["tuning:weight:airframe:flight_controls:mass:k"]
+        max_nm = inputs["data:mission:sizing:cs25:sizing_load"] / g
+
+        chord_term = fus_length**0.66 + b_50**0.66
+
+        partials["data:weight:airframe:flight_controls:mass", "data:geometry:fuselage:length"] = (
+            k_a4 * k_fc * max_nm * 0.66 * fus_length ** (-0.34)
+        )
+        partials["data:weight:airframe:flight_controls:mass", "data:geometry:wing:b_50"] = (
+            k_a4 * k_fc * max_nm * 0.66 * b_50 ** (-0.34)
+        )
+        partials[
+            "data:weight:airframe:flight_controls:mass",
+            "data:mission:sizing:cs25:sizing_load",
+        ] = k_a4 * k_fc * chord_term / g
+        partials[
+            "data:weight:airframe:flight_controls:mass",
+            "settings:weight:airframe:flight_controls:mass:k_fc",
+        ] = k_a4 * max_nm * chord_term
+        partials[
+            "data:weight:airframe:flight_controls:mass",
+            "tuning:weight:airframe:flight_controls:mass:k",
+        ] = k_fc * max_nm * chord_term
+        partials[
+            "data:weight:airframe:flight_controls:mass",
+            "tuning:weight:airframe:flight_controls:mass:offset",
+        ] = 1.0
