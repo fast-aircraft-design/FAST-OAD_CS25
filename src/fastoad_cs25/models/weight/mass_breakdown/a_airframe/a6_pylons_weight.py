@@ -40,7 +40,7 @@ class PylonsWeight(om.ExplicitComponent):
         self.add_output("data:weight:airframe:pylon:mass", units="kg")
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs, discrete_inputs=None, discrete_outputs=None):
         wet_area_pylon = inputs["data:geometry:propulsion:pylon:wetted_area"]
@@ -61,3 +61,39 @@ class PylonsWeight(om.ExplicitComponent):
             temp_a6 = 0.08 * weight_engine
 
         outputs["data:weight:airframe:pylon:mass"] = k_a6 * temp_a6 + offset_a6
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        wet_area_pylon = inputs["data:geometry:propulsion:pylon:wetted_area"]
+        weight_engine = inputs["data:weight:propulsion:engine:mass"]
+        n_engines = inputs["data:geometry:propulsion:engine:count"]
+        k_a6 = inputs["tuning:weight:airframe:pylon:mass:k"]
+        propulsion_layout = np.round(inputs["data:geometry:propulsion:layout"])
+
+        output_name = "data:weight:airframe:pylon:mass"
+        if propulsion_layout == 1.0:
+            ratio_pow = (weight_engine / n_engines) ** 0.708
+            bracket = 23 + 0.588 * ratio_pow
+            temp_a6 = 1.2 * np.sqrt(wet_area_pylon) * n_engines * bracket
+
+            partials[output_name, "data:geometry:propulsion:pylon:wetted_area"] = (
+                k_a6 * 0.6 / np.sqrt(wet_area_pylon) * n_engines * bracket
+            )
+            partials[output_name, "data:weight:propulsion:engine:mass"] = (
+                k_a6
+                * 1.2
+                * np.sqrt(wet_area_pylon)
+                * 0.588
+                * 0.708
+                * ratio_pow
+                * n_engines
+                / weight_engine
+            )
+            partials[output_name, "data:geometry:propulsion:engine:count"] = (
+                k_a6 * 1.2 * np.sqrt(wet_area_pylon) * (23 + 0.588 * 0.292 * ratio_pow)
+            )
+        else:
+            temp_a6 = 0.08 * weight_engine
+            partials[output_name, "data:weight:propulsion:engine:mass"] = k_a6 * 0.08
+
+        partials[output_name, "tuning:weight:airframe:pylon:mass:k"] = temp_a6
+        partials[output_name, "tuning:weight:airframe:pylon:mass:offset"] = 1.0
