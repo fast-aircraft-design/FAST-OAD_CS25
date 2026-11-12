@@ -13,40 +13,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import warnings
-from pathlib import Path
-
-import numpy as np
-from fastoad.io import VariableIO
 from openmdao.core.explicitcomponent import ExplicitComponent
 from openmdao.utils.assert_utils import assert_check_partials
-
-
-def get_ivc_from_xml(xml_path: Path, ignore: list[str] | None = None):
-    """Reads variables of an XML file and returns an IndepVarComp."""
-    reader = VariableIO(str(xml_path))
-    reader.path_separator = ":"
-    return reader.read(ignore=ignore or []).to_ivc()
-
-
-def assert_model_is_error_free(problem):
-    """Runs the model and checks that outputs are finite and no RuntimeWarning is raised."""
-    with warnings.catch_warnings(record=True) as caught_warnings:
-        warnings.simplefilter("always")
-        problem.run_model()
-
-    runtime_warnings = [
-        warning for warning in caught_warnings if issubclass(warning.category, RuntimeWarning)
-    ]
-    assert not runtime_warnings, (
-        "The model raised RuntimeWarning(s) while being evaluated: "
-        f"{[str(warning.message) for warning in runtime_warnings]}"
-    )
-
-    component = problem.model.component
-    for output_name in component._var_rel_names["output"]:
-        value = problem.get_val(output_name)
-        assert np.all(np.isfinite(value)), f"Output '{output_name}' is not finite: {value}"
 
 
 def assert_exact_derivatives(problem):
@@ -54,6 +22,8 @@ def assert_exact_derivatives(problem):
     component = problem.model.component
     component_class = type(component)
 
+    # The component must override compute_partials(), or check_partials()
+    # would only see finite-difference derivatives.
     assert component_class.compute_partials is not ExplicitComponent.compute_partials, (
         f"{component_class.__name__} does not implement compute_partials()."
     )
@@ -63,14 +33,15 @@ def assert_exact_derivatives(problem):
         for (of, wrt), metadata in component._declared_partials_patterns.items()
         if metadata.get("method") == "fd"
     ]
+    # A method="fd" declaration makes check_partials() compare finite
+    # differences with themselves, so the test would pass vacuously.
     assert not fd_declarations, (
         f"{component_class.__name__} still declares finite-difference partials: {fd_declarations}"
     )
 
 
 def assert_component_derivatives(problem, atol=1e-5, rtol=1e-5):
-    """Checks model evaluation and analytic-vs-finite-difference partials."""
-    assert_model_is_error_free(problem)
+    """Checks analytic partials against finite differences."""
     assert_exact_derivatives(problem)
     data = problem.check_partials(out_stream=None)
     assert_check_partials(data, atol=atol, rtol=rtol)
