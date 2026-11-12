@@ -34,8 +34,7 @@ class ComputeVTSweep(om.ExplicitComponent):
         self.add_output("data:geometry:vertical_tail:sweep_100", units="deg")
 
     def setup_partials(self):
-        self.declare_partials("data:geometry:vertical_tail:sweep_0", "*", method="fd")
-        self.declare_partials("data:geometry:vertical_tail:sweep_100", "*", method="fd")
+        self.declare_partials("*", "*", method="exact")
 
     def compute(self, inputs, outputs):
         root_chord = inputs["data:geometry:vertical_tail:root:chord"]
@@ -76,3 +75,46 @@ class ComputeVTSweep(om.ExplicitComponent):
 
         outputs["data:geometry:vertical_tail:sweep_0"] = sweep_0_vt
         outputs["data:geometry:vertical_tail:sweep_100"] = sweep_100_vt
+
+    def compute_partials(self, inputs, partials, discrete_inputs=None):
+        b_v = inputs["data:geometry:vertical_tail:span"]
+        root_chord = inputs["data:geometry:vertical_tail:root:chord"]
+        tip_chord = inputs["data:geometry:vertical_tail:tip:chord"]
+        sweep_25_vt = inputs["data:geometry:vertical_tail:sweep_25"]
+
+        sweep_rad = sweep_25_vt / 180.0 * np.pi
+        tan_sweep = np.tan(sweep_rad)
+        delta_chord = root_chord - tip_chord
+        factor = 180.0 / np.pi
+        d_argument_d_sweep = b_v * np.pi / 180.0 / np.cos(sweep_rad) ** 2
+
+        configurations = (
+            (
+                "data:geometry:vertical_tail:sweep_0",
+                0.25 * delta_chord + b_v * tan_sweep,
+                0.25,
+                -0.25,
+            ),
+            (
+                "data:geometry:vertical_tail:sweep_100",
+                b_v * tan_sweep - 0.75 * delta_chord,
+                -0.75,
+                0.75,
+            ),
+        )
+
+        for output_name, argument, d_argument_d_root, d_argument_d_tip in configurations:
+            denominator = b_v**2 + argument**2
+            d_theta_d_argument = b_v / denominator
+            partials[output_name, "data:geometry:vertical_tail:span"] = factor * (
+                -argument / denominator + d_theta_d_argument * tan_sweep
+            )
+            partials[output_name, "data:geometry:vertical_tail:root:chord"] = (
+                factor * d_theta_d_argument * d_argument_d_root
+            )
+            partials[output_name, "data:geometry:vertical_tail:tip:chord"] = (
+                factor * d_theta_d_argument * d_argument_d_tip
+            )
+            partials[output_name, "data:geometry:vertical_tail:sweep_25"] = (
+                factor * d_theta_d_argument * d_argument_d_sweep
+            )
