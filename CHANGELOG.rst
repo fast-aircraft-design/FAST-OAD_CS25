@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 0.9.2
+=============
+
+- Added:
+    - Addition of Y and Z CG computation. (https://github.com/fast-aircraft-design/FAST-OAD_CS25/pull/101)
+
 Version 0.9.1
 =============
 
